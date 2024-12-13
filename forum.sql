@@ -1,38 +1,37 @@
-CREATE TABLE UserTable(
+CREATE TABLE UserTable (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    creation_date DATE_TIME
+    creation_date DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE PostTable(
+CREATE TABLE PostTable (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
+    user_id INTEGER NOT NULL,
     title TEXT NOT NULL,
     post_content TEXT NOT NULL,
     categories TEXT NOT NULL,
-    creation_date DATE_TIME,
-    FOREIGN KEY(user_id) REFERENCES UserTable(id)
+    creation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(user_id) REFERENCES UserTable(id) ON DELETE CASCADE
 );
 
-CREATE TABLE CommentTable(
+CREATE TABLE CommentTable (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    post_id INTEGER,
-    user_id INTEGER,
+    post_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
     comment_content TEXT NOT NULL,
-    creation_date DATE_TIME,
-    FOREIGN KEY(user_id) REFERENCES UserTable(id),
-    FOREIGN KEY(post_id) REFERENCES PostTale(id)
+    creation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(user_id) REFERENCES UserTable(id) ON DELETE CASCADE,
+    FOREIGN KEY(post_id) REFERENCES PostTable(id) ON DELETE CASCADE
 );
 
-CREATE TABLE Likess_Dislike(
+
+CREATE TABLE Likes_Dislikes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    post_id INTEGER,
-    comment_id INTEGER,
-    user_id INTEGER,
-    liked BOOLEAN,
-    FOREIGN KEY(post_id) REFERENCES PostTale(id),
-    FOREIGN KEY(comment_id) REFERENCES CommentTable(id),
-    FOREIGN KEY(user_id) REFERENCES UserTable(id)
+    user_id INTEGER NOT NULL,
+    entity_id INTEGER NOT NULL,
+    entity_type TEXT NOT NULL CHECK(entity_type IN ('post', 'comment')),
+    liked BOOLEAN NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES UserTable(id) ON DELETE CASCADE
 );
