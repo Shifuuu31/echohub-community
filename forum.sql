@@ -11,9 +11,10 @@ CREATE TABLE PostTable (
     user_id INTEGER NOT NULL,
     title TEXT NOT NULL,
     post_content TEXT NOT NULL,
-    categories TEXT NOT NULL,
+    category_id INTEGER NOT NULL,
     creation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(user_id) REFERENCES UserTable(id) ON DELETE CASCADE
+    FOREIGN KEY (category_id) REFERENCES Categories(id) ON DELETE CASCADE
 );
 
 CREATE TABLE CommentTable (
@@ -26,7 +27,6 @@ CREATE TABLE CommentTable (
     FOREIGN KEY(post_id) REFERENCES PostTable(id) ON DELETE CASCADE
 );
 
-
 CREATE TABLE Likes_Dislikes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
@@ -35,3 +35,39 @@ CREATE TABLE Likes_Dislikes (
     liked BOOLEAN NOT NULL,
     FOREIGN KEY(user_id) REFERENCES UserTable(id) ON DELETE CASCADE
 );
+
+CREATE TABLE Categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    category_name VARCHAR(255) NOT NULL UNIQUE
+);
+
+INSERT INTO
+    Categories (category_name)
+VALUES
+    ('Movies & Streaming'),
+    ('Music & Playlists'),
+    ('Gaming & Esports'),
+    ('Books & Reads'),
+    ('Tech Buzz'),
+    ('Gadgets & Gear Reviews'),
+    ('Digital Lifestyle'),
+    ('Travel Hacks'),
+    ('Foodie Finds'),
+    ('Health & Wellness'),
+    ('DIY Projects & Creatives'),
+    ('Skill Up'),
+    ('Career Hacks'),
+    ('AMA (Ask Me Anything)'),
+    ('Meet the Community'),
+    ('Life & Relationships Talk'),
+    ('Memes & LOLs'),
+    ('Global News'),
+    ('Local Happenings'),
+    ('Hot Takes & Polls'),
+    ('Community Challenges'),
+    ('Dev & Code Talk'),
+    ('AI & The Future'),
+    ('Machine Learning Insights'),
+    ('Web & App Dev Trends'),
+    ('Data Science & Analytics'),
+    ('Cybersecurity & Privacy Talk');
