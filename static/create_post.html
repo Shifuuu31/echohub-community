@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EchoHub Community</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 50px;
+      background-color: #fff;
+      box-shadow: 0 2px 2px rgba(148, 148, 148, 0.1);
+    }
+
+    .logo {
+      margin-left: 70px;
+      align-self: calc(50% - 12px);
+      font-size: 24px;
+      font-weight: 700;
+      color: #6b47dc;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .button {
+      font: 'Roboto';
+      padding: 10px 20px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: 500;
+      color: #6b47dc;
+      background-color: #EAEAEA;
+      transition: all 0.3s;
+    }
+
+    .button-back {
+      margin-top: 30px;
+        font-size: 28px;
+        font-family: 'Roboto';
+
+      font: 'Roboto';
+      padding: 10px 20px;
+      border-radius: 512px;
+      text-decoration: none;
+      font-weight: 500;
+      color: #6b47dc;
+      background-color: #EAEAEA;
+      transition: all 0.3s;
+    }
+    .button:hover {
+      background-color: #8552FF;
+      color: #fff;
+    }
+    .button-back:hover {
+      background-color: #8552FF;
+      color: #fff;
+    }
+
+    main {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+}
+
+h2 {
+  font-size: 20px;
+  color: #6b47dc;
+  margin-bottom: 10px;
+}
+
+p {
+  margin-bottom: 15px;
+  color: #666;
+}
+
+.tags {
+    
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.tags span {
+    background: #EAEAEA;
+    padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #6b47dc;
+
+  font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 11px;
+line-height: 12px;
+display: flex;
+align-items: center;
+letter-spacing: 0.05em;
+color: #808080;
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+
+.actions {
+    display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+height: 16px;
+left: 527px;
+top: 3px;
+}
+
+    .icon {
+width: 15px;
+height: 15px;
+margin-right: 7px;
+    }
+
+    .icon-btn {
+left: 18px;
+top: 0.5px;
+font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 9px;
+line-height: 15px;
+letter-spacing: 0.03em;
+
+color: #808080;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #333;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .icon-btn span {
+    font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 15px;
+letter-spacing: 0.03em;
+
+color: #808080;
+  }
+  .icon {
+    width: 17px;
+    height: 17px;
+  }
+
+  .icon-btn:hover {
+    color: #007BFF;
+  }
+
+  .profile-container {
+      position: relative;
+    }
+
+    .profile-picture {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #8552FF;
+      transition: border-color 0.3s;
+    }
+
+    .profile-picture:hover {
+      border-color: #6b47dc;
+    }
+
+    .dropdown-menu {
+        margin-top: 5px;
+        justify-content: center;
+        align-items: center;
+        justify-content: center;
+padding: 0px;
+      position: absolute;
+      top: 120%;
+      right: 0;
+      background: white;
+      border-radius: 12px;
+      filter: drop-shadow(0px 30px 40px rgba(0, 0, 0, 0.15));
+      width: 295px;
+height: 255px;
+      display: none;
+      z-index: 1000;
+
+      flex: none;
+order: 0;
+flex-grow: 0;
+    }
+
+
+    .dropdown-menu a {
+        font-family: 'Roboto';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 21px;
+letter-spacing: -0.01em;
+color: #000000;
+    }
+    .dropdown-menu.active {
+      display: block;
+    }
+
+    .user-info-header {
+        margin-left: 20px;
+      box-sizing: border-box;
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 20px 68px 18px 0px;
+gap: 12px;
+width: 274px;
+height: 118px;
+border-bottom: 0.7px solid #CECECE;
+flex: none;
+order: 0;
+flex-grow: 0;
+
+    }
+
+    .user-info-header.infos {
+        display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+padding: 0px;
+gap: 3px;
+
+    }
+
+    .user-info-header img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 2.5px solid #8552FF;
+      margin-bottom: 8px;
+    }
+
+    .user-email {
+        font-family: 'Roboto';
+font-style: normal;
+font-weight: 300;
+font-size: 16px;
+line-height: 19px;
+letter-spacing: -0.01em;
+color: #999999;
+flex: none;
+order: 1;
+flex-grow: 0;
+    }
+
+    .user-name {
+        font-family: 'Roboto';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 19px;
+letter-spacing: -0.01em;
+color: #242424;
+flex: none;
+order: 1;
+flex-grow: 0;
+    }
+
+
+    .dropdown-item {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #333;
+      text-decoration: none;
+      transition: background-color 0.2s;
+      cursor: pointer;
+    }
+
+    .dropdown-item i {
+      color: #808080;
+      width: 16px;
+    }
+
+   
+    .coming-soon {
+      font-size: 12px;
+      color: #808080;
+      margin-left: 8px;
+    }
+
+
+.dropdown-item:nth-child(4) {
+  display: flex;
+  align-items: center;
+  color: black; 
+  transition: color 0.1s, filter 0.1s;
+}
+
+.dropdown-item:nth-child(4) img {
+  margin-right: 8px;
+  width: 20px;
+  transition: filter 0.1s;
+}
+
+.dropdown-item:nth-child(4):hover {
+  color: red; 
+}
+
+.dropdown-item:nth-child(4):hover img {
+  filter: brightness(0) saturate(100%) invert(26%) sepia(91%) saturate(7500%) hue-rotate(0deg) brightness(105%) contrast(120%);
+}
+
+.create-post-container {
+      max-width: 750px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 2px 1px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    .categories-section {
+      margin-bottom: 25px;
+    }
+
+    .category-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .category-tag {
+        height: 10px;
+        margin-bottom: 5px;
+        color: #808080;
+    font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 15px;
+display: flex;
+align-items: center;
+letter-spacing: 0.05em;
+text-transform: capitalize;
+  white-space: nowrap; /* Prevent buttons from wrapping */
+  background: #eaeaea;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  
+    }
+
+    .category-tag.selected {
+      background: #6b47dc;
+      color: white;
+      border-color: #6b47dc;
+    }
+
+    .post-title-section {
+      margin-bottom: 20px;
+      
+    }
+
+    .post-title-input {
+        margin-right: 10px;
+    width: 99%;
+      padding: 12px 0px 12px 20px;
+      border: 2px solid #EAEAEA;
+border-radius: 512px;
+      margin-top: 10px;
+font-size: 14px;
+display: flex;
+      flex: none;
+order: 4;
+align-self: stretch;
+flex-grow: 0;
+    }
+
+    
+
+    .post-content-section {
+      margin-bottom: 3px;
+    }
+
+    .post-content-textarea {
+      width: 99%;
+      min-height: 270px;
+      padding: 12px 0px 0px 20px;
+      border: 2px solid #EAEAEA;
+border-radius: 20px;
+      font-size: 14px;
+      resize: vertical;
+      
+    }
+
+    
+    .button-section {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .post-button {
+        width: 91px;
+height: 30px;
+background: #8c5bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    }
+
+    .post-button:hover {
+      background: #6b47dc;
+    }
+
+    .post-icon {
+    width: 15px;
+    height: 15px;
+}
+
+.post-button span {
+    margin-top: 1px;
+}
+
+
+  </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+          <a href="file:///C:/Users/Rachid/Desktop/Forum/forum/static/home.html">
+            <img src="C:\Users\Rachid\OneDrive\Desktop\echoHub Logo_SM 1.png">
+          </a>
+        </div>
+        <div class="buttons">
+          <div class="profile-container">
+            <img src="C:\Users\Rachid\Downloads\8beeb12877bd12d41c73b62b9c5b5442 (1).png" alt="Profile" class="profile-picture" id="profile-trigger">
+            <div class="dropdown-menu" id="profile-dropdown">
+              <div class="user-info-header">
+                <img src="C:\Users\Rachid\Downloads\8beeb12877bd12d41c73b62b9c5b5442 (1).png" alt="Profile">
+                <div class="infos">
+                    <div class="user-name">unkind</div>
+                    <div class="user-email">unkind@mail.com</div>
+                </div>
+              </div>
+              <a href="#" class="dropdown-item">
+                <img src="C:\Users\Rachid\OneDrive\Desktop\settings.png" alt="Settings" />
+                Profile Settings
+              </a>
+              <a class="dropdown-item">
+                <img src="C:\Users\Rachid\OneDrive\Desktop\dark mode.png" alt="Settings" />
+                Dark Mode
+                <span class="coming-soon">(coming soon)</span>
+              </a>
+              <a href="#" class="dropdown-item">
+                <img src="C:\Users\Rachid\OneDrive\Desktop\sign out.png" alt="Settings" />
+              Log Out
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+  <main>
+
+    <div class="create-post-container">
+        <div class="categories-section">
+          <div class="category-grid">
+            <div class="category-tag">Movies & Streaming</div>
+            <div class="category-tag">Music & Playlists</div>
+            <div class="category-tag">Gaming & E-Sports</div>
+            <div class="category-tag">Books & Reads</div>
+            <div class="category-tag">Tech Buzz</div>
+            <div class="category-tag">Gadgets & Gear Reviews</div>
+            <div class="category-tag">Digital Lifestyle</div>
+            <div class="category-tag">Travel Hacks</div>
+            <div class="category-tag">Health & Wellness</div>
+            <div class="category-tag">DIY Projects & Creatives</div>
+            <div class="category-tag">Skill Up</div>
+            <div class="category-tag">Career Hacks</div>
+            <div class="category-tag">Meet The Community</div>
+            <div class="category-tag">Life & Relationships Talk</div>
+            <div class="category-tag">Memes & LOLs</div>
+            <div class="category-tag">Global News</div>
+          </div>
+        </div>
+  
+        <div class="post-title-section">
+          <input type="text" class="post-title-input" placeholder="Post Title">
+        </div>
+  
+        <div class="post-content-section">
+          <textarea class="post-content-textarea" placeholder="Type your Something"></textarea>
+        </div>
+  
+        <div class="button-section">
+            <button class="post-button">
+                <img src="C:\Users\Rachid\OneDrive\Desktop\send.png" alt="Post" class="post-icon">
+                <span>Post</span>
+            </button>
+        </div>
+      </div>
+
+  </main>
+  
+  <script>
+
+document.querySelectorAll('.category-tag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        tag.classList.toggle('selected');
+      });
+    });
+
+
+    const profileTrigger = document.getElementById('profile-trigger');
+    const dropdown = document.getElementById('profile-dropdown');
+
+    profileTrigger.addEventListener('click', () => {
+      dropdown.classList.toggle('active');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (event) => {
+      if (!profileTrigger.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>

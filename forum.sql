@@ -3,7 +3,9 @@ CREATE TABLE UserTable (
     username TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    creation_date DATETIME DEFAULT CURRENT_TIMESTAMP
+    creation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    session_token TEXT UNIQUE NOT NULL,
+    expiration_date DATETIME
 );
 
 CREATE TABLE PostTable (
