@@ -1,9 +1,20 @@
 package handlers
 
-import "net/http"
+import (
+	"net/http"
 
-func Routes() {
-	fs := http.FileServer(http.Dir("assets"))
-	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
-	http.HandleFunc("/", HandleHomePage)
+	"forum/internal/models"
+)
+
+type WebApp struct {
+	Post *models.PostModel
+}
+
+func (WebForum *WebApp) Routes() http.Handler {
+	forum := http.NewServeMux()
+
+	fileServer := http.FileServer(http.Dir("./assets"))
+	forum.Handle("GET /assets/", http.StripPrefix("/assets/", fileServer))
+	forum.HandleFunc("GET /", WebForum.HandleHomePage)
+	return forum
 }

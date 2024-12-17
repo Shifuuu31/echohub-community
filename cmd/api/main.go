@@ -3,19 +3,33 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"forum/cmd/web/handlers"
-	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"net/http"
+
+	"forum/cmd/web/handlers"
+	"forum/internal/models"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
-	db, err := sql.Open("sqlite3", "./internal/database/forum.db")
+	var webForum handlers.WebApp
+	db, err := sql.Open("sqlite3", "./internal/database/forum.sqlite")
 	if err != nil {
 		log.Fatalln(err)
 	}
-	handlers.Routes()
+
+	webForum.Post = &models.PostModel{}
+	webForum.Post.DB = db
+
+	server := http.Server{
+		Addr:    ":8080",
+		Handler: webForum.Routes(),
+	}
 
 	fmt.Println("listening in port : http://localhost:8080")
-	http.ListenAndServe(":8080", nil)
+
+	if err := server.ListenAndServe(); err != nil {
+		log.Fatalln(err)
+	}
 }

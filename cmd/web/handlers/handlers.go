@@ -5,28 +5,22 @@ import (
 	"text/template"
 )
 
-func HandleHomePage(w http.ResponseWriter, r *http.Request) {
-
-	is_login := false
-	var HomePage *template.Template
-	var err error
-
-	if is_login {
-		HomePage, err = template.ParseFiles("cmd/web/templates/home.html")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-	} else {
-		HomePage, err = template.ParseFiles("cmd/web/templates/home2.html")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+func (webForum *WebApp) HandleHomePage(w http.ResponseWriter, r *http.Request) {
+	HomePage, err := template.ParseFiles("cmd/web/templates/home.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	ErrorPage, err := template.ParseFiles("cmd/web/templates/404.html")
 	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	posts, err := webForum.Post.GetPosts()
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -37,8 +31,12 @@ func HandleHomePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if r.Method != http.MethodGet {
+		http.Error(w, "method not allowed ", http.StatusMethodNotAllowed)
+	}
+
 	w.WriteHeader(http.StatusOK)
-	err = HomePage.Execute(w, nil)
+	err = HomePage.Execute(w, posts)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
