@@ -1,0 +1,271 @@
+/* All previous styles remain the same */
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+
+  /* Header */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 50px;
+    background-color: #fff;
+    box-shadow: 0 2px 2px rgba(148, 148, 148, 0.1);
+  }
+
+  .logo {
+    margin-left: 70px;
+    align-self: calc(50% - 12px);
+    font-size: 24px;
+    font-weight: 700;
+    color: #6b47dc;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 15px;
+  }
+
+  .button {
+    font: 'Roboto';
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 500;
+    color: #6b47dc;
+    background-color: #EAEAEA;
+    transition: all 0.3s;
+  }
+
+  .button:hover {
+    background-color: #6b47dc;
+    color: #fff;
+  }
+
+  .button.register {
+    font-style: normal;
+    background-color: #6b47dc;
+    color: #fff;
+  }
+
+  main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px;
+  }
+
+  .form-section {
+    max-width: 400px;
+    margin-left: 130px;
+  }
+
+  .form-section h1 {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700; 
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .form-section p {
+    margin-bottom: 30px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.05em;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .input-container {
+    position: relative; 
+    display: flex;
+    align-items: center; 
+    width: 100%;
+  }
+
+  .input-container input {
+    width: 100%; 
+    padding-right: 40px; 
+    padding: 12px 15px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+  }
+
+  .input-container .input-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%); 
+    width: 20px; 
+    height: 20px;
+    pointer-events: none; 
+  }
+
+  .form .error {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 450; 
+    font-size: 12px;
+    color: #e74c3c;
+    margin-left: 10px;
+    margin-top: 5px;
+  }
+
+  .form button {
+    padding: 12px;
+    border: none;
+    border-radius: 20px;
+    background-color: #6b47dc;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .form button:hover {
+    background-color: #5433b9;
+  }
+
+  .illustration {
+    margin: auto;
+    top: 182px;
+  }
+
+  .illustration img {
+    margin-left: 20%;
+    width: 75%;
+  }
+
+  .icon {
+    width: 15px;
+    height: 15px;
+    margin-right: 7px;
+  }
+
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    header {
+      padding: 15px 30px;
+    }
+
+    .logo {
+      margin-left: 20px;
+    }
+
+    main {
+      padding: 30px;
+      gap: 20px;
+    }
+
+    .form-section {
+      margin-left: 40px;
+      max-width: 45%;
+    }
+
+    .illustration {
+      margin: 0;
+      width: 45%;
+    }
+
+    .illustration img {
+      margin-left: 0;
+      width: 100%;
+    }
+
+    .form-section h1 {
+      font-size: 26px;
+    }
+
+    .form-section p {
+      font-size: 16px;
+      line-height: 26px;
+    }
+
+    .input-container input {
+      padding: 10px 15px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    header {
+      padding: 10px 20px;
+    }
+
+    .logo {
+      margin-left: 0;
+    }
+
+    main {
+      padding: 20px;
+      flex-direction: column;
+    }
+
+    .form-section {
+      margin-left: 0;
+      max-width: 100%;
+      padding: 0 20px;
+    }
+
+    .illustration {
+      display: none;
+    }
+
+    .form-section h1 {
+      font-size: 24px;
+      text-align: center;
+    }
+
+    .form-section p {
+      font-size: 16px;
+      text-align: center;
+      justify-content: center;
+    }
+
+    .buttons {
+      gap: 10px;
+    }
+
+    .button {
+      padding: 8px 15px;
+      font-size: 14px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    header {
+      padding: 10px;
+    }
+
+    .logo img {
+      max-width: 120px;
+    }
+
+    .form-section {
+      padding: 0 15px;
+    }
+
+    .button {
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+
+    .icon {
+      width: 12px;
+      height: 12px;
+    }
+  }

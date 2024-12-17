@@ -7,12 +7,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="C:\Users\Rachid\Desktop\Forum\forum\static\styles\create_post.css">
+  <link rel="stylesheet" href="C:\Users\Rachid\Desktop\Forum\forum\static\styles\profile.css">
 </head>
 <body>
     <header>
@@ -51,56 +53,58 @@
       </header>
 
   <main>
-
-    <div class="create-post-container">
-        <div class="categories-section">
-          <div class="category-grid">
-            <div class="category-tag">Movies & Streaming</div>
-            <div class="category-tag">Music & Playlists</div>
-            <div class="category-tag">Gaming & E-Sports</div>
-            <div class="category-tag">Books & Reads</div>
-            <div class="category-tag">Tech Buzz</div>
-            <div class="category-tag">Gadgets & Gear Reviews</div>
-            <div class="category-tag">Digital Lifestyle</div>
-            <div class="category-tag">Travel Hacks</div>
-            <div class="category-tag">Health & Wellness</div>
-            <div class="category-tag">DIY Projects & Creatives</div>
-            <div class="category-tag">Skill Up</div>
-            <div class="category-tag">Career Hacks</div>
-            <div class="category-tag">Meet The Community</div>
-            <div class="category-tag">Life & Relationships Talk</div>
-            <div class="category-tag">Memes & LOLs</div>
-            <div class="category-tag">Global News</div>
+    <div class="profile-settings-container">
+        <div class="settings-header">
+          <h1>Profile Settings</h1>
+          <button class="close-button">&times;</button>
+        </div>
+        <div class="line-profile"><img src="C:\Users\Rachid\OneDrive\Desktop\Line 4.png" alt="line"  /> </div>
+        <div class="profile-info">
+          <img src="C:\Users\Rachid\Downloads\8beeb12877bd12d41c73b62b9c5b5442 (1).png" alt="Profile picture" id="pdp">
+          <div class="profile-text">
+            <div class="profile-name">asaadane</div>
+            <div class="profile-email">asaadane@gmail.com</div>
           </div>
-        </div>
-  
-        <div class="post-title-section">
-          <input type="text" class="post-title-input" placeholder="Post Title">
-        </div>
-  
-        <div class="post-content-section">
-          <textarea class="post-content-textarea" placeholder="Type your Something"></textarea>
-        </div>
-  
-        <div class="button-section">
+
+          <div class="button-section">
             <button class="post-button">
-                <img src="C:\Users\Rachid\OneDrive\Desktop\send.png" alt="Post" class="post-icon">
-                <span>Post</span>
+                <img src="C:\Users\Rachid\OneDrive\Desktop\image 5.png" alt="Post" class="post-icon">
+                <span>Update</span>
             </button>
         </div>
-      </div>
+        </div>
+  
+        <form class="settings-form">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="asaadane">
+          </div>
+  
+          <div class="form-group">
+            <label for="email">e-mail</label>
+            <input type="email" id="email" placeholder="asaadane@gmail.com">
+          </div>
+  
+          <div class="form-group">
+            <label for="language">Language</label>
+            <input type="text" id="language" placeholder="english (we're working on adding new languages)" disabled>
+          </div>
+  
+          <div class="form-group">
+            <label for="new-password">New Password</label>
+            <input type="password" id="new-password">
+          </div>
+  
+          <div class="form-group">
+            <label for="repeat-password">Repeat New Password</label>
+            <input type="password" id="repeat-password">
+          </div>
 
+        </form>
+      </div>
   </main>
   
   <script>
-
-document.querySelectorAll('.category-tag').forEach(tag => {
-      tag.addEventListener('click', () => {
-        tag.classList.toggle('selected');
-      });
-    });
-
-
     const profileTrigger = document.getElementById('profile-trigger');
     const dropdown = document.getElementById('profile-dropdown');
 

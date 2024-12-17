@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EchoHub Community</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="C:\Users\Rachid\Desktop\Forum\forum\static\styles\post_usermode.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+          <a href="file:///C:/Users/Rachid/Desktop/Forum/forum/static/templates/home.html">
+            <img src="C:\Users\Rachid\OneDrive\Desktop\echoHub Logo_SM 1.png">
+          </a>
+        </div>
+        <div class="buttons">
+          <div class="profile-container">
+            <img src="C:\Users\Rachid\Downloads\8beeb12877bd12d41c73b62b9c5b5442 (1).png" alt="Profile" class="profile-picture" id="profile-trigger">
+            <div class="dropdown-menu" id="profile-dropdown">
+              <div class="user-info-header">
+                <img src="C:\Users\Rachid\Downloads\8beeb12877bd12d41c73b62b9c5b5442 (1).png" alt="Profile">
+                <div class="infos">
+                    <div class="user-name">unkind</div>
+                    <div class="user-email">unkind@mail.com</div>
+                </div>
+              </div>
+              <a href="file:///C:/Users/Rachid/Desktop/Forum/forum/static/templates/profile.html" class="dropdown-item">
+                <img src="C:\Users\Rachid\OneDrive\Desktop\settings.png" alt="Settings" />
+                Profile Settings
+              </a>
+              <a class="dropdown-item">
+                <img src="C:\Users\Rachid\OneDrive\Desktop\dark mode.png" alt="Settings" />
+                Dark Mode
+                <span class="coming-soon">(coming soon)</span>
+              </a>
+              <a href="#" class="dropdown-item">
+                <img src="C:\Users\Rachid\OneDrive\Desktop\sign out.png" alt="Settings" />
+              Log Out
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+  <main>
+
+    <div class="create-post-container">
+        <div class="post">
+            <div class="user-info">
+              <img src="C:\Users\Rachid\Downloads\8beeb12877bd12d41c73b62b9c5b5442 (1).png" alt="User Avatar" class="avatar">
+              <div class="nick-time">
+                  <div class="nickname">Golangingya</div>
+                <p class="time">5 min ago</p>
+              </div>
+              <div class="three-dot-container">
+                <button class="three-dot-menu" onclick="toggleThreeDotMenu(this)">
+                    <img src="C:\Users\Rachid\OneDrive\Desktop\image 13.png" alt="More options" class="icon">
+                </button>
+                <div class="three-dot-dropdown">
+                    <a href="#" class="dropdown-item">
+                        <img src="C:\Users\Rachid\Downloads\create_3658773 (1).png" alt="Edit" />
+                        Edit Post
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <img src="C:\Users\Rachid\OneDrive\Desktop\delete.png" alt="Delete" />
+                        Delete Post
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <img src="C:\Users\Rachid\OneDrive\Desktop\settings.png" alt="Report" />
+                        Report Post
+                    </a>
+                </div>
+            </div>
+            </div>
+            <div class="Textblock">
+            <h2>How to patch KDE on FreeBSD?</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla.</p>
+            </div>
+            <div class="Submenu">
+              <div class="tags">
+                  <span>Dev & Code Talk</span>
+                  <span>AI & The Future</span>
+                  <span>Web & App Dev Trends</span>
+              </div>
+              <div class="actions">
+                  <button class="icon-btn" id="like-btn">
+                      <img src="C:\Users\Rachid\OneDrive\Desktop\image 9.png" alt="thumbs up" class="icon"> <span id="like-count">125</span>
+                    </button>
+                    <button class="icon-btn" id="dislike-btn">
+                      <img src="C:\Users\Rachid\OneDrive\Desktop\image 10.png" alt="thumbs down" class="icon"> <span id="dislike-count">15</span>
+                    </button>
+                    <button class="icon-btn" id="comment-btn">
+                      <img src="C:\Users\Rachid\OneDrive\Desktop\message-square.png" alt="comments" class="icon"> <span id="comment-count">65</span>
+                    </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="comm">Comments</div>
+          <div class="line-profile"><img src="C:\Users\Rachid\OneDrive\Desktop\Line 4.png" alt="line"  /> </div>
+        <div class="comments-section">
+            <div class="comment">
+                <div class="user-info">
+                  <img src="C:\Users\Rachid\Downloads\8beeb12877bd12d41c73b62b9c5b5442 (1).png" alt="User Avatar" class="avatar">
+                  <div class="nick-time">
+                      <div class="nickname">Golangingya</div>
+                    <p class="time">5 min ago</p>
+                  </div>
+                  <div class="three-dot-container">
+                    <div class="actions">
+                        <button class="icon-btn" id="like-btn">
+                            <img src="C:\Users\Rachid\OneDrive\Desktop\image 9.png" alt="thumbs up" class="icon"> <span id="like-count">125</span>
+                          </button>
+                          <button class="icon-btn" id="dislike-btn">
+                            <img src="C:\Users\Rachid\OneDrive\Desktop\image 10.png" alt="thumbs down" class="icon"> <span id="dislike-count">15</span>
+                          </button>
+                    </div>
+                    <div class="three-dot-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <img src="C:\Users\Rachid\Downloads\create_3658773 (1).png" alt="Edit" />
+                            Edit Post
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <img src="C:\Users\Rachid\OneDrive\Desktop\delete.png" alt="Delete" />
+                            Delete Post
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <img src="C:\Users\Rachid\OneDrive\Desktop\settings.png" alt="Report" />
+                            Report Post
+                        </a>
+                    </div>
+                </div>
+                </div>
+                <div class="Textblock">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla.</p>
+                </div>
+              </div>
+
+              <div class="comment">
+                <div class="user-info">
+                  <img src="C:\Users\Rachid\Downloads\8beeb12877bd12d41c73b62b9c5b5442 (1).png" alt="User Avatar" class="avatar">
+                  <div class="nick-time">
+                      <div class="nickname">Golangingya</div>
+                    <p class="time">5 min ago</p>
+                  </div>
+                  <div class="three-dot-container">
+                    <div class="actions">
+                        <button class="icon-btn" id="like-btn">
+                            <img src="C:\Users\Rachid\OneDrive\Desktop\image 9.png" alt="thumbs up" class="icon"> <span id="like-count">125</span>
+                          </button>
+                          <button class="icon-btn" id="dislike-btn">
+                            <img src="C:\Users\Rachid\OneDrive\Desktop\image 10.png" alt="thumbs down" class="icon"> <span id="dislike-count">15</span>
+                          </button>
+                    </div>
+                    <div class="three-dot-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <img src="C:\Users\Rachid\Downloads\create_3658773 (1).png" alt="Edit" />
+                            Edit Post
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <img src="C:\Users\Rachid\OneDrive\Desktop\delete.png" alt="Delete" />
+                            Delete Post
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <img src="C:\Users\Rachid\OneDrive\Desktop\settings.png" alt="Report" />
+                            Report Post
+                        </a>
+                    </div>
+                </div>
+                </div>
+                <div class="Textblock">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consequat aliquet maecenas ut sit nulla.</p>
+                </div>
+              </div>
+        </div>
+        <div class="floating-comment-box">
+            <img src="C:\Users\Rachid\Downloads\8beeb12877bd12d41c73b62b9c5b5442 (1).png" alt="User Avatar" class="comment-avatar">
+            <div class="comment-input-wrapper">
+              <input type="text" placeholder="Type a comment..." class="comment-input">
+              <button class="send-button">
+                <img src="C:\Users\Rachid\OneDrive\Desktop\send.png" alt="Send" class="send-icon">
+              </button>
+            </div>
+          </div>
+        </div>
+            
+  </main>
+  
+  <script>
+
+    
+function toggleThreeDotMenu(button) {
+    const dropdown = button.nextElementSibling;
+    // Close all other dropdowns first
+    const allDropdowns = document.querySelectorAll('.three-dot-dropdown');
+    allDropdowns.forEach(d => {
+        if (d !== dropdown) {
+            d.classList.remove('active');
+        }
+    });
+    
+    dropdown.classList.toggle('active');
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function closeDropdown(e) {
+        if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.remove('active');
+            document.removeEventListener('click', closeDropdown);
+        }
+    });
+
+    // Prevent the click from bubbling up
+    event.stopPropagation();
+}
+    const profileTrigger = document.getElementById('profile-trigger');
+    const dropdown = document.getElementById('profile-dropdown');
+
+    profileTrigger.addEventListener('click', () => {
+      dropdown.classList.toggle('active');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (event) => {
+      if (!profileTrigger.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>
