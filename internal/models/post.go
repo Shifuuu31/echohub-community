@@ -44,23 +44,11 @@ func (post *PostModel) GetPosts() ([]Post, error) {
 	return posts, nil
 }
 
-func (post *PostModel) GetUser(user_id int) (string, error) {
-	// var username string
-	// cmd := "SELECT id,username FROM UserTable CASE WHEN user_id == id ORDER BY id DESC"
-	// rowsDB, err := post.DB.Query(cmd)
-	// if err != nil {
-	// 	return "", err
-	// }
-	// err := rowsDB.Scan(&u.ID, &pst.User, &pst.Title, &pst.Post_content, &pst.Category_id, &pst.Creation_date)
-	// if err != nil {
-	// 	return nil, err
-	// }
+func (post *PostModel) CreatePost(title, content string, categorys []string) error {
+	cmd := "INSERT INTO postTable (title)"
 
-	// username = rowsDB
-	// err = rowsDB.Err()
-	// if err != nil {
-	// 	return "", err
-	// }
-
-	return "", nil
+	return nil
 }
+
+// func (post *PostModel) GetUser(user_id int) (string, error) {
+// }

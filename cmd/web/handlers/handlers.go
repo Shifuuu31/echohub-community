@@ -5,16 +5,15 @@ import (
 	"text/template"
 )
 
-func (webForum *WebApp) HandleHomePage(w http.ResponseWriter, r *http.Request) {
-	HomePage, err := template.ParseFiles("cmd/web/templates/home.html")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+var Template = template.Must(template.ParseGlob("./cmd/web/templates/*.html"))
 
-	ErrorPage, err := template.ParseFiles("cmd/web/templates/404.html")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		w.WriteHeader(http.StatusNotFound)
+		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
+			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
+			return
+		}
 		return
 	}
 
@@ -25,20 +24,30 @@ func (webForum *WebApp) HandleHomePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if r.URL.Path != "/" {
-		w.WriteHeader(http.StatusNotFound)
-		ErrorPage.Execute(w, nil)
-		return
-	}
-
 	if r.Method != http.MethodGet {
 		http.Error(w, "method not allowed ", http.StatusMethodNotAllowed)
 	}
+	if err := Template.ExecuteTemplate(w, "home2.html", posts); err != nil {
+		http.Error(w, "Error loading HomePage", http.StatusInternalServerError)
+		return
+	}
+}
 
-	w.WriteHeader(http.StatusOK)
-	err = HomePage.Execute(w, posts)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+func (webForm *WebApp) CreatePostPage(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/create-post" {
+		w.WriteHeader(http.StatusNotFound)
+		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
+			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
+			return
+		}
+		return
+	}
+
+	// if r.Method != http.MethodPost {
+	// 	http.Error(w, "method not allowed ", http.StatusMethodNotAllowed)
+	// }
+	if err := Template.ExecuteTemplate(w, "create_post.html", nil); err != nil {
+		http.Error(w, "Error loading HomePage", http.StatusInternalServerError)
 		return
 	}
 }
