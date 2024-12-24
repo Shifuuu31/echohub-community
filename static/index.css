@@ -1,0 +1,73 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    transition: 0.5s;
+}
+
+body {
+    background-color: var(--bg-color);
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+nav li button {
+    background-color: aqua;
+    width: 100px;
+    margin: 0 25px;
+}
+
+nav a {
+    background-color: crimson;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.wraper {
+    margin: auto;
+    width: 750px;
+}
+
+.filter-bar {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: chartreuse;
+    list-style-type: none;
+    margin-top: 50px;
+}
+
+.filter-bar li a {
+    background-color: cadetblue;
+    padding: 5px 25px;
+    margin: 0 10px;
+    border-radius: 30px;
+}
+
+.post {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: wheat;
+    border-radius: 30px;
+    margin: 25px 0;
+}
+
+.username-picture-time {
+    display: flex;
+    align-items: center;
+    background-color: turquoise;
+    border-radius: 30px;
+}
+
+.post img {
+    width: 50px;
+    border-radius: 512px;
+    border: 3px solid var(--primary-color);
+    margin: 25px;
+}
+
+
