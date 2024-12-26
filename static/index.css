@@ -1,8 +1,16 @@
 * {
+    font-family: "Ubuntu", serif;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     transition: 0.5s;
+}
+
+
+
+li, a {
+    list-style: none;
+    text-decoration: none;
 }
 
 body {
@@ -12,17 +20,46 @@ body {
 nav {
     display: flex;
     align-items: center;
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    height: 84px;
 }
 
-nav li button {
-    background-color: aqua;
-    width: 100px;
-    margin: 0 25px;
+.logo {
+   font-size: 30px; 
+   padding: 0;
+}
+
+.logo span {
+    font-size: 16px;
+    text-align: center;
+    padding: 0;
+}
+
+.register {
+    width: 113px;
+    height: 38px;
+    margin: 0 15px;
+    color: white;
+    font-weight: 500;
+    background-color: var(--primary-color);
+    border: transparent;
+    border-radius: 512px;
+}
+
+.login {
+    width: 72px;
+    height: 38px;
+    margin: 0 20px;
+    color: var(--primary-color);
+    font-weight: 500;
+    background-color: var(--border-color);
+    border: transparent;
+    border-radius: 512px;
 }
 
 nav a {
-    background-color: crimson;
-    text-align: center;
+    padding-left: 45px;
     flex-grow: 1;
 }
 
@@ -36,7 +73,6 @@ nav a {
     justify-content: space-evenly;
     align-items: center;
     background-color: chartreuse;
-    list-style-type: none;
     margin-top: 50px;
 }
 
@@ -56,13 +92,6 @@ nav a {
     margin: 25px 0;
 }
 
-.username-picture-time {
-    display: flex;
-    align-items: center;
-    background-color: turquoise;
-    border-radius: 30px;
-}
-
 .post img {
     width: 50px;
     border-radius: 512px;
@@ -70,4 +99,17 @@ nav a {
     margin: 25px;
 }
 
+.post-info-1 {
+    display: flex;
+    align-items: center;
+}
 
+.post-info-2 {
+    margin: 25px;
+}
+
+.post-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
