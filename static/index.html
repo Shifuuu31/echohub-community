@@ -6,37 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="style.global.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="style.global.css">
-    <title>Forum</title>
+    <title>echoHub</title>
 </head>
 
 <body>
     <nav>
         <a href="/home" class="logo">
-            <h1>echoHub <br> <span>Community</span></h1>
+            <h1>echoHub</span></h1>
         </a>
-        <li><button class="register">Register</button></li>
-        <li><button class="login">Login</button></li>
+        <button class="register"><i class="fa-regular fa-user"></i> Register</button>
+        <button class="login">login</button>
     </nav>
     <div class="wraper">
         <div class="filter-bar">
-            <li><a href="" class="selected">All</a></li>
-            <li><a href="">Gaming</a></li>
-            <li><a href="">Health</a></li>
-            <li><a href="">Fashion</a></li>
-            <li><a href="">Sports</a></li>
+            <li><button class="selected"><i class="fa-solid fa-border-all"></i> All</button></li>
+            <li><button><i class="fa fa-gamepad"></i> Gaming</button></li>
+            <li><button><i class="fa-solid fa-video"></i> Video</button></li>
+            <li><button><i class="fa-solid fa-music"></i> Music</button></li>
+            <li><button><i class="fa-solid fa-book"></i> Books</button></li>
+            <li><button><i class="fa-solid fa-play"></i> Gaming</button></li>
+            <li><button><i class="fa-solid fa-fire"></i> Top</button></li>
         </div>
         <div class="post">
             <div class="post-info-1">
-                <img src="user1.jpeg">
-                <h3>Username <br> Time</h3>
+                <img src="Ava.png">
+                <h3>Username <br> <span>Time</span></h3>
             </div>
             <div class="post-info-2">
-                <h2>Post Title</h2>
+                <h3>Post Title</h3>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur accusantium
                     quibusdam debitis? Obcaecati corrupti quasi quae modi.</p>
             </div>
@@ -44,9 +47,9 @@
                 <li><a href="">Health</a></li>
                 <li><a href="">Fashion</a></li>
                 <li><a href="">Daily</a></li>
-                <button>Like</button>
-                <button>Dislike</button>
-                <button>Comment</button>
+                <button><i class="fa-regular fa-thumbs-up"></i> 12</button>
+                <button><i class="fa-regular fa-thumbs-down"></i> 4123</button>
+                <button><i class="fa-regular fa-comment"></i> 4</button>
             </div>
         </div>
     </div>
