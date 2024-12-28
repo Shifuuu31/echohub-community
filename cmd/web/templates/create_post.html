@@ -53,34 +53,36 @@
 
   <main>
 
-    <div class="create-post-container">
+    <form class="create-post-container" action="/post/create" method="POST">
       <div class="categories-section">
         <div class="category-grid">
-          <div class="category-tag">Movies & Streaming</div>
-          <div class="category-tag">Music & Playlists</div>
-          <div class="category-tag">Gaming & E-Sports</div>
-          <div class="category-tag">Books & Reads</div>
-          <div class="category-tag">Tech Buzz</div>
-          <div class="category-tag">Gadgets & Gear Reviews</div>
-          <div class="category-tag">Digital Lifestyle</div>
-          <div class="category-tag">Travel Hacks</div>
-          <div class="category-tag">Health & Wellness</div>
-          <div class="category-tag">DIY Projects & Creatives</div>
-          <div class="category-tag">Skill Up</div>
-          <div class="category-tag">Career Hacks</div>
-          <div class="category-tag">Meet The Community</div>
-          <div class="category-tag">Life & Relationships Talk</div>
-          <div class="category-tag">Memes & LOLs</div>
-          <div class="category-tag">Global News</div>
+          <div class="category-tag" value="Movies & Streaming">Movies & Streaming</div>
+          <div class="category-tag" value="Music & Playlists">Music & Playlists</div>
+          <div class="category-tag" value="Gaming & E-Sports">Gaming & E-Sports</div>
+          <div class="category-tag" value="Books & Reads">Books & Reads</div>
+          <div class="category-tag" value="Books & Reads">Tech Buzz</div>
+          <div class="category-tag" value="Gadgets & Gear Reviews">Gadgets & Gear Reviews</div>
+          <div class="category-tag" value="Digital Lifestyle">Digital Lifestyle</div>
+          <div class="category-tag" value="Digital Lifestyle">Travel Hacks</div>
+          <div class="category-tag" value="Health & Wellness">Health & Wellness</div>
+          <div class="category-tag" value="DIY Projects & Creatives">DIY Projects & Creatives</div>
+          <div class="category-tag" value="Skill Up">Skill Up</div>
+          <div class="category-tag" value="Career Hacks">Career Hacks</div>
+          <div class="category-tag" value="Meet The Community">Meet The Community</div>
+          <div class="category-tag" value="Life & Relationships Talk">Life & Relationships Talk</div>
+          <div class="category-tag" value="Memes & LOLs">Memes & LOLs</div>
+          <div class="category-tag" value="Global News">Global News</div>
         </div>
       </div>
 
+      <div class="categorys"></div>
+
       <div class="post-title-section">
-        <input type="text" class="post-title-input" placeholder="Post Title">
+        <input name="title" type="text" class="post-title-input" placeholder="Post Title">
       </div>
 
       <div class="post-content-section">
-        <textarea class="post-content-textarea" placeholder="Type your Something"></textarea>
+        <textarea name="content" class="post-content-textarea" placeholder="Type your Something"></textarea>
       </div>
 
       <div class="button-section">
@@ -89,18 +91,27 @@
           <span>Post</span>
         </button>
       </div>
-    </div>
+    </form>
 
   </main>
 
   <script>
-
     document.querySelectorAll('.category-tag').forEach(tag => {
       tag.addEventListener('click', () => {
-        tag.classList.toggle('selected');
+        const selectedTags = document.querySelectorAll('.category-tag.selected');
+        if (tag.classList.contains('selected')) {
+          tag.classList.remove('selected');
+        } else if (selectedTags.length < 3) {
+          tag.classList.add('selected');
+        }
+
+        const selectedValues = Array.from(document.querySelectorAll('.category-tag.selected')).map(
+          selectedTag => selectedTag.getAttribute('value')
+        );
+        document.getElementsByClassName('categorys').value = selectedTags;
+        document.getElementsByClassName('categorys').innerHTML = selectedTags;
       });
     });
-
 
     const profileTrigger = document.getElementById('profile-trigger');
     const dropdown = document.getElementById('profile-dropdown');

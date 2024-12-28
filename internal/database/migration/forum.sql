@@ -38,6 +38,8 @@ CREATE TABLE IF NOT EXISTS Likes_Dislikes (
 CREATE TABLE IF NOT EXISTS Categories (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     category_name VARCHAR(255) NOT NULL UNIQUE
+    post_id INTEGER NOT NULL,
+    FOREIGN KEY(post_id) REFERENCES PostTable(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS SessionsUsers (
@@ -47,78 +49,3 @@ CREATE TABLE IF NOT EXISTS SessionsUsers (
     expiration_date DATETIME,
     FOREIGN KEY(user_id) REFERENCES UserTable(id) ON DELETE CASCADE
 );
-
-INSERT
-    OR REPLACE INTO Categories (category_name)
-VALUES
-    ('Movies & Streaming'),
-    ('Music & Playlists'),
-    ('Gaming & Esports'),
-    ('Books & Reads'),
-    ('Tech Buzz'),
-    ('Gadgets & Gear Reviews'),
-    ('Digital Lifestyle'),
-    ('Travel Hacks'),
-    ('Foodie Finds'),
-    ('Health & Wellness'),
-    ('DIY Projects & Creatives'),
-    ('Skill Up'),
-    ('Career Hacks'),
-    ('AMA (Ask Me Anything)'),
-    ('Meet the Community'),
-    ('Life & Relationships Talk'),
-    ('Memes & LOLs'),
-    ('Global News'),
-    ('Local Happenings'),
-    ('Hot Takes & Polls'),
-    ('Community Challenges'),
-    ('Dev & Code Talk'),
-    ('AI & The Future'),
-    ('Machine Learning Insights'),
-    ('Web & App Dev Trends'),
-    ('Data Science & Analytics'),
-    ('Cybersecurity & Privacy Talk');
-
--- Insert a post by user 1 in category 2
-INSERT INTO
-    PostTable (user_id, title, post_content, category_id)
-VALUES
-    (
-        1,
-        'First Post Title',
-        'This is the content of the first post.',
-        2
-    );
-
--- Insert a post by user 2 in category 3
-INSERT INTO
-    PostTable (user_id, title, post_content, category_id)
-VALUES
-    (
-        2,
-        'Second Post Title',
-        'This is the content of the second post.',
-        3
-    );
-
--- Insert a post by user 1 in category 1
-INSERT INTO
-    PostTable (user_id, title, post_content, category_id)
-VALUES
-    (
-        1,
-        'Third Post Title',
-        'This is the content of the third post.',
-        1
-    );
-
--- Insert a post by user 3 in category 2
-INSERT INTO
-    PostTable (user_id, title, post_content, category_id)
-VALUES
-    (
-        3,
-        'Fourth Post Title',
-        'This is the content of the fourth post.',
-        2
-    );

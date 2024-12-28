@@ -6,12 +6,18 @@ import (
 )
 
 type Post struct {
+	ID            int       `json:id`
+	User_id       int       `json:user_id`
+	Title         string    `json:title`
+	Post_content  string    `json:post_content`
+	Category_id   int       `json:category_id`
+	Creation_date time.Time `json:creation_date`
+}
+
+type Categories struct {
 	ID            int
-	User_id       int
-	Title         string
-	Post_content  string
-	Category_id   int
-	Creation_date time.Time
+	Category_name string
+	Post_id       int
 }
 
 type PostModel struct {
@@ -26,6 +32,7 @@ func (post *PostModel) GetPosts() ([]Post, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer rowsDB.Close()
 
 	for rowsDB.Next() {
 		pst := Post{}
@@ -44,11 +51,45 @@ func (post *PostModel) GetPosts() ([]Post, error) {
 	return posts, nil
 }
 
-func (post *PostModel) CreatePost(title, content string, categorys []string) error {
-	cmd := "INSERT INTO postTable (title)"
+// categorys []string
+func (post *PostModel) CreatePost(title, content string) error {
+	query := "INSERT INTO postTable (title,user_id , post_content, category_id) VALUES (?, ?, ?, ?)"
+	cmd, err := post.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer cmd.Close()
+
+	_, err = cmd.Exec(title, 1, content, 4)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
 
-// func (post *PostModel) GetUser(user_id int) (string, error) {
-// }
+func (post *PostModel) GetIdsCategorys(categorys []string) ([]int, error) {
+	query := "SELECT id,category_name FROM Categories"
+	cmd, err := post.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer cmd.Close()
+
+	category := Categories{}
+	ids := []int{}
+	for cmd.Next() {
+		err = cmd.Scan(&category.ID, &category.Category_name)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	for i := 0; i < len(categorys); i++ {
+		if categorys[i] == category.Category_name {
+			ids = append(ids, category.ID)
+		}
+	}
+
+	return ids, nil
+}

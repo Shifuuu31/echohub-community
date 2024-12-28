@@ -1,8 +1,10 @@
 package handlers
 
 import (
+	"html/template"
 	"net/http"
-	"text/template"
+
+	"forum/internal/models"
 )
 
 var Template = template.Must(template.ParseGlob("./cmd/web/templates/*.html"))
@@ -24,9 +26,6 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if r.Method != http.MethodGet {
-		http.Error(w, "method not allowed ", http.StatusMethodNotAllowed)
-	}
 	if err := Template.ExecuteTemplate(w, "home2.html", posts); err != nil {
 		http.Error(w, "Error loading HomePage", http.StatusInternalServerError)
 		return
@@ -34,7 +33,23 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 }
 
 func (webForm *WebApp) CreatePostPage(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/create-post" {
+	if r.URL.Path != "/post" {
+		w.WriteHeader(http.StatusNotFound)
+		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
+			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
+			return
+		}
+		return
+	}
+
+	if err := Template.ExecuteTemplate(w, "create_post.html", nil); err != nil {
+		http.Error(w, "Error loading HomePage", http.StatusInternalServerError)
+		return
+	}
+}
+
+func (webForm *WebApp) NewPostCreation(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/post/create" {
 		w.WriteHeader(http.StatusNotFound)
 		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
 			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
@@ -44,10 +59,27 @@ func (webForm *WebApp) CreatePostPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// if r.Method != http.MethodPost {
-	// 	http.Error(w, "method not allowed ", http.StatusMethodNotAllowed)
+	// 	w.WriteHeader(http.StatusMethodNotAllowed)
+	// 	w.Write([]byte("405 - Method Not Allowed"))
+	// 	return
 	// }
-	if err := Template.ExecuteTemplate(w, "create_post.html", nil); err != nil {
-		http.Error(w, "Error loading HomePage", http.StatusInternalServerError)
+
+	// ids,err := webForm.Post.GetIdsCategorys(r.FormValue("categorys"))
+	// if err!=nil{
+		
+	// }
+
+	New := models.Post{
+		Title:        r.FormValue("title"),
+		Post_content: r.FormValue("content"),
+		// Category_id: 
+	}
+
+	err := webForm.Post.CreatePost(New.Title, New.Post_content)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

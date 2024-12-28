@@ -785,7 +785,7 @@ body {
     margin-bottom: 5px;
     color: #808080;
     font-family: 'Roboto';
-    font-style: normal;
+    font-style:normal;
     font-weight: 400;
     font-size: 12px;
     line-height: 15px;
@@ -801,7 +801,6 @@ body {
     border-radius: 20px;
     cursor: pointer;
     transition: background-color 0.3s;
-
   }
 
   .category-tag.selected {
