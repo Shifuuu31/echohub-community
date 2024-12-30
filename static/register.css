@@ -1,0 +1,162 @@
+/* From Uiverse.io by ammarsaa */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    border-radius: 20px;
+    position: relative;
+    color: #fff;
+    min-width: 280px;
+    max-width: 420px;
+    margin: 75px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+img {
+    margin: 75px;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    color: var(--primary-color);
+}
+
+.title::before {
+    width: 18px;
+    height: 18px;
+}
+
+.title::after {
+    width: 18px;
+    height: 18px;
+    animation: pulse 1s linear infinite;
+}
+
+.title::before,
+.title::after {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    left: 0px;
+    background-color: var(--primary-color);
+}
+
+.message,
+.signin {
+    padding: 5px;
+    font-size: 18px;
+    color: black;
+}
+
+.signin {
+    text-align: center;
+}
+
+.signin a:hover {
+    text-decoration: underline var(--primary-color);
+}
+
+.signin a {
+    color: var(--primary-color);
+}
+
+.form label {
+    position: relative;
+}
+
+.form label .input {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 512px;
+    color: var(--primary-color);
+    width: 100%;
+    padding: 20px 05px 05px 10px;
+    outline: 0;
+}
+
+.form label .input+span {
+    color: var(--border-color);
+    position: absolute;
+    left: 10px;
+    top: 0px;
+    font-size: 0.9em;
+    cursor: text;
+    transition: 0.3s ease;
+}
+
+.form label .input:placeholder-shown+span {
+    top: 12.5px;
+    font-size: 0.9em;
+}
+
+.form label .input:focus+span,
+.form label .input:valid+span {
+    color: var(--primary-color);
+    top: 0px;
+    font-size: 0.7em;
+    font-weight: 600;
+}
+
+.input {
+    font-size: medium;
+}
+
+.submit {
+    border: none;
+    outline: none;
+    padding: 10px;
+    border-radius: 512px;
+    margin-top: 35px;
+    color: #fff;
+    font-size: 16px;
+    transform: .3s ease;
+    background-color: var(--primary-color);
+}
+
+.submit:hover {
+    background-color: var(--secondary-color);
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(0.9);
+        opacity: 1;
+    }
+
+    to {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+}
+
+@media screen and (max-width: 1660px) {
+    img {
+        width: 800px;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    img {
+        width: 500px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    img {
+        display: none;
+    }
+}

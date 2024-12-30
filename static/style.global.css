@@ -3,5 +3,80 @@
     --secondary-color: #d7a7fe;
     --bg-color: #fafafa;
     --secondary-bg-color: #e5e5e5;
-    --border-color: #DDDDDD;
+    --border-color: #d4d4d4;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    transition: 0.5s;
+    font-family: "Ubuntu", serif;
+}
+
+nav h1 {
+    font-family: "League Spartan", serif;
+    font-size: 56px;
+}
+
+li,
+a {
+    list-style: none;
+    text-decoration: none;
+}
+
+a,
+button {
+    cursor: pointer;
+}
+
+body {
+    background-color: var(--bg-color);
+}
+
+h5 {
+    color: #808080;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-bottom: 1px solid var(--border-color);
+    height: 84px;
+}
+
+.logo {
+    padding-left: 45px;
+    flex-grow: 1;
+    color: var(--primary-color);
+}
+
+.register {
+    width: 113px;
+    height: 38px;
+    margin: 0 15px;
+    color: white;
+    font-weight: 600;
+    background-color: var(--primary-color);
+    border: transparent;
+    border-radius: 512px;
+}
+
+.login {
+    width: 72px;
+    height: 38px;
+    margin: 0 20px;
+    color: var(--primary-color);
+    font-weight: 600;
+    background-color: var(--border-color);
+    border: transparent;
+    border-radius: 512px;
+}
+
+
+.wraper {
+    margin: auto;
+    max-width: 725px;
+    min-width: 400px;
 }
