@@ -1,5 +1,5 @@
 :root {
-    --primary-color: #794AE5;
+    --primary-color: #8552ff;
     --hover-color: #D7A7FE;
     --secondary-color: #808080;
     --bg-color: #FAFAFA;
@@ -29,6 +29,10 @@ a {
 a,
 button {
     cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--hover-color);
 }
 
 body {
@@ -75,6 +79,10 @@ nav {
     border-radius: 512px;
 }
 
+.login:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
 
 .wraper {
     margin: auto;

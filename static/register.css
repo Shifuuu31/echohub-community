@@ -128,7 +128,7 @@ img {
 }
 
 .submit:hover {
-    background-color: var(--secondary-color);
+    background-color: var(--hover-color);
 }
 
 @keyframes pulse {
@@ -151,11 +151,11 @@ img {
 
 @media screen and (max-width: 1400px) {
     img {
-        width: 500px;
+        width: 650px;
     }
 }
 
-@media screen and (max-width: 992px) {
+@media screen and (max-width: 1200px) {
     img {
         display: none;
     }
