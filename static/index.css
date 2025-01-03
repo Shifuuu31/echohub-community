@@ -1,10 +1,4 @@
-.filter-bar {
-    display: flex;
-    margin: 25px 0;
-    overflow: hidden;
-}
-
-.filter-bar li button {
+/* .filter-bar li button {
     font-size: 18px;
     padding: 5px 20px;
     margin: 0 10px;
@@ -15,22 +9,60 @@
     display: flex;
     align-items: center;
     gap: 8px;
-}
+} */
 
-.filter-bar .selected {
+/* .filter-bar .selected {
     background-color: var(--primary-color);
     color: white;
+} */
+
+ul.categories {
+    display: flex;
+    justify-content: start;
+    overflow-x: hidden;
+    margin: 25px 0;
 }
 
-.post {
-    background-color: white;
+.category input[type=checkbox]+label {
+    background-color: var(--secondary-bg-color);
+    color: var(--secondary-color);
+    font-size: 18px;
+    border: transparent;
+    padding: 5px 20px;
+    border-radius: 512px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.category input[type=checkbox] {
+    display: none;
+}
+
+.category input[type=checkbox]:checked+label {
+    color: white;
+    background-color: var(--primary-color);
+}
+
+li.category label {
     display: flex;
+    justify-content: space-around;
+    align-items: end;
+    margin: 5px;
+}
+
+li.category {
+    list-style: none;
+}
+
+
+.post {
+    display: flex;
+    background-color: white;
     justify-content: center;
     flex-direction: column;
     border-radius: 30px;
     box-shadow: 0px 0px 5px 0px var(--border-color);
-    margin: 25px auto;
-    height: 225px;
+    padding: 25px;
 }
 
 .post-info-1 {
@@ -80,13 +112,32 @@
 .post-actions button {
     flex-grow: 1;
     font-size: 16px;
+    font-weight: 500;
     color: var(--secondary-color);
     background-color: transparent;
     border: transparent;
 }
 
-@media only screen and (max-width: 750px) {
+.post-actions .on-click:focus {
+    color: var(--primary-color);
+}
+
+@media (max-width: 610px) {
     .post {
-        width: 400px;
+        padding: 10px 10px;
+        border-radius: 15px;
+    }
+
+    .post-actions a {
+        display: none;
+    }
+
+    .post-actions button {
+        padding: 14px;
+    }
+
+    .category input[type=checkbox]+label {
+        padding: 5px 12px;
+        font-size: 14px;
     }
 }

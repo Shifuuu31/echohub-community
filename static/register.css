@@ -59,7 +59,7 @@ img {
 .signin {
     padding: 5px;
     font-size: 18px;
-    color: black;
+    color: var(--secondary-color);
 }
 
 .signin {
@@ -82,32 +82,38 @@ img {
     background-color: white;
     border: 1px solid var(--border-color);
     border-radius: 512px;
-    color: var(--primary-color);
+    font-weight: 400;
+    color: black;
     width: 100%;
     padding: 20px 05px 05px 10px;
     outline: 0;
 }
 
 .form label .input+span {
-    color: var(--border-color);
+    color: var(--secondary-color);
     position: absolute;
     left: 10px;
-    top: 0px;
-    font-size: 0.9em;
+    top: 5px;
+    font-size: 15px;
     cursor: text;
     transition: 0.3s ease;
 }
 
 .form label .input:placeholder-shown+span {
     top: 12.5px;
-    font-size: 0.9em;
 }
 
-.form label .input:focus+span,
-.form label .input:valid+span {
+.form label .input:focus+span {
     color: var(--primary-color);
-    top: 0px;
-    font-size: 0.7em;
+    top: 5px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form label .input:valid+span {
+    color: forestgreen;
+    font-size: 13px;
+    top: 5px;
     font-weight: 600;
 }
 

@@ -1,7 +1,7 @@
 :root {
     --primary-color: #8552ff;
-    --hover-color: #D7A7FE;
     --secondary-color: #808080;
+    --hover-color: #D7A7FE;
     --bg-color: #FAFAFA;
     --secondary-bg-color: #EAEAEA;
     --border-color: #DDDDDD;
@@ -31,9 +31,6 @@ button {
     cursor: pointer;
 }
 
-button:hover {
-    background-color: var(--hover-color);
-}
 
 body {
     background-color: var(--bg-color);
@@ -46,11 +43,11 @@ h5 {
 nav {
     display: flex;
     align-items: center;
-    background-color: #fff;
+    background-color: white;
     border-bottom: 1px solid var(--border-color);
     height: 84px;
 }
-
+  
 .logo {
     padding-left: 45px;
     flex-grow: 1;
@@ -68,10 +65,14 @@ nav {
     border-radius: 512px;
 }
 
+.register:hover {
+    background-color: var(--hover-color);
+}
+
 .login {
     width: 72px;
     height: 38px;
-    margin: 0 20px;
+    margin: 0 45px 0 0;
     color: var(--primary-color);
     font-weight: 600;
     background-color: var(--border-color);
@@ -86,6 +87,26 @@ nav {
 
 .wraper {
     margin: auto;
-    max-width: 725px;
-    min-width: 400px;
+    width: 850px;
+}
+
+@media (max-width:900px) {
+    .wraper {
+        width: 600px;
+    }
+}
+
+@media (max-width:610px) {
+    .wraper {
+        width: 400px;
+    }
+}
+
+@media (max-width:370px) {
+    .login, .register {
+        display: none;
+    }
+    .wraper {
+        width: 230px;
+    }
 }
