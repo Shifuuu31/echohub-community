@@ -11,6 +11,7 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    user-select: none;
     transition: 0.5s;
     font-family: "Ubuntu", serif;
 }
@@ -47,12 +48,14 @@ nav {
     border-bottom: 1px solid var(--border-color);
     height: 84px;
 }
-  
+
 .logo {
     padding-left: 45px;
     flex-grow: 1;
     color: var(--primary-color);
 }
+
+/* js needed :: hide buttons when window size is small + change login and register buttons to profile-picture and create buttons*/
 
 .register {
     width: 113px;
@@ -85,28 +88,54 @@ nav {
     color: white;
 }
 
+.create {
+    width: 113px;
+    height: 38px;
+    margin: 0 15px;
+    color: white;
+    font-weight: 600;
+    background-color: var(--primary-color);
+    border: transparent;
+    border-radius: 512px;
+}
+
+.profile-picture {
+    width: 55px;
+    height: 55px;
+    border-radius: 512px;
+    border: 3px solid var(--primary-color);
+}
+
+/* js needed*/
+
 .wraper {
-    margin: auto;
+    margin: 50px auto;
     width: 850px;
 }
 
-@media (max-width:900px) {
-    .wraper {
-        width: 600px;
+@media (max-width:720px) {
+
+    .login,
+    .register,
+    .create,
+    .profile-picture {
+        display: none;
     }
 }
+
+.wraper {
+    width: 600px;
+}
+
 
 @media (max-width:610px) {
     .wraper {
-        width: 400px;
+        width: 390px;
     }
 }
 
-@media (max-width:370px) {
-    .login, .register {
-        display: none;
-    }
+@media (max-width:430px) {
     .wraper {
-        width: 230px;
+        width: 260px;
     }
 }

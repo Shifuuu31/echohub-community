@@ -1,9 +1,4 @@
-* {
-  user-select: none;
-}
-
-.container {
-  width: 800px;
+.wraper-extra {
   margin: 50px auto;
   padding: 50px;
   border-radius: 30px;
@@ -90,4 +85,44 @@ li.category {
   background-color: var(--primary-color);
   border: transparent;
   border-radius: 512px;
+}
+
+@media (max-width:900px) {
+  .wraper {
+    width: 600px;
+  }
+
+  .post-inputs input[type="text"],
+  .post-inputs textarea {
+    width: 503px;
+  }
+}
+
+@media (max-width:610px) {
+
+  .post-inputs input[type="text"],
+  .post-inputs textarea {
+    width: 250px;
+  }
+
+  .category input[type="checkbox"]+label {
+    font-size: 15px;
+    padding: 5px 13px;
+  }
+}
+
+@media (max-width:430px) {
+  .wraper {
+    width: 260px;
+  }
+
+  .post-inputs input[type="text"],
+  .post-inputs textarea {
+    width: 175px;
+  }
+
+  .category input[type="checkbox"]+label {
+    font-size: 13px;
+    padding: 3px 10px;
+  }
 }
