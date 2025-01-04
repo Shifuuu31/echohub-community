@@ -42,7 +42,14 @@ func (webForm *WebApp) CreatePostPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := Template.ExecuteTemplate(w, "create_post.html", nil); err != nil {
+	categories, err := webForm.Post.GetCategorys()
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if err := Template.ExecuteTemplate(w, "create_post.html", categories); err != nil {
 		http.Error(w, "Error loading HomePage", http.StatusInternalServerError)
 		return
 	}
@@ -58,22 +65,17 @@ func (webForm *WebApp) NewPostCreation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// if r.Method != http.MethodPost {
-	// 	w.WriteHeader(http.StatusMethodNotAllowed)
-	// 	w.Write([]byte("405 - Method Not Allowed"))
-	// 	return
-	// }
-
-	// ids,err := webForm.Post.GetIdsCategorys(r.FormValue("categorys"))
-	// if err!=nil{
-		
-	// }
-
 	New := models.Post{
 		Title:        r.FormValue("title"),
 		Post_content: r.FormValue("content"),
-		// Category_id: 
 	}
+	// categories := r.Form["categorys"]
+
+	// ids, err := webForm.Post.GetIdsCategories(categories)
+	// if err != nil {
+	// http.Error(w, err.Error(), http.StatusInternalServerError)
+	// return
+	// }
 
 	err := webForm.Post.CreatePost(New.Title, New.Post_content)
 	if err != nil {

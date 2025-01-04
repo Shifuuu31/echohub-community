@@ -108,9 +108,9 @@
         </div>
         <div class="Submenu">
           <div class="tags">
-            <span>Dev & Code Talk</span>
-            <span>AI & The Future</span>
-            <span>Web & App Dev Trends</span>
+            {{range .Categories}}
+            <span>{{.}}</span>
+            {{end}}
           </div>
           <div class="actions">
             <button class="icon-btn" id="like-btn">
