@@ -113,6 +113,20 @@ nav {
     width: 850px;
 }
 
+@media (max-width:900px) {
+
+    .login,
+    .register,
+    .create,
+    .profile-picture {
+        display: none;
+    }
+    .wraper {
+        width: 680px;
+    }
+}
+
+
 @media (max-width:720px) {
 
     .login,
@@ -121,11 +135,11 @@ nav {
     .profile-picture {
         display: none;
     }
+    .wraper {
+        width: 600px;
+    }
 }
 
-.wraper {
-    width: 600px;
-}
 
 
 @media (max-width:610px) {
