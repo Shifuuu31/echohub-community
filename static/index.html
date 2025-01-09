@@ -34,12 +34,12 @@
                 <label for="category1"><i class="fa fa-gamepad"></i>&nbsp;All</label>
             </li>
             <li class="category">
-                <input type="checkbox" id="category3">
-                <label for="category3"><i class="fa fa-gamepad"></i>&nbsp;Liked</label>
-            </li>
-            <li class="category">
                 <input type="checkbox" id="category2">
                 <label for="category2"><i class="fa fa-gamepad"></i>&nbsp;Disliked</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category3">
+                <label for="category3"><i class="fa fa-gamepad"></i>&nbsp;Liked</label>
             </li>
             <li class="category">
                 <input type="checkbox" id="category4">
@@ -66,7 +66,7 @@
                 <label for="category9"><i class="fa fa-gamepad"></i>&nbsp;Books</label>
             </li>
         </ul>
-        <div class="post">
+        <div id="post">
             <div class="post-info-1">
                 <img src="Ava.png">
                 <h3>Username <br> <span>Time</span></h3>
@@ -80,12 +80,42 @@
                 <li><a href="">Health</a></li>
                 <li><a href="">Fashion</a></li>
                 <li><a href="">Daily</a></li>
-                <button class="on-click"><i class="fa-regular fa-thumbs-up"></i> 12</button>
-                <button class="on-click"><i class="fa-regular fa-thumbs-down"></i> 4123</button>
-                <button><i class="fa-regular fa-comment"></i> 4</button>
+                <button><i class="fa-regular fa-thumbs-up"></i> 12</button>
+                <button><i class="fa-regular fa-thumbs-down"></i> 4123</button>
+                <button onclick="OpenPopup()"><i class="fa-regular fa-comment"></i> 4</button>
             </div>
         </div>
     </div>
+    <div id="popup">
+        <div class="wraper">
+            <div class="popup-comment">
+                <button class="close-popup" onclick="ClosePopup()"><i class="fa-solid fa-x"></i></button>
+                <div class="post-info-1">
+                    <img src="Ava.png" alt="">
+                    <h3>Username <br> <span>Time</span></h3>
+                </div>
+                <div class="post-info-2">
+                    <h3>Post Title</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur accusantium
+                        quibusdam debitis? Obcaecati corrupti quasi quae modi.</p>
+                        <hr>
+                        <label for="textarea">Reply to this Post</label>
+                        <textarea placeholder="Share your thoughts" required="" cols="50" rows="10" id="textarea" name="textarea"></textarea>
+                        <div class="button-container">
+                            <button><i class="fa-regular fa-pen-to-square"></i> Reply</button>
+                        </div>                </div>
+    
+            </div>            
+        </div>
+    </div>
+    <script>
+        function OpenPopup() {
+            document.getElementById("popup").style.display = "block";
+        }
+        function ClosePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+    </script>
 </body>
 
 </html>
