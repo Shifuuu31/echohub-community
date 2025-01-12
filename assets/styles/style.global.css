@@ -1,0 +1,141 @@
+:root {
+    --primary-color: #8552ff;
+    --secondary-color: #808080;
+    --hover-color: #D7A7FE;
+    --bg-color: #FAFAFA;
+    --secondary-bg-color: #EAEAEA;
+    --border-color: #DDDDDD;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    user-select: none;
+    transition: 0.5s;
+    font-family: "Ubuntu", serif;
+}
+
+nav h1 {
+    font-family: "League Spartan", serif;
+    font-size: 56px;
+}
+
+li,
+a {
+    list-style: none;
+    text-decoration: none;
+}
+
+a,
+button {
+    cursor: pointer;
+}
+
+
+body {
+    background-color: var(--bg-color);
+}
+
+h5 {
+    color: #808080;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-bottom: 1px solid var(--border-color);
+    height: 84px;
+}
+
+.logo {
+    padding-left: 45px;
+    flex-grow: 1;
+    color: var(--primary-color);
+}
+
+/* js needed :: hide buttons when window size is small + change login and register buttons to profile-picture and create buttons*/
+
+.register {
+    width: 113px;
+    height: 38px;
+    margin: 0 15px;
+    color: white;
+    font-weight: 600;
+    background-color: var(--primary-color);
+    border: transparent;
+    border-radius: 512px;
+}
+
+.register:hover {
+    background-color: var(--hover-color);
+}
+
+.login {
+    width: 72px;
+    height: 38px;
+    margin: 0 45px 0 0;
+    color: var(--primary-color);
+    font-weight: 600;
+    background-color: var(--border-color);
+    border: transparent;
+    border-radius: 512px;
+}
+
+.login:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.create {
+    width: 113px;
+    height: 38px;
+    margin: 0 15px;
+    color: white;
+    font-weight: 600;
+    background-color: var(--primary-color);
+    border: transparent;
+    border-radius: 512px;
+}
+
+.profile-picture {
+    width: 55px;
+    height: 55px;
+    border-radius: 512px;
+    border: 3px solid var(--primary-color);
+}
+
+/* js needed*/
+
+.wraper {
+    margin: 50px auto;
+    width: 850px;
+}
+
+@media (max-width:720px) {
+
+    .login,
+    .register,
+    .create,
+    .profile-picture {
+        display: none;
+    }
+}
+
+.wraper {
+    width: 600px;
+}
+
+
+@media (max-width:610px) {
+    .wraper {
+        width: 390px;
+    }
+}
+
+@media (max-width:430px) {
+    .wraper {
+        width: 260px;
+    }
+}

@@ -23,11 +23,11 @@ func main() {
 	webForum.Post.DB = db
 
 	server := http.Server{
-		Addr:    ":8080",
+		Addr:    ":5000",
 		Handler: webForum.Routes(),
 	}
 
-	fmt.Println("listening in port : http://localhost:8080")
+	fmt.Println("listening in port : http://localhost:5000")
 
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatalln(err)
