@@ -2,7 +2,9 @@ package handlers
 
 import (
 	"html/template"
+	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"forum/internal/models"
@@ -13,13 +15,19 @@ var (
 	categoriesForm = []string{}
 )
 
-func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
+func (webForum *WebApp) HomePageHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		w.WriteHeader(http.StatusNotFound)
 		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
 			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
 			return
 		}
+		return
+	}
+
+	categories, err := webForum.Post.GetCategorys()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -35,42 +43,41 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	categories, err := webForum.Post.GetCategoriesNames(posts)
+	Categories_Posts, err := webForum.Post.GetCategoriesNames(posts)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	type data struct {
-		Username      string
-		Title         string
-		Post_content  string
-		Categories    []string
-		Creation_date time.Time
+		ID               int
+		Categories       []models.Categorie
+		Username         string
+		Title            string
+		Post_content     string
+		Categories_Posts []string
+		Creation_date    time.Time
 	}
-	datas := []data{}
-	for i := 0; i < len(posts); i++ {
-		data := data{}
-		data.Username = users[i]
-		data.Title = posts[i].Title
-		data.Post_content = posts[i].Post_content
-		data.Categories = categories[i]
-		data.Creation_date = posts[i].Creation_date
-		datas = append(datas, data)
+	var datas []data
+	for i := range posts {
+		datas = append(datas, data{
+			ID:               posts[i].ID,
+			Categories:       categories,
+			Username:         users[i],
+			Title:            posts[i].Title,
+			Post_content:     posts[i].Post_content,
+			Categories_Posts: Categories_Posts[i],
+			Creation_date:    posts[i].Creation_date,
+		})
 	}
-
-	// if err != nil {
-	// 	http.Error(w, err.Error(), http.StatusInternalServerError)
-	// 	return
-	// }
 
 	if err := Template.ExecuteTemplate(w, "index.html", datas); err != nil {
+		log.Printf("Error rendering index.html: %v", err)
 		http.Error(w, "Error loading HomePage", http.StatusInternalServerError)
-		return
 	}
 }
 
-func (webForm *WebApp) CreatePostPage(w http.ResponseWriter, r *http.Request) {
+func (webForm *WebApp) CreatePostPageHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/post" {
 		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
 			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
@@ -91,7 +98,7 @@ func (webForm *WebApp) CreatePostPage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (webForm *WebApp) NewPostCreation(w http.ResponseWriter, r *http.Request) {
+func (webForm *WebApp) NewPostCreationHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/post/create" {
 		w.WriteHeader(http.StatusNotFound)
 		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
@@ -132,3 +139,38 @@ func (webForm *WebApp) NewPostCreation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func (webForum *WebApp) DeletePostHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/post/delete" {
+		w.WriteHeader(http.StatusNotFound)
+		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
+			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
+			return
+		}
+		return
+	}
+	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
+	if err != nil {
+		http.Error(w, "invalid id", http.StatusInternalServerError)
+		return
+	}
+
+	// fmt.Printf("%V",id)
+	err = webForum.Post.DeletePost(id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+// func (WebForum *WebApp) UpdatePostHandler(w http.ResponseWriter,r* http.Request){
+// 	if r.URL.Path != "/post/Update" {
+// 		w.WriteHeader(http.StatusNotFound)
+// 		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
+// 			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
+// 			return
+// 		}
+// 		return
+// 	}
+// }

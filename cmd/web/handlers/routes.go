@@ -15,8 +15,10 @@ func (WebForum *WebApp) Routes() http.Handler {
 
 	fileServer := http.FileServer(http.Dir("./assets"))
 	forum.Handle("GET /assets/", http.StripPrefix("/assets/", fileServer))
-	forum.HandleFunc("GET /", WebForum.HomePage)
-	forum.HandleFunc("GET /post", WebForum.CreatePostPage)
-	forum.HandleFunc("POST /post/create", WebForum.NewPostCreation)
+	forum.HandleFunc("GET /", WebForum.HomePageHandler)
+	forum.HandleFunc("GET /post", WebForum.CreatePostPageHandler)
+	forum.HandleFunc("POST /post/create", WebForum.NewPostCreationHandler)
+	forum.HandleFunc("GET /post/delete", WebForum.DeletePostHandler)
+
 	return forum
 }

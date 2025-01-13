@@ -29,55 +29,29 @@
     </nav>
     <div class="wraper">
         <ul class="categories">
+            {{range .}}
+            {{range .Categories}}
             <li class="category">
-                <input type="checkbox" id="category1">
-                <label for="category1"><i class="fa fa-gamepad"></i>&nbsp;Test</label>
+                <input type="checkbox" id="category{{.ID}}">
+                <label for="category{{.ID}}"><i class="fa fa-gamepad"></i>&nbsp;{{.Categorie_name}}</label>
             </li>
-            <li class="category">
-                <input type="checkbox" id="category2">
-                <label for="category2"><i class="fa fa-gamepad"></i>&nbsp;Test</label>
-            </li>
-            <li class="category">
-                <input type="checkbox" id="category3">
-                <label for="category3"><i class="fa fa-gamepad"></i>&nbsp;Test</label>
-            </li>
-            <li class="category">
-                <input type="checkbox" id="category4">
-                <label for="category4"><i class="fa fa-gamepad"></i>&nbsp;Test</label>
-            </li>
-            <li class="category">
-                <input type="checkbox" id="category5">
-                <label for="category5"><i class="fa fa-gamepad"></i>&nbsp;Test</label>
-            </li>
-            <li class="category">
-                <input type="checkbox" id="category6">
-                <label for="category6"><i class="fa fa-gamepad"></i>&nbsp;Test</label>
-            </li>
-            <li class="category">
-                <input type="checkbox" id="category7">
-                <label for="category7"><i class="fa fa-gamepad"></i>&nbsp;Test</label>
-            </li>
-            <li class="category">
-                <input type="checkbox" id="category8">
-                <label for="category8"><i class="fa fa-gamepad"></i>&nbsp;Test</label>
-            </li>
-            <li class="category">
-                <input type="checkbox" id="category9">
-                <label for="category9"><i class="fa fa-gamepad"></i>&nbsp;Test</label>
-            </li>
+            {{end}}
+            {{end}}
         </ul>
         {{range .}}
         <div class="post">
             <div class="post-info-1">
                 <img src="/assets/img/user.png">
                 <h3>{{.Username}} <br> <span>{{.Creation_date}}</span></h3>
+                <button class="create"><a href="/post/delete?ID={{.ID}}">Delete</a></button>
+                <button class="create"><a href="/post/update?ID={{.ID}}">Update</a></button>
             </div>
             <div class="post-info-2">
                 <h3>{{.Title}}</h3>
                 <p>{{.Post_content}}</p>
             </div>
             <div class="post-actions">
-                {{range .Categories}}
+                {{range .Categories_Posts}}
                 <li><a href="">{{.}}</a></li>
                 {{end}}
                 <button class="on-click"><i class="fa-regular fa-thumbs-up"></i> 12</button>
