@@ -13,16 +13,20 @@ import (
 )
 
 func main() {
-	var webForum web.WebApp
 
 	db, err := sql.Open("sqlite3", "./internal/database/forum.db")
 	if err != nil {
 		log.Fatalln(err)
 	}
-	webForum.Users = &models.UserModel{}
-	webForum.Users.DB = db
-	webForum.Sessions = &models.SessionModel{}
-	webForum.Sessions.DB = db
+
+	webForum := web.WebApp {
+		Users: &models.UserModel{
+			DB: db,
+		},
+		Sessions: &models.SessionModel{
+			DB: db,
+		},
+	}
 
 	port := ":" + os.Getenv("PORT")
 	if port == ":" {

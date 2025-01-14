@@ -22,11 +22,28 @@ type UserModel struct {
 	DB *sql.DB
 }
 
+func (user *UserModel) FindUserByID(userID int) (foundUser User, err error) {
+    selectStmt := `	SELECT id, username, email, hashed_password, creation_date
+        			FROM UserTable
+        			WHERE id = ?`
+    err = user.DB.QueryRow(selectStmt, userID).Scan(&foundUser.ID, &foundUser.UserName, &foundUser.Email, &foundUser.HashedPassword, &foundUser.CreationDate)
+
+    if err != nil {
+        if err == sql.ErrNoRows {
+            return foundUser, errors.New("user not found")
+        }
+        return foundUser, err
+    }
+	
+    return foundUser, nil
+}
+
 func (user *UserModel) ValidateUserCreadentials(username, password string) (UserID int, err error) {
 	username = strings.TrimSpace(username)
 	hashedPassword := ""
-	sqlStmt := `SELECT id, username, hashed_password FROM UserTable WHERE username = ?`
-	err = user.DB.QueryRow(sqlStmt, username).Scan(&UserID, &username, &hashedPassword)
+	selectStmt := `	SELECT id, username, hashed_password
+					FROM UserTable WHERE username = ?`
+	err = user.DB.QueryRow(selectStmt, username).Scan(&UserID, &username, &hashedPassword)
 	if err != nil {
 		return -1, errors.New("wrong username")
 	}
@@ -40,8 +57,8 @@ func (user *UserModel) ValidateUserCreadentials(username, password string) (User
 }
 
 func (user *UserModel) InsertUser(newUser User) (err error) {
-	query := `INSERT INTO UserTable (username, email, hashed_password) VALUES (?, ?, ?)`
-	_, err = user.DB.Exec(query, newUser.UserName, newUser.Email, newUser.HashedPassword)
+	insertStmt := `INSERT INTO UserTable (username, email, hashed_password) VALUES (?, ?, ?)`
+	_, err = user.DB.Exec(insertStmt, newUser.UserName, newUser.Email, newUser.HashedPassword)
 	if err != nil {
 		return err
 	}
@@ -75,17 +92,18 @@ func (user *UserModel) usernameCheck(username string) (string, error) {
 		return "", errors.New("username must be between 3 and 20 characters")
 	}
 	if username[0] == '_' || username[len(username)-1] == '_' {
-		return "", errors.New("username cannot start or end with '-' or '_'")
+		return "", errors.New("username cannot start or end with '_'")
 	}
 	for _, char := range username {
 		if !(char >= 'a' && char <= 'z') && !(char >= 'A' && char <= 'Z') && !(char >= '0' && char <= '9') && char != '_' {
 			return "", errors.New("username can only contain letters(A-Za-z), numbers(0-9) and underscores(_)")
 		}
 	}
-	query := `SELECT COUNT(*) FROM UserTable WHERE username = ?;`
+	selectStmt := `	SELECT COUNT(*)
+					FROM UserTable WHERE username = ?`
 	var count int
-	err := user.DB.QueryRow(query, username).Scan(&count)
-	if err != nil  || count > 0{
+	err := user.DB.QueryRow(selectStmt, username).Scan(&count)
+	if err != nil || count > 0 {
 		return "", err
 	}
 	return username, nil
@@ -121,7 +139,8 @@ func (user *UserModel) emailCheck(email string) (string, error) {
 	}
 
 	var count int
-	err := user.DB.QueryRow("SELECT COUNT(*) FROM UserTable WHERE username = ?", email).Scan(&count)
+	selectStmt := `SELECT COUNT(*) FROM UserTable WHERE username = ?`
+	err := user.DB.QueryRow(selectStmt, email).Scan(&count)
 	if err != nil || count != 0 {
 		return "", errors.New("this email '" + email + "' is alreaady registered! Please Log in")
 	}

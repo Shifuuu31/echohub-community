@@ -2,7 +2,7 @@ package models
 
 import (
 	"database/sql"
-	"fmt"
+	"errors"
 	"net/http"
 	"time"
 
@@ -21,6 +21,7 @@ type SessionModel struct {
 }
 
 func (session *SessionModel) GenerateNewSession(userID int) (newSession Session, err error) {
+	exp := 24 * time.Hour
 	newToken, err := uuid.NewV4()
 	if err != nil {
 		return Session{}, err
@@ -28,24 +29,15 @@ func (session *SessionModel) GenerateNewSession(userID int) (newSession Session,
 	newSession = Session{
 		UserID:         userID,
 		Token:          newToken.String(),
-		ExpirationDate: time.Now().Add(7 * 24 * time.Hour), // expire after one week
+		ExpirationDate: time.Now().Add(exp), // expire after 1 day
 	}
 	return newSession, err
 }
 
 func (session *SessionModel) InsertSession(newSession Session) (newCookie http.Cookie, err error) {
-	fmt.Println("Inserting Session")
-
-	insertStmt := "INSERT INTO UserSessions (user_id, session_token, expiration_date) VALUES (?, ?, ?);"
-
-	result, err := session.DB.Exec(insertStmt, newSession.UserID, newSession.Token, newSession.ExpirationDate)
+	insertStmt := `INSERT INTO UserSessions (user_id, session_token, expiration_date) VALUES (?, ?, ?)`
+	_, err = session.DB.Exec(insertStmt, newSession.UserID, newSession.Token, newSession.ExpirationDate)
 	if err != nil {
-		return newCookie, err
-	}
-	fmt.Println("2")
-	lastInsertID, err := result.LastInsertId()
-	fmt.Println("3")
-	if err != nil || lastInsertID != int64(newSession.UserID) {
 		return newCookie, err
 	}
 
@@ -56,14 +48,48 @@ func (session *SessionModel) InsertSession(newSession Session) (newCookie http.C
 		// HttpOnly: true,	// Prevent access via JavaScript (mitigates XSS)
 		// Secure:   true,	// Transmit only over HTTPS
 		Expires: newSession.ExpirationDate,
+		// MaxAge: newSession.ExpirationDate.Second(),
 	}
 
-	fmt.Println("4")
 	return newCookie, nil
 }
 
-// func (session *SessionModel) ValidateSession(UserID int) (newSession Session, err error) {
-// }
+func (session *SessionModel) ValidateSession(sessionToken string) (userID int, err error) {
+	selectStmt := `	SELECT user_id, expiration_date 
+        			FROM UserSessions 
+        			WHERE session_token = ?`
+	var expirationDate time.Time
 
-// func (session *SessionModel) DeleteSession(UserID int) (newSession Session, err error) {
-// }
+	err = session.DB.QueryRow(selectStmt, sessionToken).Scan(&userID, &expirationDate)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return 0, errors.New("invalid session token")
+		}
+		return 0, err
+	}
+
+	if time.Now().After(expirationDate) {
+		return 0, errors.New("session expired")
+	}
+
+	return userID, nil
+}
+
+func (session *SessionModel) DeleteSession(sessionToken string) error {
+    deleteStmt := `	DELETE FROM UserSessions 
+					WHERE session_token = ?`
+    result, err := session.DB.Exec(deleteStmt, sessionToken)
+    if err != nil {
+        return err
+    }
+
+    rowsAffected, err := result.RowsAffected() // Check if the session was already deleted
+    if err != nil {
+        return err
+    }
+    if rowsAffected == 0 {
+        return errors.New("session not found")
+    }
+
+    return nil
+}

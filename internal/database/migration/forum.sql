@@ -6,11 +6,12 @@ CREATE TABLE IF NOT EXISTS UserTable (
     creation_date DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS UserSessions (
+CREATE TABLE IF NOT EXISTS SessionsUsers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     session_token TEXT UNIQUE NOT NULL,
-    expiration_date DATETIME
+    expiration_date DATETIME,
+    FOREIGN KEY(user_id) REFERENCES UserTable(id) ON DELETE CASCADE
 );
 
 INSERT INTO UserTable (username, email, hashed_password) 
@@ -25,6 +26,9 @@ VALUES
     ('lucy_harper', 'lucy.harper@example.com', 'lucyH@rper123'),
     ('michael_clark', 'michael.clark@example.com', 'michaelClark!2024'),
     ('olivia_wilson', 'olivia.wilson@example.com', 'oliviaPassword123');
+    -- ('shifuuu', 'shifuuu@example.com', '$2a$12$yHoYoooqnJA6ney0kv1GpuTJcQOKyZjESJ01u.VHIPn0gv/idtWY6');
+    -- ('abdo', 'abdo@gmail.com', '$2a$12$o7vY6IbHhnVTjkKOmdnY7ON0car9ImXY2ZZHLqc1dePaXHmR.mTsi');
+    
 
 
 CREATE TABLE IF NOT EXISTS PostTable (

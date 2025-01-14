@@ -13,8 +13,8 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.Error(w, "404 Page Not Found", http.StatusNotFound)
 		return
-
 	}
+
 	if err := Template.ExecuteTemplate(w, "home-guestMode.html", nil); err != nil {
 		http.Error(w, "Error loading HomePage", http.StatusInternalServerError)
 		return
@@ -78,14 +78,14 @@ func (webForum *WebApp) SetCookie(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "cannot insert new session", http.StatusInternalServerError)
 		return
 	}
-
+	fmt.Println(newCookie)
 	http.SetCookie(w, &newCookie)
 
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-func (webForum *WebApp) GetCookie(w http.ResponseWriter, r *http.Request) {
-}
+// func (webForum *WebApp) GetCookie(w http.ResponseWriter, r *http.Request) {
+// }
 
 func (webForum *WebApp) RegisterPage(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/register" {
