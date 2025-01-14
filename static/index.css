@@ -3,7 +3,7 @@ ul.categories {
     justify-content: start;
     overflow-x: scroll;
     scrollbar-width: none;
-    margin: 25px 0;
+    margin-bottom: 75px;
 }
 
 .category input[type=checkbox]+label {
@@ -11,7 +11,7 @@ ul.categories {
     color: var(--secondary-color);
     font-size: 18px;
     border: transparent;
-    padding: 5px 20px;
+    padding: 10px 20px;
     border-radius: 512px;
     cursor: pointer;
     overflow: hidden;
@@ -44,6 +44,7 @@ li.category {
     flex-direction: column;
     border-radius: 30px;
     box-shadow: 0px 0px 5px 0px var(--border-color);
+    border-left: 7px solid var(--primary-color);
     padding: 25px;
     margin: 10px 0;
 }
@@ -55,19 +56,6 @@ li.category {
     font-weight: 600;
     margin-bottom: 25px;
 }
-
-.comment {
-    display: flex;
-    background-color: white;
-    justify-content: center;
-    flex-direction: column;
-    border-radius: 30px;
-    border-left: 7px solid var(--hover-color);
-    box-shadow: 0px 0px 5px 0px var(--border-color);
-    padding: 25px;
-    margin: 10px 0;
-}
-
 
 .post-info-1,
 .comment-info-1 {
@@ -125,30 +113,6 @@ li.category {
     margin-top: 20px;
 }
 
-#popup-comment {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#popup-comment .comment-info {
-    display: flex;
-    gap: 10px;
-}
-
-#popup-comment .buttons {
-    display: flex;
-    gap: 50px;
-}
-
-#popup-comment img {
-    width: 55px;
-    height: 55px;
-    border-radius: 512px;
-    border: 3px solid var(--primary-color);
-    margin-right: 20px;
-}
-
 .post-info-3 a {
     color: var(--secondary-color);
     background-color: var(--secondary-bg-color);
@@ -181,11 +145,83 @@ li.category {
     flex-direction: column;
     border-radius: 30px;
     box-shadow: 0px 0px 5px 0px var(--border-color);
+    border-left: 7px solid var(--primary-color);
     padding: 25px;
     margin: 25px 0;
 }
 
+.close {
+    background: none;
+    font-size: 28px;
+}
 
+.comment {
+    display: flex;
+    background-color: white;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 30px;
+    border-left: 7px solid var(--hover-color);
+    box-shadow: 0px 0px 5px 0px var(--border-color);
+    padding: 25px;
+    margin: 25px 0;
+}
+
+#popup-comment {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#popup-comment .comment-info {
+    display: flex;
+    gap: 10px;
+}
+
+#popup-comment .buttons {
+    display: flex;
+    gap: 50px;
+}
+
+#popup-comment img {
+    width: 55px;
+    height: 55px;
+    border-radius: 512px;
+    border: 3px solid var(--primary-color);
+    margin-right: 20px;
+}
+
+.user-comment {
+    padding: 25px;
+    margin: 10px 0;
+}
+
+.new-comment:hover {
+    transition: 0.3s;
+    background: var(--hover-color);
+    cursor: pointer;
+}
+
+.new-comment:active {
+    transform: translate(0em, 0.2em);
+}
+
+.comment-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#comment-field {
+    border-radius: 30px;
+    border: 2px solid var(--border-color);
+    outline: none;
+    resize: none;
+    width: 100%;
+    height: 75px;
+    margin: 25px;
+    padding: 15px;
+}
 
 @media (max-width: 610px) {
     .post {
@@ -197,22 +233,54 @@ li.category {
         font-size: 14px;
     }
 
-    @media (max-width: 610px) {
-        .post-info-3 {
-            flex-direction: column;
-            align-items: flex-start;
-        }
+    .post-info-3 {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-        .post-info-3 .links,
-        .post-info-3 .buttons {
-            flex-direction: row;
-            justify-content: space-between;
-            width: 100%;
-        }
+    .post-info-3 .links,
+    .post-info-3 .buttons {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
 
-        .post-info-3 a {
-            font-size: 14px;
-            padding: 5px 12px;
-        }
+    .post-info-3 a {
+        font-size: 14px;
+        padding: 5px 12px;
+    }
+
+    .comment {
+        padding: 15px;
+    }
+
+    .comment-info-1 {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .comment-info-1 img {
+        width: 45px;
+        height: 45px;
+    }
+
+    .comment-info-1 h3 {
+        font-size: 14px;
+    }
+
+    .user-comment {
+        padding: 0;
+    }
+
+    #comment-field {
+        width: 100%;
+        height: 50px;
+        margin: 15px 0;
+        overflow: hidden;
+    }
+
+    .comment-group {
+        flex-direction: column;
+        padding-bottom: 15px;
     }
 }

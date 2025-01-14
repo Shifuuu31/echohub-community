@@ -93,10 +93,16 @@
     <div id="popup">
         <div class="wraper">
             <div id="popup-content">
-                <div class="post-info-1">
-                    <img src="Ava.png">
-                    <h3>Username <br> <span>Time</span></h3>
+                <div id="popup-comment">
+                    <div class="comment-info-1">
+                        <img src="Ava.png">
+                        <h3>Username <br> <span>Time</span></h3>
+                    </div>
+                    <div>
+                        <button onclick="ClosePopup()"><i class="close fa-solid fa-xmark"></i></button>
+                    </div>
                 </div>
+
                 <div class="post-info-2">
                     <h3>Post Title</h3>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
@@ -135,13 +141,70 @@
                         quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
                 </div>
             </div>
-        </div>
-        <div class="user-comment">
-            <div class="comment-info-1">
-                <img src="Ava.png">
-                <h3>Username <br> <span>Time</span></h3>
+            <div class="comment">
+                <div id="popup-comment">
+                    <div class="comment-info-1">
+                        <img src="Ava.png">
+                        <h3>Username <br> <span>Time</span></h3>
+                    </div>
+                    <div class="buttons">
+                        <button><i class="fa-regular fa-thumbs-up"></i> 12</button>
+                        <button><i class="fa-regular fa-thumbs-down"></i> 4123</button>
+                    </div>
+                </div>
+                <div class="comment-info-2">
+                    <h3>Post Title</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
+                        accusantium
+                        quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
+                </div>
             </div>
-            <textarea name="" id=""></textarea>
+            <div class="comment">
+                <div id="popup-comment">
+                    <div class="comment-info-1">
+                        <img src="Ava.png">
+                        <h3>Username <br> <span>Time</span></h3>
+                    </div>
+                    <div class="buttons">
+                        <button><i class="fa-regular fa-thumbs-up"></i> 12</button>
+                        <button><i class="fa-regular fa-thumbs-down"></i> 4123</button>
+                    </div>
+                </div>
+                <div class="comment-info-2">
+                    <h3>Post Title</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
+                        accusantium
+                        quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
+                </div>
+            </div>
+            <div class="comment">
+                <div id="popup-comment">
+                    <div class="comment-info-1">
+                        <img src="Ava.png">
+                        <h3>Username <br> <span>Time</span></h3>
+                    </div>
+                    <div class="buttons">
+                        <button><i class="fa-regular fa-thumbs-up"></i> 12</button>
+                        <button><i class="fa-regular fa-thumbs-down"></i> 4123</button>
+                    </div>
+                </div>
+                <div class="comment-info-2">
+                    <h3>Post Title</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
+                        accusantium
+                        quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
+                </div>
+            </div>
+            <div class="user-comment">
+                <div class="comment-info-1">
+                    <img src="Ava.png">
+                    <h3>Username</h3>
+                </div>
+                <div class="comment-group">
+                    <textarea placeholder="Comment" type="text" id="comment-field"></textarea>
+                    <button class="new-comment"><span><i class="fas fa-paper-plane"></i> Comment</span></button>
+                </div>
+            </div>
         </div>
     </div>
     <script>
@@ -151,6 +214,7 @@
         }
         function ClosePopup() {
             document.getElementById("popup").style.display = "none";
+            document.getElementById("post").style.display = "block";
         }
     </script>
 </body>
