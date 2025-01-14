@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 )
 
@@ -93,7 +94,8 @@ func (postModel *PostModel) CreatePost(title, content string) error {
 }
 
 func (postModel *PostModel) GetLastPoID() (int, error) {
-	posts := []Post{}
+	// posts := []Post{}
+	post := Post{}
 
 	cmd := "SELECT id, user_id, title, post_content, creation_date FROM PostTable ORDER BY id DESC"
 	rowsDB, err := postModel.DB.Query(cmd)
@@ -103,12 +105,11 @@ func (postModel *PostModel) GetLastPoID() (int, error) {
 	defer rowsDB.Close()
 
 	for rowsDB.Next() {
-		post := Post{}
 		err := rowsDB.Scan(&post.ID, &post.User_id, &post.Title, &post.Post_content, &post.Creation_date)
 		if err != nil {
 			return 0, err
 		}
-		posts = append(posts, post)
+		// posts = append(posts, post)
 	}
 
 	err = rowsDB.Err()
@@ -116,7 +117,7 @@ func (postModel *PostModel) GetLastPoID() (int, error) {
 		return 0, err
 	}
 
-	return posts[0].ID, nil
+	return post.ID, nil
 }
 
 func (postModel *PostModel) GetIdsCategories(categories []string) ([]int, error) {
@@ -227,10 +228,24 @@ func (postModel *PostModel) DeletePost(idPost int) error {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 
 func (PostModel *PostModel) UpdatPost(idPost int) error {
+	post := Post{}
+	cmd, err := PostModel.DB.Query("SELECT title,post_content FROM PostTable WHERE id = $1", idPost)
+	if err != nil {
+		return err
+	}
+	defer cmd.Close()
+
+	for cmd.Next() {
+		err = cmd.Scan(&post.ID, &post.Post_content)
+		if err != nil {
+			return err
+		}
+	}
+
+	fmt.Println(post)
 	return nil
 }

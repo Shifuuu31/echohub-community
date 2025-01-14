@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"html/template"
-	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -72,12 +71,11 @@ func (webForum *WebApp) HomePageHandler(w http.ResponseWriter, r *http.Request) 
 	}
 
 	if err := Template.ExecuteTemplate(w, "index.html", datas); err != nil {
-		log.Printf("Error rendering index.html: %v", err)
 		http.Error(w, "Error loading HomePage", http.StatusInternalServerError)
 	}
 }
 
-func (webForm *WebApp) CreatePostPageHandler(w http.ResponseWriter, r *http.Request) {
+func (webForum *WebApp) CreatePostPageHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/post" {
 		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
 			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
@@ -86,7 +84,7 @@ func (webForm *WebApp) CreatePostPageHandler(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	categories, err := webForm.Post.GetCategorys()
+	categories, err := webForum.Post.GetCategorys()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -164,13 +162,29 @@ func (webForum *WebApp) DeletePostHandler(w http.ResponseWriter, r *http.Request
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
-// func (WebForum *WebApp) UpdatePostHandler(w http.ResponseWriter,r* http.Request){
-// 	if r.URL.Path != "/post/Update" {
-// 		w.WriteHeader(http.StatusNotFound)
-// 		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
-// 			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
-// 			return
-// 		}
-// 		return
-// 	}
-// }
+func (WebForum *WebApp) UpdatePostHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/post/Update" {
+		w.WriteHeader(http.StatusNotFound)
+		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
+			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
+			return
+		}
+		return
+	}
+
+	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
+	if err != nil {
+		http.Error(w, "invalid id", http.StatusInternalServerError)
+		return
+	}
+
+	err = WebForum.Post.UpdatPost(id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if err := Template.ExecuteTemplate(w, "post-create.html", nil); err != nil {
+		http.Error(w, "Error loading HomePage", http.StatusInternalServerError)
+	}
+}
