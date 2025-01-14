@@ -17,7 +17,7 @@
     <title>echoHub</title>
 </head>
 
-<body>
+<body style="overflow-y: scroll;">
     <nav>
         <a href="index.html" class="logo">
             <h1>echoHub</h1>
@@ -74,43 +74,80 @@
             <div class="post-info-2">
                 <h3>Post Title</h3>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur accusantium
-                    quibusdam debitis? Obcaecati corrupti quasi quae modi.</p>
+                    quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
             </div>
-            <div class="post-actions">
-                <li><a href="">Health</a></li>
-                <li><a href="">Fashion</a></li>
-                <li><a href="">Daily</a></li>
-                <button><i class="fa-regular fa-thumbs-up"></i> 12</button>
-                <button><i class="fa-regular fa-thumbs-down"></i> 4123</button>
-                <button onclick="OpenPopup()"><i class="fa-regular fa-comment"></i> 4</button>
+            <div class="post-info-3">
+                <div class="links">
+                    <li><a href="">Health</a></li>
+                    <li><a href="">Fashion</a></li>
+                    <li><a href="">Daily</a></li>
+                </div>
+                <div class="buttons">
+                    <button><i class="fa-regular fa-thumbs-up"></i> 12</button>
+                    <button><i class="fa-regular fa-thumbs-down"></i> 4123</button>
+                    <button onclick="OpenPopup()"><i class="fa-regular fa-comment"></i> 4</button>
+                </div>
             </div>
         </div>
     </div>
     <div id="popup">
         <div class="wraper">
-            <div class="popup-comment">
-                <button class="close-popup" onclick="ClosePopup()"><i class="fa-solid fa-x"></i></button>
+            <div id="popup-content">
                 <div class="post-info-1">
-                    <img src="Ava.png" alt="">
+                    <img src="Ava.png">
                     <h3>Username <br> <span>Time</span></h3>
                 </div>
                 <div class="post-info-2">
                     <h3>Post Title</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur accusantium
-                        quibusdam debitis? Obcaecati corrupti quasi quae modi.</p>
-                        <hr>
-                        <label for="textarea">Reply to this Post</label>
-                        <textarea placeholder="Share your thoughts" required="" cols="50" rows="10" id="textarea" name="textarea"></textarea>
-                        <div class="button-container">
-                            <button><i class="fa-regular fa-pen-to-square"></i> Reply</button>
-                        </div>                </div>
-    
-            </div>            
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
+                        accusantium
+                        quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
+                </div>
+                <div class="post-info-3">
+                    <div class="links">
+                        <li><a href="">Health</a></li>
+                        <li><a href="">Fashion</a></li>
+                        <li><a href="">Daily</a></li>
+                    </div>
+                    <div class="buttons">
+                        <button><i class="fa-regular fa-thumbs-up"></i> 12</button>
+                        <button><i class="fa-regular fa-thumbs-down"></i> 4123</button>
+                        <button><i class="fa-regular fa-comment"></i> 4</button>
+                    </div>
+                </div>
+            </div>
+            <p class="seperator">Comments</p>
+            <div class="comment">
+                <div id="popup-comment">
+                    <div class="comment-info-1">
+                        <img src="Ava.png">
+                        <h3>Username <br> <span>Time</span></h3>
+                    </div>
+                    <div class="buttons">
+                        <button><i class="fa-regular fa-thumbs-up"></i> 12</button>
+                        <button><i class="fa-regular fa-thumbs-down"></i> 4123</button>
+                    </div>
+                </div>
+                <div class="comment-info-2">
+                    <h3>Post Title</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
+                        accusantium
+                        quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
+                </div>
+            </div>
+        </div>
+        <div class="user-comment">
+            <div class="comment-info-1">
+                <img src="Ava.png">
+                <h3>Username <br> <span>Time</span></h3>
+            </div>
+            <textarea name="" id=""></textarea>
         </div>
     </div>
     <script>
         function OpenPopup() {
             document.getElementById("popup").style.display = "block";
+            document.getElementById("post").style.display = "none";
         }
         function ClosePopup() {
             document.getElementById("popup").style.display = "none";
