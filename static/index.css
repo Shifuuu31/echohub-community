@@ -1,7 +1,8 @@
 ul.categories {
     display: flex;
     justify-content: start;
-    overflow-x: hidden;
+    overflow-x: scroll;
+    scrollbar-width: none;
     margin: 25px 0;
 }
 
