@@ -11,7 +11,6 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    user-select: none;
     transition: 0.5s;
     font-family: "Ubuntu", serif;
 }
@@ -68,7 +67,7 @@ nav {
     border-radius: 512px;
 }
 
-.register:hover {
+.register:hover, .create:hover {
     background-color: var(--hover-color);
 }
 
@@ -89,6 +88,17 @@ nav {
 }
 
 .create {
+    width: 113px;
+    height: 38px;
+    margin: 0 15px;
+    color: white;
+    font-weight: 600;
+    background-color: var(--primary-color);
+    border: transparent;
+    border-radius: 512px;
+}
+
+.update {
     width: 113px;
     height: 38px;
     margin: 0 15px;
