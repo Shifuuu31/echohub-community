@@ -89,6 +89,52 @@
                 </div>
             </div>
         </div>
+        <div id="post">
+            <div class="post-info-1">
+                <img src="Ava.png">
+                <h3>Username <br> <span>Time</span></h3>
+            </div>
+            <div class="post-info-2">
+                <h3>Post Title</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur accusantium
+                    quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
+            </div>
+            <div class="post-info-3">
+                <div class="links">
+                    <li><a href="">Health</a></li>
+                    <li><a href="">Fashion</a></li>
+                    <li><a href="">Daily</a></li>
+                </div>
+                <div class="buttons">
+                    <button><i class="fa-regular fa-thumbs-up"></i> 12</button>
+                    <button><i class="fa-regular fa-thumbs-down"></i> 4123</button>
+                    <button onclick="OpenPopup(this)"><i class="fa-regular fa-comment"></i> 4</button>
+                </div>
+            </div>
+        </div>
+        <div id="post">
+            <div class="post-info-1">
+                <img src="Ava.png">
+                <h3>Username <br> <span>Time</span></h3>
+            </div>
+            <div class="post-info-2">
+                <h3>Post Title</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur accusantium
+                    quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
+            </div>
+            <div class="post-info-3">
+                <div class="links">
+                    <li><a href="">Health</a></li>
+                    <li><a href="">Fashion</a></li>
+                    <li><a href="">Daily</a></li>
+                </div>
+                <div class="buttons">
+                    <button><i class="fa-regular fa-thumbs-up"></i> 12</button>
+                    <button><i class="fa-regular fa-thumbs-down"></i> 4123</button>
+                    <button onclick="OpenPopup(this)"><i class="fa-regular fa-comment"></i> 4</button>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="popup">
         <div class="wraper">
@@ -123,60 +169,7 @@
                 </div>
             </div>
             <p class="seperator">Comments</p>
-            <div class="comment">
-                <div id="popup-comment">
-                    <div class="comment-info-1">
-                        <img src="Ava.png">
-                        <h3>Username <br> <span>Time</span></h3>
-                    </div>
-                    <div class="buttons">
-                        <button><i class="fa-regular fa-thumbs-up"></i> 12</button>
-                        <button><i class="fa-regular fa-thumbs-down"></i> 4123</button>
-                    </div>
-                </div>
-                <div class="comment-info-2">
-                    <h3>Post Title</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
-                        accusantium
-                        quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
-                </div>
-            </div>
-            <div class="comment">
-                <div id="popup-comment">
-                    <div class="comment-info-1">
-                        <img src="Ava.png">
-                        <h3>Username <br> <span>Time</span></h3>
-                    </div>
-                    <div class="buttons">
-                        <button><i class="fa-regular fa-thumbs-up"></i> 12</button>
-                        <button><i class="fa-regular fa-thumbs-down"></i> 4123</button>
-                    </div>
-                </div>
-                <div class="comment-info-2">
-                    <h3>Post Title</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
-                        accusantium
-                        quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
-                </div>
-            </div>
-            <div class="comment">
-                <div id="popup-comment">
-                    <div class="comment-info-1">
-                        <img src="Ava.png">
-                        <h3>Username <br> <span>Time</span></h3>
-                    </div>
-                    <div class="buttons">
-                        <button><i class="fa-regular fa-thumbs-up"></i> 12</button>
-                        <button><i class="fa-regular fa-thumbs-down"></i> 4123</button>
-                    </div>
-                </div>
-                <div class="comment-info-2">
-                    <h3>Post Title</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
-                        accusantium
-                        quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
-                </div>
-            </div>
+            <hr>
             <div class="comment">
                 <div id="popup-comment">
                     <div class="comment-info-1">
@@ -201,22 +194,30 @@
                     <h3>Username</h3>
                 </div>
                 <div class="comment-group">
-                    <textarea placeholder="Comment" type="text" id="comment-field"></textarea>
+                    <textarea placeholder="Comment..." type="text" id="comment-field"></textarea>
                     <button class="new-comment"><span><i class="fas fa-paper-plane"></i> Comment</span></button>
                 </div>
             </div>
         </div>
     </div>
     <script>
-        function OpenPopup() {
-            document.getElementById("popup").style.display = "block";
-            document.getElementById("post").style.display = "none";
-        }
-        function ClosePopup() {
-            document.getElementById("popup").style.display = "none";
-            document.getElementById("post").style.display = "block";
-        }
-    </script>
+function OpenPopup() {
+    document.getElementById("popup").style.display = "block";
+    
+    const posts = document.querySelectorAll("#post");
+    posts.forEach(post => {
+        post.style.display = "none";
+    });
+}
+
+function ClosePopup() {
+    document.getElementById("popup").style.display = "none";
+    
+    const posts = document.querySelectorAll("#post");
+    posts.forEach(post => {
+        post.style.display = "flex";
+    });
+}    </script>
 </body>
 
 </html>

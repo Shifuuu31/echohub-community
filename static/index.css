@@ -46,7 +46,7 @@ li.category {
     box-shadow: 0px 0px 5px 0px var(--border-color);
     border-left: 7px solid var(--primary-color);
     padding: 25px;
-    margin: 10px 0;
+    margin: 50px 0;
 }
 
 .seperator {
@@ -55,6 +55,13 @@ li.category {
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 25px;
+}
+
+hr {
+    width: 40%;
+    margin: auto;
+    color: var(--secondary-bg-color);
+    border-radius: 50px;
 }
 
 .post-info-1,
@@ -132,7 +139,7 @@ li.category {
 #popup {
     display: none;
     position: absolute;
-    top: 150px;
+    top: 210px;
     left: 0;
     width: 100%;
     height: 100%;
