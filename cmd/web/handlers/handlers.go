@@ -118,19 +118,13 @@ func (webForm *WebApp) NewPostCreationHandler(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	err = webForm.Post.CreatePost(New.Title, New.Post_content)
+	idPost, err := webForm.Post.CreatePost(New.Title, New.Post_content)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
-	idPost, err := webForm.Post.GetLastPoID()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
 	err = webForm.Post.AddCategoriePost(idPost, ids)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -162,8 +156,8 @@ func (webForum *WebApp) DeletePostHandler(w http.ResponseWriter, r *http.Request
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
-func (WebForum *WebApp) UpdatePostHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/post/Update" {
+func (WebForum *WebApp) UpdatePostPageHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/post/update" {
 		w.WriteHeader(http.StatusNotFound)
 		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
 			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
@@ -178,13 +172,61 @@ func (WebForum *WebApp) UpdatePostHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	err = WebForum.Post.UpdatPost(id)
+	title, content, selected_categorys, err := WebForum.Post.UpdatePost(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	if err := Template.ExecuteTemplate(w, "post-create.html", nil); err != nil {
-		http.Error(w, "Error loading HomePage", http.StatusInternalServerError)
+	Categorys, err := WebForum.Post.GetCategorys()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
+
+	data := struct {
+		Title              string
+		Content            string
+		Categorys          []models.Categorie
+		Categorys_selected []string
+	}{
+		Title:              title,
+		Content:            content,
+		Categorys_selected: selected_categorys,
+		Categorys:          Categorys,
+	}
+
+	if err := Template.ExecuteTemplate(w, "post-update.html", data); err != nil {
+		http.Error(w, "Error loading UpdatePage", http.StatusInternalServerError)
+	}
+}
+
+func (WebApp *WebApp) PostUpdateHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/post/update/edit" {
+		w.WriteHeader(http.StatusNotFound)
+		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
+			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
+			return
+		}
+		return
+	}
+
+	New := models.Post{
+		Title:        r.FormValue("title"),
+		Post_content: r.FormValue("content"),
+	}
+
+	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
+	if err != nil {
+		http.Error(w, "invalid id", http.StatusInternalServerError)
+		return
+	}
+
+	err = WebApp.Post.EditPost(id, New.Title, New.Post_content)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

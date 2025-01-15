@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS PostTable (
     FOREIGN KEY(user_id) REFERENCES UserTable(id) ON DELETE CASCADE
 );
 
-
 CREATE TABLE IF NOT EXISTS CommentTable (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     post_id INTEGER NOT NULL,
@@ -43,33 +42,7 @@ CREATE TABLE IF NOT EXISTS Categories (
 INSERT INTO
     Categories (categorie_name)
 VALUES
-    ('Movies & Streaming'),
-    ('Music & Playlists'),
-    ('Gaming & Esports'),
-    ('Books & Reads'),
-    ('Tech Buzz'),
-    ('Gadgets & Gear Reviews'),
-    ('Digital Lifestyle'),
-    ('Travel Hacks'),
-    ('Foodie Finds'),
-    ('Health & Wellness'),
-    ('DIY Projects & Creatives'),
-    ('Skill Up'),
-    ('Career Hacks'),
-    ('AMA (Ask Me Anything)'),
-    ('Meet the Community'),
-    ('Life & Relationships Talk'),
-    ('Memes & LOLs'),
-    ('Global News'),
-    ('Local Happenings'),
-    ('Hot Takes & Polls'),
-    ('Community Challenges'),
-    ('Dev & Code Talk'),
-    ('AI & The Future'),
-    ('Machine Learning Insights'),
-    ('Web & App Dev Trends'),
-    ('Data Science & Analytics'),
-    ('Cybersecurity & Privacy Talk');
+    ('All') ('My Posts') ('Liked Posts') ('AI') ('Anime') ('Arts') ('Business') ('Career') ('Culture') ('DIY') ('Education') ('Fashion') ('Games') ('Memes') ('Movies & TV') ('Music') ('News') ('Podcasts') ("Q&A's") ('Science') ('Software & Apps') ('Sports') ('Technology') ('Travel');
 
 CREATE TABLE IF NOT EXISTS Categories_Posts(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
