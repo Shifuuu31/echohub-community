@@ -44,8 +44,9 @@ nav {
     display: flex;
     align-items: center;
     background-color: white;
+    padding: 30px;
     border-bottom: 1px solid var(--border-color);
-    height: 84px;
+    height: 80px;
 }
 
 .logo {
@@ -55,25 +56,26 @@ nav {
 }
 
 .register {
-    width: 113px;
-    height: 38px;
-    margin: 0 15px;
-    color: white;
-    font-weight: 600;
-    background-color: var(--primary-color);
-    border: transparent;
-    border-radius: 512px;
-}
+        margin: 0 15px;
+        padding: 11px 20px;
+        color: white;
+        font-weight: 600;
+        background-color: var(--primary-color);
+        border: transparent;
+        border-radius: 512px;
+    }
 
 .register:hover,
 .create:hover {
     background-color: var(--hover-color);
 }
 
+
 .login {
-    width: 72px;
-    height: 38px;
-    margin: 0 45px 0 0;
+    /* width: auto;
+    height: auto; */
+    margin: 0 5px;
+    padding: 11px 20px;
     color: var(--primary-color);
     font-weight: 600;
     background-color: var(--border-color);
@@ -87,9 +89,8 @@ nav {
 }
 
 .create {
-    width: 113px;
-    height: 38px;
     margin: 0 15px;
+    padding: 11px 20px;
     color: white;
     font-weight: 600;
     background-color: var(--primary-color);
@@ -98,9 +99,8 @@ nav {
 }
 
 .update {
-    width: 113px;
-    height: 38px;
     margin: 0 15px;
+    padding: 11px 20px;
     color: white;
     font-weight: 600;
     background-color: var(--primary-color);
@@ -109,23 +109,38 @@ nav {
 }
 
 .new-comment {
-    width: 113px;
-    height: 38px;
+    /* width: 113px; */
+    /* height: 38px; */
     margin: 0 15px;
     color: white;
-    font-weight: 600;
+    /* font-weight: 600; */
     background-color: var(--primary-color);
-    border: transparent;
+    /* border: transparent; */
     border-radius: 512px;
 }
-
 .profile-picture {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-picture img {
     width: 55px;
     height: 55px;
-    border-radius: 512px;
-    border: 3px solid var(--primary-color);
+    margin-left: 15px;
+    border-radius: 50%;
 }
 
+.profile-picture::after {
+    content: '';
+    width: 13px;
+    height: 13px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    border: 1px solid white;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
 .wraper {
     margin: 50px auto;
     width: 850px;

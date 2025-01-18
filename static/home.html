@@ -1,39 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Quicksand:wght@300..700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Quicksand:wght@300..700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="home.css">
     <link rel="stylesheet" href="style.global.css">
     <title>echoHub</title>
 </head>
+
 <body style="overflow-y: scroll;">
     <nav>
-        <a href="home.html" class="logo"><h1>echoHub</h1></a>
-        <a href="post-create.html"><button class="create"><i class="fa-regular fa-square-plus"></i> Create</button></a>
-        <a href="profile.html"><img class="profile-picture" src="Ava.png" alt="Profile Picture" loading="lazy"></a>
+        <a href="home.html" class="logo">
+            <h1>echoHub</h1>
+        </a>
+        <a href="post-create.html"><button class="create"><i class="fa-regular fa-square-plus"></i>&emsp;Create
+                Post</button></a>
+        <a href="profile.html" class="profile-picture">
+            <img src="./imgs/Ava.png" alt="Profile Picture" loading="lazy"></a>
         <a href="register.html"><button class="register"><i class="fa fa-user-plus"></i> Register</button></a>
         <a href="login.html"><button class="login">Login</button></a>
     </nav>
     <div class="wraper">
         <ul class="categories">
-            <li class="category"><input type="checkbox" id="category1"><label for="category1"><i class="fa fa-gamepad"></i>&nbsp;All</label></li>
-            <li class="category"><input type="checkbox" id="category2"><label for="category2"><i class="fa fa-gamepad"></i>&nbsp;My Posts</label></li>
-            <li class="category"><input type="checkbox" id="category3"><label for="category3"><i class="fa fa-gamepad"></i>&nbsp;Liked Posts</label></li>
-            <li class="category"><input type="checkbox" id="category4"><label for="category4"><i class="fa fa-gamepad"></i>&nbsp;Movies</label></li>
-            <li class="category"><input type="checkbox" id="category5"><label for="category5"><i class="fa fa-gamepad"></i>&nbsp;Music</label></li>
-            <li class="category"><input type="checkbox" id="category6"><label for="category6"><i class="fa fa-gamepad"></i>&nbsp;Gaming</label></li>
-            <li class="category"><input type="checkbox" id="category7"><label for="category7"><i class="fa fa-gamepad"></i>&nbsp;Gadgets</label></li>
-            <li class="category"><input type="checkbox" id="category8"><label for="category8"><i class="fa fa-gamepad"></i>&nbsp;Tech</label></li>
-            <li class="category"><input type="checkbox" id="category9"><label for="category9"><i class="fa fa-gamepad"></i>&nbsp;Books</label></li>
+            <li class="category"><input type="checkbox" id="category1"><label for="category1"><i
+                        class="fa fa-gamepad"></i>&nbsp;All</label></li>
+            <li class="category"><input type="checkbox" id="category2"><label for="category2"><i
+                        class="fa fa-gamepad"></i>&nbsp;My Posts</label></li>
+            <li class="category"><input type="checkbox" id="category3"><label for="category3"><i
+                        class="fa fa-gamepad"></i>&nbsp;Liked Posts</label></li>
+            <li class="category"><input type="checkbox" id="category4"><label for="category4"><i
+                        class="fa fa-gamepad"></i>&nbsp;Movies</label></li>
+            <li class="category"><input type="checkbox" id="category5"><label for="category5"><i
+                        class="fa fa-gamepad"></i>&nbsp;Music</label></li>
+            <li class="category"><input type="checkbox" id="category6"><label for="category6"><i
+                        class="fa fa-gamepad"></i>&nbsp;Gaming</label></li>
+            <li class="category"><input type="checkbox" id="category7"><label for="category7"><i
+                        class="fa fa-gamepad"></i>&nbsp;Gadgets</label></li>
+            <li class="category"><input type="checkbox" id="category8"><label for="category8"><i
+                        class="fa fa-gamepad"></i>&nbsp;Tech</label></li>
+            <li class="category"><input type="checkbox" id="category9"><label for="category9"><i
+                        class="fa fa-gamepad"></i>&nbsp;Books</label></li>
+            <li class="category"><input type="checkbox" id="category5"><label for="category5"><i
+                        class="fa fa-gamepad"></i>&nbsp;Music</label></li>
+            <li class="category"><input type="checkbox" id="category6"><label for="category6"><i
+                        class="fa fa-gamepad"></i>&nbsp;Gaming</label></li>
+            <li class="category"><input type="checkbox" id="category7"><label for="category7"><i
+                        class="fa fa-gamepad"></i>&nbsp;Gadgets</label></li>
+            <li class="category"><input type="checkbox" id="category8"><label for="category8"><i
+                        class="fa fa-gamepad"></i>&nbsp;Tech</label></li>
+            <li class="category"><input type="checkbox" id="category9"><label for="category9"><i
+                        class="fa fa-gamepad"></i>&nbsp;Books</label></li>
         </ul>
         <div id="post">
-            <div class="post-info-1"><img src="Ava.png" alt="User Avatar" loading="lazy"><h3>Username <br><span>Time</span></h3></div>
-            <div class="post-info-2"><h3>Post Title</h3><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur accusantium quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p></div>
+            <div class="post-info-1"><img src="./imgs/Ava.png" alt="User Avatar" loading="lazy">
+                <h3>Username <br><span>Time</span></h3>
+            </div>
+            <div class="post-info-2">
+                <h3>Post Title</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur accusantium
+                    quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
+            </div>
             <div class="post-info-3">
                 <div class="links">
                     <li><a href="">Health</a></li>
@@ -41,9 +74,9 @@
                     <li><a href="">Daily</a></li>
                 </div>
                 <div class="buttons">
-                    <button><i class="fa-regular fa-thumbs-up"></i> 12</button>
-                    <button><i class="fa-regular fa-thumbs-down"></i> 4123</button>
-                    <button onclick="OpenPopup()"><i class="fa-regular fa-comment"></i> 4</button>
+                    <button><img src="./imgs/like.png" alt="Like"> 12</button>
+                    <button><img src="./imgs/dislike.png" alt="Dislike"> 4123</button>
+                    <button><img src="./imgs/comment.png" alt="Comment"> 4</button>
                 </div>
             </div>
         </div>
@@ -51,12 +84,18 @@
     <div class="popup-backgroud">
         <div id="popup">
             <div class="wraper">
-                <div id="popup-content">
+                <div id="post">
                     <div id="popup-comment">
-                        <div class="comment-info-1"><img src="Ava.png" alt="User Avatar" loading="lazy"><h3>Username <br><span>Time</span></h3></div>
-                        <div><button onclick="ClosePopup()"><i class="close fa-solid fa-xmark"></i></button></div>
+                        <div class="comment-info-1"><img src="./imgs/Ava.png" alt="User Avatar" loading="lazy">
+                            <h3>Username <br><span>Time</span></h3>
+                        </div>
+                        <div><button><i class="close fa-solid fa-xmark"></i></button></div>
                     </div>
-                    <div class="post-info-2"><h3>Post Title</h3><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur accusantium quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p></div>
+                    <div class="post-info-2">
+                        <h3>Post Title</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
+                            accusantium quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
+                    </div>
                     <div class="post-info-3">
                         <div class="links">
                             <li><a href="">Health</a></li>
@@ -64,9 +103,9 @@
                             <li><a href="">Daily</a></li>
                         </div>
                         <div class="buttons">
-                            <button><i class="fa-regular fa-thumbs-up"></i> 12</button>
-                            <button><i class="fa-regular fa-thumbs-down"></i> 4123</button>
-                            <button><i class="fa-regular fa-comment"></i> 4</button>
+                            <button><img src="./imgs/like.png" alt="Like"> 12</button>
+                            <button><img src="./imgs/dislike.png" alt="Dislike"> 4123</button>
+                            <button><img src="./imgs/comment.png" alt="Comment"> 4</button>
                         </div>
                     </div>
                 </div>
@@ -76,38 +115,33 @@
                     <div class="comment">
                         <div id="popup-comment">
                             <div class="comment-info-2">
-                                <img src="Ava.png" alt="User Avatar" loading="lazy">
+                                <img src="./imgs/Ava.png" alt="User Avatar" loading="lazy">
                                 <h3>CommenterUsername <br><span>2 hours ago</span></h3>
                             </div>
                             <div class="buttons">
-                                <button><i class="fa-regular fa-thumbs-up"></i> 5</button>
-                                <button><i class="fa-regular fa-thumbs-down"></i> 1</button>
+                                <button><img src="./imgs/like.png" alt="Like"> 12</button>
+                                <button><img src="./imgs/dislike.png" alt="Dislike"> 4123</button>
                             </div>
                         </div>
                         <div class="comment-info-2">
-                            <p>This is an example comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam, quos.</p>
+                            <p>This is an example comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                Quisquam, quos.</p>
                         </div>
                     </div>
                 </div>
                 <div class="user-comment">
-                    <div class="comment-info-1"><img src="Ava.png" alt="User Avatar" loading="lazy"><h3>Username</h3></div>
+                    <div class="comment-info-1"><img src="./imgs/Ava.png" alt="User Avatar" loading="lazy">
+                        <h3>Username</h3>
+                    </div>
                     <div class="comment-group">
-                        <textarea placeholder="Comment..." type="text" id="comment-field"></textarea>
-                        <button class="new-comment"><span><i class="fas fa-paper-plane"></i> Comment</span></button>
+                        <textarea placeholder="Type a comment..." type="text" id="comment-field"></textarea>
+                        <button class="new-comment"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        function OpenPopup() {
-            document.getElementById("popup").style.display = "block";
-            document.querySelectorAll("#post").forEach(post => post.style.display = "none");
-        }
-        function ClosePopup() {
-            document.getElementById("popup").style.display = "none";
-            document.querySelectorAll("#post").forEach(post => post.style.display = "flex");
-        }
-    </script>
+    <script src="/scripts/main.js" type="module"></script>
 </body>
+
 </html>
