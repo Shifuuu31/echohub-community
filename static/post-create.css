@@ -52,14 +52,17 @@ li.category {
 }
 
 .post-inputs input[type="text"] {
-  width: 550px;
+  
+  width: 700px;
   padding: 16px;
   border: 1px solid var(--border-color);
-  border-radius: 16px;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  border-radius: 512px;
 }
 
 .post-inputs textarea {
-  width: 550px;
+  width: 700px;
   padding: 16px;
   border: 1px solid var(--border-color);
   border-radius: 16px;
