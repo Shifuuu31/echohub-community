@@ -28,9 +28,7 @@ type PostModel struct {
 	DB *sql.DB
 }
 
-func (PostModel *PostModel) GetCategorys() ([]Categorie, error) {
-	Categories := []Categorie{}
-
+func (PostModel *PostModel) GetCategorys() (Categories []Categorie, err error) {
 	rowsDB, err := PostModel.DB.Query("SELECT id,categorie_name FROM Categories")
 	if err != nil {
 		return nil, err
