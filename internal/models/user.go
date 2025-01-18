@@ -22,21 +22,21 @@ type UserModel struct {
 	DB *sql.DB
 }
 
-func (user *UserModel) FindUserByID(userID int) (foundUser User, err error) {
-    selectStmt := `	SELECT id, username, email, hashed_password, creation_date
-        			FROM UserTable
-        			WHERE id = ?`
-    err = user.DB.QueryRow(selectStmt, userID).Scan(&foundUser.ID, &foundUser.UserName, &foundUser.Email, &foundUser.HashedPassword, &foundUser.CreationDate)
+// func (user *UserModel) FindUserByID(userID int) (foundUser User, err error) {
+//     selectStmt := `	SELECT id, username, email, hashed_password, creation_date
+//         			FROM UserTable
+//         			WHERE id = ?`
+//     err = user.DB.QueryRow(selectStmt, userID).Scan(&foundUser.ID, &foundUser.UserName, &foundUser.Email, &foundUser.HashedPassword, &foundUser.CreationDate)
 
-    if err != nil {
-        if err == sql.ErrNoRows {
-            return foundUser, errors.New("user not found")
-        }
-        return foundUser, err
-    }
+//     if err != nil {
+//         if err == sql.ErrNoRows {
+//             return foundUser, errors.New("user not found")
+//         }
+//         return foundUser, err
+//     }
 	
-    return foundUser, nil
-}
+//     return foundUser, nil
+// }
 
 func (user *UserModel) ValidateUserCreadentials(username, password string) (UserID int, err error) {
 	username = strings.TrimSpace(username)
@@ -45,11 +45,11 @@ func (user *UserModel) ValidateUserCreadentials(username, password string) (User
 					FROM UserTable WHERE username = ?`
 	err = user.DB.QueryRow(selectStmt, username).Scan(&UserID, &username, &hashedPassword)
 	if err != nil {
-		return -1, errors.New("wrong username")
+		return -1, errors.New("invalid username")
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 	if err != nil {
-		return -1, errors.New("wrong password")
+		return -1, errors.New("invalid password")
 	}
 
 	fmt.Println(UserID, username, password, hashedPassword)

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EchoHub Community</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <style>
+    body {
+        margin: 0;
+        font-family: 'Roboto', sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
+      }
+    
+      /* Header */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 50px;
+        background-color: #fff;
+        box-shadow: 0 2px 2px rgba(148, 148, 148, 0.1);
+      }
+    
+      .logo {
+        margin-left: 70px;
+        align-self: calc(50% - 12px);
+        font-size: 24px;
+        font-weight: 700;
+        color: #6b47dc;
+      }
+    
+      .buttons {
+        display: flex;
+        gap: 15px;
+      }
+    
+      .button {
+        font: 'Roboto';
+        padding: 10px 20px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-weight: 500;
+        color: #6b47dc;
+        background-color: #EAEAEA;
+        transition: all 0.3s;
+      }
+    
+      .button-back {
+        margin-top: 30px;
+          font-size: 28px;
+          font-family: 'Roboto';
+    
+        font: 'Roboto';
+        padding: 10px 20px;
+        border-radius: 512px;
+        text-decoration: none;
+        font-weight: 500;
+        color: #6b47dc;
+        background-color: #EAEAEA;
+        transition: all 0.1s;
+      }
+      .button:hover {
+        background-color: #8552FF;
+        color: #fff;
+      }
+      .button-back:hover {
+        background-color: #8552FF;
+        color: #fff;
+      }
+    
+      .button.register {
+        font-style: normal;
+        background-color: #8552FF;
+        color: #fff;
+      }
+    
+      main {
+          display: flex; /* Enable Flexbox */
+    flex-direction: column; /* Arrange items vertically (optional if you only have one item) */
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    text-align: center; /* Center text (optional) */
+      }
+    
+      h1 {
+          margin-bottom: 50px;
+      font-family: 'Bagel Fat One', sans-serif; /* Correct font-family name */
+      font-size: 150px;
+      font-weight: 500;
+      color: #8552FF;
+      letter-spacing: 0.07em;
+    
+    }
+    
+    h2 {
+      margin-top: -10px;
+      align-items: center;
+    margin-top: -60px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    color: #8552FF;
+    font-size: 40px;
+    line-height: 47px;
+    letter-spacing: 0.07em;
+    }
+    
+    p {
+      margin-top: -10px;
+      font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: 0.03em;
+    }
+    
+      .icon {
+    width: 15px;
+    height: 15px;
+    margin-right: 7px;
+      }
+    
+      
+      @media screen and (min-width: 769px) and (max-width: 1024px) {
+        header {
+          padding: 15px 30px;
+        }
+    
+        .logo {
+          margin-left: 20px;
+        }
+    
+        main {
+          margin: 30px;
+          padding: 0px;
+          gap: 20px;
+        }
+    
+        .form-section {
+          margin-left: 40px;
+          max-width: 45%;
+        }
+    
+        .illustration {
+          margin: 0;
+          width: 45%;
+        }
+    
+        .illustration img {
+          margin-left: 0;
+          width: 100%;
+        }
+    
+        .form-section h1 {
+          font-size: 26px;
+        }
+    
+        .form-section p {
+          font-size: 16px;
+          line-height: 26px;
+        }
+    
+        .input-container input {
+          padding: 10px 15px;
+        }
+      }
+    
+      @media screen and (max-width: 768px) {
+        header {
+          padding: 10px 20px;
+        }
+    
+        .logo {
+          margin-left: 0;
+        }
+    
+        main {
+          margin: 10px;
+          padding: 0px;
+          flex-direction: column;
+        }
+    
+        .form-section {
+          margin-left: 0;
+          max-width: 100%;
+          padding: 0 20px;
+        }
+    
+        .illustration {
+          display: none;
+        }
+    
+        .form-section h1 {
+          font-size: 24px;
+          text-align: center;
+        }
+    
+        .form-section p {
+          font-size: 16px;
+          text-align: center;
+          justify-content: center;
+        }
+    
+        .buttons {
+          gap: 10px;
+        }
+    
+        .button {
+          padding: 8px 15px;
+          font-size: 14px;
+        }
+      }
+    
+      @media screen and (max-width: 480px) {
+        header {
+          padding: 10px;
+        }
+    
+        .logo img {
+          max-width: 120px;
+        }
+    
+        .form-section {
+          padding: 0 15px;
+        }
+    
+        .button {
+          padding: 6px 12px;
+          font-size: 13px;
+        }
+    
+        .icon {
+          width: 12px;
+          height: 12px;
+        }
+      }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <!-- Logo -->
+    <div class="logo">
+      <a href="./home.html">
+        <img src="C:\Users\Rachid\OneDrive\Desktop\echoHub Logo_SM 1.png">
+    </a>
+    </div>
+    <!-- Buttons -->
+    <div class="buttons">
+      <a href="./register.html" class="button register"><img src="C:\Users\Rachid\OneDrive\Desktop\user-plus.png" alt="Register Icon" class="icon" />Register</a>
+      <a href="./login.html" class="button">Login</a>
+    </div>
+  </header>
+
+  <main>
+    <h1>{{.StatusCode}}</h1>
+    <h2>{{.Message}}</h2>
+    <p>{{.SubMessage}}</p>
+    <!-- Back Button -->
+    <a href="/home.html" class="button-back">← Back to Posts</a>
+  </main>
+</body>
+</html>
