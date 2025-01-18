@@ -56,14 +56,14 @@ nav {
 }
 
 .register {
-        margin: 0 15px;
-        padding: 11px 20px;
-        color: white;
-        font-weight: 600;
-        background-color: var(--primary-color);
-        border: transparent;
-        border-radius: 512px;
-    }
+    margin: 0 15px;
+    padding: 11px 20px;
+    color: white;
+    font-weight: 600;
+    background-color: var(--primary-color);
+    border: transparent;
+    border-radius: 512px;
+}
 
 .register:hover,
 .create:hover,
@@ -71,10 +71,7 @@ nav {
     background-color: var(--hover-color);
 }
 
-
 .login {
-    /* width: auto;
-    height: auto; */
     margin: 0 5px;
     padding: 11px 20px;
     color: var(--primary-color);
@@ -116,29 +113,116 @@ nav {
     border-radius: 512px;
 }
 
-.profile-picture {
+.profile-dropdown {
     position: relative;
     display: inline-block;
 }
 
-.profile-picture img {
+.profile-picture-container {
+    position: relative;
     width: 55px;
     height: 55px;
-    margin-left: 15px;
-    border-radius: 50%;
 }
 
-.profile-picture::after {
+.profile-picture {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-picture:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.profile-picture-container::after {
     content: '';
     width: 13px;
     height: 13px;
     background-color: var(--primary-color);
     border-radius: 50%;
-    border: 1px solid white;
+    border: 2px solid white;
     position: absolute;
     top: 0;
     right: 0;
+    transform: translate(25%, -25%);
+    z-index: 1;
 }
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    display: none;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.profile-dropdown:hover .dropdown {
+    display: block;
+}
+
+.dropdown img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: block;
+    margin: 20px auto 10px;
+    border: 3px solid var(--primary-color);
+}
+
+.dropdown h2 {
+    font-size: 16px;
+    text-align: center;
+    margin: 0 0 15px;
+    color: #333;
+    font-weight: 600;
+}
+
+.dropdown h2 span {
+    font-size: 12px;
+    color: #999;
+    display: block;
+    margin-top: 5px;
+    font-weight: 400;
+}
+
+.dropdown hr {
+    border: 0;
+    height: 1px;
+    background-color: #ddd;
+    margin: 10px 0;
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: #f8f9fa;
+    color: #000;
+}
+
+.dropdown-content a:last-child {
+    color: #ff4d4f;
+}
+
+.dropdown-content a:last-child:hover {
+    background-color: #ff4d4f;
+    color: #fff;
+}
+
 .wraper {
     margin: 50px auto;
     width: 850px;
@@ -162,7 +246,7 @@ nav {
     .login,
     .register,
     .create,
-    .profile-picture {
+    .profile-picture-container {
         display: none;
     }
 
@@ -239,7 +323,7 @@ nav {
         margin: 0 5px;
     }
 
-    .profile-picture {
+    .profile-picture-container {
         width: 40px;
         height: 40px;
     }

@@ -63,7 +63,7 @@ li.category {
 
 .post-inputs textarea {
   width: 700px;
-  height: 350px;
+  height: 250px;
   padding: 16px;
   border: 1px solid var(--border-color);
   border-radius: 16px;
