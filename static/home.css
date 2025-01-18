@@ -72,6 +72,10 @@ hr {
     color: var(--secondary-bg-color);
     border-radius: 50px;
 }
+.comments-section {
+    height: 35vh;
+    overflow-y: auto;
+}
 
 .post-info-1,
 .comment-info-1,
