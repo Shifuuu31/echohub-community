@@ -3,7 +3,6 @@ ul.categories {
     justify-content: start;
     overflow-x: auto;
     scrollbar-width: none;
-    margin-bottom: 75px;
     padding: 10px 0;
 }
 
@@ -55,7 +54,7 @@ li.category label {
     border-radius: 30px;
     box-shadow: 0px 0px 5px 0px var(--border-color);
     padding: 25px;
-    margin: 50px 0;
+    margin: 30px 0;
 }
 
 .seperator {
@@ -63,7 +62,7 @@ li.category label {
     color: var(--secondary-color);
     font-size: 24px;
     font-weight: 600;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 }
 
 hr {
@@ -72,8 +71,9 @@ hr {
     color: var(--secondary-bg-color);
     border-radius: 50px;
 }
+
 .comments-section {
-    height: 35vh;
+    height: 30vh;
     overflow-y: auto;
 }
 
@@ -192,7 +192,7 @@ hr {
     border-radius: 30px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     z-index: 101;
-    padding: 25px;
+    padding: 0px 25px;
 }
 
 .close {
@@ -205,11 +205,11 @@ hr {
     background-color: white;
     justify-content: center;
     flex-direction: column;
+    width: 98%;
     border-radius: 30px;
     box-shadow: 0px 0px 5px 0px var(--border-color);
     background: linear-gradient(to right, var(--hover-color) 7px, transparent 7px) no-repeat left center / 7px 100%;
-    padding: 0px 30px;
-    padding-bottom: 25px;
+    padding: 0px 25px 25px 25px;
     margin: 25px 0;
 }
 
@@ -261,7 +261,7 @@ hr {
     resize: none;
     width: 100%;
     height: 75px;
-    margin: 25px 0;
+    margin-top: 25px;
     padding: 15px;
     padding-bottom: 50px;
     box-sizing: border-box;
@@ -271,7 +271,7 @@ hr {
 .new-comment {
     position: absolute;
     right: 0px;
-    bottom: 35px;
+    bottom: 10px;
     background-color: var(--primary-color);
     color: white;
     border: none;
