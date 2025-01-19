@@ -16,7 +16,7 @@ li.category {
     margin: 0 5px;
 }
 
-.category input[type=checkbox]+label {
+.category input[type=radio]+label {
     background-color: var(--secondary-bg-color);
     color: var(--secondary-color);
     font-size: 18px;
@@ -31,11 +31,11 @@ li.category {
     display: inline-block;
 }
 
-.category input[type=checkbox] {
+.category input[type=radio] {
     display: none;
 }
 
-.category input[type=checkbox]:checked+label {
+.category input[type=radio]:checked+label {
     color: white;
     background-color: var(--primary-color);
 }
@@ -296,7 +296,7 @@ hr {
         padding: 10px 10px;
     }
 
-    .category input[type=checkbox]+label {
+    .category input[type=radio]+label {
         padding: 5px 12px;
         font-size: 14px;
     }
