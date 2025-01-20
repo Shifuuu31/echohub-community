@@ -16,10 +16,15 @@ li.category {
     margin: 0 5px;
 }
 
+.categories img {
+    width: 16px;
+    height: 16px;
+    vertical-align: center;
+}
+
 .category input[type=radio]+label {
     background-color: var(--secondary-bg-color);
     color: var(--secondary-color);
-    font-size: 18px;
     border: transparent;
     padding: 10px 20px;
     border-radius: 512px;
@@ -28,7 +33,10 @@ li.category {
     white-space: nowrap;
     text-overflow: ellipsis;
     max-width: 200px;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 }
 
 .category input[type=radio] {
@@ -40,10 +48,9 @@ li.category {
     background-color: var(--primary-color);
 }
 
-li.category label {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.category input[type=radio]:checked+label img {
+    transition: 0s;
+    filter: brightness(0) invert(1);
 }
 
 #post {

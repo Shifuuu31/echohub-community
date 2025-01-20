@@ -12,7 +12,7 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    transition: 0.5s;
+    /* transition: 0.5s; */
     font-family: "", serif;
 }
 
@@ -104,6 +104,15 @@ nav {
     background-color: var(--primary-color);
     border: transparent;
     border-radius: 512px;
+}
+
+.create img,
+.update img,
+.register img {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    vertical-align: text-top;
 }
 
 .new-comment {
