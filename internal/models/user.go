@@ -22,21 +22,21 @@ type UserModel struct {
 	DB *sql.DB
 }
 
-// func (user *UserModel) FindUserByID(userID int) (foundUser User, err error) {
-//     selectStmt := `	SELECT id, username, email, hashed_password, creation_date
-//         			FROM UserTable
-//         			WHERE id = ?`
-//     err = user.DB.QueryRow(selectStmt, userID).Scan(&foundUser.ID, &foundUser.UserName, &foundUser.Email, &foundUser.HashedPassword, &foundUser.CreationDate)
+func (user *UserModel) FindUserByID(userID int) (foundUser User, err error) {
+    selectStmt := `	SELECT id, username, email, hashed_password, creation_date
+        			FROM UserTable
+        			WHERE id = ?`
+    err = user.DB.QueryRow(selectStmt, userID).Scan(&foundUser.ID, &foundUser.UserName, &foundUser.Email, &foundUser.HashedPassword, &foundUser.CreationDate)
 
-//     if err != nil {
-//         if err == sql.ErrNoRows {
-//             return foundUser, errors.New("user not found")
-//         }
-//         return foundUser, err
-//     }
+    if err != nil {
+        if err == sql.ErrNoRows {
+            return foundUser, errors.New("user not found")
+        }
+        return foundUser, err
+    }
 	
-//     return foundUser, nil
-// }
+    return foundUser, nil
+}
 
 func (user *UserModel) ValidateUserCreadentials(username, password string) (UserID int, err error) {
 	username = strings.TrimSpace(username)

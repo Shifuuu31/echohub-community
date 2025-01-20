@@ -12,14 +12,12 @@ func AuthMiddleware(sessionModel *models.SessionModel, next http.Handler) http.H
 		sessionToken, err := r.Cookie("userSession")
 		if err != nil {
 			models.Error{StatusCode: http.StatusUnauthorized, Message: "Unauthorized", SubMessage: "Invalid username or password"}.RenderError(w)
-			// http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
 
 		userID, err := sessionModel.ValidateSession(sessionToken.Value)
 		if err != nil {
 			models.Error{StatusCode: http.StatusUnauthorized, Message: "Unauthorized", SubMessage: "Invalid username or password"}.RenderError(w)
-			// http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
 

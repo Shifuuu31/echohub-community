@@ -8,10 +8,10 @@ import (
 var Template = template.Must(template.ParseGlob("./cmd/web/templates/*.html"))
 
 type Error struct {
-	
 	StatusCode int
 	Message    string
 	SubMessage string
+	// Type string
 }
 
 func (err Error) RenderError(w http.ResponseWriter) {

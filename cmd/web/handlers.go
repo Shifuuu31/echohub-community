@@ -16,18 +16,18 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 }
 
 func (webForum *WebApp) LoginPage(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/login" {
-		models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
-		return
-	}
+	// if r.URL.Path != "/login" {
+	// 	models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
+	// 	return
+	// }
 	models.RenderPage(w, "login.html", nil)
 }
 
 func (webForum *WebApp) UserLogin(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/login" {
-		models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
-		return
-	}
+	// if r.URL.Path != "/login" {
+	// 	models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
+	// 	return
+	// }
 
 	err := r.ParseForm()
 	if err != nil {
@@ -65,7 +65,7 @@ func (webForum *WebApp) SetCookie(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println(newSession)
 
-	newCookie, err := webForum.Sessions.InsertSession(newSession)
+	newCookie, err := webForum.Sessions.InsertOrUpdateSession(newSession)
 	if err != nil {
 		models.Error{StatusCode: http.StatusInternalServerError, Message: "Internal Server Error", SubMessage: "Cannot insert new session"}.RenderError(w)
 
@@ -79,19 +79,19 @@ func (webForum *WebApp) SetCookie(w http.ResponseWriter, r *http.Request) {
 }
 
 func (webForum *WebApp) RegisterPage(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/register" {
-		models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
-		return
+	// if r.URL.Path != "/register" {
+	// 	models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
+	// 	return
 
-	}
+	// }
 	models.RenderPage(w, "register.html", nil)
 }
 
 func (webForum *WebApp) UserRegister(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/register" {
-		models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
-		return
-	}
+	// if r.URL.Path != "/register" {
+	// 	models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
+	// 	return
+	// }
 
 	err := r.ParseForm()
 	if err != nil {

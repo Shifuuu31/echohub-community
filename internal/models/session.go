@@ -34,9 +34,12 @@ func (session *SessionModel) GenerateNewSession(userID int) (newSession Session,
 	return newSession, err
 }
 
-func (session *SessionModel) InsertSession(newSession Session) (newCookie http.Cookie, err error) {
-	insertStmt := `INSERT INTO UserSessions (user_id, session_token, expiration_date) VALUES (?, ?, ?)`
-	_, err = session.DB.Exec(insertStmt, newSession.UserID, newSession.Token, newSession.ExpirationDate)
+func (session *SessionModel) InsertOrUpdateSession(newSession Session) (newCookie http.Cookie, err error) {
+	insertOrUpdateStmt := `	INSERT INTO UserSessions (user_id, session_token, expiration_date) VALUES (?, ?, ?)
+							ON CONFLICT(user_id) 
+							DO UPDATE SET session_token = excluded.session_token, expiration_date = excluded.expiration_date`
+
+	_, err = session.DB.Exec(insertOrUpdateStmt, newSession.UserID, newSession.Token, newSession.ExpirationDate)
 	if err != nil {
 		return newCookie, err
 	}
@@ -76,20 +79,20 @@ func (session *SessionModel) ValidateSession(sessionToken string) (userID int, e
 }
 
 func (session *SessionModel) DeleteSession(sessionToken string) error {
-    deleteStmt := `	DELETE FROM UserSessions 
+	deleteStmt := `	DELETE FROM UserSessions 
 					WHERE session_token = ?`
-    result, err := session.DB.Exec(deleteStmt, sessionToken)
-    if err != nil {
-        return err
-    }
+	result, err := session.DB.Exec(deleteStmt, sessionToken)
+	if err != nil {
+		return err
+	}
 
-    rowsAffected, err := result.RowsAffected() // Check if the session was already deleted
-    if err != nil {
-        return err
-    }
-    if rowsAffected == 0 {
-        return errors.New("session not found")
-    }
+	rowsAffected, err := result.RowsAffected() // Check if the session was already deleted
+	if err != nil {
+		return err
+	}
+	if rowsAffected == 0 {
+		return errors.New("session not found")
+	}
 
-    return nil
+	return nil
 }
