@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/assets/styles/style.global.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="shortcut icon" href="/assets/img/logo.png" type="image/x-icon">
     <link
         href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Quicksand:wght@300..700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
         rel="stylesheet">
@@ -23,9 +24,9 @@
             <h1>echoHub</h1>
         </a>
         <a href="/post"><button class="create"> <i class="fa-regular fa-square-plus"></i> Create</button></a>
-        <a href="profile.html"><img class="profile-picture" src="/assets/img/user.png"></a>
-        <a href="register.html"><button class="register"><i class="fa fa-user-plus"></i> Register</button></a>
-        <a href="login.html"><button class="login">login</button></a>
+        <a href="/"><img class="profile-picture" src="/assets/img/user.png"></a>
+        <!--<a href="register.html"><button class="register"><i class="fa fa-user-plus"></i> Register</button></a>
+        <a href="login.html"><button class="login">login</button></a> -->
     </nav>
     <div class="wraper">
         <ul class="categories">
@@ -33,7 +34,7 @@
             {{range .Categories}}
             <li class="category">
                 <input type="checkbox" id="category{{.ID}}">
-                <label for="category{{.ID}}"><i class="fa fa-gamepad"></i>&nbsp;{{.Categorie_name}}</label>
+                <label for="category{{.ID}}"><i class="fa fa-gamepad"></i>&nbsp;{{.CategorieName}}</label>
             </li>
             {{end}}
             {{end}}
@@ -53,7 +54,7 @@
             <div class="post-info-3">
                 <div class="links">
                     {{range .Categories_Posts}}
-                    <li><a href="">{{.}}</a></li>
+                    <li><a>{{.}}</a></li>
                     {{end}}
                 </div>
                 <div class="buttons">

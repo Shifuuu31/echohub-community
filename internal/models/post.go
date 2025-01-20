@@ -14,8 +14,8 @@ type Post struct {
 }
 
 type Categorie struct {
-	ID             int
-	Categorie_name string
+	ID            int
+	CategorieName string
 }
 
 type CategoriePost struct {
@@ -37,7 +37,7 @@ func (PostModel *PostModel) GetCategorys() (Categories []Categorie, err error) {
 
 	for rowsDB.Next() {
 		Categorie := Categorie{}
-		err := rowsDB.Scan(&Categorie.ID, &Categorie.Categorie_name)
+		err := rowsDB.Scan(&Categorie.ID, &Categorie.CategorieName)
 		if err != nil {
 			return nil, err
 		}
@@ -101,7 +101,7 @@ func (PostModel *PostModel) GetIdsCategories(categories []string) ([]int, error)
 		defer cmd.Close()
 
 		for cmd.Next() {
-			err = cmd.Scan(&categorie.ID, &categorie.Categorie_name)
+			err = cmd.Scan(&categorie.ID, &categorie.CategorieName)
 			if err != nil {
 				return nil, err
 			}
@@ -239,7 +239,7 @@ func (PostModel *PostModel) UpdatePost(idPost int) (string, string, []string, er
 	for i := 0; i < len(categorys); i++ {
 		for j := 0; j < len(categories); j++ {
 			if categorys[i].ID == categories[j].categorie_id {
-				selected = append(selected, categorys[i].Categorie_name)
+				selected = append(selected, categorys[i].CategorieName)
 			}
 		}
 	}
@@ -247,8 +247,23 @@ func (PostModel *PostModel) UpdatePost(idPost int) (string, string, []string, er
 	return post.Title, post.Post_content, selected, nil
 }
 
-func (PostModel *PostModel) EditPost(idPost int, title string, content string) (err error) {
-	_, err = PostModel.DB.Exec("UPDATE PostTable SET title = $1, content = $2 WHERE ID = $3", title, content, idPost)
+func (PostModel *PostModel) EditPost(idPost int, title string, content string, categories []string) (err error) {
+	_, err = PostModel.DB.Exec("UPDATE PostTable SET title = $1, post_content = $2 WHERE ID = $3", title, content, idPost)
+	if err != nil {
+		return err
+	}
+
+	_, err = PostModel.DB.Exec("DELETE FROM Categories_Posts WHERE post_id == $1", idPost)
+	if err != nil {
+		return err
+	}
+
+	idsCategoreis, err := PostModel.GetIdsCategories(categories)
+	if err != nil {
+		return err
+	}
+
+	err = PostModel.AddCategoriePost(idPost, idsCategoreis)
 	if err != nil {
 		return err
 	}

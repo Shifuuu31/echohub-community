@@ -42,7 +42,27 @@ CREATE TABLE IF NOT EXISTS Categories (
 INSERT INTO
     Categories (categorie_name)
 VALUES
-    ('All') ('My Posts') ('Liked Posts') ('AI') ('Anime') ('Arts') ('Business') ('Career') ('Culture') ('DIY') ('Education') ('Fashion') ('Games') ('Memes') ('Movies & TV') ('Music') ('News') ('Podcasts') ("Q&A's") ('Science') ('Software & Apps') ('Sports') ('Technology') ('Travel');
+    ('AI'),
+    ('Anime'),
+    ('Arts'),
+    ('Business'),
+    ('Career'),
+    ('Culture'),
+    ('DIY'),
+    ('Education'),
+    ('Fashion'),
+    ('Games'),
+    ('Memes'),
+    ('Movies & TV'),
+    ('Music'),
+    ('News'),
+    ('Podcasts'),
+    ("Q&A's"),
+    ('Science'),
+    ('Software & Apps'),
+    ('Sports'),
+    ('Technology'),
+    ('Travel');
 
 CREATE TABLE IF NOT EXISTS Categories_Posts(
     id INTEGER PRIMARY KEY AUTOINCREMENT,

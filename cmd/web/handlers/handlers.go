@@ -84,13 +84,13 @@ func (webForum *WebApp) CreatePostPageHandler(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	categories, err := webForum.Post.GetCategorys()
+	Categories, err := webForum.Post.GetCategorys()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	if err := Template.ExecuteTemplate(w, "post-create.html", categories); err != nil {
+	if err := Template.ExecuteTemplate(w, "post-create.html", Categories); err != nil {
 		http.Error(w, "Error loading HomePage", http.StatusInternalServerError)
 		return
 	}
@@ -183,21 +183,22 @@ func (WebForum *WebApp) UpdatePostPageHandler(w http.ResponseWriter, r *http.Req
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 	data := struct {
-		Title              string
-		Content            string
-		Categorys          []models.Categorie
-		Categorys_selected []string
+		ID                  int
+		Title               string
+		Content             string
+		Categories          []models.Categorie // Kept original spelling
+		Categories_selected []string           // Kept snake_case naming
 	}{
-		Title:              title,
-		Content:            content,
-		Categorys_selected: selected_categorys,
-		Categorys:          Categorys,
+		ID:                  id,
+		Title:               title,
+		Content:             content,
+		Categories_selected: selected_categorys, // Kept original variable name
+		Categories:          Categorys,          // Kept original variable name
 	}
 
 	if err := Template.ExecuteTemplate(w, "post-update.html", data); err != nil {
-		http.Error(w, "Error loading UpdatePage", http.StatusInternalServerError)
+		http.Error(w, "Error loading UpdatePage"+err.Error(), http.StatusInternalServerError)
 	}
 }
 
@@ -216,13 +217,17 @@ func (WebApp *WebApp) PostUpdateHandler(w http.ResponseWriter, r *http.Request) 
 		Post_content: r.FormValue("content"),
 	}
 
+	categoriesForm = r.Form["categories[]"]
+
 	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
 	if err != nil {
 		http.Error(w, "invalid id", http.StatusInternalServerError)
 		return
 	}
 
-	err = WebApp.Post.EditPost(id, New.Title, New.Post_content)
+	
+
+	err = WebApp.Post.EditPost(id, New.Title, New.Post_content,categoriesForm)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

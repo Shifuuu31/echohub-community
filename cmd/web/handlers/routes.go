@@ -20,7 +20,7 @@ func (WebForum *WebApp) Routes() http.Handler {
 	forum.HandleFunc("POST /post/create", WebForum.NewPostCreationHandler)
 	forum.HandleFunc("GET /post/delete", WebForum.DeletePostHandler)
 	forum.HandleFunc("GET /post/update", WebForum.UpdatePostPageHandler)
-	forum.HandleFunc("POST /post/update", WebForum.PostUpdateHandler)
+	forum.HandleFunc("POST /post/update/edit", WebForum.PostUpdateHandler)
 
 	return forum
 }

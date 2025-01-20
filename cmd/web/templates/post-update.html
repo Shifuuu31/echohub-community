@@ -27,13 +27,14 @@
         <a href="register.html"><button class="register"><i class="fa fa-user-plus"></i> Register</button></a>
         <a href="login.html"><button class="login">login</button></a>
     </nav>
-    <form class="wraper wraper-extra" action="/post/update/edit" method="POST">
+    <form class="wraper wraper-extra" action="/post/update/edit?ID={{.ID}}" method="POST">
         <ul class="categories">
-            {{range .Categorys}}
+            {{range .Categories}}
             <li class="category">
-                <input type="checkbox" id="category_{{.Categorie_name}}" name="categories[]"
-                    value="{{.Categorie_name}}">
-                <label for="category_{{.Categorie_name}}"><i class="fa fa-gamepad"></i>&nbsp;{{.Categorie_name}}</label>
+                <input type="checkbox" id="category_{{.CategorieName}}" name="categories[]" value="{{.CategorieName}}">
+                <label for="category_{{.CategorieName}}">
+                    <i class="fa fa-gamepad"></i>&nbsp;{{.CategorieName}}
+                </label>
             </li>
             {{end}}
         </ul>
@@ -43,6 +44,18 @@
             <button type="submit"><i class="fas fa-paper-plane"></i> Update</button>
         </div>
         </div>
+
+
+        <script>
+            const selected = {{.Categories_selected }};
+            const categories = document.querySelectorAll('[id^="category_"]');
+            categories.forEach(category => {
+                if (selected.includes(category.value)) {
+                    category.setAttribute("checked", "true")
+                }
+            });
+        </script>
+
 </body>
 
 </html>

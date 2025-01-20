@@ -31,9 +31,10 @@
         <ul class="categories">
             {{range .}}
             <li class="category">
-                <input type="checkbox" id="category_{{.Categorie_name}}" name="categories[]"
-                    value="{{.Categorie_name}}">
-                <label for="category_{{.Categorie_name}}"><i class="fa fa-gamepad"></i>&nbsp;{{.Categorie_name}}</label>
+                <input type="checkbox" id="category_{{.CategorieName}}" name="categories[]" value="{{.CategorieName}}">
+                <label for="category_{{.CategorieName}}">
+                    <i class="fa fa-gamepad"></i>&nbsp;{{.CategorieName}}
+                </label>
             </li>
             {{end}}
         </ul>
