@@ -1,84 +1,3 @@
-ul.categories {
-    display: flex;
-    justify-content: start;
-    overflow-x: auto;
-    scrollbar-width: none;
-    padding: 10px 0;
-}
-
-ul.categories::-webkit-scrollbar {
-    display: none;
-}
-
-li.category {
-    list-style: none;
-    flex-shrink: 0;
-    margin: 0 5px;
-}
-
-.categories img {
-    width: 16px;
-    height: 16px;
-    vertical-align: center;
-}
-
-.category input[type=radio]+label {
-    background-color: var(--secondary-bg-color);
-    color: var(--secondary-color);
-    border: transparent;
-    padding: 10px 20px;
-    border-radius: 512px;
-    cursor: pointer;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    max-width: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-}
-
-.category input[type=radio] {
-    display: none;
-}
-
-.category input[type=radio]:checked+label {
-    color: white;
-    background-color: var(--primary-color);
-}
-
-.category input[type=radio]:checked+label img {
-    transition: 0s;
-    filter: brightness(0) invert(1);
-}
-
-#post {
-    display: flex;
-    background-color: white;
-    justify-content: center;
-    flex-direction: column;
-    border-radius: 30px;
-    box-shadow: 0px 0px 5px 0px var(--border-color);
-    padding: 25px;
-    margin: 30px 0;
-}
-
-.seperator {
-    text-align: center;
-    color: var(--secondary-color);
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 15px;
-}
-
-hr {
-    width: 40%;
-    margin: auto;
-    color: var(--secondary-bg-color);
-    border-radius: 50px;
-}
-
 .comments-section {
     height: 30vh;
     overflow-y: auto;
@@ -253,7 +172,7 @@ hr {
 
 .user-comment {
     padding: 0px 15px;
-    margin: 10px 0;
+    margin-top: 30px;
 }
 
 .comment-group {
@@ -268,9 +187,8 @@ hr {
     resize: none;
     width: 100%;
     height: 75px;
-    margin-top: 25px;
+    margin-top: 10px;
     padding: 15px;
-    padding-bottom: 50px;
     box-sizing: border-box;
     overflow: hidden;
 }
@@ -296,76 +214,4 @@ hr {
 
 .new-comment:active {
     transform: translate(0px, 2px);
-}
-
-@media (max-width: 610px) {
-    .post {
-        padding: 10px 10px;
-    }
-
-    .category input[type=radio]+label {
-        padding: 5px 12px;
-        font-size: 14px;
-    }
-
-    .post-info-3 {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .post-info-3 .links,
-    .post-info-3 .buttons {
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
-    }
-
-    .post-info-3 a {
-        font-size: 14px;
-        padding: 5px 12px;
-    }
-
-    .comment {
-        padding: 15px;
-    }
-
-    .comment-info-1,
-    .comment-info-2 {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .comment-info-1 img {
-        width: 45px;
-        height: 45px;
-    }
-
-    .comment-info-1 h3,
-    .comment-info-2 h3 {
-        font-size: 14px;
-    }
-
-    .user-comment {
-        padding: 0;
-    }
-
-    #comment-field {
-        width: 100%;
-        height: 50px;
-        margin: 15px 0;
-        overflow: hidden;
-        padding-bottom: 40px;
-    }
-
-    .comment-group {
-        flex-direction: column;
-        padding-bottom: 15px;
-    }
-
-    .new-comment {
-        right: 15px;
-        bottom: 25px;
-        padding: 8px 15px;
-        font-size: 14px;
-    }
 }
