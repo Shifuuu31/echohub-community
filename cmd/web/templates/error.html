@@ -28,35 +28,37 @@
 
 <body>
     <nav>
-        <a href="home.html" class="logo">
-            <img src="/static/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
+        <a href="/" class="logo">
+            <img src="/assets/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
         </a>
-        <a href="post-create.html"><button class="create"><img src="./imgs/create.png"></i>Create
+        {{ if eq .UserType "authenticated" }}
+        <a href="post-create.html"><button class="create"><img src="/assets/imgs/create.png"></i>Create
                 Post</button></a>
         <div class="profile-dropdown">
             <div class="profile-picture-container">
-                <img class="profile-picture" src="./imgs/avatar.png" alt="Profile Picture" loading="lazy">
+                <img class="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
             </div>
             <div class="dropdown">
-                <img src="./imgs/avatar.png" alt="Profile Picture">
-                <h2>@unkind<br><span>unkind@mail.com</span></h2>
+                <img src="/assets/imgs/avatar.png" alt="Profile Picture">
+                <h2>{{.UserName}}<br><span>{{.Email}}</span></h2>
                 <hr>
                 <div class="dropdown-content">
-                    <a href="#">Profile Settings</a>
-                    <a href="#">Dark Mode (coming soon)</a>
+                    <a href="/profile-settings">Profile Settings</a>
+                    <a href="">Dark Mode (coming soon)</a>
                     <hr>
-                    <a href="#">Log Out</a>
+                    <a href="/logout">Log Out</a>
                 </div>
             </div>
         </div>
-
-        <a href="register.html"><button class="register"><img src="./imgs/register.png">Register</button></a>
-        <a href="login.html"><button class="login">Login</button></a>
+        {{ else }}
+        <a href="/register"><button class="register"><img src="/assets/imgs/register.png">Register</button></a>
+        <a href="/login"><button class="login">Login</button></a>
+        {{ end }}
     </nav>
     <main>
-        <h1>404</h1>
-        <h2>404 Page Not Found</h2>
-        <p>Oops! the page you looking for does not exist</p>
+        <h1>{{.StatusCode}}</h1>
+        <h2>{{.Message}}</h2>
+        <p>{{.SubMessage}}</p>
         <a href="/static/home.html" class="button-back">← Back to Posts</a>
     </main>
 </body>

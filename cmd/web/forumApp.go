@@ -4,8 +4,6 @@ import (
 	"net/http"
 
 	"forum/internal/models"
-	// auth "forum/cmd/middleware"
-
 )
 
 type WebApp struct {
@@ -14,15 +12,20 @@ type WebApp struct {
 }
 
 func (webForum *WebApp) Routes() http.Handler {
-	mux := http.NewServeMux()
+    mux := http.NewServeMux()
 
-	// Use mux.Handle for routes that require middleware
-	mux.HandleFunc("GET /", webForum.HomePage)
-	mux.HandleFunc("GET /register", webForum.RegisterPage)
-	mux.HandleFunc("POST /register", webForum.UserRegister)
-	mux.HandleFunc("GET /login", webForum.LoginPage)
-	mux.HandleFunc("POST /login", webForum.UserLogin)
-	mux.HandleFunc("POST /set_cookie", webForum.SetCookie)
+    fileServer := http.FileServer(http.Dir("./assets"))
+    mux.Handle("GET /assets/", http.StripPrefix("/assets/", fileServer))
 
-	return mux
+    mux.Handle("GET /", webForum.AuthMiddleware(http.HandlerFunc(webForum.HomePage)))
+    
+    mux.HandleFunc("GET /register", webForum.RegisterPage)
+    mux.HandleFunc("POST /register", webForum.UserRegister)
+    mux.HandleFunc("GET /login", webForum.LoginPage)
+    mux.HandleFunc("POST /login", webForum.UserLogin)
+    
+    // Add the logout route
+    mux.HandleFunc("GET /logout", webForum.UserLogout)
+
+    return mux
 }

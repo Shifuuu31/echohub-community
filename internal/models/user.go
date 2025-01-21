@@ -16,26 +16,26 @@ type User struct {
 	Email          string
 	HashedPassword string
 	CreationDate   time.Time
+	UserType       string
 }
 
 type UserModel struct {
 	DB *sql.DB
 }
 
-func (user *UserModel) FindUserByID(userID int) (foundUser User, err error) {
-    selectStmt := `	SELECT id, username, email, hashed_password, creation_date
-        			FROM UserTable
-        			WHERE id = ?`
-    err = user.DB.QueryRow(selectStmt, userID).Scan(&foundUser.ID, &foundUser.UserName, &foundUser.Email, &foundUser.HashedPassword, &foundUser.CreationDate)
+func (user *UserModel) FindUserByID(userID int) (*User, error) {
+	foundUser := &User{}
 
-    if err != nil {
-        if err == sql.ErrNoRows {
-            return foundUser, errors.New("user not found")
-        }
-        return foundUser, err
-    }
-	
-    return foundUser, nil
+	selectStmt := `SELECT id, username, email FROM UserTable WHERE id = ?`
+	err := user.DB.QueryRow(selectStmt, userID).Scan(&foundUser.ID, &foundUser.UserName, &foundUser.Email)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, errors.New("user not found")
+		}
+		return nil, err
+	}
+
+	return foundUser, nil
 }
 
 func (user *UserModel) ValidateUserCreadentials(username, password string) (UserID int, err error) {

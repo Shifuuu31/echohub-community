@@ -23,30 +23,34 @@
 
 <body style="overflow-y: scroll;">
     <nav>
-        <a href="home.html" class="logo">
-            <img src="/static/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
+        <a href="/" class="logo">
+            <img src="/assets/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
         </a>
+        {{ if eq .UserType "authenticated" }}
         <a href="post-create.html"><button class="create"><img src="/assets/imgs/create.png"></i>Create
                 Post</button></a>
-        <div class="profile-dropdown">
-            <div class="profile-picture-container">
-                <img class="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
-            </div>
-            <div class="dropdown">
-                <img src="/assets/imgs/avatar.png" alt="Profile Picture">
-                <h2>@unkind<br><span>unkind@mail.com</span></h2>
-                <hr>
-                <div class="dropdown-content">
-                    <a href="#">Profile Settings</a>
-                    <a href="#">Dark Mode (coming soon)</a>
-                    <hr>
-                    <a href="#">Log Out</a>
+                <div class="profile-dropdown">
+                    <div class="profile-picture-container" id="profile-picture-container">
+                        <img class="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
+                    </div>
+                    <div class="dropdown" id="dropdown">
+                        <img src="/assets/imgs/avatar.png" alt="Profile Picture">
+                        <h2>{{.UserName}}<br><span>{{.Email}}</span></h2>
+                        <hr>
+                        <div class="dropdown-content">
+                            <a href="/profile-settings">Profile Settings</a>
+                            <a href="">Dark Mode (coming soon)</a>
+                            <hr>
+                            <a href="/logout">Log Out</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+        {{ else }}
+        <a href="/register"><button class="register"><img src="/assets/imgs/register.png">Register</button></a>
+        <a href="/login"><button class="login">Login</button></a>
+        {{ end }}
 
-        <a href="register.html"><button class="register"><img src="/assets/imgs/register.png">Register</button></a>
-        <a href="login.html"><button class="login">Login</button></a>
+
     </nav>
     <div class="wraper">
         <ul class="categories">
@@ -54,6 +58,7 @@
                 <input type="radio" id="category1" name="categoryElement" checked>
                 <label for="category1"><img src="/assets/imgs/categories-Icons/all.png">All</label>
             </li>
+            {{ if eq .UserType "authenticated" }}
             <li class="category">
                 <input type="radio" id="category2" name="categoryElement">
                 <label for="category2"><img src="/assets/imgs/categories-Icons/my-posts.png">My Posts</label>
@@ -62,6 +67,7 @@
                 <input type="radio" id="category3" name="categoryElement">
                 <label for="category3"><img src="/assets/imgs/categories-Icons/liked-posts.png">Liked Posts</label>
             </li>
+            {{end}}
             <li class="category">
                 <input type="radio" id="category4" name="categoryElement">
                 <label for="category4"><img src="/assets/imgs/categories-Icons/movies-tv.png">Movies & TV</label>
@@ -262,13 +268,31 @@
                     </div>
                     <div class="comment-group">
                         <textarea placeholder="Type a comment..." type="text" id="comment-field"></textarea>
-                        
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
+    <script>
+
+document.addEventListener('DOMContentLoaded', function () {
+    const profilePictureContainer = document.getElementById('profile-picture-container')
+    const dropdown = document.getElementById('dropdown')
+
+    profilePictureContainer.addEventListener('click', function (event) {
+        event.stopPropagation()
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block'
+    })
+
+    document.addEventListener('click', function (event) {
+        if (!dropdown.contains(event.target) && !profilePictureContainer.contains(event.target)) {
+            dropdown.style.display = 'none'
+        }
+    })
+})
+    </script>
+
     <script src="/assets/scripts/main.js" type="module"></script>
 </body>
 

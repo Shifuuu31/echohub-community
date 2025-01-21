@@ -26,27 +26,26 @@
         <a href="home.html" class="logo">
             <img src="/assets/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
         </a>
-        <a href="register.html"><button class="register"><img src="/assets
-            /imgs/register.png">Register</button></a>
-        <a href="login.html"><button class="login">Login</button></a>
+        <a href="/register"><button class="register"><img src="/assets/imgs/register.png">Register</button></a>
+        <a href="/login"><button class="login">Login</button></a>    
     </nav>
     <div class="container">
-        <form class="form">
+        <form class="form" action="/login" method="post">
             <p class="title">We've missed you! </p>
             <p class="message">Discover the community newest and update. </p>
             <label>
-                <input class="input" type="text" placeholder="" required="">
+                <input class="input" name="username" type="text" placeholder="" required="">
                 <span>Username</span>
             </label>
 
             <label>
-                <input class="input" type="password" placeholder="" required="">
+                <input class="input" name="password" type="password" placeholder="" required="">
                 <span>Password</span>
             </label>
             <button class="submit">Login</button>
             <p class="signin">Don't have an account? <a href="register.html">Create One</a> </p>
             <label class="remember-me signin">
-                <input type="checkbox"> Remember me for 30 days
+                <input type="checkbox" name="remember"> Remember me for 30 days
               </label>
         </form>
         <img src="  /assets/imgs/welcome.png">

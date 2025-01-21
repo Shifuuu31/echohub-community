@@ -20,8 +20,11 @@ type SessionModel struct {
 	DB *sql.DB
 }
 
-func (session *SessionModel) GenerateNewSession(userID int) (newSession Session, err error) {
+func (session *SessionModel) GenerateNewSession(userID int, remember string) (newSession Session, err error) {
 	exp := 24 * time.Hour
+	if remember == "on" {
+		exp *= 30
+	}
 	newToken, err := uuid.NewV4()
 	if err != nil {
 		return Session{}, err

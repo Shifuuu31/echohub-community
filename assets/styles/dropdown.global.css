@@ -7,6 +7,8 @@
     position: relative;
     width: 55px;
     height: 55px;
+    border: none;
+    background: none;
 }
 
 .profile-picture {
@@ -17,10 +19,7 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.profile-picture:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
+
 
 .profile-picture-container::after {
     content: '';
@@ -40,7 +39,7 @@
     position: absolute;
     top: 100%;
     right: 0;
-    display: none;
+    display: none; /* Ensure dropdown is hidden by default */
     background-color: #f9f9f9;
     min-width: 200px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
@@ -49,9 +48,6 @@
     overflow: hidden;
 }
 
-.profile-dropdown:hover .dropdown {
-    display: block;
-}
 
 .dropdown img {
     width: 80px;

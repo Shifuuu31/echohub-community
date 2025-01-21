@@ -29,22 +29,24 @@
         </a>
         <a href="post-create.html"><button class="create"><img src="./imgs/create.png"></i>Create
             Post</button></a>
-    <div class="profile-dropdown">
-        <div class="profile-picture-container">
-            <img class="profile-picture" src="./imgs/avatar.png" alt="Profile Picture" loading="lazy">
-        </div>
-        <div class="dropdown">
-            <img src="./imgs/avatar.png" alt="Profile Picture">
-            <h2>@unkind<br><span>unkind@mail.com</span></h2>
-            <hr>
-            <div class="dropdown-content">
-                <a href="#">Profile Settings</a>
-                <a href="#">Dark Mode (coming soon)</a>
+            <a href="post-create.html"><button class="create"><img src="/assets/imgs/create.png"></i>Create
+                Post</button></a>
+        <div class="profile-dropdown">
+            <div class="profile-picture-container">
+                <img class="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
+            </div>
+            <div class="dropdown">
+                <img src="/assets/imgs/avatar.png" alt="Profile Picture">
+                <h2>{{.UserName}}<br><span>{{.Email}}</span></h2>
                 <hr>
-                <a href="#">Log Out</a>
+                <div class="dropdown-content">
+                    <a href="/profile-settings">Profile Settings</a>
+                    <a href="">Dark Mode (coming soon)</a>
+                    <hr>
+                    <a href="/logout">Log Out</a>
+                </div>
             </div>
         </div>
-    </div>
     </nav>
     <div class="wraper wraper-extra">
         <ul class="categories">
