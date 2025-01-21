@@ -1,0 +1,218 @@
+.comments-section {
+    height: 30vh;
+    overflow-y: auto;
+}
+
+.post-info-1,
+.comment-info-1,
+.comment-info-2 {
+    display: flex;
+    align-items: center;
+}
+
+.post-info-1 img,
+.comment-info-1 img {
+    width: 55px;
+    height: 55px;
+    border-radius: 512px;
+    border: 3px solid var(--primary-color);
+    margin-right: 20px;
+}
+
+.comment-info-2 img {
+    width: 40px;
+    height: 40px;
+    border-radius: 512px;
+    margin-right: 20px;
+}
+
+.post-info-1 h3,
+.comment-info-1 h3,
+.comment-info-2 h3 {
+    font-size: 18px;
+}
+
+.post-info-1 h3 span,
+.comment-info-1 h3 span,
+.comment-info-2 h3 span {
+    font-size: 14px;
+    color: var(--secondary-color);
+}
+
+.post-info-2 p,
+.comment-info-2 p {
+    font-size: 18px;
+    font-weight: 300;
+    margin: 5px 0 0 0;
+}
+
+.post-info-2,
+.comment-info-2 {
+    margin-top: 25px;
+}
+
+.post-info-3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-info-3 .links {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.post-info-3 .buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.post-info-3 li {
+    color: var(--secondary-color);
+    background-color: var(--secondary-bg-color);
+    border-radius: 512px;
+    font-size: 18px;
+    padding: 5px 20px;
+    cursor: default;
+}
+
+.post-info-3 button,
+#popup-comment button {
+    color: var(--secondary-color);
+    background-color: transparent;
+    border: transparent;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.post-info-3 button img,
+#popup-comment button img {
+    width: 20px;
+    height: 20px;
+    filter: invert(50%);
+    vertical-align: middle;
+}
+
+.popup-backgroud {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    z-index: 100;
+}
+
+#popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 30px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    z-index: 101;
+    padding: 0px 25px;
+}
+
+.close {
+    background: none;
+    font-size: 28px;
+}
+
+.comment {
+    display: flex;
+    background-color: white;
+    justify-content: center;
+    flex-direction: column;
+    width: 98%;
+    border-radius: 30px;
+    box-shadow: 0px 0px 5px 0px var(--border-color);
+    background: linear-gradient(to right, var(--hover-color) 7px, transparent 7px) no-repeat left center / 7px 100%;
+    padding: 0px 25px 25px 25px;
+    margin: 25px 0;
+}
+
+#popup-comment {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#popup-comment .comment-info {
+    display: flex;
+    gap: 10px;
+}
+
+#popup-comment .buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.buttons button img {
+    width: 20px;
+    height: 20px;
+    filter: invert(50%);
+    transition: transform 0.2s, filter 0.2s;
+}
+
+.buttons button.active img {
+    filter: invert(58%) sepia(61%) saturate(2878%) hue-rotate(230deg) brightness(102%) contrast(101%);
+}
+
+.buttons button:active {
+    transform: scale(1.2);
+}
+
+.user-comment {
+    padding: 0px 15px;
+    margin-top: 30px;
+}
+
+.comment-group {
+    position: relative;
+    width: 100%;
+}
+
+#comment-field {
+    border-radius: 30px;
+    border: 2px solid var(--border-color);
+    outline: none;
+    resize: none;
+    width: 100%;
+    height: 75px;
+    margin-top: 10px;
+    padding: 15px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.new-comment {
+    position: absolute;
+    right: 0px;
+    bottom: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 512px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.new-comment:hover {
+    background-color: var(--hover-color);
+    transition: 0.3s;
+}
+
+.new-comment:active {
+    transform: translate(0px, 2px);
+}

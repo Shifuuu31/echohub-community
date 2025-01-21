@@ -4,7 +4,6 @@ import (
 	"html/template"
 	"net/http"
 	"strconv"
-	"time"
 
 	"forum/internal/models"
 )
@@ -24,53 +23,13 @@ func (webForum *WebApp) HomePageHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	categories, err := webForum.Post.GetCategorys()
+	categories, err := webForum.Post.GetCategories()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	posts, err := webForum.Post.GetPosts()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	users, err := webForum.Post.GetUsersNames(posts)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	Categories_Posts, err := webForum.Post.GetCategoriesNames(posts)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	type data struct {
-		ID               int
-		Categories       []models.Categorie
-		Username         string
-		Title            string
-		Post_content     string
-		Categories_Posts []string
-		Creation_date    time.Time
-	}
-	var datas []data
-	for i := range posts {
-		datas = append(datas, data{
-			ID:               posts[i].ID,
-			Categories:       categories,
-			Username:         users[i],
-			Title:            posts[i].Title,
-			Post_content:     posts[i].Post_content,
-			Categories_Posts: Categories_Posts[i],
-			Creation_date:    posts[i].Creation_date,
-		})
-	}
-
-	if err := Template.ExecuteTemplate(w, "index.html", datas); err != nil {
+	if err := Template.ExecuteTemplate(w, "home.html", categories); err != nil {
 		http.Error(w, "Error loading HomePage", http.StatusInternalServerError)
 	}
 }
@@ -84,7 +43,7 @@ func (webForum *WebApp) CreatePostPageHandler(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	Categories, err := webForum.Post.GetCategorys()
+	Categories, err := webForum.Post.GetCategories()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -107,8 +66,8 @@ func (webForm *WebApp) NewPostCreationHandler(w http.ResponseWriter, r *http.Req
 	}
 
 	New := models.Post{
-		Title:        r.FormValue("title"),
-		Post_content: r.FormValue("content"),
+		PostTitle:   r.FormValue("title"),
+		PostContent: r.FormValue("content"),
 	}
 	categoriesForm = r.Form["categories[]"]
 
@@ -118,14 +77,14 @@ func (webForm *WebApp) NewPostCreationHandler(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	idPost, err := webForm.Post.CreatePost(New.Title, New.Post_content)
+	idPost, err := webForm.Post.CreatePost(New.PostTitle, New.PostContent)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
-	err = webForm.Post.AddCategoriePost(idPost, ids)
+	err = webForm.Post.AddcategoryPost(idPost, ids)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -178,7 +137,7 @@ func (WebForum *WebApp) UpdatePostPageHandler(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	Categorys, err := WebForum.Post.GetCategorys()
+	Categorys, err := WebForum.Post.GetCategories()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -187,14 +146,14 @@ func (WebForum *WebApp) UpdatePostPageHandler(w http.ResponseWriter, r *http.Req
 		ID                  int
 		Title               string
 		Content             string
-		Categories          []models.Categorie // Kept original spelling
-		Categories_selected []string           // Kept snake_case naming
+		Categories          []models.Category
+		Categories_selected []string
 	}{
 		ID:                  id,
 		Title:               title,
 		Content:             content,
-		Categories_selected: selected_categorys, // Kept original variable name
-		Categories:          Categorys,          // Kept original variable name
+		Categories_selected: selected_categorys,
+		Categories:          Categorys,
 	}
 
 	if err := Template.ExecuteTemplate(w, "post-update.html", data); err != nil {
@@ -213,8 +172,8 @@ func (WebApp *WebApp) PostUpdateHandler(w http.ResponseWriter, r *http.Request) 
 	}
 
 	New := models.Post{
-		Title:        r.FormValue("title"),
-		Post_content: r.FormValue("content"),
+		PostTitle:   r.FormValue("title"),
+		PostContent: r.FormValue("content"),
 	}
 
 	categoriesForm = r.Form["categories[]"]
@@ -225,9 +184,7 @@ func (WebApp *WebApp) PostUpdateHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	
-
-	err = WebApp.Post.EditPost(id, New.Title, New.Post_content,categoriesForm)
+	err = WebApp.Post.EditPost(id, New.PostTitle, New.PostContent, categoriesForm)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

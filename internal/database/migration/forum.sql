@@ -36,39 +36,91 @@ CREATE TABLE IF NOT EXISTS Likes_Dislikes (
 
 CREATE TABLE IF NOT EXISTS Categories (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    categorie_name VARCHAR(255) NOT NULL UNIQUE
+    category_name VARCHAR(255) NOT NULL UNIQUE,
+    Category_icon_path VARCHAR(255) NOT NULL UNIQUE
 );
 
 INSERT INTO
-    Categories (categorie_name)
+    Categories (category_name, Category_icon_path)
 VALUES
-    ('AI'),
-    ('Anime'),
-    ('Arts'),
-    ('Business'),
-    ('Career'),
-    ('Culture'),
-    ('DIY'),
-    ('Education'),
-    ('Fashion'),
-    ('Games'),
-    ('Memes'),
-    ('Movies & TV'),
-    ('Music'),
-    ('News'),
-    ('Podcasts'),
-    ("Q&A's"),
-    ('Science'),
-    ('Software & Apps'),
-    ('Sports'),
-    ('Technology'),
-    ('Travel');
+    ('AI', '/assets/imgs/categories-Icons/ai.png'),
+    (
+        'Anime',
+        '/assets/imgs/categories-Icons/anime.png'
+    ),
+    ('Arts', '/assets/imgs/categories-Icons/art.png'),
+    (
+        'Business',
+        '/assets/imgs/categories-Icons/business.png'
+    ),
+    (
+        'Career',
+        '/assets/imgs/categories-Icons/career.png'
+    ),
+    (
+        'Culture',
+        '/assets/imgs/categories-Icons/culture.png'
+    ),
+    ('DIY', '/assets/imgs/categories-Icons/diy.png'),
+    (
+        'Education',
+        '/assets/imgs/categories-Icons/education.png'
+    ),
+    (
+        'Fashion',
+        '/assets/imgs/categories-Icons/fashion.png'
+    ),
+    (
+        'Games',
+        '/assets/imgs/categories-Icons/games.png'
+    ),
+    (
+        'Memes',
+        '/assets/imgs/categories-Icons/memes.png'
+    ),
+    (
+        'Movies & TV',
+        '/assets/imgs/categories-Icons/movies-tv.png'
+    ),
+    (
+        'Music',
+        '/assets/imgs/categories-Icons/music.png'
+    ),
+    ('News', '/assets/imgs/categories-Icons/news.png'),
+    (
+        'Podcasts',
+        '/assets/imgs/categories-Icons/podcasts.png'
+    ),
+    (
+        'Q&A''s',
+        '/assets/imgs/categories-Icons/q-a.png'
+    ),
+    (
+        'Science',
+        '/assets/imgs/categories-Icons/science.png'
+    ),
+    (
+        'Software & Apps',
+        '/assets/imgs/categories-Icons/software-apps.png'
+    ),
+    (
+        'Sports',
+        '/assets/imgs/categories-Icons/sports.png'
+    ),
+    (
+        'Technology',
+        '/assets/imgs/categories-Icons/technology.png'
+    ),
+    (
+        'Travel',
+        '/assets/imgs/categories-Icons/travel.png'
+    );
 
 CREATE TABLE IF NOT EXISTS Categories_Posts(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    categorie_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
     post_id INTEGER NOT NULL,
-    FOREIGN KEY(categorie_id) REFERENCES Categories(id) ON DELETE CASCADE,
+    FOREIGN KEY(category_id) REFERENCES Categories(id) ON DELETE CASCADE,
     FOREIGN KEY(post_id) REFERENCES PostTable(id) ON DELETE CASCADE
 );
 

@@ -1,0 +1,54 @@
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+main h1 {
+  margin-top: 100px;
+  font-family: 'Bagel Fat One', sans-serif;
+  font-size: 150px;
+  font-weight: 500;
+  color: #8552FF;
+  text-shadow: 1px 1px 1px #979191;
+  letter-spacing: 0.07em;
+}
+
+main h2 {
+  margin-top: 20px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 40px;
+  font-weight: 500;
+  color: #8552FF;
+  line-height: 47px;
+  letter-spacing: 0.07em;
+}
+
+main p {
+  margin-top: 20px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 28px;
+  letter-spacing: 0.03em;
+}
+
+.button-back {
+  margin-top: 80px;
+  padding: 10px 20px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  color: #eaeaea;
+  background-color: #8552FF;
+  border-radius: 512px;
+  text-decoration: none;
+  transition: all 0.1s;
+}
+
+.button-back:hover {
+  background-color: #eaeaea;
+  color: #8552FF;
+}
