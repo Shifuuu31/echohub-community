@@ -126,3 +126,34 @@
     background-color: var(--hover-color);
 }
 
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  
+  .remember-me input[type="checkbox"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .remember-me input[type="checkbox"]:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+  
+  .remember-me input[type="checkbox"]:checked::before {
+    content: '✔';
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 11px;
+    color: white;
+  }
