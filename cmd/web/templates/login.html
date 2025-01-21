@@ -7,8 +7,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="style.global.css">
-    <link rel="stylesheet" href="register-login.css">
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <link rel="stylesheet" href="/assets/styles/nav.global.css">
+    <link rel="stylesheet" href="/assets/styles/buttons.global.css">
+    <link rel="stylesheet" href="/assets/styles/dropdown.global.css">
+    <link rel="stylesheet" href="/assets/styles/responsive.global.css">
+    <link rel="stylesheet" href="/assets/styles/register-login.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
@@ -19,11 +23,12 @@
 
 <body>
     <nav>
-        <a href="/" class="logo">
-            <h1>echoHub</h1>
+        <a href="home.html" class="logo">
+            <img src="/assets/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
         </a>
-        <a href="register.html"><button class="register"><i class="fa fa-user-plus"></i> Register</button></a>
-        <a href="login.html"><button class="login">login</button></a>
+        <a href="register.html"><button class="register"><img src="/assets
+            /imgs/register.png">Register</button></a>
+        <a href="login.html"><button class="login">Login</button></a>
     </nav>
     <div class="container">
         <form class="form">
@@ -40,8 +45,11 @@
             </label>
             <button class="submit">Login</button>
             <p class="signin">Don't have an account? <a href="register.html">Create One</a> </p>
+            <label class="remember-me signin">
+                <input type="checkbox"> Remember me for 30 days
+              </label>
         </form>
-        <img src="  /static/./imgs/welcome.png">
+        <img src="  /assets/imgs/welcome.png">
     </div>
 </body>
 

@@ -1,0 +1,28 @@
+@keyframes pulse {
+    from {
+        transform: scale(0.9);
+        opacity: 1;
+    }
+    to {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+}
+
+@media screen and (max-width: 1660px) {
+    img {
+        width: 800px;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    img {
+        width: 650px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    img {
+        display: none;
+    }
+}

@@ -1,0 +1,100 @@
+@media (max-width: 900px) {
+    .wraper {
+        width: 680px;
+    }
+}
+
+@media (max-width: 768px) {
+    nav h1 {
+        font-size: 42px;
+    }
+
+    .logo {
+        padding-left: 25px;
+    }
+
+    .login,
+    .register,
+    .create,
+    .profile-picture-container {
+        display: none;
+    }
+
+    .wraper {
+        width: 90%;
+    }
+}
+
+@media (max-width: 720px) {
+    nav h1 {
+        font-size: 36px;
+    }
+
+    .wraper {
+        width: 600px;
+    }
+}
+
+@media (max-width: 610px) {
+    nav h1 {
+        font-size: 28px;
+    }
+
+    .wraper {
+        width: 390px;
+    }
+}
+
+@media (max-width: 430px) {
+    nav h1 {
+        font-size: 24px;
+    }
+
+    .wraper {
+        width: 280px;
+    }
+}
+
+@media (max-width: 360px) {
+    nav h1 {
+        font-size: 20px;
+    }
+
+    .wraper {
+        width: 90%;
+    }
+
+    .logo {
+        padding-left: 15px;
+    }
+}
+
+@media (max-width: 240px) {
+    nav h1 {
+        font-size: 16px;
+    }
+
+    .logo {
+        padding-left: 10px;
+    }
+
+    .wraper {
+        width: 95%;
+    }
+
+    .register,
+    .login,
+    .create,
+    .update,
+    .new-comment {
+        width: 80px;
+        height: 30px;
+        font-size: 12px;
+        margin: 0 5px;
+    }
+
+    .profile-picture-container {
+        width: 40px;
+        height: 40px;
+    }
+}
