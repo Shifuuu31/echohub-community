@@ -1,0 +1,59 @@
+.wraper-extra {
+  padding: 30px 0;
+  border-radius: 30px;
+  box-shadow: 0px 0px 5px 0px var(--border-color);
+}
+
+ul.categories {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 10px 0;
+  margin: 0 10px;
+}
+
+li.category {
+  list-style: none;
+  flex-shrink: 0;
+  margin: 5px;
+}
+
+.categories img {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+
+.category input[type="checkbox"] {
+  display: none;
+}
+
+.category input[type="checkbox"] + label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--secondary-bg-color);
+  color: var(--secondary-color);
+  border: transparent;
+  padding: 10px 20px;
+  border-radius: 512px;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.category input[type="checkbox"]:checked + label {
+  color: white;
+  background-color: var(--primary-color);
+}
+
+.category input[type="checkbox"]:checked + label img {
+  filter: brightness(0) invert(1);
+  transition: filter 0s;
+}
+
+
+

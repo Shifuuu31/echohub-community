@@ -1,4 +1,10 @@
-/* From Uiverse.io by ammarsaa */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
 .form {
     display: flex;
     flex-direction: column;
@@ -12,16 +18,6 @@
     margin: 75px;
 }
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* img {
-    margin: 75px;
-} */
-
 .title {
     font-size: 28px;
     font-weight: 600;
@@ -33,26 +29,19 @@
     color: var(--primary-color);
 }
 
-.title::before {
-    width: 18px;
-    height: 18px;
-}
-
-.title::after {
-    width: 18px;
-    height: 18px;
-    animation: pulse 1s linear infinite;
-}
-
 .title::before,
 .title::after {
     position: absolute;
     content: "";
-    height: 16px;
     width: 16px;
+    height: 16px;
     border-radius: 50%;
-    left: 0px;
+    left: 0;
     background-color: var(--primary-color);
+}
+
+.title::after {
+    animation: pulse 1s linear infinite;
 }
 
 .message,
@@ -66,12 +55,12 @@
     text-align: center;
 }
 
-.signin a:hover {
-    text-decoration: underline var(--primary-color);
-}
-
 .signin a {
     color: var(--primary-color);
+}
+
+.signin a:hover {
+    text-decoration: underline var(--primary-color);
 }
 
 .form label {
@@ -79,46 +68,45 @@
 }
 
 .form label .input {
+    width: 100%;
+    padding: 20px 5px 5px 20px;
     background-color: white;
     border: 1px solid var(--border-color);
     border-radius: 512px;
+    font-size: medium;
     font-weight: 400;
     color: black;
-    width: 100%;
-    padding: 20px 05px 05px 10px;
-    outline: 0;
+    outline: none;
 }
 
-.form label .input+span {
-    color: var(--secondary-color);
+.form label .input + span {
     position: absolute;
-    left: 10px;
+    left: 20px;
     top: 5px;
     font-size: 15px;
+    color: var(--secondary-color);
     cursor: text;
     transition: 0.3s ease;
 }
 
-.form label .input:placeholder-shown+span {
+.form label .input:placeholder-shown + span {
     top: 12.5px;
 }
 
-.form label .input:focus+span {
-    color: var(--primary-color);
+.form label .input:focus + span,
+.form label .input:valid + span {
     top: 5px;
     font-size: 14px;
     font-weight: 600;
 }
 
-.form label .input:valid+span {
-    color: forestgreen;
-    font-size: 13px;
-    top: 5px;
-    font-weight: 600;
+.form label .input:focus + span {
+    color: var(--primary-color);
 }
 
-.input {
-    font-size: medium;
+.form label .input:valid + span {
+    color: forestgreen;
+    font-size: 13px;
 }
 
 .submit {
@@ -129,40 +117,12 @@
     margin-top: 35px;
     color: #fff;
     font-size: 16px;
-    transform: .3s ease;
     background-color: var(--primary-color);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .submit:hover {
     background-color: var(--hover-color);
 }
 
-@keyframes pulse {
-    from {
-        transform: scale(0.9);
-        opacity: 1;
-    }
-
-    to {
-        transform: scale(1.8);
-        opacity: 0;
-    }
-}
-
-@media screen and (max-width: 1660px) {
-    img {
-        width: 800px;
-    }
-}
-
-@media screen and (max-width: 1400px) {
-    img {
-        width: 650px;
-    }
-}
-
-@media screen and (max-width: 1200px) {
-    img {
-        display: none;
-    }
-}

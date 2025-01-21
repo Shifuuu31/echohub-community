@@ -69,12 +69,13 @@
     margin-top: 20px;
 }
 
-.post-info-3 a {
+.post-info-3 li {
     color: var(--secondary-color);
     background-color: var(--secondary-bg-color);
     border-radius: 512px;
     font-size: 18px;
     padding: 5px 20px;
+    cursor: default;
 }
 
 .post-info-3 button,
