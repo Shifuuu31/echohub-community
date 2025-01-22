@@ -19,7 +19,6 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-
 	webForum.Post = &models.PostModel{}
 	webForum.Post.DB = db
 	port := os.Args[1]
