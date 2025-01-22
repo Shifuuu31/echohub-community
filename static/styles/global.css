@@ -13,10 +13,11 @@
     margin: 0;
     box-sizing: border-box;
     transition: 0.1s;
-    font-family: "", serif;
+    
 }
 
 body {
+    font-family: 'Poppins', sans-serif;
     background-color: var(--bg-color);
 }
 
