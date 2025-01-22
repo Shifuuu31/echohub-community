@@ -18,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
-    <title>echoHub - Post Creation</title>
+    <title>echoHub - Post Update</title>
 
 </head>
 
@@ -48,7 +48,7 @@
     </nav>
     <div class="wraper wraper-extra">
         <ul class="categories">
-            {{range .}}
+            {{range .Categories}}
             <li class="category">
                 <input type="checkbox" id="category{{.ID}}" name="categoryElement">
                 <label for="category{{.ID}}"><img src="{{.CategoryIconPath}}">{{.CategoryName}}</label>
@@ -56,13 +56,22 @@
             {{end}}
         </ul>
         <div class="post-inputs"><label for="post-title">
-                <input type="text" id="post-title" placeholder="Post Title *" required>
+                <input type="text" id="post-title" placeholder="Post Title *" value="{{.Title}}" required>
             </label>
-            <textarea name="" id="" placeholder="Type Something here..."></textarea>
+            <textarea name="" id="" placeholder="Type Something here...">{{.Content}}</textarea>
             <button type="submit"><img src="./imgs/send.png">Post</button>
         </div>
     </div>
     <script src="/scripts/post-creation.js"></script>
+    <script>
+        const selected = {{.Categories_selected }};
+        const categories = document.querySelectorAll('[id^="category_"]');
+        categories.forEach(category => {
+            if (selected.includes(category.value)) {
+                category.setAttribute("checked", "true")
+            }
+        });
+    </script>
 </body>
 
 </html>
