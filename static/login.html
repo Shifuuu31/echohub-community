@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/static/styles/dropdown.global.css">
     <link rel="stylesheet" href="/static/styles/responsive.global.css">
     <link rel="stylesheet" href="/static/styles/register-login.css">
+    <link rel="stylesheet" href="/static/styles/responsive-animation.register-login.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
@@ -23,32 +24,32 @@
 
 <body>
     <nav>
-        <a href="home.html" class="logo">
+        <a href="home.html" id="logo">
             <img src="/static/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
         </a>
-        <a href="register.html"><button class="register"><img src="./imgs/register.png">Register</button></a>
-        <a href="login.html"><button class="login">Login</button></a>
+        <a href="register.html"><button id="register"><img src="./imgs/register.png">Register</button></a>
+        <a href="login.html"><button id="login">Login</button></a>
     </nav>
-    <div class="container">
-        <form class="form">
-            <p class="title">We've missed you! </p>
-            <p class="message">Discover the community newest and update. </p>
+    <div id="container">
+        <form id="form">
+            <p id="title">We've missed you! </p>
+            <p id="message">Discover the community newest and update. </p>
             <label>
-                <input class="input" type="text" placeholder="" required="">
+                <input id="input" type="text" placeholder="" required="">
                 <span>Username</span>
             </label>
 
             <label>
-                <input class="input" type="password" placeholder="" required="">
+                <input id="input" type="password" placeholder="" required="">
                 <span>Password</span>
             </label>
-            <button class="submit">Login</button>
-            <p class="signin">Don't have an account? <a href="register.html">Create One</a> </p>
             <label class="remember-me signin">
-                <input type="checkbox"> Remember me for 30 days
+                <input type="checkbox"> Remember me
               </label>
+            <button id="submit">Login</button>
+            <p class="signin">Don't have an account? <a href="register.html">Create One</a> </p>
         </form>
-        <img src="  /static/./imgs/welcome.png">
+        <img src="/static/./imgs/welcome.png">
     </div>
 </body>
 

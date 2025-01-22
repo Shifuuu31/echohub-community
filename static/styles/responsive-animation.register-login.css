@@ -9,20 +9,14 @@
     }
 }
 
-@media screen and (max-width: 1660px) {
-    img {
+@media screen and (max-width: 1400px) {
+    #container img {
         width: 800px;
     }
 }
 
-@media screen and (max-width: 1400px) {
-    img {
-        width: 650px;
-    }
-}
-
 @media screen and (max-width: 1200px) {
-    img {
+    #container img {
         display: none;
     }
 }

@@ -35,7 +35,7 @@ main p {
   letter-spacing: 0.03em;
 }
 
-.button-back {
+#button-back {
   margin-top: 80px;
   padding: 10px 20px;
   font-family: 'Roboto', sans-serif;
@@ -48,7 +48,7 @@ main p {
   transition: all 0.1s;
 }
 
-.button-back:hover {
+#button-back:hover {
   background-color: #eaeaea;
   color: #8552FF;
 }

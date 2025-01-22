@@ -1,8 +1,8 @@
 
-.register,
-.login,
-.create,
-.update {
+#register,
+#login,
+#create,
+#update {
     padding: 11px 20px;
     font-weight: 600;
     border: transparent;
@@ -10,34 +10,34 @@
     transition: background-color 0.3s ease;
 }
 
-.register,
-.create,
-.update {
+#register,
+#create,
+#update {
     margin: 0 15px;
     color: white;
     background-color: var(--primary-color);
 }
 
-.register:hover,
-.create:hover,
-.update:hover {
+#register:hover,
+#create:hover,
+#update:hover {
     background-color: var(--hover-color);
 }
 
-.login {
+#login {
     margin: 0 5px;
     color: var(--primary-color);
     background-color: var(--border-color);
 }
 
-.login:hover {
+#login:hover {
     background-color: var(--secondary-color);
     color: white;
 }
 
-.create img,
-.update img,
-.register img {
+#create img,
+#update img,
+#register img {
     width: 16px;
     height: 16px;
     margin-right: 5px;

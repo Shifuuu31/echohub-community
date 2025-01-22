@@ -1,15 +1,15 @@
-.profile-dropdown {
+#profile-dropdown {
     position: relative;
     display: inline-block;
 }
 
-.profile-picture-container {
+#profile-picture-container {
     position: relative;
     width: 55px;
     height: 55px;
 }
 
-.profile-picture {
+#profile-picture {
     width: 100%;
     height: 100%;
     border-radius: 50%;
@@ -17,12 +17,12 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.profile-picture:hover {
+#profile-picture:hover {
     transform: scale(1.1);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.profile-picture-container::after {
+#profile-picture-container::after {
     content: '';
     width: 13px;
     height: 13px;
@@ -36,7 +36,7 @@
     z-index: 1;
 }
 
-.dropdown {
+#dropdown {
     position: absolute;
     top: 100%;
     right: 0;
@@ -49,11 +49,11 @@
     overflow: hidden;
 }
 
-.profile-dropdown:hover .dropdown {
+#profile-dropdown:hover #dropdown {
     display: block;
 }
 
-.inner-profile-picture {
+#inner-profile-picture {
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -62,7 +62,7 @@
     border: 3px solid var(--primary-color);
 }
 
-.dropdown h2 {
+#dropdown h2 {
     font-size: 16px;
     text-align: center;
     margin: 0 0 15px;
@@ -70,7 +70,7 @@
     font-weight: 600;
 }
 
-.dropdown h2 span {
+#dropdown h2 span {
     font-size: 12px;
     color: #999;
     display: block;
@@ -78,13 +78,13 @@
     font-weight: 400;
 }
 
-.dropdown hr {
+#dropdown hr {
     border: 0;
     height: 1px;
     background-color: #ddd;
 }
 
-.dropdown-content a {
+#dropdown-content a {
     display: flex;
     align-items: center;
     justify-content: flex-start; 
@@ -94,22 +94,22 @@
     font-size: 14px;
 }
 
-.dropdown-content a img {
+#dropdown-content a img {
     width: 20px;
     height: 20px;
     margin-right: 10px;
 }
 
-.dropdown-content a:hover {
+#dropdown-content a:hover {
     background-color: var(--border-color);
     color: #000;
 }
 
-.dropdown-content a:last-child {
+#dropdown-content a:last-child {
     color: #ff4d4f;
 }
 
-.dropdown-content a:last-child:hover {
+#dropdown-content a:last-child:hover {
     background-color: #ff4d4f;
     color: #fff;
 }

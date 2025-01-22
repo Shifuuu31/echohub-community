@@ -1,17 +1,17 @@
-.comments-section {
+#comments-section {
     height: 30vh;
     overflow-y: auto;
 }
 
-.user-post-info,
-.user-comment-info,
-.user-comment-info {
+#user-post-info,
+#user-comment-info,
+#user-comment-info {
     display: flex;
     align-items: center;
 }
 
-.user-post-info img,
-.user-comment-info img {
+#user-post-info img,
+#user-comment-info img {
     width: 55px;
     height: 55px;
     border-radius: 512px;
@@ -19,57 +19,57 @@
     margin-right: 20px;
 }
 
-.user-comment-info img {
+#user-comment-info img {
     width: 40px;
     height: 40px;
     border-radius: 512px;
     margin-right: 20px;
 }
 
-.user-post-info h3,
-.user-comment-info h3,
-.user-comment-info h3 {
+#user-post-info h3,
+#user-comment-info h3,
+#user-comment-info h3 {
     font-size: 18px;
 }
 
-.user-post-info h3 span,
-.user-comment-info h3 span,
-.user-comment-info h3 span {
+#user-post-info h3 span,
+#user-comment-info h3 span,
+#user-comment-info h3 span {
     font-size: 14px;
     color: var(--secondary-color);
 }
 
-.post-body p,
-.user-comment-info p {
+#post-body p,
+#user-comment-info p {
     font-size: 18px;
     font-weight: 300;
     margin: 5px 0 0 0;
 }
 
-.post-body,
-.user-comment-info {
+#post-body,
+#user-comment-info {
     margin-top: 25px;
 }
 
-.post-categories {
+#post-categories {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.post-categories .links {
+#post-categories #links {
     display: flex;
     gap: 10px;
     margin-top: 20px;
 }
 
-.post-categories .buttons {
+#post-categories #buttons {
     display: flex;
     gap: 15px;
     margin-top: 20px;
 }
 
-.post-categories li {
+#post-categories li {
     color: var(--secondary-color);
     background-color: var(--secondary-bg-color);
     border-radius: 512px;
@@ -78,7 +78,7 @@
     cursor: default;
 }
 
-.post-categories button,
+#post-categories button,
 #user-info-and-buttons button {
     color: var(--secondary-color);
     background-color: transparent;
@@ -89,7 +89,7 @@
     gap: 5px;
 }
 
-.post-categories button img,
+#post-categories button img,
 #user-info-and-buttons button img {
     width: 20px;
     height: 20px;
@@ -97,7 +97,7 @@
     vertical-align: middle;
 }
 
-.popup-background {
+#popup-background {
     display: none;
     position: fixed;
     top: 0;
@@ -122,12 +122,12 @@
     padding: 0px 25px;
 }
 
-.close {
+#close {
     background: none;
     font-size: 28px;
 }
 
-.comment {
+#comment {
     display: flex;
     background-color: white;
     justify-content: center;
@@ -146,37 +146,37 @@
     align-items: center;
 }
 
-#user-info-and-buttons .comment-info {
+#user-info-and-buttons #comment-info {
     display: flex;
     gap: 10px;
 }
 
-#user-info-and-buttons .buttons {
+#user-info-and-buttons #buttons {
     display: flex;
     gap: 15px;
 }
 
-.buttons button img {
+#buttons button img {
     width: 20px;
     height: 20px;
     filter: invert(50%);
     transition: transform 0.2s, filter 0.2s;
 }
 
-.buttons button.active img {
+#buttons button#active img {
     filter: invert(58%) sepia(61%) saturate(2878%) hue-rotate(230deg) brightness(102%) contrast(101%);
 }
 
-.buttons button:active {
+#buttons button:active {
     transform: scale(1.2);
 }
 
-.user-comment {
+#user-comment {
     padding: 0px 15px;
     margin-top: 30px;
 }
 
-.comment-group {
+#comment-group {
     position: relative;
     width: 100%;
 }
@@ -194,7 +194,7 @@
     overflow: hidden;
 }
 
-.new-comment {
+#new-comment {
     position: absolute;
     right: 0px;
     bottom: 10px;
@@ -208,11 +208,11 @@
     align-items: center;
 }
 
-.new-comment:hover {
+#new-comment:hover {
     background-color: var(--hover-color);
     transition: 0.3s;
 }
 
-.new-comment:active {
+#new-comment:active {
     transform: translate(0px, 2px);
 }

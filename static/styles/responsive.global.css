@@ -1,5 +1,5 @@
 @media (max-width: 900px) {
-    .wraper {
+    #wraper {
         width: 680px;
     }
 }
@@ -9,18 +9,18 @@
         font-size: 42px;
     }
 
-    .logo {
+    #logo {
         padding-left: 25px;
     }
 
-    .login,
-    .register,
-    .create,
-    .profile-picture-container {
+    #login,
+    #register,
+    #create,
+    #profile-picture-container {
         display: none;
     }
 
-    .wraper {
+    #wraper {
         width: 90%;
     }
 }
@@ -30,7 +30,7 @@
         font-size: 36px;
     }
 
-    .wraper {
+    #wraper {
         width: 600px;
     }
 }
@@ -40,7 +40,7 @@
         font-size: 28px;
     }
 
-    .wraper {
+    #wraper {
         width: 390px;
     }
 }
@@ -50,7 +50,7 @@
         font-size: 24px;
     }
 
-    .wraper {
+    #wraper {
         width: 280px;
     }
 }
@@ -60,11 +60,11 @@
         font-size: 20px;
     }
 
-    .wraper {
+    #wraper {
         width: 90%;
     }
 
-    .logo {
+    #logo {
         padding-left: 15px;
     }
 }
@@ -74,26 +74,26 @@
         font-size: 16px;
     }
 
-    .logo {
+    #logo {
         padding-left: 10px;
     }
 
-    .wraper {
+    #wraper {
         width: 95%;
     }
 
-    .register,
-    .login,
-    .create,
-    .update,
-    .new-comment {
+    #register,
+    #login,
+    #create,
+    #update,
+    #new-comment {
         width: 80px;
         height: 30px;
         font-size: 12px;
         margin: 0 5px;
     }
 
-    .profile-picture-container {
+    #profile-picture-container {
         width: 40px;
         height: 40px;
     }

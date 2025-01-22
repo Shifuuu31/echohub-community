@@ -19,21 +19,21 @@
 
 <body style="overflow-y: scroll;">
     <nav>
-        <a href="home.html" class="logo">
+        <a href="home.html" id="logo">
             <img src="/static/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
         </a>
-        <a href="post-creation.html"><button class="create"><img src="./imgs/create.png"></i>Create
+        <a href="post-creation.html"><button id="create"><img src="./imgs/create.png"></i>Create
                 Post</button></a>
-        <div class="profile-dropdown">
-            <div class="profile-picture-container">
-                <img class="profile-picture" src="./imgs/avatar.png" alt="Profile Picture" loading="lazy">
+        <div id="profile-dropdown">
+            <div id="profile-picture-container">
+                <img id="profile-picture" src="./imgs/avatar.png" alt="Profile Picture" loading="lazy">
             </div>
-            <div class="dropdown">
-                <img class="inner-profile-picture" src="./imgs/avatar.png" alt="Profile Picture">
+            <div id="dropdown">
+                <img id="inner-profile-picture" src="./imgs/avatar.png" alt="Profile Picture">
                 <h2>@unkind<br><span>unkind@mail.com</span></h2>
                 <hr>
-                <div class="dropdown-content">
-                    <a href="#"><img src="imgs/settings.png"> Profile Settings</a>
+                <div id="dropdown-content">
+                    <a href="profile-settings.html"><img src="imgs/settings.png"> Profile Settings</a>
                     <a href="#"><img src="imgs/dark-mode.png"> Dark Mode (coming soon)</a>
                     <hr>
                     <a href="#"><img src="imgs/logout.png"> Log Out</a>
@@ -41,128 +41,128 @@
             </div>
         </div>
 
-        <a href="register.html"><button class="register"><img src="./imgs/register.png">Register</button></a>
-        <a href="login.html"><button class="login">Login</button></a>
+        <a href="register.html"><button id="register"><img src="./imgs/register.png">Register</button></a>
+        <a href="login.html"><button id="login">Login</button></a>
     </nav>
     <div class="wraper">
-        <ul class="categories">
-            <li class="category">
+        <ul id="categories">
+            <li id="category">
                 <input type="radio" id="category1" name="categoryElement" checked>
                 <label for="category1"><img src="./imgs/categories-Icons/all.png">All</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category2" name="categoryElement">
                 <label for="category2"><img src="./imgs/categories-Icons/my-posts.png">My Posts</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category3" name="categoryElement">
                 <label for="category3"><img src="./imgs/categories-Icons/liked-posts.png">Liked Posts</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category4" name="categoryElement">
                 <label for="category4"><img src="./imgs/categories-Icons/movies-tv.png">Movies & TV</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category5" name="categoryElement">
                 <label for="category5"><img src="./imgs/categories-Icons/music.png">Music</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category6" name="categoryElement">
                 <label for="category6"><img src="./imgs/categories-Icons/games.png">Games</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category7" name="categoryElement">
                 <label for="category7"><img src="./imgs/categories-Icons/technology.png">Technology</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category8" name="categoryElement">
                 <label for="category8"><img src="./imgs/categories-Icons/ai.png">AI</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category9" name="categoryElement">
                 <label for="category9"><img src="./imgs/categories-Icons/memes.png">Memes</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category10" name="categoryElement">
                 <label for="category10"><img src="./imgs/categories-Icons/sports.png">Sports</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category11" name="categoryElement">
                 <label for="category11"><img src="./imgs/categories-Icons/news.png">News</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category12" name="categoryElement">
                 <label for="category12"><img src="./imgs/categories-Icons/fashion.png">Fashion</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category13" name="categoryElement">
                 <label for="category13"><img src="./imgs/categories-Icons/science.png">Science</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category14" name="categoryElement">
                 <label for="category14"><img src="./imgs/categories-Icons/art.png">Art</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category15" name="categoryElement">
                 <label for="category15"><img src="./imgs/categories-Icons/anime.png">Anime</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category16" name="categoryElement">
                 <label for="category16"><img src="./imgs/categories-Icons/books.png">Books</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category17" name="categoryElement">
                 <label for="category17"><img src="./imgs/categories-Icons/business.png">Business</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category18" name="categoryElement">
                 <label for="category18"><img src="./imgs/categories-Icons/career.png">Career</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category19" name="categoryElement">
                 <label for="category19"><img src="./imgs/categories-Icons/culture.png">Culture</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category20" name="categoryElement">
                 <label for="category20"><img src="./imgs/categories-Icons/diy.png">DIY</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category21" name="categoryElement">
                 <label for="category21"><img src="./imgs/categories-Icons/education.png">Education</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category22" name="categoryElement">
                 <label for="category22"><img src="./imgs/categories-Icons/podcasts.png">Podcasts</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category23" name="categoryElement">
                 <label for="category23"><img src="./imgs/categories-Icons/q-a.png">Q&A's</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category24" name="categoryElement">
                 <label for="category24"><img src="./imgs/categories-Icons/software.png">Software & Apps</label>
             </li>
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category25" name="categoryElement">
                 <label for="category25"><img src="./imgs/categories-Icons/travel.png">Travel</label>
             </li>
         </ul>
         <div id="post">
-            <div class="user-post-info"><img src="./imgs/avatar.png" alt="User Avatar" loading="lazy">
+            <div id="user-post-info"><img src="./imgs/avatar.png" alt="User Avatar" loading="lazy">
                 <h3>Username <br><span>Time</span></h3>
             </div>
-            <div class="post-body">
+            <div id="post-body">
                 <h3>Post Title</h3>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur accusantium
                     quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
             </div>
-            <div class="post-categories">
-                <div class="links">
+            <div id="post-categories">
+                <div id="links">
                     <li>Health</li>
                     <li>Fashion</li>
                     <li>Daily</li>
                 </div>
-                <div class="buttons">
+                <div id="buttons">
                     <button><img src="./imgs/like.png" alt="Like"> 12</button>
                     <button><img src="./imgs/dislike.png" alt="Dislike"> 4123</button>
                     <button><img src="./imgs/comment.png" alt="Comment"> 4</button>
@@ -170,28 +170,28 @@
             </div>
         </div>
     </div>
-    <div class="popup-background">
+    <div id="popup-background">
         <div id="popup">
             <div class="wraper">
                 <!-- ***NOTICE*** -->
                 <!-- this is the post inside the popup  -->
                 <div id="post">
-                    <div class="user-post-info"><img src="./imgs/avatar.png" alt="User Avatar" loading="lazy">
+                    <div id="user-post-info"><img src="./imgs/avatar.png" alt="User Avatar" loading="lazy">
                         <h3>Username <br><span>Time</span></h3>
                     </div>
-                    <div class="post-body">
+                    <div id="post-body">
                         <h3>Post Title</h3>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
                             accusantium
                             quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
                     </div>
-                    <div class="post-categories">
-                        <div class="links">
+                    <div id="post-categories">
+                        <div id="links">
                             <li>Health</li>
                             <li>Fashion</li>
                             <li>Daily</li>
                         </div>
-                        <div class="buttons">
+                        <div id="buttons">
                             <button><img src="./imgs/like.png" alt="Like"> 12</button>
                             <button><img src="./imgs/dislike.png" alt="Dislike"> 4123</button>
                             <button><img src="./imgs/comment.png" alt="Comment"> 4</button>
@@ -199,62 +199,62 @@
                     </div>
                 </div>
                 <!-- end of ***NOTICE***  -->
-                <p class="seperator">Comments</p>
+                <p id="seperator">Comments</p>
                 <hr>
-                <div class="comments-section">
-                    <div class="comment">
+                <div id="comments-section">
+                    <div id="comment">
                         <div id="user-info-and-buttons">
-                            <div class="user-comment-info">
+                            <div id="user-comment-info">
                                 <img src="./imgs/avatar.png" alt="User Avatar" loading="lazy">
                                 <h3>CommenterUsername <br><span>2 hours ago</span></h3>
                             </div>
-                            <div class="buttons">
+                            <div id="buttons">
                                 <button><img src="./imgs/like.png" alt="Like"> 12</button>
                                 <button><img src="./imgs/dislike.png" alt="Dislike"> 4123</button>
                             </div>
                         </div>
-                        <div class="user-comment-info">
+                        <div id="user-comment-info">
                             <p>This is an example comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                                 Quisquam, quos.</p>
                         </div>
                     </div>
-                    <div class="comment">
+                    <div id="comment">
                         <div id="user-info-and-buttons">
-                            <div class="user-comment-info">
+                            <div id="user-comment-info">
                                 <img src="./imgs/avatar.png" alt="User Avatar" loading="lazy">
                                 <h3>CommenterUsername2 <br><span>2 hours ago</span></h3>
                             </div>
-                            <div class="buttons">
+                            <div id="buttons">
                                 <button><img src="./imgs/like.png" alt="Like"> 12</button>
                                 <button><img src="./imgs/dislike.png" alt="Dislike"> 4123</button>
                             </div>
                         </div>
-                        <div class="user-comment-info">
+                        <div id="user-comment-info">
                             <p>This is an example comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                                 Quisquam, quos.</p>
                         </div>
                     </div>
-                    <div class="comment">
+                    <div id="comment">
                         <div id="user-info-and-buttons">
-                            <div class="user-comment-info">
+                            <div id="user-comment-info">
                                 <img src="./imgs/avatar.png" alt="User Avatar" loading="lazy">
                                 <h3>CommenterUsername3 <br><span>2 hours ago</span></h3>
                             </div>
-                            <div class="buttons">
+                            <div id="buttons">
                                 <button><img src="./imgs/like.png" alt="Like"> 12</button>
                                 <button><img src="./imgs/dislike.png" alt="Dislike"> 4123</button>
                             </div>
                         </div>
-                        <div class="user-comment-info">
+                        <div id="user-comment-info">
                             <p>This is an example comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                                 Quisquam, quos.</p>
                         </div>
                     </div>
-                    <div class="user-comment">
-                        <div class="user-comment-info"><img src="./imgs/avatar.png" alt="User Avatar" loading="lazy">
+                    <div id="user-comment">
+                        <div id="user-comment-info"><img src="./imgs/avatar.png" alt="User Avatar" loading="lazy">
                             <h3>Username</h3>
                         </div>
-                        <div class="comment-group">
+                        <div id="comment-group">
                             <textarea placeholder="Type a comment..." type="text" id="comment-field"></textarea>
 
                         </div>

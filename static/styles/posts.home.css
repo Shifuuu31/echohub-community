@@ -9,7 +9,7 @@
     margin-bottom: 30px ;
 }
 
-.seperator {
+#seperator {
     text-align: center;
     color: var(--secondary-color);
     font-size: 24px;
@@ -17,7 +17,7 @@
     margin-bottom: 15px;
 }
 
-hr {
+.wraper hr {
     width: 40%;
     margin: auto;
     color: var(--secondary-bg-color);

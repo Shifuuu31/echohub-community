@@ -25,43 +25,43 @@
 
 <body>
     <nav>
-        <a href="home.html" class="logo">
+        <a href="home.html" id="logo">
             <img src="/static/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
         </a>
-        <a href="post-create.html"><button class="create"><img src="./imgs/create.png"></i>Create
-            Post</button></a>
-    <div class="profile-dropdown">
-        <div class="profile-picture-container">
-            <img class="profile-picture" src="./imgs/avatar.png" alt="Profile Picture" loading="lazy">
-        </div>
-        <div class="dropdown">
-            <img src="./imgs/avatar.png" alt="Profile Picture">
-            <h2>@unkind<br><span>unkind@mail.com</span></h2>
-            <hr>
-            <div class="dropdown-content">
-                <a href="#">Profile Settings</a>
-                <a href="#">Dark Mode (coming soon)</a>
+        <a href="post-creation.html"><button id="create"><img src="./imgs/create.png"></i>Create
+                Post</button></a>
+        <div id="profile-dropdown">
+            <div id="profile-picture-container">
+                <img id="profile-picture" src="./imgs/avatar.png" alt="Profile Picture" loading="lazy">
+            </div>
+            <div id="dropdown">
+                <img src="./imgs/avatar.png" alt="Profile Picture">
+                <h2>@unkind<br><span>unkind@mail.com</span></h2>
                 <hr>
-                <a href="#">Log Out</a>
+                <div id="dropdown-content">
+                    <a href="#">Profile Settings</a>
+                    <a href="#">Dark Mode (coming soon)</a>
+                    <hr>
+                    <a href="#">Log Out</a>
+                </div>
             </div>
         </div>
-    </div>
     </nav>
     <div class="wraper">
-        <div class="edit">
-            <div class="user-info-1">
+        <div id="edit">
+            <div id="user-info-1">
                 <img src="./imgs/avatar.png" alt="">
                 <h3>Username <br> <span>Email</span></h3>
             </div>
             </form>
-            <div class="user-info-edit">
+            <div id="user-info-edit">
                 <form action="" method="">
-                    <div class="input-group">
+                    <div id="input-group">
                         <label for="">Username</label>
                         <input type="text" placeholder="">
                         <label for="">Email</label>
                         <input type="text" placeholder="">
-                        <label for="">Language <span>(we’re working on adding new languages)</span></label>
+                        <label for="">Language <span>(we're working on adding new languages)</span></label>
                         <select>
                             <option value="english" selected>English</option>
                         </select>
@@ -71,7 +71,7 @@
                         <input type="password" placeholder="">
                     </div>
 
-                    <button class="update"><i class="fa-solid fa-rotate"></i>&emsp;Update</button>
+                    <button id="update"><i id="fa-solid fa-rotate"></i>&emsp;Update</button>
             </div>
         </div>
     </div>

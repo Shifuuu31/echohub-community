@@ -1,4 +1,4 @@
-.edit {
+#edit {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -9,17 +9,17 @@
     margin: 10px 0;
 }
 
-.user-info-1 {
+#user-info-1 {
     display: flex;
     align-items: center;
     margin: 35px;
 }
 
-.user-info-1 .register {
+#user-info-1 #register {
     justify-content: flex-end;
 }
 
-.user-info-1 img {
+#user-info-1 img {
     width: 100px;
     height: 100px;
     border-radius: 512px;
@@ -27,33 +27,33 @@
     margin-right: 25px;
 }
 
-.user-info-edit form {
+#user-info-edit form {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.input-group {
+#input-group {
     width: 100%;
 }
 
-.input-group label {
+#input-group label {
     display: block;
     color: black;
     font-size: 18px;
     margin: 0 0 4px 3px;
 }
 
-.input-group label span {
+#input-group label span {
     display: inline-block;
     color: var(--border-color);
     font-size: 12px;
     margin: 0 0 4px 3px;
 }
 
-.input-group input,
-.input-group select {
+#input-group input,
+#input-group select {
     width: 100%;
     padding: 12px 16px;
     margin-bottom: 10px;
@@ -64,11 +64,11 @@
     color: var(--secondary-color);
 }
 
-.input-group input:focus {
+#input-group input:focus {
     border-color: var(--primary-color);
 }
 
-.button-container button {
+#button-container button {
     width: 80px;
     height: 38px;
     margin: 15px 0;
