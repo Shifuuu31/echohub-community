@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
+	"net/url"
 	"strconv"
 
 	"forum/internal/models"
@@ -34,42 +34,31 @@ func (webForum *WebApp) HomePageHandler(w http.ResponseWriter, r *http.Request) 
 
 // handler to get posts
 func (webForm *WebApp) GetPostsHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("here1")
-
 	start, err := strconv.Atoi(r.URL.Query().Get("s"))
 	if err != nil {
 		return
 	}
-	fmt.Println("here2")
 
 	nbr, err := strconv.Atoi(r.URL.Query().Get("n"))
 	if err != nil {
 		return
 	}
-	fmt.Println("here3")
 
-	category := r.URL.Query().Get("type")
+	category := url.QueryEscape(r.URL.Query().Get("type"))
 
 	if category == "" {
 		return
 	}
-	fmt.Println("here4")
 
 	posts, err := webForm.Post.GetPosts(start, nbr, category)
 	if err != nil {
-		log.Println("Error :",err)
 		return
 	}
-	fmt.Println("here5")
-	fmt.Println(posts)
-	fmt.Println(len(posts))
-
-	fmt.Printf("start : %v\nnbr : %v\ncategory : %v", start, nbr, category)
 
 	if len(posts) == 0 {
 		return
 	}
-	fmt.Println("here6")
+
 	var buffer bytes.Buffer
 	encoder := json.NewEncoder(&buffer)
 	if err := encoder.Encode(posts); err != nil {
@@ -83,62 +72,62 @@ func (webForm *WebApp) GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, buffer.String())
 }
 
-// func (webForum *WebApp) CreatePostPageHandler(w http.ResponseWriter, r *http.Request) {
-// 	if r.URL.Path != "/post" {
-// 		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
-// 			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
-// 			return
-// 		}
-// 		return
-// 	}
+// desplay create-post page
+func (webForum *WebApp) CreatePostPageHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/create-post" {
+		models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
+		return
+	}
 
-// 	Categories, err := webForum.Post.GetCategories()
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
+	Categories, err := webForum.Post.GetCategories()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-// 	if err := Template.ExecuteTemplate(w, "post-create.html", Categories); err != nil {
-// 		http.Error(w, "Error loading HomePage", http.StatusInternalServerError)
-// 		return
-// 	}
-// }
+	if err := Template.ExecuteTemplate(w, "post-creation.html", Categories); err != nil {
+		http.Error(w, "Error loading HomePage", http.StatusInternalServerError)
+		return
+	}
+}
 
-// func (webForm *WebApp) NewPostCreationHandler(w http.ResponseWriter, r *http.Request) {
-// 	if r.URL.Path != "/post/create" {
-// 		w.WriteHeader(http.StatusNotFound)
-// 		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
-// 			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
-// 			return
-// 		}
-// 		return
-// 	}
+func (webForm *WebApp) NewPostCreationHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/create" {
+		models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
+		return
+	}
 
-// 	New := models.Post{
-// 		PostTitle:   r.FormValue("title"),
-// 		PostContent: r.FormValue("content"),
-// 	}
-// 	categoriesForm = r.Form["categories[]"]
+	New := models.Post{
+		PostTitle:   r.FormValue("title"),
+		PostContent: r.FormValue("content"),
+	}
+	categoriesForm := r.Form["categoryElement"]
 
-// 	ids, err := webForm.Post.GetIdsCategories(categoriesForm)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
+	if New.PostTitle == "" || New.PostContent == "" || len(categoriesForm) == 0 || len(categoriesForm) > 3 {
+		http.Redirect(w, r, "/create-post", http.StatusSeeOther)
+		http.Error(w, "We can't create this post, somthing missing", http.StatusInternalServerError)
+		return
+	}
 
-// 	idPost, err := webForm.Post.CreatePost(New.PostTitle, New.PostContent)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
+	ids, err := webForm.Post.GetIdsCategories(categoriesForm)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-// 	http.Redirect(w, r, "/", http.StatusSeeOther)
-// 	err = webForm.Post.AddcategoryPost(idPost, ids)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-// }
+	idPost, err := webForm.Post.CreatePost(New.PostTitle, New.PostContent)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+	err = webForm.Post.AddcategoryPost(idPost, ids)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
 
 // func (webForum *WebApp) DeletePostHandler(w http.ResponseWriter, r *http.Request) {
 // 	if r.URL.Path != "/post/delete" {

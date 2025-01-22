@@ -24,17 +24,17 @@
 
 <body>
     <nav>
-        <a href="home.html" class="logo">
-            <img src="/static/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
+        <a href="/" class="logo">
+            <img src="/assets/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
         </a>
-        <a href="post-create.html"><button class="create"><img src="./imgs/create.png"></i>Create
+        <a href="/create-post"><button class="create"><img src="/assets/imgs/create.png"></i>Create
                 Post</button></a>
         <div class="profile-dropdown">
             <div class="profile-picture-container">
-                <img class="profile-picture" src="./imgs/avatar.png" alt="Profile Picture" loading="lazy">
+                <img class="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
             </div>
             <div class="dropdown">
-                <img src="./imgs/avatar.png" alt="Profile Picture">
+                <img src="/assets/imgs/avatar.png" alt="Profile Picture">
                 <h2>@unkind<br><span>unkind@mail.com</span></h2>
                 <hr>
                 <div class="dropdown-content">
@@ -46,23 +46,24 @@
             </div>
         </div>
     </nav>
-    <div class="wraper wraper-extra">
+    <form class="wraper wraper-extra" action="/create" method="POST" onsubmit="Validate()">
         <ul class="categories">
             {{range .}}
             <li class="category">
-                <input type="checkbox" id="category{{.ID}}" name="categoryElement">
+                <input type="checkbox" id="category{{.ID}}" name="categoryElement" value="{{.CategoryName}}">
                 <label for="category{{.ID}}"><img src="{{.CategoryIconPath}}">{{.CategoryName}}</label>
             </li>
             {{end}}
         </ul>
-        <div class="post-inputs"><label for="post-title">
-                <input type="text" id="post-title" placeholder="Post Title *" required>
+        <div class="post-inputs">
+            <label for="post-title">
+                <input name="title" type="text" id="post-title" placeholder="Post Title *" required>
             </label>
-            <textarea name="" id="" placeholder="Type Something here..."></textarea>
-            <button type="submit"><img src="./imgs/send.png">Post</button>
+            <textarea name="content" id="" placeholder="Type Something here..." required></textarea>
+            <button type="submit"><img src="/assets/imgs/send.png">Post</button>
         </div>
-    </div>
-    <script src="/scripts/post-creation.js"></script>
+    </form>
+    <script src="/assets/scripts/post-creation.js"></script>
 </body>
 
 </html>

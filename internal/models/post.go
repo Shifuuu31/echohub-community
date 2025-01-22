@@ -2,7 +2,6 @@ package models
 
 import (
 	"database/sql"
-	"fmt"
 )
 
 type Post struct {
@@ -58,14 +57,16 @@ func (PostModel *PostModel) GetCategories() (Categories []Category, err error) {
 	return Categories, nil
 }
 
-func (postModel *PostModel) GetPosts(start, nbr int, category string) ([]Post, error) {
+// get posts from DB with cateogry
+func (postModel *PostModel) GetPosts(start, nbr int, category string) (posts []Post, err error) {
 	var query string
 	var args []interface{}
 
 	if category == "All" {
-		query = `SELECT id, user_id, title, post_content, creation_date
-				  FROM PostTable
-				  ORDER BY id DESC`
+		query = `
+		SELECT *
+		FROM PostTable
+		ORDER BY id DESC`
 	} else {
 		query = `
 		SELECT p.id, p.user_id, p.title, p.post_content, p.creation_date
@@ -77,49 +78,45 @@ func (postModel *PostModel) GetPosts(start, nbr int, category string) ([]Post, e
 		args = append(args, category)
 	}
 
-	if nbr > 0 {
-		if start > 0 {
-			query += " LIMIT $2 OFFSET $3"
-			args = append(args, nbr, start)
-		} else {
-			query += " LIMIT $2"
-			args = append(args, nbr)
-		}
+	if nbr > 0 && start > 0 {
+		query += " LIMIT $2 OFFSET $3"
+		args = append(args, nbr, start)
+	} else {
+		return nil, err
 	}
 
-	fmt.Println("Executing query:", query)
-	fmt.Println("Executing args:", args)
-
-	rows, err := postModel.DB.Query(query, args[0], args[1], args[2])
+	rows, err := postModel.DB.Query(query, args...)
 	if err != nil {
-		return nil, fmt.Errorf("failed to execute query: %w", err)
+		return nil, err
 	}
 	defer rows.Close()
-
-	var posts []Post
 
 	for rows.Next() {
 		post := Post{}
 		var userID int
 		if err := rows.Scan(&post.PostId, &userID, &post.PostTitle, &post.PostContent, &post.PostTime); err != nil {
-			return nil, fmt.Errorf("failed to scan row: %w", err)
+			return nil, err
 		}
 
-		post.PostUserName, err = postModel.GetUsersName(userID)
-		if err != nil {
-			return nil, fmt.Errorf("failed to get username for user_id %d: %w", userID, err)
+		if post.PostUserName, err = postModel.GetUsersName(userID); err != nil {
+			return nil, err
+		}
+
+		if post.PostCategories, err = postModel.GetCategoriesPost(post.PostId); err != nil {
+			return nil, err
 		}
 
 		posts = append(posts, post)
 	}
 
 	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("row iteration error: %w", err)
+		return nil, err
 	}
 
 	return posts, nil
 }
 
+// git username by ID
 func (PostModel *PostModel) GetUsersName(userId int) (username string, err error) {
 	query := "SELECT username FROM UserTable WHERE id = ?"
 	if err = PostModel.DB.QueryRow(query, userId).Scan(&username); err != nil {
@@ -129,6 +126,7 @@ func (PostModel *PostModel) GetUsersName(userId int) (username string, err error
 	return username, nil
 }
 
+// get cateogries of post
 func (PostModel *PostModel) GetCategoriesPost(postId int) (postCategories []string, err error) {
 	query := "SELECT c.category_name FROM Categories_Posts cp JOIN Categories c ON cp.category_id = c.id WHERE cp.post_id = ?"
 	rows, err := PostModel.DB.Query(query, postId)
@@ -152,57 +150,55 @@ func (PostModel *PostModel) GetCategoriesPost(postId int) (postCategories []stri
 	return postCategories, nil
 }
 
-// func (PostModel *PostModel) CreatePost(title, content string) (int, error) {
-// 	var id int
+func (PostModel *PostModel) CreatePost(title, content string) (int, error) {
+	var id int
+	err := PostModel.DB.QueryRow("INSERT INTO PostTable (title, user_id, post_content) VALUES (?, ?, ?) RETURNING id", title, 10, content).Scan(&id)
+	if err != nil {
+		return 0, err
+	}
+	return id, nil
+}
 
-// 	err := PostModel.DB.QueryRow("INSERT INTO PostTable (title, user_id, post_content) VALUES (?, ?, ?) RETURNING id", title, 10, content).Scan(&id)
-// 	if err != nil {
-// 		return 0, err
-// 	}
+func (PostModel *PostModel) GetIdsCategories(Categories []string) ([]int, error) {
+	ids := []int{}
+	for i := 0; i < len(Categories); i++ {
+		category := Category{}
 
-// 	return id, nil
-// }
+		cmd, err := PostModel.DB.Query("SELECT id, category_name FROM Categories WHERE category_name = $1", Categories[i])
+		if err != nil {
+			return nil, err
+		}
+		defer cmd.Close()
 
-// func (PostModel *PostModel) GetIdsCategories(Categories []string) ([]int, error) {
-// 	ids := []int{}
-// 	for i := 0; i < len(Categories); i++ {
-// 		category := Category{}
+		for cmd.Next() {
+			err = cmd.Scan(&category.ID, &category.CategoryName)
+			if err != nil {
+				return nil, err
+			}
+			ids = append(ids, category.ID)
+		}
+	}
 
-// 		cmd, err := PostModel.DB.Query("SELECT id, category_name FROM Categories WHERE category_name = $1", Categories[i])
-// 		if err != nil {
-// 			return nil, err
-// 		}
-// 		defer cmd.Close()
+	return ids, nil
+}
 
-// 		for cmd.Next() {
-// 			err = cmd.Scan(&category.ID, &category.CategoryName)
-// 			if err != nil {
-// 				return nil, err
-// 			}
-// 			ids = append(ids, category.ID)
-// 		}
-// 	}
+func (PostModel *PostModel) AddcategoryPost(post_id int, ids []int) error {
+	query := "INSERT INTO Categories_Posts (category_id,post_id) VALUES (?,?)"
+	cmd, err := PostModel.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer cmd.Close()
 
-// 	return ids, nil
-// }
+	for i := 0; i < len(ids); i++ {
+		_, err = cmd.Exec(ids[i], post_id)
+		if err != nil {
+			return err
+		}
+	}
 
-// func (PostModel *PostModel) AddcategoryPost(post_id int, ids []int) error {
-// 	query := "INSERT INTO Categories_Posts (category_id,post_id) VALUES (?,?)"
-// 	cmd, err := PostModel.DB.Prepare(query)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	defer cmd.Close()
-
-// 	for i := 0; i < len(ids); i++ {
-// 		_, err = cmd.Exec(ids[i], post_id)
-// 		if err != nil {
-// 			return err
-// 		}
-// 	}
-
-// 	return nil
-// }
+	return nil
+}
 
 // func (PostModel *PostModel) DeletePost(idPost int) error {
 // 	_, err := PostModel.DB.Exec("DELETE FROM PostTable WHERE ID = $1", idPost)
