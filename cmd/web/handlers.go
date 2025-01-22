@@ -2,7 +2,6 @@ package web
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	"forum/internal/models"
@@ -37,18 +36,14 @@ func (webForum *WebApp) AuthMiddleware(next http.Handler) http.Handler {
 }
 
 func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		models.Error{
-			StatusCode: http.StatusNotFound,
-			Message:    "404 Page Not Found",
-			SubMessage: "Oops! The page you are looking for does not exist	",
-		}.RenderError(w)
-		return
-	}
+	user := &models.User{}
+	// var err error
+	
 
 	userID, ok := r.Context().Value(userIDKey).(int)
 	if !ok {
 		models.Error{
+			User:       user,
 			StatusCode: http.StatusInternalServerError,
 			Message:    "Internal Server Error",
 			SubMessage: "Unable to retrieve user information.",
@@ -56,11 +51,8 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var user *models.User
-	var err error
-
 	if userID != 0 {
-		user, err = webForum.Users.FindUserByID(userID)
+		user, err := webForum.Users.FindUserByID(userID)
 		if err != nil {
 			if err.Error() == "user not found" {
 				user = &models.User{
@@ -68,6 +60,7 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 				}
 			} else {
 				models.Error{
+					User:       user,
 					StatusCode: http.StatusInternalServerError,
 					Message:    "Internal Server Error",
 					SubMessage: err.Error(),
@@ -84,6 +77,7 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 	userType, ok := r.Context().Value(userTypeKey).(string)
 	if !ok {
 		models.Error{
+			User:       user,
 			StatusCode: http.StatusInternalServerError,
 			Message:    "Internal Server Error",
 			SubMessage: "Unable to retrieve user type.",
@@ -91,6 +85,17 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	user.UserType = userType
+	if r.URL.Path != "/" {
+		print("HAHAHAHAHAHAH\n")
+		err := models.Error{
+			User:       user, // Ensure this is not nil
+			StatusCode: http.StatusNotFound,
+			Message:    "404 Page Not Found",
+			SubMessage: "Oops! The page you are looking for does not exist",
+		}
+		err.RenderError(w)
+		return
+	}
 
 	models.RenderPage(w, "home.html", user)
 }
@@ -102,56 +107,73 @@ func (webForum *WebApp) LoginPage(w http.ResponseWriter, r *http.Request) {
 func (webForum *WebApp) UserLogin(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		models.Error{StatusCode: http.StatusInternalServerError, Message: "Internal Server Error", SubMessage: "A login error occured"}.RenderError(w)
+		models.Error{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			SubMessage: "A login error occurred",
+		}.RenderError(w)
 		return
 	}
 
-	userID, err := webForum.Users.ValidateUserCreadentials(r.FormValue("username"), r.FormValue("password"))
+	userID, err := webForum.Users.ValidateUserCredentials(r.FormValue("username"), r.FormValue("password"))
 	if err != nil {
-		models.Error{StatusCode: http.StatusUnauthorized, Message: "Unauthorized", SubMessage: "Invalid username or password"}.RenderError(w)
+		models.Error{
+			StatusCode: http.StatusUnauthorized,
+			Message:    "Unauthorized",
+			SubMessage: "Invalid username or password",
+		}.RenderError(w)
 		return
 	}
-	newSession, err := webForum.Sessions.GenerateNewSession(userID, r.FormValue(("remember")))
+
+	newSession, err := webForum.Sessions.GenerateNewSession(userID, r.FormValue("remember"))
 	if err != nil {
-		models.Error{StatusCode: http.StatusInternalServerError, Message: "Internal Server Error", SubMessage: "Cannot generate new session"}.RenderError(w)
+		models.Error{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			SubMessage: "Cannot generate new session",
+		}.RenderError(w)
 		return
 	}
-	fmt.Println(newSession)
 
 	newCookie, err := webForum.Sessions.InsertOrUpdateSession(newSession)
 	if err != nil {
-		models.Error{StatusCode: http.StatusInternalServerError, Message: "Internal Server Error", SubMessage: "Cannot insert new session"}.RenderError(w)
+		models.Error{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			SubMessage: "Cannot insert new session",
+		}.RenderError(w)
 		return
 	}
 	http.SetCookie(w, &newCookie)
 
 	http.Redirect(w, r, "/", http.StatusFound)
 }
+
 func (webForum *WebApp) UserLogout(w http.ResponseWriter, r *http.Request) {
-    sessionCookie, err := r.Cookie("userSession")
-    if err != nil {
-        http.Redirect(w, r, "/", http.StatusFound)
-        return
-    }
+	sessionCookie, err := r.Cookie("userSession")
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
 
-    err = webForum.Sessions.DeleteSession(sessionCookie.Value)
-    if err != nil {
-        models.Error{
-            StatusCode: http.StatusInternalServerError,
-            Message:    "Internal Server Error",
-            SubMessage: "Failed to delete session",
-        }.RenderError(w)
-        return
-    }
+	err = webForum.Sessions.DeleteSession(sessionCookie.Value)
+	if err != nil {
+		models.Error{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			SubMessage: "Failed to delete session",
+		}.RenderError(w)
+		return
+	}
 
-    http.SetCookie(w, &http.Cookie{
-        Name:   "userSession",
-        Value:  "",
-        Path:   "/",
-        MaxAge: -1,
-    })
+	http.SetCookie(w, &http.Cookie{
+		Name:   "userSession",
+		Value:  "",
+		Path:   "/",
+		MaxAge: -1,
+	})
 
-    http.Redirect(w, r, "/", http.StatusFound)
+	http.Redirect(w, r, "/", http.StatusFound)
 }
 
 func (webForum *WebApp) RegisterPage(w http.ResponseWriter, r *http.Request) {

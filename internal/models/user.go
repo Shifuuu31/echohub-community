@@ -38,7 +38,7 @@ func (user *UserModel) FindUserByID(userID int) (*User, error) {
 	return foundUser, nil
 }
 
-func (user *UserModel) ValidateUserCreadentials(username, password string) (UserID int, err error) {
+func (user *UserModel) ValidateUserCredentials(username, password string) (UserID int, err error) {
 	username = strings.TrimSpace(username)
 	hashedPassword := ""
 	selectStmt := `	SELECT id, username, hashed_password

@@ -23,8 +23,6 @@ func (webForum *WebApp) Routes() http.Handler {
     mux.HandleFunc("POST /register", webForum.UserRegister)
     mux.HandleFunc("GET /login", webForum.LoginPage)
     mux.HandleFunc("POST /login", webForum.UserLogin)
-    
-    // Add the logout route
     mux.HandleFunc("GET /logout", webForum.UserLogout)
 
     return mux
