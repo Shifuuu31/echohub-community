@@ -30,29 +30,35 @@
         <a href="/login"><button class="login">Login</button></a>    
     </nav>
     <div class="container">
-        <form class="form">
-            <p class="title">Join EchoHub community </p>
-            <p class="message">Get more features and priviliges by joining to the most helpful community. </p>
+        <form class="form" action="/register" method="POST">
+            <p class="title">Join EchoHub community</p>
+            <p class="message">Get more features and privileges by joining the most helpful community.</p>
+            
             <label>
-                <input class="input" type="text" placeholder="" required="">
+                <input class="input" name="username" type="text" placeholder="" required="">
                 <span>Username</span>
             </label>
+            
             <label>
-                <input class="input" type="email" placeholder="" required="">
+                <input class="input" name="email" type="email" placeholder="" required="">
                 <span>Email</span>
             </label>
-
+    
             <label>
-                <input class="input" type="password" placeholder="" required="">
+                <input class="input" name="password" type="password" placeholder="" required="">
                 <span>Password</span>
             </label>
+            
             <label>
-                <input class="input" type="password" placeholder="" required="">
+                <input class="input" name="rPassword" type="password" placeholder="" required="">
                 <span>Confirm password</span>
             </label>
-            <button class="submit">Register</button>
-            <p class="signin">Already have an account? <a href="/login">Signin</a> </p>
+            
+            <button class="submit" type="submit">Register</button>
+            
+            <p class="signin">Already have an account? <a href="/login">Sign in</a></p>
         </form>
+        
         <img src="/assets/imgs/welcome.png">
     </div>
 </body>

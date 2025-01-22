@@ -2,6 +2,7 @@ package web
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"forum/internal/models"
@@ -37,9 +38,8 @@ func (webForum *WebApp) AuthMiddleware(next http.Handler) http.Handler {
 
 func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 	user := &models.User{}
-	// var err error
+	var err error
 	
-
 	userID, ok := r.Context().Value(userIDKey).(int)
 	if !ok {
 		models.Error{
@@ -52,7 +52,7 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if userID != 0 {
-		user, err := webForum.Users.FindUserByID(userID)
+		user, err = webForum.Users.FindUserByID(userID)
 		if err != nil {
 			if err.Error() == "user not found" {
 				user = &models.User{
@@ -73,7 +73,6 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 			UserType: "guest",
 		}
 	}
-
 	userType, ok := r.Context().Value(userTypeKey).(string)
 	if !ok {
 		models.Error{
@@ -86,9 +85,8 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 	}
 	user.UserType = userType
 	if r.URL.Path != "/" {
-		print("HAHAHAHAHAHAH\n")
 		err := models.Error{
-			User:       user, // Ensure this is not nil
+			User:       user,
 			StatusCode: http.StatusNotFound,
 			Message:    "404 Page Not Found",
 			SubMessage: "Oops! The page you are looking for does not exist",
@@ -96,11 +94,13 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 		err.RenderError(w)
 		return
 	}
+	fmt.Println(user)
 
 	models.RenderPage(w, "home.html", user)
 }
 
 func (webForum *WebApp) LoginPage(w http.ResponseWriter, r *http.Request) {
+	
 	models.RenderPage(w, "login.html", nil)
 }
 
@@ -177,6 +177,7 @@ func (webForum *WebApp) UserLogout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (webForum *WebApp) RegisterPage(w http.ResponseWriter, r *http.Request) {
+	println("xsxsxssx")
 	models.RenderPage(w, "register.html", nil)
 }
 

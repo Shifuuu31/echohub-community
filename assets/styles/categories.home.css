@@ -4,6 +4,7 @@ ul.categories {
     overflow-x: auto;
     scrollbar-width: none;
     padding: 10px 0;
+    margin-bottom: 20px;
 }
 
 ul.categories::-webkit-scrollbar {
@@ -27,6 +28,7 @@ li.category {
 }
 
 .category input[type=radio]+label {
+    display: flex;
     background-color: var(--secondary-bg-color);
     color: var(--secondary-color);
     border: transparent;
@@ -37,7 +39,6 @@ li.category {
     white-space: nowrap;
     text-overflow: ellipsis;
     max-width: 200px;
-    display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;

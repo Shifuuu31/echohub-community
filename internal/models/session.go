@@ -23,7 +23,7 @@ type SessionModel struct {
 func (session *SessionModel) GenerateNewSession(userID int, remember string) (newSession Session, err error) {
 	exp := 24 * time.Hour
 	if remember == "on" {
-		exp *= 30
+		exp *= 30  // expire after 30 days
 	}
 	newToken, err := uuid.NewV4()
 	if err != nil {

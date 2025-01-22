@@ -79,7 +79,7 @@
     outline: none;
 }
 
-.form label .input + span {
+.form label .input+span {
     position: absolute;
     left: 20px;
     top: 5px;
@@ -89,22 +89,22 @@
     transition: 0.3s ease;
 }
 
-.form label .input:placeholder-shown + span {
+.form label .input:placeholder-shown+span {
     top: 12.5px;
 }
 
-.form label .input:focus + span,
-.form label .input:valid + span {
+.form label .input:focus+span,
+.form label .input:valid+span {
     top: 5px;
     font-size: 14px;
     font-weight: 600;
 }
 
-.form label .input:focus + span {
+.form label .input:focus+span {
     color: var(--primary-color);
 }
 
-.form label .input:valid + span {
+.form label .input:valid+span {
     color: forestgreen;
     font-size: 13px;
 }
@@ -114,7 +114,7 @@
     outline: none;
     padding: 10px;
     border-radius: 512px;
-    margin-top: 35px;
+    margin-top: 5px;
     color: #fff;
     font-size: 16px;
     background-color: var(--primary-color);
@@ -128,32 +128,34 @@
 
 .remember-me {
     display: flex;
-    align-items: center;
     gap: 8px;
+    font-size: 16px;
     cursor: pointer;
-  }
-  
-  .remember-me input[type="checkbox"] {
+    justify-content: center;
+    align-items: center;
+}
+
+.remember-me input[type="checkbox"] {
     appearance: none;
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     border: 2px solid #ccc;
-    border-radius: 6px;
+    border-radius: 5px;
     cursor: pointer;
     position: relative;
-  }
-  
-  .remember-me input[type="checkbox"]:checked {
+}
+
+.remember-me input[type="checkbox"]:checked {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
-  }
-  
-  .remember-me input[type="checkbox"]:checked::before {
+}
+
+.remember-me input[type="checkbox"]:checked::before {
     content: '✔';
     position: absolute;
-    top: 45%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 11px;
     color: white;
-  }
+}

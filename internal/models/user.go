@@ -34,6 +34,7 @@ func (user *UserModel) FindUserByID(userID int) (*User, error) {
 		}
 		return nil, err
 	}
+	fmt.Println("foundUser:", foundUser)
 
 	return foundUser, nil
 }
