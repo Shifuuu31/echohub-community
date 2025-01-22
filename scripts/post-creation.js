@@ -6,7 +6,7 @@ for (let category of categories) {
         const categories = document.querySelectorAll('input[name="categoryElement"]:checked')
 
         if (categories.length > MAX_CATEGORIES) {
-            categories.checked = false
+            category.checked = false
             alert(`You can only select up to ${MAX_CATEGORIES} categories.`)
         }
     })
