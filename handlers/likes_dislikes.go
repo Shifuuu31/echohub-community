@@ -21,13 +21,21 @@ type Total struct {
 func LikeDislikeHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
+		// check if user is logged in :
+
+		// userId, ok := r.Context().Value(userIDKey).(int)
+		// if !ok || userID == 0 {
+		// 	http.Error(w, "Unauthorized: Please log in to like/dislike", http.StatusUnauthorized)
+		// 	return
+		// }
+
 		var request Interactions
 		if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 			http.Error(w, "Invalid request", http.StatusBadRequest)
 			return
 		}
 
-		// (comes from the session)
+		// remove after adding middelware part above 
 		userId := 1
 
 		// check if already liked / disliked
