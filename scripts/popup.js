@@ -1,10 +1,9 @@
 export { Popup }
 
-const postContent = document.querySelector("#post")
+const postContent = document.querySelector("#post #post-body")
 const commentButton = document.querySelector("#post #post-categories button:nth-child(3)")
 const popupBackground = document.querySelector("#popup-background")
 const closeButton = document.querySelector("#user-info-and-buttons button")
-
 
 const OpenPopup = () => {
     document.querySelector("#popup-background").style.display = "block"
@@ -19,13 +18,13 @@ const ClosePopup = () => {
 }
 
 const Popup = () => {
-        postContent.addEventListener("click", OpenPopup)
-        commentButton.addEventListener("click", OpenPopup)
+    postContent.addEventListener("click", OpenPopup)
+    commentButton.addEventListener("click", OpenPopup)
 
-        popupBackground.addEventListener("click", (event) => {
-            if (event.target === popupBackground) {
-                ClosePopup()
-            }
-        })
-        closeButton.addEventListener("click", ClosePopup)
+    popupBackground.addEventListener("click", (event) => {
+        if (event.target === popupBackground) {
+            ClosePopup()
+        }
+    })
+    closeButton.addEventListener("click", ClosePopup)
 }
