@@ -51,17 +51,19 @@
     <div class="wraper">
         <ul class="categories">
             <li class="category">
-                <input type="radio" id="category22" name="categoryElement" checked>
-                <label for="category22"><img src="/assets/imgs/categories-Icons/all.png">All</label>
+                <input type="radio" id="categoryAll" name="categoryElement" value="All" checked>
+                <label for="categoryAll"><img src="/assets/imgs/categories-Icons/all.png">All</label>
             </li>
             {{range .}}
             <li class="category">
-                <input type="radio" id="category{{.ID}}" name="categoryElement">
+                <input type="radio" id="category{{.ID}}" name="categoryElement" value="{{.ID}}">
                 <label for="category{{.ID}}"><img src="{{.CategoryIconPath}}">{{.CategoryName}}</label>
             </li>
             {{end}}
         </ul>
     </div>
 </body>
+
+<script src="/assets/scripts/fetch-posts.js"></script>
 
 </html>

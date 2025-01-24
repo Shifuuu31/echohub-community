@@ -46,7 +46,7 @@
             </div>
         </div>
     </nav>
-    <form class="wraper wraper-extra" action="/create" method="POST" onsubmit="Validate()">
+    <form class="wraper wraper-extra" action="/create" method="POST" >
         <ul class="categories">
             {{range .}}
             <li class="category">
@@ -60,7 +60,7 @@
                 <input name="title" type="text" id="post-title" placeholder="Post Title *" required>
             </label>
             <textarea name="content" id="" placeholder="Type Something here..." required></textarea>
-            <button type="submit"><img src="/assets/imgs/send.png">Post</button>
+            <button id="submit" type="submit"><img src="/assets/imgs/send.png">Post</button>
         </div>
     </form>
     <script src="/assets/scripts/post-creation.js"></script>

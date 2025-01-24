@@ -1,20 +1,21 @@
 const MAX_CATEGORIES = 3
 const categories = document.querySelectorAll('input[name="categoryElement"]')
+const submitBtn = document.getElementById('submit')
 
 for (let category of categories) {
     category.addEventListener('change', () => {
-        const categories = document.querySelectorAll('input[name="categoryElement"]:checked')
+        const categoriesChecked = document.querySelectorAll('input[name="categoryElement"]:checked')
 
-        if (categories.length > MAX_CATEGORIES) {
+        if (categoriesChecked.length > MAX_CATEGORIES) {
             category.checked = false
             alert(`You can only select up to ${MAX_CATEGORIES} categories.`)
         }
     })
 }
 
-const Validate = () => {
-    const categories = document.querySelectorAll('input[name="categoryElement"]:checked')
-    if (categories.length == 0) {
-        alert(`check a category first`)
+submitBtn.addEventListener('click', () => {
+    const categoriesChecked = document.querySelectorAll('input[name="categoryElement"]:checked')
+    if (categoriesChecked.length == 0) {
+        alert(`Select at list one category`)
     }
-}
+})

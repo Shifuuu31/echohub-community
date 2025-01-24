@@ -6,11 +6,14 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	"net/url"
-	"strconv"
 
 	"forum/internal/models"
 )
+
+type FetchCredentials struct {
+	Start    int    `json:"start"`
+	Category string `json:"category"`
+}
 
 var Template = template.Must(template.ParseGlob("./cmd/web/templates/*.html"))
 
@@ -32,36 +35,54 @@ func (webForum *WebApp) HomePageHandler(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
+// Handler to get maxID
+func (webForm *WebApp) GetMaxIDHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/max-id" {
+		models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
+		return
+	}
+
+	maxID, err := webForm.Post.GetMaxID()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	if err := json.NewEncoder(w).Encode(maxID); err != nil {
+		http.Error(w, "Failed to encode header object", http.StatusInternalServerError)
+		return
+	}
+}
+
 // handler to get posts
 func (webForm *WebApp) GetPostsHandler(w http.ResponseWriter, r *http.Request) {
-	start, err := strconv.Atoi(r.URL.Query().Get("s"))
+	if r.URL.Path != "/post" {
+		models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
+		return
+	}
+
+	var credentials FetchCredentials
+	err := json.NewDecoder(r.Body).Decode(&credentials)
 	if err != nil {
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+		return
+	}
+	if credentials.Category == "" {
 		return
 	}
 
-	nbr, err := strconv.Atoi(r.URL.Query().Get("n"))
+	post, err := webForm.Post.GetPosts(credentials.Start, credentials.Category)
 	if err != nil {
+		fmt.Fprintf(w, "[]")
 		return
 	}
 
-	category := url.QueryEscape(r.URL.Query().Get("type"))
-
-	if category == "" {
-		return
-	}
-
-	posts, err := webForm.Post.GetPosts(start, nbr, category)
-	if err != nil {
-		return
-	}
-
-	if len(posts) == 0 {
-		return
-	}
-
-	var buffer bytes.Buffer
-	encoder := json.NewEncoder(&buffer)
-	if err := encoder.Encode(posts); err != nil {
+	var postsBuffer bytes.Buffer
+	encoder := json.NewEncoder(&postsBuffer)
+	if err := encoder.Encode(post); err != nil {
 		http.Error(w, "Failed to encode header object", http.StatusInternalServerError)
 		return
 	}
@@ -69,7 +90,7 @@ func (webForm *WebApp) GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
-	fmt.Fprintf(w, buffer.String())
+	fmt.Fprintf(w, postsBuffer.String())
 }
 
 // desplay create-post page

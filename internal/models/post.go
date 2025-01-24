@@ -2,6 +2,9 @@ package models
 
 import (
 	"database/sql"
+	"errors"
+	"fmt"
+	"strconv"
 )
 
 type Post struct {
@@ -57,63 +60,82 @@ func (PostModel *PostModel) GetCategories() (Categories []Category, err error) {
 	return Categories, nil
 }
 
+// Get maxID of posts
+func (postModel *PostModel) GetMaxID() (maxID int, err error) {
+	query := `SELECT p.id
+	FROM PostTable p
+	ORDER BY id DESC
+	LIMIT 1`
+
+	stmt, err := postModel.DB.Prepare(query)
+	if err != nil {
+		return -1, err
+	}
+	defer stmt.Close()
+
+	if err = stmt.QueryRow().Scan(&maxID); err != nil {
+		if err == sql.ErrNoRows {
+			return 0, err
+		}
+		return -1, fmt.Errorf("error scanning max ID: %w", err)
+	}
+	return maxID, nil
+}
+
 // get posts from DB with cateogry
-func (postModel *PostModel) GetPosts(start, nbr int, category string) (posts []Post, err error) {
+func (postModel *PostModel) GetPosts(current int, category string) (posts Post, err error) {
 	var query string
+	var categoryId int
+
 	var args []interface{}
+	if current <= 0 {
+		return Post{}, errors.New("no argements")
+	}
+
+	fmt.Println("start : ", current, "\ncategory : ", category)
 
 	if category == "All" {
 		query = `
-		SELECT *
-		FROM PostTable
-		ORDER BY id DESC`
-	} else {
-		query = `
-		SELECT p.id, p.user_id, p.title, p.post_content, p.creation_date
+		SELECT p.id,p.user_id,p.title,p.post_content,p.creation_date
 		FROM PostTable p
-		JOIN Categories_Posts cp ON p.id = cp.post_id
-		JOIN Categories c ON cp.category_id = c.id
-		WHERE c.category_name = $1
-		ORDER BY p.id DESC`
-		args = append(args, category)
-	}
-
-	if nbr > 0 && start > 0 {
-		query += " LIMIT $2 OFFSET $3"
-		args = append(args, nbr, start)
+		WHERE p.id = $1;`
+		args = append(args, current)
 	} else {
-		return nil, err
+		if categoryId, err = strconv.Atoi(category); err != nil {
+			return Post{}, errors.New("category id not a number")
+		}
+		query = `
+		SELECT p.id,p.user_id,p.title,p.post_content,p.creation_date
+		FROM PostTable p
+		JOIN Categories_Posts cp
+			ON p.id = cp.post_id
+		WHERE cp.category_id = $1 AND p.id < $2
+        ORDER  BY p.id DESC;`
+		args = append(args, categoryId, current)
 	}
 
-	rows, err := postModel.DB.Query(query, args...)
+	stmt, err := postModel.DB.Prepare(query)
 	if err != nil {
-		return nil, err
+		return Post{}, err
 	}
-	defer rows.Close()
+	defer stmt.Close()
 
-	for rows.Next() {
-		post := Post{}
-		var userID int
-		if err := rows.Scan(&post.PostId, &userID, &post.PostTitle, &post.PostContent, &post.PostTime); err != nil {
-			return nil, err
-		}
-
-		if post.PostUserName, err = postModel.GetUsersName(userID); err != nil {
-			return nil, err
-		}
-
-		if post.PostCategories, err = postModel.GetCategoriesPost(post.PostId); err != nil {
-			return nil, err
-		}
-
-		posts = append(posts, post)
+	post := Post{}
+	var userID int
+	err = stmt.QueryRow(args...).Scan(&post.PostId, &userID, &post.PostTitle, &post.PostContent, &post.PostTime)
+	if err != nil {
+		fmt.Println(err)
+		return Post{}, nil
+	}
+	if post.PostUserName, err = postModel.GetUsersName(userID); err != nil {
+		return Post{}, err
 	}
 
-	if err := rows.Err(); err != nil {
-		return nil, err
+	if post.PostCategories, err = postModel.GetCategoriesPost(post.PostId); err != nil {
+		return Post{}, err
 	}
 
-	return posts, nil
+	return post, nil
 }
 
 // git username by ID
@@ -152,7 +174,7 @@ func (PostModel *PostModel) GetCategoriesPost(postId int) (postCategories []stri
 
 func (PostModel *PostModel) CreatePost(title, content string) (int, error) {
 	var id int
-	err := PostModel.DB.QueryRow("INSERT INTO PostTable (title, user_id, post_content) VALUES (?, ?, ?) RETURNING id", title, 10, content).Scan(&id)
+	err := PostModel.DB.QueryRow("INSERT INTO PostTable (title, user_id, post_content) VALUES (?, ?, ?) RETURNING id", title, 11, content).Scan(&id)
 	if err != nil {
 		return 0, err
 	}
