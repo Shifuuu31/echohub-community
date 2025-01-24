@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="/assets/styles/categories.home.css">
 	<link rel="stylesheet" href="/assets/styles/comments.popup.home.css">
 	<link rel="stylesheet" href="/assets/styles/posts.home.css">
+	<link rel="stylesheet" href="/assets/styles/post-skeleton.home.css">
 	<link rel="stylesheet" href="/assets/styles/responsive.home.css">
 	<link rel="stylesheet" href="/assets/styles/global.css">
 	<link rel="stylesheet" href="/assets/styles/nav.global.css">
@@ -154,7 +155,33 @@
 				<input type="radio" id="category25" name="categoryElement">
 				<label for="category25"><img src="/assets/imgs/categories-Icons/travel.png">Travel</label>
 			</li>
+		
 		</ul>
+		<div id="posts-container">
+
+			<div id="post">
+				<div class="post-info-1"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
+					<h3>Username <br><span>Time</span></h3>
+				</div>
+				<div class="post-info-2">
+					<h3>Post Title</h3>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur accusantium
+						quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
+				</div>
+				<div class="post-info-3">
+					<div class="links">
+						<li>Health</li>
+						<li>Fashion</li>
+						<li>Daily</li>
+					</div>
+					<div class="buttons">
+						<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
+						<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
+						<button><img src="/assets/imgs/comment.png" alt="Comment"> 4</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div id="post">
 			<div class="post-info-1"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
 				<h3>Username <br><span>Time</span></h3>
@@ -178,6 +205,32 @@
 			</div>
 		</div>
 	</div>
+	<div id="post-placeholder">
+		<div class="post-info-placeholder-1">
+			<div class="avatar-placeholder"></div>
+			<div class="post-info-placeholder-2">
+				<div class="username-placeholder"></div>
+
+				<div class="time-placeholder"></div>
+			</div>
+        </div>
+        <div class="post-info-placeholder-2">
+            <div class="title-placeholder"></div>
+            <div class="text-placeholder"></div>
+        </div>
+        <div class="post-info-placeholder-3">
+            <div class="links-placeholder">
+                <div class="link-item-placeholder"></div>
+                <div class="link-item-placeholder"></div>
+                <div class="link-item-placeholder"></div>
+            </div>
+            <div class="buttons-placeholder">
+                <div class="button-item-placeholder"></div>
+                <div class="button-item-placeholder"></div>
+                <div class="button-item-placeholder"></div>
+            </div>
+        </div>
+    </div>
 	<div class="popup-background">
 		<div id="popup">
 			<div class="wraper">
