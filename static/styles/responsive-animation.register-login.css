@@ -3,6 +3,7 @@
         transform: scale(0.9);
         opacity: 1;
     }
+
     to {
         transform: scale(1.8);
         opacity: 0;
@@ -18,5 +19,15 @@
 @media screen and (max-width: 1200px) {
     #container img {
         display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    nav {
+        justify-content: center;
+    }
+
+    nav a:first-child {
+        flex-grow: 0;
     }
 }

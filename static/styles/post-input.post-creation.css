@@ -8,12 +8,12 @@
   
   #post-inputs input[type="text"],
   #post-inputs textarea {
-    width: 700px;
     padding: 12px 16px;
     border: 1px solid var(--border-color);
     border-radius: 512px;
     font-family: inherit;
     outline: none;
+    width: 700px;
   }
   
   #post-inputs textarea {

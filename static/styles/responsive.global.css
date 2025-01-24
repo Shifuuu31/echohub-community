@@ -1,27 +1,35 @@
 @media (max-width: 900px) {
-    #wraper {
+    .wraper {
         width: 680px;
+    }
+
+    #post-inputs input[type="text"],
+    #post-inputs textarea {
+        width: 500px;
     }
 }
 
 @media (max-width: 768px) {
+    nav {
+        justify-content: space-between;
+    }
+
+    #profile-picture-container {
+        margin: 0 20px;
+    }
+
     nav h1 {
         font-size: 42px;
     }
 
     #logo {
-        padding-left: 25px;
+        flex-grow: 0;
     }
 
     #login,
     #register,
-    #create,
-    #profile-picture-container {
+    #create {
         display: none;
-    }
-
-    #wraper {
-        width: 90%;
     }
 }
 
@@ -30,71 +38,209 @@
         font-size: 36px;
     }
 
-    #wraper {
+    .wraper {
         width: 600px;
     }
 }
 
 @media (max-width: 610px) {
+
+    #post {
+        padding: 10px 10px;
+    }
+
+    #category input[type=radio]+label {
+        padding: 5px 12px;
+        font-size: 14px;
+    }
+
+    #post-categories {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #post-categories #links,
+    #post-categories #buttons {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    #post-categories a {
+        font-size: 14px;
+        padding: 5px 12px;
+    }
+
+    #comment {
+        padding: 15px;
+    }
+
+    #user-comment-info,
+    #user-comment-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #user-comment-info img {
+        width: 45px;
+        height: 45px;
+    }
+
+    #user-comment-info h3,
+    #user-comment-info h3 {
+        font-size: 14px;
+    }
+
+    #user-comment {
+        padding: 0;
+    }
+
+    #comment-field {
+        width: 100%;
+        height: 50px;
+        margin: 15px 0;
+        overflow: hidden;
+        padding-bottom: 40px;
+    }
+
+    #comment-group {
+        flex-direction: column;
+        padding-bottom: 15px;
+    }
+
+    #new-comment {
+        right: 15px;
+        bottom: 25px;
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+
+    #post,
+    .wraper-extra {
+        padding: 20px;
+    }
+
     nav h1 {
         font-size: 28px;
     }
 
-    #wraper {
+    .wraper {
         width: 390px;
+    }
+
+    #buttons button,
+    #post-inputs button {
+        margin: 0 15px;
+    }
+
+    #post-inputs input[type="text"],
+    #post-inputs textarea {
+        width: 300px;
+    }
+
+    #category input[type="checkbox"]+label {
+        padding: 5px 15px;
+        font-size: 14px;
     }
 }
 
 @media (max-width: 430px) {
+    .wraper {
+        width: 280px;
+    }
+
     nav h1 {
         font-size: 24px;
     }
 
-    #wraper {
-        width: 280px;
+    #links li {
+        padding: 5px 15px;
+        font-size: 14px;
     }
+
+    #buttons button {
+        margin: 0 10px;
+    }
+
+    #post-inputs input[type="text"],
+    #post-inputs textarea {
+        width: 200px;
+    }
+
+    #category input[type="checkbox"]+label {
+        padding: 5px 15px;
+        font-size: 14px;
+    }
+
 }
 
-@media (max-width: 360px) {
-    nav h1 {
-        font-size: 20px;
+@media (max-width: 300px) {
+    .wraper {
+        width: 200px;
     }
 
-    #wraper {
-        width: 90%;
+    #user-post-info img {
+        width: 45px;
+        height: 45px;
+    }
+
+    #user-post-info h3 {
+        font-size: 14px;
+    }
+
+    #post-body h3 {
+        font-size: 14px;
+    }
+
+    #post-body p {
+        font-size: 13px;
+    }
+
+    #links li {
+        padding: 5px 7px;
+        font-size: 11px;
+    }
+
+    #buttons button {
+        font-size: 11px;
+        margin: 0;
     }
 
     #logo {
-        padding-left: 15px;
-    }
-}
-
-@media (max-width: 240px) {
-    nav h1 {
-        font-size: 16px;
-    }
-
-    #logo {
-        padding-left: 10px;
-    }
-
-    #wraper {
-        width: 95%;
-    }
-
-    #register,
-    #login,
-    #create,
-    #update,
-    #new-comment {
-        width: 80px;
-        height: 30px;
-        font-size: 12px;
-        margin: 0 5px;
+        width: 150px;
     }
 
     #profile-picture-container {
-        width: 40px;
-        height: 40px;
+        width: 45px;
+        height: 45px;
+    }
+
+    #post-inputs input[type="text"],
+    #post-inputs textarea {
+        width: 150px;
+    }
+
+    #category input[type="checkbox"]+label {
+        padding: 5px 7px;
+        font-size: 11px;
+    }
+
+    li#category {
+        margin: 2px;
+    }
+
+}
+
+@media (max-width: 255px) {
+    nav {
+        justify-content: center;
+    }
+
+    nav a:first-child {
+        flex-grow: 0;
+    }
+
+    #profile-picture-container {
+        display: none;
     }
 }

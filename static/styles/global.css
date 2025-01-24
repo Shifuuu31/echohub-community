@@ -7,13 +7,12 @@
     --border-color: #DDDDDD;
 }
 
-* {
+*:not(nav) {
     scrollbar-width: thin;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     transition: 0.1s;
-    
 }
 
 body {

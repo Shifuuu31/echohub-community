@@ -1,11 +1,13 @@
-
 nav {
     display: flex;
     align-items: center;
     background-color: white;
-    padding: 30px;
+    padding: 0 30px;
     border-bottom: 1px solid var(--border-color);
-    height: 80px;
+}
+
+nav a:first-child {
+    flex-grow: 1;
 }
 
 nav img {
@@ -13,7 +15,5 @@ nav img {
 }
 
 #logo {
-    padding-left: 45px;
-    flex-grow: 1;
-    color: var(--primary-color);
+    padding-top: 10px;
 }

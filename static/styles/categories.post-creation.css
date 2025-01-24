@@ -1,4 +1,4 @@
-#wraper-extra {
+.wraper-extra {
   padding: 30px 0;
   border-radius: 30px;
   box-shadow: 0px 0px 5px 0px var(--border-color);
@@ -9,7 +9,6 @@ ul#categories {
   justify-content: center;
   flex-wrap: wrap;
   padding: 10px 0;
-  margin: 0 10px;
 }
 
 li#category {
