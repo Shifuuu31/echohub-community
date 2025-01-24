@@ -40,7 +40,7 @@ func (user *UserModel) FindUserByID(userID int) (*User, error) {
 }
 
 func (user *UserModel) ValidateUserCredentials(username, password string) (UserID int, errors []string) {
-	username = strings.TrimSpace(username)
+	username = strings.ToLower(strings.TrimSpace(username))
 	if username == "" {
 		return -1, []string{"Username is required."}
 	}
@@ -66,7 +66,6 @@ func (user *UserModel) ValidateUserCredentials(username, password string) (UserI
 	return UserID, errors
 }
 
-
 func (user *UserModel) InsertUser(newUser User) (err error) {
 	insertStmt := `INSERT INTO UserTable (username, email, hashed_password) VALUES (?, ?, ?)`
 	_, err = user.DB.Exec(insertStmt, newUser.UserName, newUser.Email, newUser.HashedPassword)
@@ -87,7 +86,7 @@ func (user *UserModel) ValidateNewUser(username, email, password, repeatedPasswo
 		errors = append(errors, err.Error())
 		// return User{}, err
 	}
-	
+
 	if password, err = passwordCheck(password, repeatedPassword); err != nil {
 		errors = append(errors, err.Error())
 		// return User{}, err
@@ -103,7 +102,7 @@ func (user *UserModel) ValidateNewUser(username, email, password, repeatedPasswo
 }
 
 func (user *UserModel) usernameCheck(username string) (string, error) {
-	username = strings.TrimSpace(username)
+	username = strings.ToLower(strings.TrimSpace(username))
 	if username == "" {
 		return "", errors.New("Username is required.")
 	}
@@ -118,18 +117,17 @@ func (user *UserModel) usernameCheck(username string) (string, error) {
 			return "", errors.New("username can only contain letters(A-Za-z), numbers(0-9) and underscores(_)")
 		}
 	}
-	selectStmt := `	SELECT COUNT(*)
-					FROM UserTable WHERE username = ?`
-	var count int
-	err := user.DB.QueryRow(selectStmt, username).Scan(&count)
-	if err != nil || count > 0 {
-		return "", err
+	selectStmt := `SELECT username FROM UserTable WHERE username = ?`
+	var foundUsername string
+	err := user.DB.QueryRow(selectStmt, username).Scan(&foundUsername)
+	if err == nil || foundUsername == username {
+		return "", errors.New("User '" + username + "' already exists")
 	}
 	return username, nil
 }
 
 func (user *UserModel) emailCheck(email string) (string, error) {
-	email = strings.TrimSpace(email)
+	email = strings.ToLower(strings.TrimSpace(email))
 	if email == "" {
 		return "", errors.New("Email is required.")
 	}
@@ -159,11 +157,11 @@ func (user *UserModel) emailCheck(email string) (string, error) {
 		return "", errors.New("email domain cannot start or end with '.'")
 	}
 
-	var count int
-	selectStmt := `SELECT COUNT(*) FROM UserTable WHERE username = ?`
-	err := user.DB.QueryRow(selectStmt, email).Scan(&count)
-	if err != nil || count != 0 {
-		return "", errors.New("this email '" + email + "' is alreaady registered! Please Log in")
+	selectStmt := `SELECT email FROM UserTable WHERE email = ?`
+	var foundemail string
+	err := user.DB.QueryRow(selectStmt, email).Scan(&foundemail)
+	if err == nil || foundemail == email {
+		return "", errors.New("this email '" + email + "' is already registered! Please Log in")
 	}
 	return email, nil
 }
@@ -178,7 +176,6 @@ func passwordCheck(password, repeatedPassword string) (string, error) {
 		return "", errors.New("password must be between 8 and 64 characters")
 	}
 
-	
 	specialChars := "!@#$%^&*()-_=+[]{}|;:',.<>?/"
 
 	for _, char := range password {
@@ -212,7 +209,6 @@ func passwordCheck(password, repeatedPassword string) (string, error) {
 	if password != repeatedPassword {
 		return "", errors.New("password and repeated must be identical")
 	}
-
 
 	return password, nil
 }
