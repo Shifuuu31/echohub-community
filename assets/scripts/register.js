@@ -34,6 +34,7 @@ const fetchResponse = async (url, obj) => {
     })
 
     // console.log(JSON.stringify(obj))
+    
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
     return response.json()
 }
