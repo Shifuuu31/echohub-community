@@ -1,0 +1,148 @@
+:root {
+    --primary-color: #8552ff;
+    --secondary-color: #808080;
+    --hover-color: #D7A7FE;
+    --bg-color: #FAFAFA;
+    --secondary-bg-color: #EAEAEA;
+    --border-color: #DDDDDD;
+}
+
+*:not(nav) {
+    scrollbar-width: thin;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    transition: 0.1s;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+}
+
+a,
+button {
+    cursor: pointer;
+}
+
+li,
+a {
+    list-style: none;
+    text-decoration: none;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 0 30px;
+    border-bottom: 1px solid var(--border-color);
+    height: 85px;
+}
+
+nav a:first-child {
+    flex-grow: 1;
+}
+
+nav img {
+    max-width: 180px;
+}
+
+#logo {
+    padding-top: 10px;
+}
+
+.wraper {
+    margin: 30px auto;
+    width: 850px;
+}
+
+
+#register,
+#login,
+#create,
+#update {
+    padding: 11px 20px;
+    font-weight: 600;
+    border: transparent;
+    border-radius: 512px;
+    transition: background-color 0.3s ease;
+}
+
+#register,
+#create,
+#update {
+    margin: 0 15px;
+    color: white;
+    background-color: var(--primary-color);
+}
+
+#register:hover,
+#create:hover,
+#update:hover {
+    background-color: var(--hover-color);
+}
+
+#login {
+    margin: 0 5px;
+    color: var(--primary-color);
+    background-color: var(--border-color);
+}
+
+#login:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+#create img,
+#update img,
+#register img {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    vertical-align: text-top;
+}
+
+#post {
+    display: flex;
+    background-color: white;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 30px;
+    box-shadow: 0px 0px 5px 0px var(--border-color);
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+#seperator {
+    text-align: center;
+    color: var(--secondary-color);
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.wraper hr {
+    width: 40%;
+    margin: auto;
+    color: var(--secondary-bg-color);
+    border-radius: 50px;
+}
+
+#error-code,
+#error-message,
+#message {
+    margin-bottom: 15px;
+}
+
+#error-code {
+    margin-top: 115px;
+    font-size: 10rem;
+    font-weight: 900;
+    color: var(--primary-color);
+}
+
+#error-message {
+    color: var(--primary-color);
+    font-size: 26px;
+}

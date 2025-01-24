@@ -45,21 +45,54 @@
 }
 
 #message,
-#signin {
-    padding: 5px;
+p {
     font-size: 18px;
     color: var(--secondary-color);
 }
 
-.signin {
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    user-select: none;
+    cursor: pointer;
+    color: var(--secondary-color);
+}
+
+.remember-me input[type="checkbox"] {
+    position: relative;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.remember-me input[type="checkbox"]:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.remember-me input[type="checkbox"]:checked::before {
+    content: '✔';
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 11px;
+    color: white;
+}
+
+#signin {
     text-align: center;
 }
 
-.signin a {
+p a {
     color: var(--primary-color);
 }
 
-.signin a:hover {
+#signin a:hover {
     text-decoration: underline var(--primary-color);
 }
 
@@ -118,41 +151,9 @@
     font-size: 16px;
     background-color: var(--primary-color);
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: 0.3s;
 }
 
 #submit:hover {
     background-color: var(--hover-color);
-}
-
-.remember-me {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-}
-
-.remember-me input[type="checkbox"] {
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border: 2px solid #ccc;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-}
-
-.remember-me input[type="checkbox"]:checked {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-}
-
-.remember-me input[type="checkbox"]:checked::before {
-    content: '✔';
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 11px;
-    color: white;
 }

@@ -4,7 +4,6 @@
 }
 
 #user-post-info,
-#user-comment-info,
 #user-comment-info {
     display: flex;
     align-items: center;
@@ -19,21 +18,12 @@
     margin-right: 20px;
 }
 
-#user-comment-info img {
-    width: 40px;
-    height: 40px;
-    border-radius: 512px;
-    margin-right: 20px;
-}
-
 #user-post-info h3,
-#user-comment-info h3,
 #user-comment-info h3 {
     font-size: 18px;
 }
 
 #user-post-info h3 span,
-#user-comment-info h3 span,
 #user-comment-info h3 span {
     font-size: 14px;
     color: var(--secondary-color);

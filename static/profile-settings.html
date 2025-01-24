@@ -4,14 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="/static/styles/global.css">
-    <link rel="stylesheet" href="/static/styles/nav.global.css">
-    <link rel="stylesheet" href="/static/styles/buttons.global.css">
+    <link rel="stylesheet" href="/static/styles/general.css">
     <link rel="stylesheet" href="/static/styles/dropdown.global.css">
     <link rel="stylesheet" href="/static/styles/responsive.global.css">
     <link rel="stylesheet" href="/static/styles/profile-settings.css">
@@ -25,9 +21,11 @@
 
 <body>
     <nav>
-        <a href="home.html" id="logo">
-            <img src="/static/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
+        <a href="home.html">
+            <img id="logo" src="/static/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
         </a>
+        <a href="register.html"><button id="register"><img src="./imgs/register.png">Register</button></a>
+        <a href="login.html"><button id="login">Login</button></a>
         <a href="post-creation.html"><button id="create"><img src="./imgs/create.png"></i>Create
                 Post</button></a>
         <div id="profile-dropdown">
@@ -35,47 +33,44 @@
                 <img id="profile-picture" src="./imgs/avatar.png" alt="Profile Picture" loading="lazy">
             </div>
             <div id="dropdown">
-                <img src="./imgs/avatar.png" alt="Profile Picture">
+                <img id="inner-profile-picture" src="./imgs/avatar.png" alt="Profile Picture">
                 <h2>@unkind<br><span>unkind@mail.com</span></h2>
                 <hr>
                 <div id="dropdown-content">
-                    <a href="#">Profile Settings</a>
-                    <a href="#">Dark Mode (coming soon)</a>
+                    <a href="profile-settings.html"><img src="imgs/settings.png"> Profile Settings</a>
+                    <a href="#"><img src="imgs/dark-mode.png"> Dark Mode (coming soon)</a>
                     <hr>
-                    <a href="#">Log Out</a>
+                    <a href="#"><img src="imgs/logout.png"> Log Out</a>
                 </div>
             </div>
         </div>
     </nav>
-    <div class="wraper">
-        <div id="edit">
-            <div id="user-info-1">
-                <img src="./imgs/avatar.png" alt="">
-                <h3>Username <br> <span>Email</span></h3>
-            </div>
-            </form>
-            <div id="user-info-edit">
-                <form action="" method="">
-                    <div id="input-group">
-                        <label for="">Username</label>
-                        <input type="text" placeholder="">
-                        <label for="">Email</label>
-                        <input type="text" placeholder="">
-                        <label for="">Language <span>(we're working on adding new languages)</span></label>
-                        <select>
-                            <option value="english" selected>English</option>
-                        </select>
-                        <label for="">New Password</label>
-                        <input type="password" placeholder="">
-                        <label for="">Confirm New Password</label>
-                        <input type="password" placeholder="">
-                    </div>
+    <div id="edit">
+        <div id="user-info">
+            <img src="./imgs/avatar.png" alt="">
+            <h3>Username <br> <span>Email</span></h3>
+        </div>
+        </form>
+        <div id="user-info-edit">
+            <form action="" method="">
+                <div id="input-group">
+                    <label for="">Username</label>
+                    <input type="text" placeholder="Old Username">
+                    <label for="">Email</label>
+                    <input type="text" placeholder="Old Email">
+                    <label for="">Language <span>(we're working on adding new languages)</span></label>
+                    <select>
+                        <option value="english" selected>English</option>
+                    </select>
+                    <label for="">New Password</label>
+                    <input type="password" placeholder="*************">
+                    <label for="">Confirm New Password</label>
+                    <input type="password" placeholder="*************">
+                </div>
 
-                    <button id="update"><i id="fa-solid fa-rotate"></i>&emsp;Update</button>
-            </div>
+                <a href="post-creation.html"><button id="update"><img src="./imgs/update.png"></i>Update</button></a>
         </div>
     </div>
-
 </body>
 
 </html>
