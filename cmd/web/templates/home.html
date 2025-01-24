@@ -312,7 +312,7 @@
 					</div>
 				</div>
 				<hr>
-
+				{{ if eq .UserType "authenticated" }}
 				<div class="user-comment">
 					<div class="comment-info-1"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
 						<h3>Username</h3>
@@ -322,6 +322,7 @@
 
 					</div>
 				</div>
+				{{end}}
 			</div>
 		</div>
 	</div>
