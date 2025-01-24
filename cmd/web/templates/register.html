@@ -30,37 +30,40 @@
         <a href="/login"><button class="login">Login</button></a>    
     </nav>
     <div class="container">
-        <form class="form" action="/register" method="POST">
+        <form class="form" >
             <p class="title">Join EchoHub community</p>
             <p class="message">Get more features and privileges by joining the most helpful community.</p>
             
             <label>
-                <input class="input" name="username" type="text" placeholder="" required="">
+                <input class="input" id="username" name="username" type="text" placeholder="" >
                 <span>Username</span>
             </label>
             
             <label>
-                <input class="input" name="email" type="email" placeholder="" required="">
+                <input class="input" id="email" name="email" type="email" placeholder="" >
                 <span>Email</span>
             </label>
     
             <label>
-                <input class="input" name="password" type="password" placeholder="" required="">
+                <input class="input" id="password" name="password" type="password" placeholder="" >
                 <span>Password</span>
             </label>
             
             <label>
-                <input class="input" name="rPassword" type="password" placeholder="" required="">
+                <input class="input" id="rPassword" name="rPassword" type="password" placeholder="">
                 <span>Confirm password</span>
             </label>
             
-            <button class="submit" type="submit">Register</button>
+            <button class="submit" id="registerBtn">Register</button>
             
             <p class="signin">Already have an account? <a href="/login">Sign in</a></p>
+            <div id="errorMsgs"></div>
         </form>
         
         <img src="/assets/imgs/welcome.png">
     </div>
+    <script src="/assets/scripts/register.js"></script>
+
 </body>
 
 </html>

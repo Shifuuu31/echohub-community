@@ -1,7 +1,10 @@
 package web
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -39,7 +42,7 @@ func (webForum *WebApp) AuthMiddleware(next http.Handler) http.Handler {
 func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 	user := &models.User{}
 	var err error
-	
+
 	userID, ok := r.Context().Value(userIDKey).(int)
 	if !ok {
 		models.Error{
@@ -100,53 +103,106 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 }
 
 func (webForum *WebApp) LoginPage(w http.ResponseWriter, r *http.Request) {
-	
+	user := &models.User{}
+	var err error
+
+	userID, ok := r.Context().Value(userIDKey).(int)
+	if !ok {
+		models.Error{
+			User:       user,
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			SubMessage: "Unable to retrieve user information.",
+		}.RenderError(w)
+		return
+	}
+
+	if userID != 0 {
+		user, err = webForum.Users.FindUserByID(userID)
+		if err != nil {
+			if err.Error() == "user not found" {
+				user = &models.User{
+					UserType: "guest",
+				}
+			} else {
+				models.Error{
+					User:       user,
+					StatusCode: http.StatusInternalServerError,
+					Message:    "Internal Server Error",
+					SubMessage: err.Error(),
+				}.RenderError(w)
+				return
+			}
+		}
+	} else {
+		user = &models.User{
+			UserType: "guest",
+		}
+	}
+	userType, ok := r.Context().Value(userTypeKey).(string)
+	if !ok {
+		models.Error{
+			User:       user,
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			SubMessage: "Unable to retrieve user type.",
+		}.RenderError(w)
+		return
+	}
+	if userType == "authenticated" {
+		http.Redirect(w, r, "/", http.StatusFound)
+	}
 	models.RenderPage(w, "login.html", nil)
 }
 
-func (webForum *WebApp) UserLogin(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
+type UserCredentials struct {
+	UserName   string `json:"username"`
+	Password   string `json:"password"`
+	RememberMe bool   `json:"rememberMe"`
+}
+
+func (webForum *WebApp) ConfirmLogin(w http.ResponseWriter, r *http.Request) {
+	var credentials UserCredentials
+	err := json.NewDecoder(r.Body).Decode(&credentials)
 	if err != nil {
-		models.Error{
-			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
-			SubMessage: "A login error occurred",
-		}.RenderError(w)
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
 		return
 	}
+	// fmt.Println(credentials.UserName)
+	// fmt.Println(credentials.Password)
+	// fmt.Println(,RememberMe)
 
-	userID, err := webForum.Users.ValidateUserCredentials(r.FormValue("username"), r.FormValue("password"))
-	if err != nil {
-		models.Error{
-			StatusCode: http.StatusUnauthorized,
-			Message:    "Unauthorized",
-			SubMessage: "Invalid username or password",
-		}.RenderError(w)
-		return
+	fmt.Println("RememberMe:", credentials.RememberMe)
+	userID, errors := webForum.Users.ValidateUserCredentials(credentials.UserName, credentials.Password)
+	fmt.Println(userID)
+	if userID > 0 {
+		newSession, err := webForum.Sessions.GenerateNewSession(userID, credentials.RememberMe)
+		if err != nil {
+			models.Error{
+				StatusCode: http.StatusInternalServerError,
+				Message:    "Internal Server Error",
+				SubMessage: "Cannot generate new session",
+			}.RenderError(w)
+			return
+		}
+
+		newCookie, err := webForum.Sessions.InsertOrUpdateSession(newSession)
+		if err != nil {
+			models.Error{
+				StatusCode: http.StatusInternalServerError,
+				Message:    "Internal Server Error",
+				SubMessage: "Cannot insert new session",
+			}.RenderError(w)
+			return
+		}
+		http.SetCookie(w, &newCookie)
+		w.Header().Set("Content-Type", "application/json")
+
+		sendJsontoHeader(w, []string{"Login successful!"})
+	} else {
+		sendJsontoHeader(w, errors)
 	}
-
-	newSession, err := webForum.Sessions.GenerateNewSession(userID, r.FormValue("remember"))
-	if err != nil {
-		models.Error{
-			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
-			SubMessage: "Cannot generate new session",
-		}.RenderError(w)
-		return
-	}
-
-	newCookie, err := webForum.Sessions.InsertOrUpdateSession(newSession)
-	if err != nil {
-		models.Error{
-			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
-			SubMessage: "Cannot insert new session",
-		}.RenderError(w)
-		return
-	}
-	http.SetCookie(w, &newCookie)
-
-	http.Redirect(w, r, "/", http.StatusFound)
+	fmt.Println("error", errors)
 }
 
 func (webForum *WebApp) UserLogout(w http.ResponseWriter, r *http.Request) {
@@ -173,31 +229,53 @@ func (webForum *WebApp) UserLogout(w http.ResponseWriter, r *http.Request) {
 		MaxAge: -1,
 	})
 
-	http.Redirect(w, r, "/", http.StatusFound)
+	http.Redirect(w, r, "/login", http.StatusFound)
 }
 
 func (webForum *WebApp) RegisterPage(w http.ResponseWriter, r *http.Request) {
-	println("xsxsxssx")
+	// println("xsxsxssx")
 	models.RenderPage(w, "register.html", nil)
 }
 
+type NewUserInfo struct {
+	UserName     string `json:"username"`
+	Email        string `json:"email"`
+	Password     string `json:"password"`
+	RepeatedPass string `json:"rPassword"`
+}
+
 func (webForum *WebApp) UserRegister(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
+	var newUserinfo NewUserInfo
+	err := json.NewDecoder(r.Body).Decode(&newUserinfo)
 	if err != nil {
-		models.Error{StatusCode: http.StatusInternalServerError, Message: "Internal Server Error", SubMessage: "a registration error occured"}.RenderError(w)
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
 		return
 	}
 
-	newUser, err := webForum.Users.ValidateNewUser(r.FormValue("username"), r.FormValue("email"), r.FormValue("password"), r.FormValue("rPassword"))
-	if err != nil {
-		models.Error{StatusCode: http.StatusBadRequest, Message: "Bad Request", SubMessage: "Invalid input data"}.RenderError(w) // ,have to handle bcrypt error as internal server error
-		return
+	newUser, errors := webForum.Users.ValidateNewUser(newUserinfo.UserName, newUserinfo.Email, newUserinfo.Password, newUserinfo.RepeatedPass)
+	if len(errors) == 0 {
+		if err := webForum.Users.InsertUser(newUser); err != nil {
+			models.Error{StatusCode: http.StatusInternalServerError, Message: "Internal Server Error", SubMessage: "Cannot insert new user"}.RenderError(w)
+			return
+		}
+		sendJsontoHeader(w, []string{"User Registred successfully!"})
+	} else {
+		sendJsontoHeader(w, errors)
 	}
+	fmt.Println("error", errors)
 
-	if err := webForum.Users.InsertUser(newUser); err != nil {
-		models.Error{StatusCode: http.StatusInternalServerError, Message: "Internal Server Error", SubMessage: "Cannot insert new user"}.RenderError(w)
-		return
+	// http.Redirect(w, r, "/login", http.StatusFound)
+}
+
+func sendJsontoHeader(w http.ResponseWriter, obj interface{}) error {
+	fmt.Println("OBJ:\x1b[1;31m", obj, "\x1b[1;39m")
+	w.Header().Set("Content-Type", "application/json")
+	var jsonData bytes.Buffer
+	encoder := json.NewEncoder(&jsonData)
+	if err := encoder.Encode(obj); err != nil {
+		return errors.New("failed to encode object: " + err.Error())
 	}
+	fmt.Fprintf(w, jsonData.String())
 
-	http.Redirect(w, r, "/login", http.StatusFound)
+	return nil
 }

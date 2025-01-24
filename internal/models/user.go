@@ -39,23 +39,33 @@ func (user *UserModel) FindUserByID(userID int) (*User, error) {
 	return foundUser, nil
 }
 
-func (user *UserModel) ValidateUserCredentials(username, password string) (UserID int, err error) {
+func (user *UserModel) ValidateUserCredentials(username, password string) (UserID int, errors []string) {
 	username = strings.TrimSpace(username)
-	hashedPassword := ""
-	selectStmt := `	SELECT id, username, hashed_password
-					FROM UserTable WHERE username = ?`
-	err = user.DB.QueryRow(selectStmt, username).Scan(&UserID, &username, &hashedPassword)
-	if err != nil {
-		return -1, errors.New("invalid username")
+	if username == "" {
+		return -1, []string{"Username is required."}
 	}
-	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
-	if err != nil {
-		return -1, errors.New("invalid password")
+	if password == "" {
+		return -1, []string{"Password is required."}
 	}
 
-	fmt.Println(UserID, username, password, hashedPassword)
-	return UserID, nil
+	hashedPassword := ""
+	selectStmt := `SELECT id, hashed_password FROM UserTable WHERE username = ?`
+	userErr := user.DB.QueryRow(selectStmt, username).Scan(&UserID, &hashedPassword)
+	if UserID < 1 || userErr != nil {
+		errors = append(errors, "User not found.")
+	} else {
+		passErr := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+		if passErr != nil {
+			fmt.Println(passErr.Error())
+			errors = append(errors, "Invalid password.")
+		}
+	}
+	if len(errors) != 0 {
+		return -1, errors
+	}
+	return UserID, errors
 }
+
 
 func (user *UserModel) InsertUser(newUser User) (err error) {
 	insertStmt := `INSERT INTO UserTable (username, email, hashed_password) VALUES (?, ?, ?)`
@@ -67,28 +77,36 @@ func (user *UserModel) InsertUser(newUser User) (err error) {
 	return nil
 }
 
-func (user *UserModel) ValidateNewUser(username, email, password, repeatedPassword string) (newUser User, err error) {
+func (user *UserModel) ValidateNewUser(username, email, password, repeatedPassword string) (newUser User, errors []string) {
+	var err error
 	if newUser.UserName, err = user.usernameCheck(username); err != nil {
-		return User{}, err
+		errors = append(errors, err.Error())
+		// return User{}, err
 	}
 	if newUser.Email, err = user.emailCheck(email); err != nil {
-		return User{}, err
+		errors = append(errors, err.Error())
+		// return User{}, err
 	}
-
+	
 	if password, err = passwordCheck(password, repeatedPassword); err != nil {
-		return User{}, err
+		errors = append(errors, err.Error())
+		// return User{}, err
 	}
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), 12)
 	if err != nil {
-		return User{}, err
+		errors = append(errors, err.Error())
+		// return User{}, err
 	}
 	newUser.HashedPassword = string(hash)
 
-	return newUser, err
+	return newUser, errors
 }
 
 func (user *UserModel) usernameCheck(username string) (string, error) {
 	username = strings.TrimSpace(username)
+	if username == "" {
+		return "", errors.New("Username is required.")
+	}
 	if len(username) < 3 || len(username) > 20 {
 		return "", errors.New("username must be between 3 and 20 characters")
 	}
@@ -112,7 +130,9 @@ func (user *UserModel) usernameCheck(username string) (string, error) {
 
 func (user *UserModel) emailCheck(email string) (string, error) {
 	email = strings.TrimSpace(email)
-
+	if email == "" {
+		return "", errors.New("Email is required.")
+	}
 	atIndex := strings.Index(email, "@")
 	if atIndex == -1 {
 		return "", errors.New("email must contain '@'")
@@ -150,15 +170,15 @@ func (user *UserModel) emailCheck(email string) (string, error) {
 
 func passwordCheck(password, repeatedPassword string) (string, error) {
 	var hasUpper, hasLower, hasDigit, hasSpecial bool
+	if password == "" {
+		return "", errors.New("Password is required.")
+	}
 
 	if len(password) < 8 || len(password) > 64 {
 		return "", errors.New("password must be between 8 and 64 characters")
 	}
 
-	if password != repeatedPassword {
-		return "", errors.New("password and repeated must be identical")
-	}
-
+	
 	specialChars := "!@#$%^&*()-_=+[]{}|;:',.<>?/"
 
 	for _, char := range password {
@@ -186,6 +206,13 @@ func passwordCheck(password, repeatedPassword string) (string, error) {
 	case hasSpecial:
 		return "", errors.New("password must contain at least one special character")
 	}
+	if repeatedPassword == "" {
+		return "", errors.New(" Confirm your password.")
+	}
+	if password != repeatedPassword {
+		return "", errors.New("password and repeated must be identical")
+	}
+
 
 	return password, nil
 }

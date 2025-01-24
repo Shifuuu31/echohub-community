@@ -60,10 +60,6 @@
         font-size: 20px;
     }
 
-    .wraper {
-        width: 90%;
-    }
-
     .logo {
         padding-left: 15px;
     }
@@ -76,10 +72,6 @@
 
     .logo {
         padding-left: 10px;
-    }
-
-    .wraper {
-        width: 95%;
     }
 
     .register,

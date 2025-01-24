@@ -3,6 +3,8 @@ package models
 import (
 	"database/sql"
 	"errors"
+	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -20,10 +22,10 @@ type SessionModel struct {
 	DB *sql.DB
 }
 
-func (session *SessionModel) GenerateNewSession(userID int, remember string) (newSession Session, err error) {
+func (session *SessionModel) GenerateNewSession(userID int, remember bool) (newSession Session, err error) {
 	exp := 24 * time.Hour
-	if remember == "on" {
-		exp *= 30  // expire after 30 days
+	if remember {
+		exp *= 30 // approximatly expire after 30 days
 	}
 	newToken, err := uuid.NewV4()
 	if err != nil {
@@ -34,6 +36,7 @@ func (session *SessionModel) GenerateNewSession(userID int, remember string) (ne
 		Token:          newToken.String(),
 		ExpirationDate: time.Now().Add(exp), // expire after 1 day
 	}
+	fmt.Println("\x1b[1;31m", newSession.ExpirationDate, "\x1b[1;39m")
 	return newSession, err
 }
 
@@ -48,13 +51,11 @@ func (session *SessionModel) InsertOrUpdateSession(newSession Session) (newCooki
 	}
 
 	newCookie = http.Cookie{
-		Name:  "userSession",
-		Value: newSession.Token,
-		Path:  "/", // valid for the entire site
-		// HttpOnly: true,	// Prevent access via JavaScript (mitigates XSS)
-		// Secure:   true,	// Transmit only over HTTPS
-		Expires: newSession.ExpirationDate,
-		// MaxAge: newSession.ExpirationDate.Second(),
+		Name:    "userSession",
+		Value:   newSession.Token,
+		Path:    "/",
+		Expires: newSession.ExpirationDate.Add(time.Hour), // adding one hour as solution of the diff btween utc and utc+1
+		// MaxAge: 1000,
 	}
 
 	return newCookie, nil
@@ -98,4 +99,25 @@ func (session *SessionModel) DeleteSession(sessionToken string) error {
 	}
 
 	return nil
+}
+
+func (session *SessionModel) deleteExpiredSessions() error {
+	deleteStmt := `DELETE FROM UserSessions WHERE expiration_date < CURRENT_TIMESTAMP`
+	_, err := session.DB.Exec(deleteStmt)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (session *SessionModel) CleanupExpiredSessions() {
+	for {
+		time.Sleep(30 * time.Second) 
+		err := session.deleteExpiredSessions()
+		if err != nil {
+			log.Printf("Error removing expired sessions: %v", err)
+		}
+
+	}
 }

@@ -32,6 +32,7 @@ func main() {
 	if port == ":" {
 		port += "8080"
 	}
+	go webForum.Sessions.CleanupExpiredSessions()
 
 	server := http.Server{
 		Addr:    port,

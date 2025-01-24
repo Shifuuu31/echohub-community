@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/assets/styles/nav.global.css">
     <link rel="stylesheet" href="/assets/styles/buttons.global.css">
     <link rel="stylesheet" href="/assets/styles/dropdown.global.css">
+    <link rel="stylesheet" href="/assets/styles/popup.login.css">
     <link rel="stylesheet" href="/assets/styles/responsive.global.css">
     <link rel="stylesheet" href="/assets/styles/register-login.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,29 +28,38 @@
             <img src="/assets/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
         </a>
         <a href="/register"><button class="register"><img src="/assets/imgs/register.png">Register</button></a>
-        <a href="/login"><button class="login">Login</button></a>    
+        <a href="/login"><button class="login">Login</button></a>
     </nav>
     <div class="container">
-        <form class="form" action="/login" method="POST">
+        <form class="form">
             <p class="title">We've missed you! </p>
             <p class="message">Discover the community newest and update. </p>
             <label>
-                <input class="input" name="username" type="text" placeholder="" required="">
+                <input class="input" id="username" type="text" placeholder="" required="">
                 <span>Username</span>
             </label>
 
             <label>
-                <input class="input" name="password" type="password" placeholder="" required="">
+                <input class="input" id="password" type="password" placeholder="" required="">
                 <span>Password</span>
             </label>
-                <label class="remember-me signin">
-                    <input type="checkbox" name="remember"> Remember me for 30 days
-                </label>
-            <button class="submit">Login</button>
+            <label class="remember-me signin">
+                <input type="checkbox" id="remember"> Remember me for 30 days
+            </label>
+            <button class="submit" id="loginButton">Login</button>
             <p class="signin">Don't have an account? <a href="/register">Create One</a> </p>
+            <div id="errorMsgs"></div>
         </form>
+        <div id="overlay">
+            <div id="popup">
+                <h2>Welcome!</h2>
+                <p>We're glad you're here. Enjoy exploring the site!</p>
+                <a  id="gobtn" href="/">Explore Our Forum ►</a>
+            </div>
+        </div>
         <img src="/assets/imgs/welcome.png">
     </div>
+    <script src="/assets/scripts/login.js"></script>
 </body>
 
 </html>
