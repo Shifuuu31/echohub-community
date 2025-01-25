@@ -18,34 +18,37 @@
         margin: 0 20px;
     }
 
-    nav h1 {
-        font-size: 42px;
-    }
-
     #logo {
         flex-grow: 0;
     }
 
     #login,
-    #register,
-    #create {
+    #register {
         display: none;
     }
 }
 
 @media (max-width: 720px) {
-    nav h1 {
-        font-size: 36px;
-    }
-
     .wraper {
         width: 600px;
+    }
+
+    body #edit {
+        width: 500px;
     }
 }
 
 @media (max-width: 610px) {
     #post {
         padding: 10px 10px;
+    }
+
+    body #edit {
+        width: 400px;
+    }
+
+    body #input-group label {
+        width: 300px;
     }
 
     #category input[type=radio]+label {
@@ -117,10 +120,6 @@
         padding: 20px;
     }
 
-    nav h1 {
-        font-size: 28px;
-    }
-
     .wraper {
         width: 390px;
     }
@@ -128,6 +127,19 @@
     #buttons button,
     #post-inputs button {
         margin: 0 15px;
+    }
+
+    #create,
+    #login,
+    #register {
+        font-size: 0;
+        padding: 17px;
+    }
+
+    #create img {
+        margin: 0;
+        width: 20px;
+        height: 20px;
     }
 
     #post-inputs input[type="text"],
@@ -146,10 +158,6 @@
     .wraper,
     body #edit {
         width: 280px;
-    }
-
-    nav h1 {
-        font-size: 24px;
     }
 
     #links li {
@@ -180,6 +188,37 @@
         margin: 0 0 15px 0;
     }
 
+    body #input-group label {
+        width: 200px;
+    }
+
+}
+
+@media (max-width: 365px) {
+    #logo {
+        width: 150px;
+    }
+
+    #create {
+        margin-bottom: 6.5px;
+    }
+
+    #profile-picture-container {
+        width: 40px;
+        height: 40px;
+    }
+
+    #create,
+    #login,
+    #register {
+        padding: 10px;
+    }
+
+    #create img {
+        margin: 0;
+        width: 16px;
+        height: 16px;
+    }
 }
 
 @media (max-width: 300px) {
@@ -220,15 +259,6 @@
         margin: 0;
     }
 
-    #logo {
-        width: 150px;
-    }
-
-    #profile-picture-container {
-        width: 45px;
-        height: 45px;
-    }
-
     #post-inputs input[type="text"],
     #post-inputs textarea {
         width: 150px;
@@ -243,18 +273,19 @@
         margin: 2px;
     }
 
-    #error-code{
+    #error-code {
         font-size: 90px;
+    }
+
+    body #input-group label {
+        width: 150px;
+        font-size: 14px;
     }
 }
 
 @media (max-width: 255px) {
     nav {
         justify-content: center;
-    }
-
-    nav a:first-child {
-        flex-grow: 0;
     }
 
     #profile-picture-container {

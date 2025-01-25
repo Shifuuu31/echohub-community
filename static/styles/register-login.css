@@ -107,7 +107,6 @@ p a {
     border: 1px solid var(--border-color);
     border-radius: 512px;
     font-size: medium;
-    font-weight: 400;
     color: black;
     outline: none;
 }
@@ -120,27 +119,22 @@ p a {
     color: var(--secondary-color);
     cursor: text;
     transition: 0.3s ease;
-}
-
-#form label #input:placeholder-shown+span {
-    top: 12.5px;
-}
-
-#form label #input:focus+span,
-#form label #input:valid+span {
-    top: 5px;
-    font-size: 14px;
     font-weight: 600;
 }
 
+#form label #input:placeholder-shown+span {
+    top: 10px;
+}
+
 #form label #input:focus+span {
+    top: 1px;
     color: var(--primary-color);
 }
 
-#form label #input:valid+span {
+/* #form label #input:valid+span {
     color: forestgreen;
     font-size: 13px;
-}
+} */
 
 #submit {
     border: none;

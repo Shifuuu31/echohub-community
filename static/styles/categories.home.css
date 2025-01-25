@@ -43,10 +43,6 @@ li#category {
     gap: 8px;
 }
 
-/* #category input[type=radio]:checked+label:hover {
-    background-color: var(--hover-color);
-} */
-
 #category input[type=radio]:checked+label {
     color: white;
     background-color: var(--primary-color);

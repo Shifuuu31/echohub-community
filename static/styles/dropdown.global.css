@@ -20,6 +20,7 @@
 #profile-picture:hover {
     transform: scale(1.1);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border: 2px solid var(--primary-color);
 }
 
 #profile-picture-container::after {
@@ -47,10 +48,6 @@
     z-index: 1;
     border-radius: 8px;
     overflow: hidden;
-}
-
-#profile-dropdown:hover #dropdown {
-    display: block;
 }
 
 #inner-profile-picture {
@@ -116,4 +113,8 @@
 
 #dropdown-content a:last-child:hover img {
     filter: brightness(0) invert(1);
+}
+
+#profile-dropdown:hover #dropdown {
+    display: block;
 }
