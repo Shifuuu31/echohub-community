@@ -93,7 +93,6 @@
     color: inherit;
     font-size: 14px;
 }
-
 #dropdown-content a img {
     width: 20px;
     height: 20px;
@@ -106,10 +105,15 @@
 }
 
 #dropdown-content a:last-child {
-    color: #ff4d4f;
+    color: red;
 }
 
 #dropdown-content a:last-child:hover {
-    background-color: #ff4d4f;
+    background-color: red;
     color: #fff;
+}
+
+
+#dropdown-content a:last-child:hover img {
+    filter: brightness(0) invert(1);
 }
