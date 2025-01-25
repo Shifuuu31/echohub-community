@@ -26,15 +26,13 @@ const fetchData = async (url, obj) => {
     }
 }
 
-const nothing = document.createElement("div");
-nothing.style.textAlign = 'center'
 const posts = document.getElementById("posts");
 
 const displayPosts = async (category = "All") => {
     const url = `http://${window.location.host}/post`;
     const maxId = await GetMaxID();
     let countPosts = 0
-
+    
     if (maxId == null) {
         console.error("Failed to get maxId");
         return;
@@ -44,11 +42,13 @@ const displayPosts = async (category = "All") => {
         category: category
     };
     posts.innerHTML = ''
-    nothing.innerHTML = ''
     for (let count = 1; count <= 10; count++) {
         const postData = document.createElement('div')
         const post = await fetchData(url, DataToFetch);
         if (post) {
+
+            console.log(post);
+            
             countPosts++
             postData.innerHTML = `
             <div id="post">
@@ -72,13 +72,14 @@ const displayPosts = async (category = "All") => {
             </div>`
             posts.append(postData)
             DataToFetch.postID = post.PostId - 1
-            if (DataToFetch.postID == 0) {
-                break
+            // if (DataToFetch.postID == 0) {
+                //     break
+                // }
             }
         }
-    }
-    if (countPosts === 0) {
-        posts.innerHTML = `<h1> No posts to display.</h1>`
+        if (countPosts === 0) {
+            posts.innerHTML = `<h1> No posts to display.</h1>`
+            posts.style.textAlign = 'center'
     }
 };
 
