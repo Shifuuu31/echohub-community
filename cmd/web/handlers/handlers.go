@@ -11,14 +11,14 @@ import (
 )
 
 type FetchCredentials struct {
-	Start    int    `json:"start"`
+	Post_id  int    `json:"postID"`
 	Category string `json:"category"`
 }
 
 var Template = template.Must(template.ParseGlob("./cmd/web/templates/*.html"))
 
 // handler to get categories
-func (webForum *WebApp) HomePageHandler(w http.ResponseWriter, r *http.Request) {
+func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
 		return
@@ -26,25 +26,20 @@ func (webForum *WebApp) HomePageHandler(w http.ResponseWriter, r *http.Request) 
 
 	categories, err := webForum.Post.GetCategories()
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		models.Error{StatusCode: http.StatusInternalServerError, Message: "500 Internal Server Error", SubMessage: "Oops! Cannot retrieve categories at the moment."}.RenderError(w)
 		return
 	}
 
 	if err := Template.ExecuteTemplate(w, "home.html", categories); err != nil {
-		http.Error(w, "Error loading HomePage", http.StatusInternalServerError)
+		models.Error{StatusCode: http.StatusInternalServerError, Message: "500 Internal Server Error", SubMessage: "Oops! Failed to render the home page template."}.RenderError(w)
 	}
 }
 
 // Handler to get maxID
-func (webForm *WebApp) GetMaxIDHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/max-id" {
-		models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
-		return
-	}
-
+func (webForm *WebApp) GetMaxID(w http.ResponseWriter, r *http.Request) {
 	maxID, err := webForm.Post.GetMaxID()
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		models.Error{StatusCode: http.StatusInternalServerError, Message: "500 Internal Server Error", SubMessage: "Oops! Unable to fetch the maximum ID at the moment."}.RenderError(w)
 		return
 	}
 
@@ -52,18 +47,13 @@ func (webForm *WebApp) GetMaxIDHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
 	if err := json.NewEncoder(w).Encode(maxID); err != nil {
-		http.Error(w, "Failed to encode header object", http.StatusInternalServerError)
+		models.Error{StatusCode: http.StatusInternalServerError, Message: "500 Internal Server Error", SubMessage: "Oops! Failed to encode the response data."}.RenderError(w)
 		return
 	}
 }
 
 // handler to get posts
-func (webForm *WebApp) GetPostsHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/post" {
-		models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
-		return
-	}
-
+func (webForm *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 	var credentials FetchCredentials
 	err := json.NewDecoder(r.Body).Decode(&credentials)
 	if err != nil {
@@ -74,50 +64,40 @@ func (webForm *WebApp) GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	post, err := webForm.Post.GetPosts(credentials.Start, credentials.Category)
-	if err != nil {
-		fmt.Fprintf(w, "[]")
+	post, err := webForm.Post.GetPosts(credentials.Post_id, credentials.Category)
+	if err != nil || post.PostId == 0 {
+		fmt.Fprintf(w, "null")
 		return
 	}
 
+	
 	var postsBuffer bytes.Buffer
 	encoder := json.NewEncoder(&postsBuffer)
 	if err := encoder.Encode(post); err != nil {
 		http.Error(w, "Failed to encode header object", http.StatusInternalServerError)
 		return
 	}
-
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-
+	
 	fmt.Fprintf(w, postsBuffer.String())
 }
 
 // desplay create-post page
-func (webForum *WebApp) CreatePostPageHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/create-post" {
-		models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
-		return
-	}
-
+func (webForum *WebApp) CreatePost(w http.ResponseWriter, r *http.Request) {
 	Categories, err := webForum.Post.GetCategories()
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		models.Error{StatusCode: http.StatusInternalServerError, Message: "500 Internal Server Error", SubMessage: "Oops! " + err.Error()}.RenderError(w)
 		return
 	}
 
 	if err := Template.ExecuteTemplate(w, "post-creation.html", Categories); err != nil {
-		http.Error(w, "Error loading HomePage", http.StatusInternalServerError)
+		models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
 		return
 	}
 }
 
-func (webForm *WebApp) NewPostCreationHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/create" {
-		models.Error{StatusCode: http.StatusNotFound, Message: "404 Page Not Found", SubMessage: "Oops! the page you looking for does not exist"}.RenderError(w)
-		return
-	}
-
+func (webForm *WebApp) PostCreation(w http.ResponseWriter, r *http.Request) {
 	New := models.Post{
 		PostTitle:   r.FormValue("title"),
 		PostContent: r.FormValue("content"),
@@ -126,18 +106,18 @@ func (webForm *WebApp) NewPostCreationHandler(w http.ResponseWriter, r *http.Req
 
 	if New.PostTitle == "" || New.PostContent == "" || len(categoriesForm) == 0 || len(categoriesForm) > 3 {
 		http.Redirect(w, r, "/create-post", http.StatusSeeOther)
-		http.Error(w, "We can't create this post, somthing missing", http.StatusInternalServerError)
 		return
 	}
 
 	ids, err := webForm.Post.GetIdsCategories(categoriesForm)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		models.Error{StatusCode: http.StatusInternalServerError, Message: "500 Internal Server Error", SubMessage: "Oops! " + err.Error()}.RenderError(w)
 		return
 	}
 
 	idPost, err := webForm.Post.CreatePost(New.PostTitle, New.PostContent)
 	if err != nil {
+		models.Error{StatusCode: http.StatusInternalServerError, Message: "500 Internal Server Error", SubMessage: "Oops! " + err.Error()}.RenderError(w)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -145,7 +125,7 @@ func (webForm *WebApp) NewPostCreationHandler(w http.ResponseWriter, r *http.Req
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 	err = webForm.Post.AddcategoryPost(idPost, ids)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		models.Error{StatusCode: http.StatusInternalServerError, Message: "500 Internal Server Error", SubMessage: "Oops! " + err.Error()}.RenderError(w)
 		return
 	}
 }
@@ -235,7 +215,7 @@ func (webForm *WebApp) NewPostCreationHandler(w http.ResponseWriter, r *http.Req
 // 		PostContent: r.FormValue("content"),
 // 	}
 
-// 	categoriesForm = r.Form["categories[]"]
+// 	categoriesForm := r.Form["categories[]"]
 
 // 	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
 // 	if err != nil {

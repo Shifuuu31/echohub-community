@@ -15,11 +15,11 @@ func (WebForum *WebApp) Routes() http.Handler {
 
 	fileServer := http.FileServer(http.Dir("./assets"))
 	forum.Handle("GET /assets/", http.StripPrefix("/assets/", fileServer))
-	forum.HandleFunc("GET /", WebForum.HomePageHandler)
-	forum.HandleFunc("GET /max-id", WebForum.GetMaxIDHandler)
-	forum.HandleFunc("POST /post", WebForum.GetPostsHandler)
-	forum.HandleFunc("GET /create-post", WebForum.CreatePostPageHandler)
-	forum.HandleFunc("POST /create", WebForum.NewPostCreationHandler)
+	forum.HandleFunc("GET /", WebForum.HomePage)
+	forum.HandleFunc("GET /max-id", WebForum.GetMaxID)
+	forum.HandleFunc("POST /post", WebForum.GetPosts)
+	forum.HandleFunc("GET /createPost", WebForum.CreatePost)
+	forum.HandleFunc("POST /createPost", WebForum.PostCreation)
 	// forum.HandleFunc("GET /post/update", WebForum.UpdatePostPageHandler)
 	// forum.HandleFunc("POST /post/update/edit", WebForum.PostUpdateHandler)
 

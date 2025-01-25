@@ -5,12 +5,13 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"time"
 )
 
 type Post struct {
 	PostId         int
 	PostUserName   string
-	PostTime       string
+	PostTime       time.Time
 	PostTitle      string
 	PostContent    string
 	PostCategories []string
@@ -92,25 +93,34 @@ func (postModel *PostModel) GetPosts(current int, category string) (posts Post, 
 		return Post{}, errors.New("no argements")
 	}
 
-	fmt.Println("start : ", current, "\ncategory : ", category)
-
-	if category == "All" {
+	switch category {
+	case "All":
 		query = `
-		SELECT p.id,p.user_id,p.title,p.post_content,p.creation_date
+		SELECT p.id,u.username,p.title,p.content,p.creation_date
 		FROM PostTable p
+		JOIN UserTable u ON u.id = p.user_id
 		WHERE p.id = $1;`
 		args = append(args, current)
-	} else {
+	case "MyPosts":
+		query = `SELECT p.id,u.username,p.title,p.content,p.creation_date
+		FROM PostTable p
+		JOIN UserTable u ON u.id = p.user_id
+		WHERE user_id = $2;`
+		// need user ID
+	case "LikedPosts":
+		// to be implemented
+	default:
 		if categoryId, err = strconv.Atoi(category); err != nil {
 			return Post{}, errors.New("category id not a number")
 		}
 		query = `
-		SELECT p.id,p.user_id,p.title,p.post_content,p.creation_date
-		FROM PostTable p
-		JOIN Categories_Posts cp
-			ON p.id = cp.post_id
-		WHERE cp.category_id = $1 AND p.id < $2
-        ORDER  BY p.id DESC;`
+	SELECT p.id,u.username,p.title,p.content,p.creation_date
+	FROM PostTable p
+	JOIN Categories_Posts cp
+		ON p.id = cp.post_id
+    JOIN UserTable u ON u.id = p.user_id
+	WHERE cp.category_id = $1 AND p.id <= $2
+	ORDER  BY p.id DESC;`
 		args = append(args, categoryId, current)
 	}
 
@@ -121,31 +131,16 @@ func (postModel *PostModel) GetPosts(current int, category string) (posts Post, 
 	defer stmt.Close()
 
 	post := Post{}
-	var userID int
-	err = stmt.QueryRow(args...).Scan(&post.PostId, &userID, &post.PostTitle, &post.PostContent, &post.PostTime)
+	err = stmt.QueryRow(args...).Scan(&post.PostId, &post.PostUserName, &post.PostTitle, &post.PostContent, &post.PostTime)
 	if err != nil {
-		fmt.Println(err)
 		return Post{}, nil
-	}
-	if post.PostUserName, err = postModel.GetUsersName(userID); err != nil {
-		return Post{}, err
 	}
 
 	if post.PostCategories, err = postModel.GetCategoriesPost(post.PostId); err != nil {
 		return Post{}, err
 	}
-
+	post.PostTime = post.PostTime.UTC()
 	return post, nil
-}
-
-// git username by ID
-func (PostModel *PostModel) GetUsersName(userId int) (username string, err error) {
-	query := "SELECT username FROM UserTable WHERE id = ?"
-	if err = PostModel.DB.QueryRow(query, userId).Scan(&username); err != nil {
-		return "", err
-	}
-
-	return username, nil
 }
 
 // get cateogries of post
@@ -174,7 +169,7 @@ func (PostModel *PostModel) GetCategoriesPost(postId int) (postCategories []stri
 
 func (PostModel *PostModel) CreatePost(title, content string) (int, error) {
 	var id int
-	err := PostModel.DB.QueryRow("INSERT INTO PostTable (title, user_id, post_content) VALUES (?, ?, ?) RETURNING id", title, 11, content).Scan(&id)
+	err := PostModel.DB.QueryRow("INSERT INTO PostTable (title, user_id, content) VALUES (?, ?, ?) RETURNING id", title, 2, content).Scan(&id)
 	if err != nil {
 		return 0, err
 	}
@@ -237,7 +232,7 @@ func (PostModel *PostModel) AddcategoryPost(post_id int, ids []int) error {
 // func (PostModel *PostModel) UpdatePost(idPost int) (string, string, []string, error) {
 // 	post := Post{}
 
-// 	err := PostModel.DB.QueryRow("SELECT user_id,title,post_content FROM PostTable WHERE id = $1", idPost).Scan(&post.PostId, &post.PostTitle, &post.PostContent)
+// 	err := PostModel.DB.QueryRow("SELECT user_id,title,content FROM PostTable WHERE id = $1", idPost).Scan(&post.PostId, &post.PostTitle, &post.PostContent)
 // 	if err != nil {
 // 		return "", "", nil, err
 // 	}
@@ -283,7 +278,7 @@ func (PostModel *PostModel) AddcategoryPost(post_id int, ids []int) error {
 // }
 
 // func (PostModel *PostModel) EditPost(idPost int, title string, content string, Categories []string) (err error) {
-// 	_, err = PostModel.DB.Exec("UPDATE PostTable SET title = $1, post_content = $2 WHERE ID = $3", title, content, idPost)
+// 	_, err = PostModel.DB.Exec("UPDATE PostTable SET title = $1, content = $2 WHERE ID = $3", title, content, idPost)
 // 	if err != nil {
 // 		return err
 // 	}
