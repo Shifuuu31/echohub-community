@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <link rel="stylesheet" href="/assets/styles/nav.global.css">
+    <link rel="stylesheet" href="/assets/styles/buttons.global.css">
+    <link rel="stylesheet" href="/assets/styles/dropdown.global.css">
+    <link rel="stylesheet" href="/assets/styles/responsive.global.css">
+    <link rel="stylesheet" href="/assets/styles/register-login.css">
+    <link rel="stylesheet" href="/assets/styles/responsive-animation.register-login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <title>echoHub - Register</title>
+</head>
+
+<body>
+    <nav>
+        <a href="/" class="logo">
+            <img src="/assets/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
+        </a>
+        <a href="/register"><button class="register"><img src="/assets/imgs/register.png">Register</button></a>
+        <a href="/login"><button class="login">Login</button></a>    
+    </nav>
+    <div class="container">
+        <form class="form" >
+            <p class="title">Join EchoHub community</p>
+            <p class="message">Get more features and privileges by joining the most helpful community.</p>
+            
+            <label>
+                <input class="input" id="username" name="username" type="text" placeholder="" >
+                <span>Username</span>
+            </label>
+            
+            <label>
+                <input class="input" id="email" name="email" type="email" placeholder="" >
+                <span>Email</span>
+            </label>
+    
+            <label>
+                <input class="input" id="password" name="password" type="password" placeholder="" >
+                <span>Password</span>
+            </label>
+            
+            <label>
+                <input class="input" id="rPassword" name="rPassword" type="password" placeholder="">
+                <span>Confirm password</span>
+            </label>
+            
+            <button class="submit" id="registerBtn">Register</button>
+            
+            <p class="signin">Already have an account? <a href="/login">Sign in</a></p>
+            <div id="errorMsgs"></div>
+        </form>
+        
+        <img src="/assets/imgs/welcome.png">
+    </div>
+    <script src="/assets/scripts/register.js"></script>
+
+</body>
+
+</html>

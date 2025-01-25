@@ -1,0 +1,46 @@
+forum/
+├── assets/
+│   ├── icons/
+│   ├── imgs/
+│   └── styles/
+│       ├── register.css
+│       ├── login.css
+│       ├── navBar-guestMode.css
+│       ├── navBar-userMode.css
+│       ├── categoriesScroll.css
+│       ├── post.css
+│       ├── commentPopUp-guestMode.css
+│       ├── commentPopUp-userMode.css
+│       ├── buttons.css
+│       ├── dropDowns.css
+│       └── error.css
+├── cmd/
+│   ├── api/
+│   │   └── main.go/
+│   └── web/
+│       ├── handlers/
+│       │   ├── handlers.go
+│       │   ├── routes.go
+│       │   └── auth.go
+│       └── templates/
+│           ├── register.html
+│           ├── login.html
+│           ├── home-guestMode.html
+│           ├── home-userMode.html
+│           ├── createPost.html
+│           ├── updatePost.html
+│           └── errorPage.html
+├── internal/
+│   ├── database/
+│   │   ├── migration/
+│   |   │   └── tables.sql
+│   │   └── forum.db
+│   └── models/
+│       ├── user.go
+│       ├── post.go
+│       ├── comment.go
+│       └── like_dislike.go
+├── Dockerfile
+├── go.mod
+├── go.sum
+└── README.md

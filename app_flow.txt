@@ -1,0 +1,33 @@
+Authentication
+    Registration:
+
+    /register (POST): Accepts username, email, password. Validates and stores credentials securely using bcrypt.
+    Login:
+
+    /login (POST): Verifies credentials, sets a session cookie with an expiration.
+    Logout:
+
+    /logout (GET): Invalidates the session cookie.
+
+Post Management
+    Create Post:
+
+    /posts/create (POST): Allows logged-in users to create posts with a title, content, and category.
+    View Post:
+
+    /posts/:id (GET): Displays a post with its comments count and like/dislike counts.
+    List Posts:
+
+    /posts (GET): Displays all posts with filters (e.g., by category).
+
+Commenting
+    Add Comment:
+
+    /comments/add (POST): Allows logged-in users to add comments to a post.
+    View Comments:
+
+    /posts/:id (GET): Part of the post view, shows associated comments.
+
+Likes/Dislikes
+    Like/Dislike Post or Comment:
+    /like or /dislike (POST): Allows users to like or dislike a post or comment.

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="/assets/styles/categories.post-creation.css">
+    <link rel="stylesheet" href="/assets/styles/post-input.post-creation.css">
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <link rel="stylesheet" href="/assets/styles/nav.global.css">
+    <link rel="stylesheet" href="/assets/styles/buttons.global.css">
+    <link rel="stylesheet" href="/assets/styles/dropdown.global.css">
+    <link rel="stylesheet" href="/assets/styles/responsive.global.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <title>echoHub - Post Creation</title>
+
+</head>
+
+<body>
+    <nav>
+        <a href="/" class="logo">
+            <img src="/static/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
+        </a>
+        <a href="/create-post"><button class="create"><img src="./imgs/create.png"></i>Create
+            Post</button></a>
+            <a href="/create-post"><button class="create"><img src="/assets/imgs/create.png"></i>Create
+                Post</button></a>
+        <div class="profile-dropdown">
+            <div class="profile-picture-container">
+                <img class="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
+            </div>
+            <div class="dropdown">
+                <img src="/assets/imgs/avatar.png" alt="Profile Picture">
+                <h2>{{.UserName}}<br><span>{{.Email}}</span></h2>
+                <hr>
+                <div class="dropdown-content">
+                    <a href="/profile-settings">Profile Settings</a>
+                    <a href="">Dark Mode (coming soon)</a>
+                    <hr>
+                    <a href="/logout">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="wraper wraper-extra">
+        <ul class="categories">
+            <li class="category">
+                <input type="checkbox" id="category4" name="categoryElement">
+                <label for="category4"><img src="./imgs/categories-Icons/movies-tv.png">Movies & TV</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category5" name="categoryElement">
+                <label for="category5"><img src="./imgs/categories-Icons/music.png">Music</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category6" name="categoryElement">
+                <label for="category6"><img src="./imgs/categories-Icons/games.png">Games</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category7" name="categoryElement">
+                <label for="category7"><img src="./imgs/categories-Icons/technology.png">Technology</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category8" name="categoryElement">
+                <label for="category8"><img src="./imgs/categories-Icons/ai.png">AI</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category9" name="categoryElement">
+                <label for="category9"><img src="./imgs/categories-Icons/memes.png">Memes</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category10" name="categoryElement">
+                <label for="category10"><img src="./imgs/categories-Icons/sports.png">Sports</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category11" name="categoryElement">
+                <label for="category11"><img src="./imgs/categories-Icons/news.png">News</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category12" name="categoryElement">
+                <label for="category12"><img src="./imgs/categories-Icons/fashion.png">Fashion</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category13" name="categoryElement">
+                <label for="category13"><img src="./imgs/categories-Icons/science.png">Science</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category14" name="categoryElement">
+                <label for="category14"><img src="./imgs/categories-Icons/art.png">Art</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category15" name="categoryElement">
+                <label for="category15"><img src="./imgs/categories-Icons/anime.png">Anime</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category16" name="categoryElement">
+                <label for="category16"><img src="./imgs/categories-Icons/books.png">Books</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category17" name="categoryElement">
+                <label for="category17"><img src="./imgs/categories-Icons/business.png">Business</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category18" name="categoryElement">
+                <label for="category18"><img src="./imgs/categories-Icons/career.png">Career</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category19" name="categoryElement">
+                <label for="category19"><img src="./imgs/categories-Icons/culture.png">Culture</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category20" name="categoryElement">
+                <label for="category20"><img src="./imgs/categories-Icons/diy.png">DIY</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category21" name="categoryElement">
+                <label for="category21"><img src="./imgs/categories-Icons/education.png">Education</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category22" name="categoryElement">
+                <label for="category22"><img src="./imgs/categories-Icons/podcasts.png">Podcasts</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category23" name="categoryElement">
+                <label for="category23"><img src="./imgs/categories-Icons/q-a.png">Q&A's</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category24" name="categoryElement">
+                <label for="category24"><img src="./imgs/categories-Icons/software.png">Software & Apps</label>
+            </li>
+            <li class="category">
+                <input type="checkbox" id="category25" name="categoryElement">
+                <label for="category25"><img src="./imgs/categories-Icons/travel.png">Travel</label>
+            </li>
+        </ul>
+        <div class="post-inputs"><label for="post-title">
+                <input type="text" id="post-title" placeholder="Post Title *" required>
+            </label>
+            <textarea name="" id="" placeholder="Type Something here..."></textarea>
+            <button type="submit"><img src="./imgs/send.png">Post</button>
+        </div>
+    </div>
+    <script src="/scripts/post-creation.js"></script>
+</body>
+
+</html>
