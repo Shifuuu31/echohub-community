@@ -53,5 +53,5 @@ li#category {
 }
 
 #category input[type=radio]:checked+label img {
-    
+    filter: brightness(0) invert(1);
 }
