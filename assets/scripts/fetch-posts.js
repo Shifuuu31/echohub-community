@@ -5,7 +5,7 @@ let isLoading = false;
 // Get max ID 
 const GetMaxID = async () => {
     try {
-        const response = await fetch(`http://${window.location.host}/max-id`);
+        const response = await fetch(`${window.location.origin}/max-id`);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const maxId = await response.json();
         return maxId;
@@ -24,7 +24,6 @@ const fetchData = async (url, obj) => {
         })
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
         return response.json()
-
     } catch (e) {
         console.error("Error fetching data:", e.message);
     }
@@ -32,7 +31,7 @@ const fetchData = async (url, obj) => {
 
 
 const desplayPosts = async (category = "All", append = false) => {
-    const url = `http://${window.location.host}/post`;
+    const url = `${window.location.origin}/post`;
     if (!append) {
         const maxId = await GetMaxID();
         if (maxId == null) {

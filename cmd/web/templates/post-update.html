@@ -50,7 +50,7 @@
         <ul class="categories">
             {{range .Categories}}
             <li class="category">
-                <input type="checkbox" id="category{{.ID}}" name="categoryElement">
+                <input type="checkbox" id="category{{.ID}}" name="{{.CategoryName}}">
                 <label for="category{{.ID}}"><img src="{{.CategoryIconPath}}">{{.CategoryName}}</label>
             </li>
             {{end}}
@@ -59,19 +59,13 @@
                 <input type="text" id="post-title" placeholder="Post Title *" value="{{.Title}}" required>
             </label>
             <textarea name="" id="" placeholder="Type Something here...">{{.Content}}</textarea>
-            <button type="submit"><img src="./imgs/send.png">Post</button>
+            <button id ="submit" type="submit"><img src="./imgs/send.png">Post</button>
         </div>
     </div>
-    <script src="/scripts/post-creation.js"></script>
     <script>
-        const selected = {{.Categories_selected }};
-        const categories = document.querySelectorAll('[id^="category_"]');
-        categories.forEach(category => {
-            if (selected.includes(category.value)) {
-                category.setAttribute("checked", "true")
-            }
-        });
+        const selected = {{.Categories_selected}}
     </script>
+    <script src="assets/scripts/post-update.js"></script>
 </body>
 
 </html>

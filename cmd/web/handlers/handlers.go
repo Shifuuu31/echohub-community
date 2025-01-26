@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"strconv"
 
 	"forum/internal/models"
 )
@@ -152,80 +153,71 @@ func (webForm *WebApp) PostCreation(w http.ResponseWriter, r *http.Request) {
 // 	http.Redirect(w, r, "/", http.StatusSeeOther)
 // }
 
-// func (WebForum *WebApp) UpdatePostPageHandler(w http.ResponseWriter, r *http.Request) {
-// 	if r.URL.Path != "/post/update" {
-// 		w.WriteHeader(http.StatusNotFound)
-// 		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
-// 			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
-// 			return
-// 		}
-// 		return
-// 	}
+func (WebForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/postUpdate" {
+		w.WriteHeader(http.StatusNotFound)
+		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
+			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
+			return
+		}
+		return
+	}
 
-// 	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
-// 	if err != nil {
-// 		http.Error(w, "invalid id", http.StatusInternalServerError)
-// 		return
-// 	}
+	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
+	if err != nil {
+		http.Error(w, "invalid id", http.StatusInternalServerError)
+		return
+	}
 
-// 	title, content, selected_categorys, err := WebForum.Post.UpdatePost(id)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
+	title, content, selected_categorys, err := WebForum.Post.UpdatePost(id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-// 	Categorys, err := WebForum.Post.GetCategories()
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-// 	data := struct {
-// 		ID                  int
-// 		Title               string
-// 		Content             string
-// 		Categories          []models.Category
-// 		Categories_selected []string
-// 	}{
-// 		ID:                  id,
-// 		Title:               title,
-// 		Content:             content,
-// 		Categories_selected: selected_categorys,
-// 		Categories:          Categorys,
-// 	}
+	Categorys, err := WebForum.Post.GetCategories()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	data := struct {
+		ID                  int
+		Title               string
+		Content             string
+		Categories          []models.Category
+		Categories_selected []string
+	}{
+		ID:                  id,
+		Title:               title,
+		Content:             content,
+		Categories_selected: selected_categorys,
+		Categories:          Categorys,
+	}
 
-// 	if err := Template.ExecuteTemplate(w, "post-update.html", data); err != nil {
-// 		http.Error(w, "Error loading UpdatePage"+err.Error(), http.StatusInternalServerError)
-// 	}
-// }
+	if err := Template.ExecuteTemplate(w, "post-update.html", data); err != nil {
+		http.Error(w, "Error loading UpdatePage"+err.Error(), http.StatusInternalServerError)
+	}
+}
 
-// func (WebApp *WebApp) PostUpdateHandler(w http.ResponseWriter, r *http.Request) {
-// 	if r.URL.Path != "/post/update/edit" {
-// 		w.WriteHeader(http.StatusNotFound)
-// 		if err := Template.ExecuteTemplate(w, "404.html", nil); err != nil {
-// 			http.Error(w, "Error loading 404 Page", http.StatusInternalServerError)
-// 			return
-// 		}
-// 		return
-// 	}
+func (WebApp *WebApp) PostUpdate(w http.ResponseWriter, r *http.Request) {
+	New := models.Post{
+		PostTitle:   r.FormValue("title"),
+		PostContent: r.FormValue("content"),
+	}
 
-// 	New := models.Post{
-// 		PostTitle:   r.FormValue("title"),
-// 		PostContent: r.FormValue("content"),
-// 	}
+	categoriesForm := r.Form["categories[]"]
 
-// 	categoriesForm := r.Form["categories[]"]
+	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
+	if err != nil {
+		http.Error(w, "invalid id", http.StatusInternalServerError)
+		return
+	}
 
-// 	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
-// 	if err != nil {
-// 		http.Error(w, "invalid id", http.StatusInternalServerError)
-// 		return
-// 	}
+	err = WebApp.Post.EditPost(id, New.PostTitle, New.PostContent, categoriesForm)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-// 	err = WebApp.Post.EditPost(id, New.PostTitle, New.PostContent, categoriesForm)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-
-// 	http.Redirect(w, r, "/", http.StatusSeeOther)
-// }
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
