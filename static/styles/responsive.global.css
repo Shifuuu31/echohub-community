@@ -1,3 +1,7 @@
+#logo-small {
+    display: none;
+}
+
 @media (max-width: 900px) {
     .wraper {
         width: 680px;
@@ -71,10 +75,6 @@
     #post-categories a {
         font-size: 14px;
         padding: 5px 12px;
-    }
-
-    #comment {
-        padding: 15px;
     }
 
     #user-comment-info {
@@ -151,6 +151,24 @@
         padding: 5px 15px;
         font-size: 14px;
     }
+
+    nav>*:not(#logo-small) {
+        flex-grow: 0;
+    }
+
+    #logo {
+        display: none;
+    }
+
+    #logo-small {
+        display: block;
+        width: 75px;
+        margin-top: 12px;
+    }
+
+    #new-comment {
+        bottom: 46px;
+    }
 }
 
 @media (max-width: 430px) {
@@ -192,32 +210,25 @@
         width: 200px;
     }
 
-}
-
-@media (max-width: 365px) {
-    #logo {
-        width: 150px;
+    #user-info-and-buttons {
+        flex-direction: column;
     }
 
-    #create {
-        margin-bottom: 6.5px;
+    #user-info-and-buttons img {
+        margin: auto;
     }
 
-    #profile-picture-container {
-        width: 40px;
-        height: 40px;
+    #user-info-and-buttons {
+        text-align: center;
     }
 
-    #create,
-    #login,
-    #register {
-        padding: 10px;
+    #user-comment-info h3 {
+        font-size: 12px;
     }
 
-    #create img {
-        margin: 0;
-        width: 16px;
-        height: 16px;
+    #user-comment-info p {
+        text-align: center;
+        font-size: 15px;
     }
 }
 
@@ -281,15 +292,20 @@
         width: 150px;
         font-size: 14px;
     }
-}
 
-@media (max-width: 255px) {
-    nav {
-        justify-content: center;
+    #logo-small {
+        width: 55px;
+        height: 55px;
+    }
+
+    #create {
+        margin-right: 0;
+        padding: 10px;
     }
 
     #profile-picture-container {
-        display: none;
+        width: 44px;
+        height: 44px;
     }
 }
 
