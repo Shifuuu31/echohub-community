@@ -35,7 +35,7 @@ func main() {
 
 	server := http.Server{
 		Addr:    port,
-		Handler: webForum.Routes(),
+		Handler: webForum.Router(),
 	}
 
 	log.Println("server listening on http://localhost" + port)

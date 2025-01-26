@@ -1,30 +1,21 @@
 export { Popup }
 
+const popup = document.getElementById("popup")
+const postsBtns = document.querySelectorAll("#commentBtn, .post-info-2")
+const popupBackground = document.querySelector(".popup-background")
+const closeButton = document.querySelector(".close")
+
 const Popup = () => {
-    const postsBtns = document.querySelectorAll("#commentBtn, .post-info-2")
-    const popupBackground = document.querySelector(".popup-background")
-    const closeButton = document.querySelector("#popup-comment button")
-
-    for (let i = 0; i < postsBtns.length; i++) {
-        postsBtns[i].addEventListener("click", OpenPopup)
-    }
-
-    closeButton.addEventListener("click", ClosePopup)
+    // open popup
+    postsBtns.forEach(postBtn => postBtn.addEventListener("click", () => {
+        popupBackground.style.display = popup.style.display = "block"
+    }))
+    
+    // close popup
     popupBackground.addEventListener("click", (event) => {
-        if (event.target === popupBackground) {
-            ClosePopup()
+        if (event.target === popupBackground || event.target === closeButton) {
+            popupBackground.style.display = popup.style.display = "none"
+
         }
     })
-}
-
-const OpenPopup = () => {
-    document.querySelector(".popup-background").style.display = "block"
-    document.getElementById("popup").style.display = "block"
-    document.body.style.overflow = "hidden"
-}
-
-const ClosePopup = () => {
-    document.querySelector(".popup-background").style.display = "none"
-    document.getElementById("popup").style.display = "none"
-    document.body.style.overflow = "auto"
 }

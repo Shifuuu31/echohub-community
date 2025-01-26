@@ -10,7 +10,7 @@ type WebApp struct {
 	Sessions *models.SessionModel
 }
 
-func (webForum *WebApp) Routes() http.Handler {
+func (webForum *WebApp) Router() http.Handler {
 	mux := http.NewServeMux()
 
 	// Serve "assets" directory
