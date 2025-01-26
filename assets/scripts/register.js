@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(newUser.rpassword)
 
         try {
-            const msgs = await fetchResponse(`http://${window.location.href}/confirmRegister`, newUser)
+            const msgs = await fetchResponse(`${window.location.origin}/confirmRegister`, newUser)
             console.log(msgs)
 
             displayMessages(msgs)

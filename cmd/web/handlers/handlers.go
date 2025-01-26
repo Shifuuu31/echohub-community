@@ -1,4 +1,4 @@
-package web
+package handlers
 
 import (
 	"bytes"
@@ -98,8 +98,13 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Println(user)
+	homeData := struct {
+		User *models.User
+	}{
+		User: user,
+	}
 
-	models.RenderPage(w, "home.html", user)
+	models.RenderPage(w, "home.html", homeData)
 }
 
 func (webForum *WebApp) LoginPage(w http.ResponseWriter, r *http.Request) {

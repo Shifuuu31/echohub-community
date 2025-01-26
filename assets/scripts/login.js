@@ -9,10 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
             password: document.getElementById('password').value,
             rememberMe: document.getElementById('remember').checked,
         }
+console.log("location:",window.location.origin)
+
+
         console.log(credentials.rememberMe)
 
         try {
-            const msgs = await fetchResponse(`http://${window.location.href}/confirmRegister`, credentials)
+            const msgs = await fetchResponse(`${window.location.origin}/confirmLogin`, credentials)
             console.log(msgs)
 
             displayMessages(msgs, credentials.username)
@@ -55,12 +58,9 @@ const displayMessages = (messages, username) => {
 
             overlay.classList.add('show')
 
-            closeBtn.addEventListener('click', (/*event */)=> {
-                // event.preventDefault() //add event target
+            closeBtn.addEventListener('click', ()=> {
                 overlay.classList.remove('show')
             })
-            // window.location.href = 'http://localhost:8080/'
-
         }
     })
 }

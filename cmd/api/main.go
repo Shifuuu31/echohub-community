@@ -6,20 +6,19 @@ import (
 	"net/http"
 	"os"
 
-	"forum/cmd/web"
+	"forum/cmd/web/handlers"
 	"forum/internal/models"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
-
 	db, err := sql.Open("sqlite3", "./internal/database/forum.db")
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	webForum := web.WebApp {
+	webForum := handlers.WebApp{
 		Users: &models.UserModel{
 			DB: db,
 		},

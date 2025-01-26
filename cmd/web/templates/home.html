@@ -27,7 +27,7 @@
 		<a href="/" class="logo">
 			<img src="/assets/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
 		</a>
-		{{ if eq .UserType "authenticated" }}
+		{{ if eq .User.UserType "authenticated" }}
 		<a href="/create-post"><button class="create"><img src="/assets/imgs/create.png">Create
 				Post</button></a>
 		<div class="profile-dropdown">
@@ -36,7 +36,7 @@
 			</div>
 			<div class="dropdown" id="dropdown">
 				<img src="/assets/imgs/avatar.png" alt="Profile Picture">
-				<h2>@{{.UserName}}<br><span>{{.Email}}</span></h2>
+				<h2>@{{.User.UserName}}<br><span>{{.User.Email}}</span></h2>
 				<hr>
 				<div class="dropdown-content">
 					<a href="/profile-settings"><img src="/assets/imgs/settings.png">Profile Settings</a>
@@ -57,7 +57,7 @@
 				<input type="radio" id="category1" name="categoryElement" checked>
 				<label for="category1"><img src="/assets/imgs/categories-Icons/all.png">All</label>
 			</li>
-			{{ if eq .UserType "authenticated" }}
+			{{ if eq .User.UserType "authenticated" }}
 			<li class="category">
 				<input type="radio" id="category2" name="categoryElement">
 				<label for="category2"><img src="/assets/imgs/categories-Icons/my-posts.png">My Posts</label>
@@ -67,144 +67,32 @@
 				<label for="category3"><img src="/assets/imgs/categories-Icons/liked-posts.png">Liked Posts</label>
 			</li>
 			{{end}}
-			<li class="category">
-				<input type="radio" id="category4" name="categoryElement">
-				<label for="category4"><img src="/assets/imgs/categories-Icons/movies-tv.png">Movies & TV</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category5" name="categoryElement">
-				<label for="category5"><img src="/assets/imgs/categories-Icons/music.png">Music</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category6" name="categoryElement">
-				<label for="category6"><img src="/assets/imgs/categories-Icons/games.png">Games</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category7" name="categoryElement">
-				<label for="category7"><img src="/assets/imgs/categories-Icons/technology.png">Technology</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category8" name="categoryElement">
-				<label for="category8"><img src="/assets/imgs/categories-Icons/ai.png">AI</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category9" name="categoryElement">
-				<label for="category9"><img src="/assets/imgs/categories-Icons/memes.png">Memes</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category10" name="categoryElement">
-				<label for="category10"><img src="/assets/imgs/categories-Icons/sports.png">Sports</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category11" name="categoryElement">
-				<label for="category11"><img src="/assets/imgs/categories-Icons/news.png">News</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category12" name="categoryElement">
-				<label for="category12"><img src="/assets/imgs/categories-Icons/fashion.png">Fashion</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category13" name="categoryElement">
-				<label for="category13"><img src="/assets/imgs/categories-Icons/science.png">Science</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category14" name="categoryElement">
-				<label for="category14"><img src="/assets/imgs/categories-Icons/art.png">Art</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category15" name="categoryElement">
-				<label for="category15"><img src="/assets/imgs/categories-Icons/anime.png">Anime</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category16" name="categoryElement">
-				<label for="category16"><img src="/assets/imgs/categories-Icons/books.png">Books</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category17" name="categoryElement">
-				<label for="category17"><img src="/assets/imgs/categories-Icons/business.png">Business</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category18" name="categoryElement">
-				<label for="category18"><img src="/assets/imgs/categories-Icons/career.png">Career</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category19" name="categoryElement">
-				<label for="category19"><img src="/assets/imgs/categories-Icons/culture.png">Culture</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category20" name="categoryElement">
-				<label for="category20"><img src="/assets/imgs/categories-Icons/diy.png">DIY</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category21" name="categoryElement">
-				<label for="category21"><img src="/assets/imgs/categories-Icons/education.png">Education</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category22" name="categoryElement">
-				<label for="category22"><img src="/assets/imgs/categories-Icons/podcasts.png">Podcasts</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category23" name="categoryElement">
-				<label for="category23"><img src="/assets/imgs/categories-Icons/q-a.png">Q&A's</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category24" name="categoryElement">
-				<label for="category24"><img src="/assets/imgs/categories-Icons/software.png">Software & Apps</label>
-			</li>
-			<li class="category">
-				<input type="radio" id="category25" name="categoryElement">
-				<label for="category25"><img src="/assets/imgs/categories-Icons/travel.png">Travel</label>
-			</li>
-
 		</ul>
 		<div id="posts-container">
+			<div id="post">
+				<div class="post-info-1"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
+					<h3>Username <br><span>Time</span></h3>
+				</div>
+				<div class="post-info-2">
+					<h3>Post Title</h3>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
+						accusantium
+						quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
+				</div>
+				<div class="post-info-3">
+					<div class="links">
+						<li>Health</li>
+						<li>Fashion</li>
+						<li>Daily</li>
+					</div>
+					<div class="buttons">
+						<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
+						<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
+						<button id="commentBtn"><img src="/assets/imgs/comment.png" alt="Comment"> 4</button>
+					</div>
+				</div>
+			</div>
 
-			<div id="post">
-				<div class="post-info-1"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
-					<h3>Username <br><span>Time</span></h3>
-				</div>
-				<div class="post-info-2">
-					<h3>Post Title</h3>
-					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
-						accusantium
-						quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
-				</div>
-				<div class="post-info-3">
-					<div class="links">
-						<li>Health</li>
-						<li>Fashion</li>
-						<li>Daily</li>
-					</div>
-					<div class="buttons">
-						<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
-						<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
-						<button id="commentBtn"><img src="/assets/imgs/comment.png" alt="Comment"> 4</button>
-					</div>
-				</div>
-			</div>
-			<div id="post">
-				<div class="post-info-1"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
-					<h3>Username <br><span>Time</span></h3>
-				</div>
-				<div class="post-info-2">
-					<h3>Post Title</h3>
-					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
-						accusantium
-						quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
-				</div>
-				<div class="post-info-3">
-					<div class="links">
-						<li>Health</li>
-						<li>Fashion</li>
-						<li>Daily</li>
-					</div>
-					<div class="buttons">
-						<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
-						<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
-						<button id="commentBtn"><img src="/assets/imgs/comment.png" alt="Comment"> 4</button>
-					</div>
-				</div>
-			</div>
 		</div>
 		<div id="post-placeholder">
 			<div class="post-info-placeholder-1">
@@ -314,7 +202,7 @@
 						</div>
 					</div>
 					<hr>
-					{{ if eq .UserType "authenticated" }}
+					{{ if eq .User.UserType "authenticated" }}
 					<div class="user-comment">
 						<div class="comment-info-1"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
 							<h3>Username</h3>

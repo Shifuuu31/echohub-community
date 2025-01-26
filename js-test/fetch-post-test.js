@@ -26,4 +26,3 @@ const fetchResponse = (url, obj) => {
 }
 
 fetchResponse('http://localhost:8080/confirmRegister', newUser)
-// fetchResponse('http://localhost:8080/confirmLogin', Credentials)

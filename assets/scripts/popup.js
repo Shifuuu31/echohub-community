@@ -19,7 +19,7 @@ const Popup = () => {
 
 const OpenPopup = () => {
     document.querySelector(".popup-background").style.display = "block"
-    document.getElementById("").style.display = "block"
+    document.getElementById("popup").style.display = "block"
     document.body.style.overflow = "hidden"
 }
 
