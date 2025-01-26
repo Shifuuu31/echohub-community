@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(credentials.rememberMe)
 
         try {
-            const msgs = await fetchResponse('http://localhost:8080/confirmLogin', credentials)
+            const msgs = await fetchResponse(`http://${window.location.href}/confirmRegister`, credentials)
             console.log(msgs)
 
             displayMessages(msgs, credentials.username)

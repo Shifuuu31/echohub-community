@@ -30,22 +30,22 @@
 		{{ if eq .UserType "authenticated" }}
 		<a href="/create-post"><button class="create"><img src="/assets/imgs/create.png">Create
 				Post</button></a>
-				<div class="profile-dropdown">
-					<div class="profile-picture-container" id="profile-picture-container">
-						<img class="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
-					</div>
-					<div class="dropdown" id="dropdown">
-						<img src="/assets/imgs/avatar.png" alt="Profile Picture">
-						<h2>@{{.UserName}}<br><span>{{.Email}}</span></h2>
-						<hr>
-						<div class="dropdown-content">
-							<a href="/profile-settings"><img src="/assets/imgs/settings.png">Profile Settings</a>
-							<a href=""><img src="/assets/imgs/dark-mode.png">Dark Mode (coming soon)</a>
-							<hr>
-							<a href="/logout"><img src="/assets/imgs/logout.png">Log Out</a>
-						</div>
-					</div>
+		<div class="profile-dropdown">
+			<div class="profile-picture-container" id="profile-picture-container">
+				<img class="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
+			</div>
+			<div class="dropdown" id="dropdown">
+				<img src="/assets/imgs/avatar.png" alt="Profile Picture">
+				<h2>@{{.UserName}}<br><span>{{.Email}}</span></h2>
+				<hr>
+				<div class="dropdown-content">
+					<a href="/profile-settings"><img src="/assets/imgs/settings.png">Profile Settings</a>
+					<a href=""><img src="/assets/imgs/dark-mode.png">Dark Mode (coming soon)</a>
+					<hr>
+					<a href="/logout"><img src="/assets/imgs/logout.png">Log Out</a>
 				</div>
+			</div>
+		</div>
 		{{ else }}
 		<a href="/register"><button class="register"><img src="/assets/imgs/register.png">Register</button></a>
 		<a href="/login"><button class="login">Login</button></a>
@@ -155,7 +155,7 @@
 				<input type="radio" id="category25" name="categoryElement">
 				<label for="category25"><img src="/assets/imgs/categories-Icons/travel.png">Travel</label>
 			</li>
-		
+
 		</ul>
 		<div id="posts-container">
 
@@ -165,7 +165,8 @@
 				</div>
 				<div class="post-info-2">
 					<h3>Post Title</h3>
-					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur accusantium
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
+						accusantium
 						quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
 				</div>
 				<div class="post-info-3">
@@ -177,158 +178,159 @@
 					<div class="buttons">
 						<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
 						<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
-						<button><img src="/assets/imgs/comment.png" alt="Comment"> 4</button>
+						<button id="commentBtn"><img src="/assets/imgs/comment.png" alt="Comment"> 4</button>
+					</div>
+				</div>
+			</div>
+			<div id="post">
+				<div class="post-info-1"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
+					<h3>Username <br><span>Time</span></h3>
+				</div>
+				<div class="post-info-2">
+					<h3>Post Title</h3>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
+						accusantium
+						quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
+				</div>
+				<div class="post-info-3">
+					<div class="links">
+						<li>Health</li>
+						<li>Fashion</li>
+						<li>Daily</li>
+					</div>
+					<div class="buttons">
+						<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
+						<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
+						<button id="commentBtn"><img src="/assets/imgs/comment.png" alt="Comment"> 4</button>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div id="post">
-			<div class="post-info-1"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
-				<h3>Username <br><span>Time</span></h3>
-			</div>
-			<div class="post-info-2">
-				<h3>Post Title</h3>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur accusantium
-					quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
-			</div>
-			<div class="post-info-3">
-				<div class="links">
-					<li>Health</li>
-					<li>Fashion</li>
-					<li>Daily</li>
-				</div>
-				<div class="buttons">
-					<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
-					<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
-					<button><img src="/assets/imgs/comment.png" alt="Comment"> 4</button>
+		<div id="post-placeholder">
+			<div class="post-info-placeholder-1">
+				<div class="avatar-placeholder"></div>
+				<div class="post-info-placeholder-2">
+					<div class="username-placeholder"></div>
+
+					<div class="time-placeholder"></div>
 				</div>
 			</div>
-		</div>
-	</div>
-	<div id="post-placeholder">
-		<div class="post-info-placeholder-1">
-			<div class="avatar-placeholder"></div>
 			<div class="post-info-placeholder-2">
-				<div class="username-placeholder"></div>
-
-				<div class="time-placeholder"></div>
+				<div class="title-placeholder"></div>
+				<div class="text-placeholder"></div>
 			</div>
-        </div>
-        <div class="post-info-placeholder-2">
-            <div class="title-placeholder"></div>
-            <div class="text-placeholder"></div>
-        </div>
-        <div class="post-info-placeholder-3">
-            <div class="links-placeholder">
-                <div class="link-item-placeholder"></div>
-                <div class="link-item-placeholder"></div>
-                <div class="link-item-placeholder"></div>
-            </div>
-            <div class="buttons-placeholder">
-                <div class="button-item-placeholder"></div>
-                <div class="button-item-placeholder"></div>
-                <div class="button-item-placeholder"></div>
-            </div>
-        </div>
-    </div>
-	<div class="popup-background">
-		<div id="popup">
-			<div class="wraper">
-				<div id="post">
-					<div id="popup-comment">
-						<div class="comment-info-1"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
-							<h3>Username <br><span>Time</span></h3>
-						</div>
-						<div><button><i class="close fa-solid fa-xmark"></i></button></div>
-					</div>
-					<div class="post-info-2">
-						<h3>Post Title</h3>
-						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
-							accusantium quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
-					</div>
-					<div class="post-info-3">
-						<div class="links">
-							<li>Health</li>
-							<li>Fashion</li>
-							<li>Daily</li>
-						</div>
-						<div class="buttons">
-							<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
-							<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
-							<button><img src="/assets/imgs/comment.png" alt="Comment"> 4</button>
-						</div>
-					</div>
+			<div class="post-info-placeholder-3">
+				<div class="links-placeholder">
+					<div class="link-item-placeholder"></div>
+					<div class="link-item-placeholder"></div>
+					<div class="link-item-placeholder"></div>
 				</div>
-				<p class="seperator">Comments</p>
-				<hr>
-				<div class="comments-section">
-					<div class="comment">
-						<div id="popup-comment">
-							<div class="comment-info-2">
-								<img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
-								<h3>CommenterUsername <br><span>2 hours ago</span></h3>
-							</div>
-							<div class="buttons">
-								<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
-								<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
-							</div>
-						</div>
-						<div class="comment-info-2">
-							<p>This is an example comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-								Quisquam, quos.</p>
-						</div>
-					</div>
-					<div class="comment">
-						<div id="popup-comment">
-							<div class="comment-info-2">
-								<img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
-								<h3>CommenterUsername2 <br><span>2 hours ago</span></h3>
-							</div>
-							<div class="buttons">
-								<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
-								<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
-							</div>
-						</div>
-						<div class="comment-info-2">
-							<p>This is an example comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-								Quisquam, quos.</p>
-						</div>
-					</div>
-					<div class="comment">
-						<div id="popup-comment">
-							<div class="comment-info-2">
-								<img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
-								<h3>CommenterUsername3 <br><span>2 hours ago</span></h3>
-							</div>
-							<div class="buttons">
-								<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
-								<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
-							</div>
-						</div>
-						<div class="comment-info-2">
-							<p>This is an example comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-								Quisquam, quos.</p>
-						</div>
-					</div>
+				<div class="buttons-placeholder">
+					<div class="button-item-placeholder"></div>
+					<div class="button-item-placeholder"></div>
+					<div class="button-item-placeholder"></div>
 				</div>
-				<hr>
-				{{ if eq .UserType "authenticated" }}
-				<div class="user-comment">
-					<div class="comment-info-1"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
-						<h3>Username</h3>
-					</div>
-					<div class="comment-group">
-						<textarea placeholder="Type a comment..." type="text" id="comment-field"></textarea>
-
-					</div>
-				</div>
-				{{end}}
 			</div>
 		</div>
-	</div>
-	
-	<script src="/assets/scripts/main.js" type="module"></script>
-	<script src="/assets/scripts/dropdown.js"></script>
+		<div class="popup-background">
+			<div id="popup">
+				<div class="wraper">
+					<div id="post">
+						<div id="popup-comment">
+							<div class="comment-info-1"><img src="/assets/imgs/avatar.png" alt="User Avatar"
+									loading="lazy">
+								<h3>Username <br><span>Time</span></h3>
+							</div>
+							<div><button><i class="close fa-solid fa-xmark"></i></button></div>
+						</div>
+						<div class="post-info-2">
+							<h3>Post Title</h3>
+							<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
+								accusantium quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
+						</div>
+						<div class="post-info-3">
+							<div class="links">
+								<li>Health</li>
+								<li>Fashion</li>
+								<li>Daily</li>
+							</div>
+							<div class="buttons">
+								<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
+								<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
+								<button><img src="/assets/imgs/comment.png" alt="Comment"> 4</button>
+							</div>
+						</div>
+					</div>
+					<p class="seperator">Comments</p>
+					<hr>
+					<div class="comments-section">
+						<div class="comment">
+							<div id="popup-comment">
+								<div class="comment-info-2">
+									<img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
+									<h3>CommenterUsername <br><span>2 hours ago</span></h3>
+								</div>
+								<div class="buttons">
+									<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
+									<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
+								</div>
+							</div>
+							<div class="comment-info-2">
+								<p>This is an example comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+									Quisquam, quos.</p>
+							</div>
+						</div>
+						<div class="comment">
+							<div id="popup-comment">
+								<div class="comment-info-2">
+									<img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
+									<h3>CommenterUsername2 <br><span>2 hours ago</span></h3>
+								</div>
+								<div class="buttons">
+									<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
+									<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
+								</div>
+							</div>
+							<div class="comment-info-2">
+								<p>This is an example comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+									Quisquam, quos.</p>
+							</div>
+						</div>
+						<div class="comment">
+							<div id="popup-comment">
+								<div class="comment-info-2">
+									<img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
+									<h3>CommenterUsername3 <br><span>2 hours ago</span></h3>
+								</div>
+								<div class="buttons">
+									<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
+									<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
+								</div>
+							</div>
+							<div class="comment-info-2">
+								<p>This is an example comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+									Quisquam, quos.</p>
+							</div>
+						</div>
+					</div>
+					<hr>
+					{{ if eq .UserType "authenticated" }}
+					<div class="user-comment">
+						<div class="comment-info-1"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
+							<h3>Username</h3>
+						</div>
+						<div class="comment-group">
+							<textarea placeholder="Type a comment..." type="text" id="comment-field"></textarea>
+
+						</div>
+					</div>
+					{{end}}
+				</div>
+			</div>
+		</div>
+
+		<script src="/assets/scripts/main.js" type="module"></script>
+		<script src="/assets/scripts/dropdown.js"></script>
 </body>
 
 </html>
