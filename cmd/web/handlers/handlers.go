@@ -70,7 +70,6 @@ func (webForm *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	
 	var postsBuffer bytes.Buffer
 	encoder := json.NewEncoder(&postsBuffer)
 	if err := encoder.Encode(post); err != nil {
@@ -79,7 +78,7 @@ func (webForm *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	
+
 	fmt.Fprintf(w, postsBuffer.String())
 }
 
@@ -104,8 +103,8 @@ func (webForm *WebApp) PostCreation(w http.ResponseWriter, r *http.Request) {
 	}
 	categoriesForm := r.Form["categoryElement"]
 
-	if New.PostTitle == "" || New.PostContent == "" || len(categoriesForm) == 0 || len(categoriesForm) > 3 {
-		http.Redirect(w, r, "/create-post", http.StatusSeeOther)
+	if New.PostTitle == "" || len(New.PostTitle) > 70 || New.PostContent == "" || len(New.PostContent) > 5000 || len(categoriesForm) == 0 || len(categoriesForm) > 3 {
+		http.Redirect(w, r, "/createPost", http.StatusSeeOther)
 		return
 	}
 
@@ -118,16 +117,15 @@ func (webForm *WebApp) PostCreation(w http.ResponseWriter, r *http.Request) {
 	idPost, err := webForm.Post.CreatePost(New.PostTitle, New.PostContent)
 	if err != nil {
 		models.Error{StatusCode: http.StatusInternalServerError, Message: "500 Internal Server Error", SubMessage: "Oops! " + err.Error()}.RenderError(w)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	http.Redirect(w, r, "/", http.StatusSeeOther)
 	err = webForm.Post.AddcategoryPost(idPost, ids)
 	if err != nil {
 		models.Error{StatusCode: http.StatusInternalServerError, Message: "500 Internal Server Error", SubMessage: "Oops! " + err.Error()}.RenderError(w)
 		return
 	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 // func (webForum *WebApp) DeletePostHandler(w http.ResponseWriter, r *http.Request) {

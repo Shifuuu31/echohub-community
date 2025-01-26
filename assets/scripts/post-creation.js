@@ -5,7 +5,6 @@ const submitBtn = document.getElementById('submit')
 for (let category of categories) {
     category.addEventListener('change', () => {
         const categoriesChecked = document.querySelectorAll('input[name="categoryElement"]:checked')
-
         if (categoriesChecked.length > MAX_CATEGORIES) {
             category.checked = false
             alert(`You can only select up to ${MAX_CATEGORIES} categories.`)

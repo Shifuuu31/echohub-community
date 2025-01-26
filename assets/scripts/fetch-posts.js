@@ -1,3 +1,7 @@
+const posts = document.getElementById("posts");
+let DataToFetch = {};
+let isLoading = false;
+
 // Get max ID 
 const GetMaxID = async () => {
     try {
@@ -26,30 +30,26 @@ const fetchData = async (url, obj) => {
     }
 }
 
-const posts = document.getElementById("posts");
 
-const displayPosts = async (category = "All") => {
+const desplayPosts = async (category = "All", append = false) => {
     const url = `http://${window.location.host}/post`;
-    const maxId = await GetMaxID();
-    let countPosts = 0
-    
-    if (maxId == null) {
-        console.error("Failed to get maxId");
-        return;
+    if (!append) {
+        const maxId = await GetMaxID();
+        if (maxId == null) {
+            console.error("Failed to get maxId");
+            return;
+        }
+        DataToFetch.PostID = maxId;
+        DataToFetch.Category = category;
+        posts.innerHTML = '';
     }
-    let DataToFetch = {
-        postID: maxId,
-        category: category
-    };
-    posts.innerHTML = ''
-    for (let count = 1; count <= 10; count++) {
-        const postData = document.createElement('div')
+    let countPosts = 0
+
+    while (countPosts < 10 && DataToFetch.PostID > 0) {
         const post = await fetchData(url, DataToFetch);
         if (post) {
-
-            console.log(post);
-            
             countPosts++
+            const postData = document.createElement('div')
             postData.innerHTML = `
             <div id="post">
             <div class="post-info-1"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
@@ -71,24 +71,28 @@ const displayPosts = async (category = "All") => {
             </div>
             </div>`
             posts.append(postData)
-            DataToFetch.postID = post.PostId - 1
-            // if (DataToFetch.postID == 0) {
-                //     break
-                // }
-            }
         }
-        if (countPosts === 0) {
-            posts.innerHTML = `<h1> No posts to display.</h1>`
-            posts.style.textAlign = 'center'
+        DataToFetch.PostID--;
     }
+    if (countPosts === 0 && !append) {
+        posts.innerHTML = `<h1 style="text-align: center;">No posts to display.</h1>`
+    }
+    isLoading = false;
 };
 
 const categories = document.querySelectorAll("input[id^=category]");
 categories.forEach(category => {
     category.addEventListener('change', (target) => {
-        displayPosts(target.target.defaultValue)
+        desplayPosts(target.target.defaultValue)
     });
 });
 
-displayPosts();
 
+window.addEventListener('scroll', async () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !isLoading) {
+        isLoading = true; 
+        await desplayPosts(DataToFetch.Category, true);
+    }
+});
+
+desplayPosts()

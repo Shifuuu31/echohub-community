@@ -95,8 +95,7 @@ func (postModel *PostModel) GetPosts(current int, category string) (posts Post, 
 
 	switch category {
 	case "All":
-		query = `
-		SELECT p.id,u.username,p.title,p.content,p.creation_date
+		query = `SELECT p.id,u.username,p.title,p.content,p.creation_date
 		FROM PostTable p
 		JOIN UserTable u ON u.id = p.user_id
 		WHERE p.id = $1;`
@@ -111,16 +110,14 @@ func (postModel *PostModel) GetPosts(current int, category string) (posts Post, 
 		// to be implemented
 	default:
 		if categoryId, err = strconv.Atoi(category); err != nil {
-			return Post{}, errors.New("category id not a number")
+			return Post{}, errors.New("This category not defined")
 		}
-		query = `
-	SELECT p.id,u.username,p.title,p.content,p.creation_date
-	FROM PostTable p
-	JOIN Categories_Posts cp
-		ON p.id = cp.post_id
-    JOIN UserTable u ON u.id = p.user_id
-	WHERE cp.category_id = $1 AND p.id <= $2
-	ORDER  BY p.id DESC;`
+		query = `SELECT p.id,u.username,p.title,p.content,p.creation_date
+		FROM PostTable p
+		JOIN Categories_Posts cp ON p.id = cp.post_id
+    	JOIN UserTable u ON u.id = p.user_id
+		WHERE cp.category_id = $1 AND p.id = $2
+		ORDER  BY p.id DESC;`
 		args = append(args, categoryId, current)
 	}
 
@@ -140,6 +137,7 @@ func (postModel *PostModel) GetPosts(current int, category string) (posts Post, 
 		return Post{}, err
 	}
 	post.PostTime = post.PostTime.UTC()
+
 	return post, nil
 }
 
@@ -169,7 +167,7 @@ func (PostModel *PostModel) GetCategoriesPost(postId int) (postCategories []stri
 
 func (PostModel *PostModel) CreatePost(title, content string) (int, error) {
 	var id int
-	err := PostModel.DB.QueryRow("INSERT INTO PostTable (title, user_id, content) VALUES (?, ?, ?) RETURNING id", title, 2, content).Scan(&id)
+	err := PostModel.DB.QueryRow("INSERT INTO PostTable (title, user_id, content) VALUES (?, ?, ?) RETURNING id", title, 1, content).Scan(&id)
 	if err != nil {
 		return 0, err
 	}
