@@ -120,13 +120,22 @@ func (session *SessionModel) DeleteSession(sessionToken string) error {
 // deleteExpiredSessions removes all sessions that have expired from the database.
 func (session *SessionModel) deleteExpiredSessions() error {
 	deleteStmt := `DELETE FROM UserSessions WHERE expiration_date < CURRENT_TIMESTAMP`
-	_, err := session.DB.Exec(deleteStmt)
+	result, err := session.DB.Exec(deleteStmt)
 	if err != nil {
-		return err
+		return fmt.Errorf("no Expired session to be deleted: %v", err)
 	}
 
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to fetch rows affected: %v", err)
+	}
+
+	log.Printf("Cleanup: Deleted %d expired session(s).", rowsAffected)
 	return nil
 }
+
+
+
 
 // CleanupExpiredSessions periodically cleans up expired sessions from the database.
 // This runs in an infinite loop with a 30-second delay between each execution.
