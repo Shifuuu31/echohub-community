@@ -9,10 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
             password: document.getElementById('password').value,
             rememberMe: document.getElementById('remember').checked,
         }
-console.log("location:",window.location.origin)
-
-
-        console.log(credentials.rememberMe)
 
         try {
             const msgs = await fetchResponse(`${window.location.origin}/confirmLogin`, credentials)
@@ -32,7 +28,6 @@ const fetchResponse = async (url, obj) => {
         body: JSON.stringify(obj),
     })
 
-    // console.log(JSON.stringify(obj))
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
     return response.json()
 }
@@ -49,7 +44,7 @@ const displayMessages = (messages, username) => {
         paragraph.style.fontSize = '16px'
 
         errorMsgsDiv.appendChild(paragraph)
-        if (msg == ['Login successful!']) {
+        if (msg == 'Login successful!') {
             paragraph.style.color = 'green'
             const overlay = document.getElementById('overlay')
             const closeBtn = document.getElementById('gobtn')
@@ -60,6 +55,7 @@ const displayMessages = (messages, username) => {
 
             closeBtn.addEventListener('click', ()=> {
                 overlay.classList.remove('show')
+                window.location.href = '/'
             })
         }
     })

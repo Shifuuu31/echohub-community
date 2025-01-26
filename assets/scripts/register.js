@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const msgs = await fetchResponse(`${window.location.origin}/confirmRegister`, newUser)
-            console.log(msgs)
+            // console.log(msgs)
 
             displayMessages(msgs)
         } catch (error) {
@@ -40,21 +40,24 @@ const fetchResponse = async (url, obj) => {
 }
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-const displayMessages = (messages) => {
+ const displayMessages =  (messages) => {
     const errorMsgsDiv = document.getElementById('errorMsgs')
     errorMsgsDiv.innerHTML = ''
 
-    messages.forEach((msg) => {
+    messages.forEach(async  (msg) => {
         const paragraph = document.createElement('p')
         paragraph.textContent = msg
         paragraph.style.color = 'red'
         paragraph.style.fontWeight = 600
         paragraph.style.fontSize = '16px'
-
+// console.log("msg",msg[0]);
         errorMsgsDiv.appendChild(paragraph)
-        if (msg == ['User Registred successfully!']) {
+        console.log(msg);
+        console.log('ho');
+        if (msg == 'User Registred successfully!') {
+            console.log('hi');
             paragraph.style.color = 'green'
-            sleep(1000)
+            await sleep(1000)
             window.location.href = '/login'
 
         }

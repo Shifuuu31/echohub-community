@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
+    DropDown()  
+})
+
+const DropDown = () => {
     const profilePictureContainer = document.getElementById('profile-picture-container')
     const dropdown = document.getElementById('dropdown')
     if (profilePictureContainer && dropdown) {
@@ -24,4 +28,4 @@ document.addEventListener("DOMContentLoaded", () => {
             event.stopPropagation()
         })
     }
-})
+}

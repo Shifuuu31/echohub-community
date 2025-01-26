@@ -13,13 +13,11 @@ import (
 
 type contextKey string
 
-// Keys used for storing user information in the request context.
 var (
 	userIDKey   contextKey = "UserID"
 	userTypeKey contextKey = "UserType"
 )
 
-// AuthMiddleware validates the user session and sets the user type and ID in the request context.
 func (webForum *WebApp) AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		userType := "guest"
@@ -41,7 +39,6 @@ func (webForum *WebApp) AuthMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-// HomePage renders the home page based on the user type and ID retrieved from the context.
 func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 	user := &models.User{}
 	var err error
@@ -79,7 +76,6 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 			UserType: "guest",
 		}
 	}
-
 	userType, ok := r.Context().Value(userTypeKey).(string)
 	if !ok {
 		models.Error{
@@ -90,7 +86,6 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 		}.RenderError(w)
 		return
 	}
-
 	user.UserType = userType
 	if r.URL.Path != "/" {
 		err := models.Error{
@@ -102,7 +97,6 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 		err.RenderError(w)
 		return
 	}
-
 	fmt.Println(user)
 	homeData := struct {
 		User *models.User
@@ -113,7 +107,6 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 	models.RenderPage(w, "home.html", homeData)
 }
 
-// LoginPage renders the login page or redirects authenticated users to the home page.
 func (webForum *WebApp) LoginPage(w http.ResponseWriter, r *http.Request) {
 	user := &models.User{}
 	var err error
@@ -151,7 +144,6 @@ func (webForum *WebApp) LoginPage(w http.ResponseWriter, r *http.Request) {
 			UserType: "guest",
 		}
 	}
-
 	userType, ok := r.Context().Value(userTypeKey).(string)
 	if !ok {
 		models.Error{
@@ -162,15 +154,12 @@ func (webForum *WebApp) LoginPage(w http.ResponseWriter, r *http.Request) {
 		}.RenderError(w)
 		return
 	}
-
 	if userType == "authenticated" {
 		http.Redirect(w, r, "/", http.StatusFound)
 	}
-
 	models.RenderPage(w, "login.html", nil)
 }
 
-// ConfirmLogin handles user login and session creation.
 type UserCredentials struct {
 	UserName   string `json:"username"`
 	Password   string `json:"password"`
@@ -179,49 +168,36 @@ type UserCredentials struct {
 
 func (webForum *WebApp) ConfirmLogin(w http.ResponseWriter, r *http.Request) {
 	var credentials UserCredentials
+	w.Header().Set("Content-Type", "application/json")
+
 	err := json.NewDecoder(r.Body).Decode(&credentials)
 	if err != nil {
 		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
 		return
 	}
 
-	fmt.Println("RememberMe:", credentials.RememberMe)
 	userID, errors := webForum.Users.ValidateUserCredentials(credentials.UserName, credentials.Password)
 	fmt.Println(userID)
-
 	if userID > 0 {
 		newSession, err := webForum.Sessions.GenerateNewSession(userID, credentials.RememberMe)
 		if err != nil {
-			models.Error{
-				StatusCode: http.StatusInternalServerError,
-				Message:    "Internal Server Error",
-				SubMessage: "Cannot generate new session",
-			}.RenderError(w)
+			http.Error(w, "Internal Server Error1", http.StatusInternalServerError)
 			return
 		}
 
 		newCookie, err := webForum.Sessions.InsertOrUpdateSession(newSession)
 		if err != nil {
-			models.Error{
-				StatusCode: http.StatusInternalServerError,
-				Message:    "Internal Server Error",
-				SubMessage: "Cannot insert new session",
-			}.RenderError(w)
+			http.Error(w, "Internal Server Error2", http.StatusInternalServerError)
 			return
 		}
-
 		http.SetCookie(w, &newCookie)
-		w.Header().Set("Content-Type", "application/json")
 
 		sendJsontoHeader(w, []string{"Login successful!"})
 	} else {
 		sendJsontoHeader(w, errors)
 	}
-
-	fmt.Println("error", errors)
 }
 
-// UserLogout handles user logout and session deletion.
 func (webForum *WebApp) UserLogout(w http.ResponseWriter, r *http.Request) {
 	sessionCookie, err := r.Cookie("userSession")
 	if err != nil {
@@ -249,12 +225,10 @@ func (webForum *WebApp) UserLogout(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/login", http.StatusFound)
 }
 
-// RegisterPage renders the registration page.
 func (webForum *WebApp) RegisterPage(w http.ResponseWriter, r *http.Request) {
 	models.RenderPage(w, "register.html", nil)
 }
 
-// UserRegister handles user registration.
 type NewUserInfo struct {
 	UserName     string `json:"username"`
 	Email        string `json:"email"`
@@ -269,26 +243,19 @@ func (webForum *WebApp) UserRegister(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
 		return
 	}
-
 	newUser, errors := webForum.Users.ValidateNewUser(newUserinfo.UserName, newUserinfo.Email, newUserinfo.Password, newUserinfo.RepeatedPass)
 	if len(errors) == 0 {
 		if err := webForum.Users.InsertUser(newUser); err != nil {
-			models.Error{
-				StatusCode: http.StatusInternalServerError,
-				Message:    "Internal Server Error",
-				SubMessage: "Cannot insert new user",
-			}.RenderError(w)
+			models.Error{StatusCode: http.StatusInternalServerError, Message: "Internal Server Error", SubMessage: "Cannot insert new user"}.RenderError(w)
 			return
 		}
-		sendJsontoHeader(w, []string{"User Registered successfully!"})
+		sendJsontoHeader(w, []string{"User Registred successfully!"})
 	} else {
 		sendJsontoHeader(w, errors)
 	}
-
 	fmt.Println("error", errors)
 }
 
-// sendJsontoHeader encodes the given object as JSON and writes it to the respon	se header.
 func sendJsontoHeader(w http.ResponseWriter, obj interface{}) error {
 	fmt.Println("OBJ:\x1b[1;31m", obj, "\x1b[1;39m")
 	w.Header().Set("Content-Type", "application/json")

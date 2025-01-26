@@ -52,11 +52,13 @@ func (session *SessionModel) GenerateNewSession(userID int, remember bool) (newS
 func (session *SessionModel) InsertOrUpdateSession(newSession Session) (newCookie http.Cookie, err error) {
 	insertOrUpdateStmt := `
 		INSERT INTO UserSessions (user_id, session_token, expiration_date) VALUES (?, ?, ?)
+		
 		ON CONFLICT(user_id) 
 		DO UPDATE SET session_token = excluded.session_token, expiration_date = excluded.expiration_date`
 
 	_, err = session.DB.Exec(insertOrUpdateStmt, newSession.UserID, newSession.Token, newSession.ExpirationDate)
 	if err != nil {
+		log.Println(err)
 		return newCookie, err
 	}
 
