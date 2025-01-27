@@ -17,6 +17,8 @@
 
 body {
     font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    /* font-weight: 600; */
     background-color: var(--bg-color);
 }
 
@@ -135,6 +137,9 @@ nav img {
 }
 
 #error-code {
+    font-family: "Bagel Fat One", serif;
+  /* font-weight: 400; */
+  font-style: normal;
     margin-top: 115px;
     font-size: 10rem;
     font-weight: 900;
