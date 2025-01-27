@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"forum/internal/models"
 )
@@ -97,7 +98,6 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 		err.RenderError(w)
 		return
 	}
-	fmt.Println(user)
 	categories, err := webForum.Post.GetCategories()
 	if err != nil {
 		models.Error{
@@ -110,10 +110,10 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	homeData := struct {
-		User *models.User
+		User       *models.User
 		Categories []models.Category
 	}{
-		User: user,
+		User:       user,
 		Categories: categories,
 	}
 
@@ -269,8 +269,8 @@ func (webForum *WebApp) UserRegister(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("error", errors)
 }
 
-func (webForm *WebApp) GetMaxID(w http.ResponseWriter, r *http.Request) {
-	maxID, err := webForm.Post.GetMaxID()
+func (webForum *WebApp) GetMaxID(w http.ResponseWriter, r *http.Request) {
+	maxID, err := webForum.Post.GetMaxID()
 	if err != nil {
 		models.Error{
 			User:       &models.User{},
@@ -283,7 +283,7 @@ func (webForm *WebApp) GetMaxID(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	
+
 	// sendJsontoHeader(w, maxID)
 	if err := json.NewEncoder(w).Encode(maxID); err != nil { // to be replaced look on top
 		models.Error{
@@ -301,7 +301,7 @@ type FetchPosts struct {
 	Category string `json:"category"`
 }
 
-func (webForm *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
+func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 	var postData FetchPosts
 	err := json.NewDecoder(r.Body).Decode(&postData)
 	if err != nil {
@@ -312,7 +312,7 @@ func (webForm *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	post, err := webForm.Post.GetPosts(postData.Post_id, postData.Category)
+	post, err := webForum.Post.GetPosts(postData.Post_id, postData.Category)
 	if err != nil || post.PostId == 0 {
 		fmt.Fprintf(w, "null")
 		return
@@ -331,7 +331,9 @@ func (webForm *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 }
 
 func (webForum *WebApp) CreatePost(w http.ResponseWriter, r *http.Request) {
-	Categories, err := webForum.Post.GetCategories()
+	user := &models.User{}
+	// var err error
+	categories, err := webForum.Post.GetCategories()
 	if err != nil {
 		models.Error{
 			User:       &models.User{},
@@ -341,8 +343,60 @@ func (webForum *WebApp) CreatePost(w http.ResponseWriter, r *http.Request) {
 		}.RenderError(w)
 		return
 	}
-	models.RenderPage(w, "post-creation.html", Categories)
 
+	userID, ok := r.Context().Value(userIDKey).(int)
+	if !ok {
+		models.Error{
+			User:       user,
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			SubMessage: "Unable to retrieve user information.",
+		}.RenderError(w)
+		return
+	}
+
+	if userID != 0 {
+		user, err = webForum.Users.FindUserByID(userID)
+		if err != nil {
+			if err.Error() == "user not found" {
+				user = &models.User{
+					UserType: "guest",
+				}
+			} else {
+				models.Error{
+					User:       user,
+					StatusCode: http.StatusInternalServerError,
+					Message:    "Internal Server Error",
+					SubMessage: err.Error(),
+				}.RenderError(w)
+				return
+			}
+		}
+	} else {
+		user = &models.User{
+			UserType: "guest",
+		}
+	}
+	userType, ok := r.Context().Value(userTypeKey).(string)
+	if !ok {
+		models.Error{
+			User:       user,
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			SubMessage: "Unable to retrieve user type.",
+		}.RenderError(w)
+		return
+	}
+	user.UserType = userType
+
+	CreatePostData := struct {
+		User       *models.User
+		Categories []models.Category
+	}{
+		User:       user,
+		Categories: categories,
+	}
+	models.RenderPage(w, "post-creation.html", CreatePostData)
 
 	// if err := Template.ExecuteTemplate(w, "post-creation.html", Categories); err != nil {
 	// 	models.Error{
@@ -355,7 +409,54 @@ func (webForum *WebApp) CreatePost(w http.ResponseWriter, r *http.Request) {
 	// }
 }
 
-func (webForm *WebApp) Creation(w http.ResponseWriter, r *http.Request) {
+func (webForum *WebApp) Creation(w http.ResponseWriter, r *http.Request) {
+	user := &models.User{}
+	var err error
+
+	userID, ok := r.Context().Value(userIDKey).(int)
+	if !ok {
+		models.Error{
+			User:       user,
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			SubMessage: "Unable to retrieve user information.",
+		}.RenderError(w)
+		return
+	}
+
+	if userID != 0 {
+		user, err = webForum.Users.FindUserByID(userID)
+		if err != nil {
+			if err.Error() == "user not found" {
+				user = &models.User{
+					UserType: "guest",
+				}
+			} else {
+				models.Error{
+					User:       user,
+					StatusCode: http.StatusInternalServerError,
+					Message:    "Internal Server Error",
+					SubMessage: err.Error(),
+				}.RenderError(w)
+				return
+			}
+		}
+	} else {
+		user = &models.User{
+			UserType: "guest",
+		}
+	}
+	userType, ok := r.Context().Value(userTypeKey).(string)
+	if !ok {
+		models.Error{
+			User:       user,
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			SubMessage: "Unable to retrieve user type.",
+		}.RenderError(w)
+		return
+	}
+	user.UserType = userType
 	New := models.Post{
 		PostTitle:   r.FormValue("title"),
 		PostContent: r.FormValue("content"),
@@ -367,7 +468,7 @@ func (webForm *WebApp) Creation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ids, err := webForm.Post.GetIdsCategories(categoriesForm)
+	ids, err := webForum.Post.GetIdsCategories(categoriesForm)
 	if err != nil {
 		models.Error{
 			User:       &models.User{},
@@ -378,7 +479,7 @@ func (webForm *WebApp) Creation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	idPost, err := webForm.Post.CreatePost(New.PostTitle, New.PostContent)
+	idPost, err := webForum.Post.CreatePost(userID, New.PostTitle, New.PostContent)
 	if err != nil {
 		models.Error{
 			User:       &models.User{},
@@ -389,7 +490,7 @@ func (webForm *WebApp) Creation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = webForm.Post.AddCategoriesPost(idPost, ids)
+	err = webForum.Post.AddCategoriesPost(idPost, ids)
 	if err != nil {
 		models.Error{
 			User:       &models.User{},
@@ -397,6 +498,185 @@ func (webForm *WebApp) Creation(w http.ResponseWriter, r *http.Request) {
 			Message:    "500 Internal Server Error",
 			SubMessage: "Oops! " + err.Error(),
 		}.RenderError(w)
+		return
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func (webForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
+	user := &models.User{}
+	var err error
+
+	userID, ok := r.Context().Value(userIDKey).(int)
+	if !ok {
+		models.Error{
+			User:       user,
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			SubMessage: "Unable to retrieve user information.",
+		}.RenderError(w)
+		return
+	}
+
+	if userID != 0 {
+		user, err = webForum.Users.FindUserByID(userID)
+		if err != nil {
+			if err.Error() == "user not found" {
+				user = &models.User{
+					UserType: "guest",
+				}
+			} else {
+				models.Error{
+					User:       user,
+					StatusCode: http.StatusInternalServerError,
+					Message:    "Internal Server Error",
+					SubMessage: err.Error(),
+				}.RenderError(w)
+				return
+			}
+		}
+	} else {
+		user = &models.User{
+			UserType: "guest",
+		}
+	}
+	userType, ok := r.Context().Value(userTypeKey).(string)
+	if !ok {
+		models.Error{
+			User:       user,
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			SubMessage: "Unable to retrieve user type.",
+		}.RenderError(w)
+		return
+	}
+	user.UserType = userType
+
+	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
+	if err != nil {
+		http.Error(w, "invalid id", http.StatusInternalServerError)
+		return
+	}
+
+	post, err := webForum.Post.UpdatePost(userID, id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	Categorys, err := webForum.Post.GetCategories()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	data := struct {
+		Post_info  models.Post
+		Categories []models.Category
+	}{
+		Post_info:  post,
+		Categories: Categorys,
+	}
+
+	models.RenderPage(w, "post-update.html", data)
+
+	// if err := Template.ExecuteTemplate(w, "post-update.html", data); err != nil {
+	// 	http.Error(w, "Error loading UpdatePage", http.StatusInternalServerError)
+	// }
+}
+
+type PostUpdate struct {
+	Id         string   `json:"id`
+	Title      string   `json:"title"`
+	Content    string   `json:"content"`
+	Categories []string `json:"categories"`
+}
+
+func (webForum *WebApp) Updating(w http.ResponseWriter, r *http.Request) {
+	var postData PostUpdate
+	err := json.NewDecoder(r.Body).Decode(&postData)
+	if err != nil {
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+		return
+	}
+
+	if postData.Title == "" || len(postData.Title) > 70 || postData.Content == "" || len(postData.Content) > 5000 || len(postData.Categories) == 0 || len(postData.Categories) > 3 {
+		http.Redirect(w, r, "/update/post?ID="+postData.Id, http.StatusSeeOther)
+		return
+	}
+
+	id, err := strconv.Atoi(postData.Id)
+	if err != nil {
+		http.Error(w, "invalid id", http.StatusInternalServerError)
+		return
+	}
+
+	err = webForum.Post.EditPost(id, postData.Title, postData.Content, postData.Categories)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func (webForum *WebApp) DeletePost(w http.ResponseWriter, r *http.Request) {
+
+	user := &models.User{}
+	var err error
+
+	userID, ok := r.Context().Value(userIDKey).(int)
+	if !ok {
+		models.Error{
+			User:       user,
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			SubMessage: "Unable to retrieve user information.",
+		}.RenderError(w)
+		return
+	}
+
+	if userID != 0 {
+		user, err = webForum.Users.FindUserByID(userID)
+		if err != nil {
+			if err.Error() == "user not found" {
+				user = &models.User{
+					UserType: "guest",
+				}
+			} else {
+				models.Error{
+					User:       user,
+					StatusCode: http.StatusInternalServerError,
+					Message:    "Internal Server Error",
+					SubMessage: err.Error(),
+				}.RenderError(w)
+				return
+			}
+		}
+	} else {
+		user = &models.User{
+			UserType: "guest",
+		}
+	}
+	userType, ok := r.Context().Value(userTypeKey).(string)
+	if !ok {
+		models.Error{
+			User:       user,
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			SubMessage: "Unable to retrieve user type.",
+		}.RenderError(w)
+		return
+	}
+	user.UserType = userType
+
+	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
+	if err != nil {
+		http.Error(w, "invalid id", http.StatusInternalServerError)
+		return
+	}
+
+	err = webForum.Post.DeletePost(userID, id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	http.Redirect(w, r, "/", http.StatusSeeOther)

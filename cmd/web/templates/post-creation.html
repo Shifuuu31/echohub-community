@@ -29,26 +29,26 @@
         </a>
         <a href="/createPost"><button class="create"><img src="/assets/imgs/create.png"></i>Create
                 Post</button></a>
-        <div class="profile-dropdown">
-            <div class="profile-picture-container">
-                <img class="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
-            </div>
-            <div class="dropdown">
-                <img src="/assets/imgs/avatar.png" alt="Profile Picture">
-                <h2>@unkind<br><span>unkind@mail.com</span></h2>
-                <hr>
-                <div class="dropdown-content">
-                    <a href="#">Profile Settings</a>
-                    <a href="#">Dark Mode (coming soon)</a>
-                    <hr>
-                    <a href="#">Log Out</a>
+                <div class="profile-dropdown">
+                    <div class="profile-picture-container" id="profile-picture-container">
+                        <img class="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
+                    </div>
+                    <div class="dropdown" id="dropdown">
+                        <img src="/assets/imgs/avatar.png" alt="Profile Picture">
+                        <h2>@{{.User.UserName}}<br><span>{{.User.Email}}</span></h2>
+                        <hr>
+                        <div class="dropdown-content">
+                            <a href="/profile-settings"><img src="/assets/imgs/settings.png">Profile Settings</a>
+                            <a href=""><img src="/assets/imgs/dark-mode.png">Dark Mode (coming soon)</a>
+                            <hr>
+                            <a href="/logout"><img src="/assets/imgs/logout.png">Log Out</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
     </nav>
     <form class="wraper wraper-extra" action="/createPost" method="POST">
         <ul class="categories">
-            {{range .}}
+            {{range .Categories}}
             <li class="category">
                 <input type="checkbox" id="category{{.ID}}" value="{{.CategoryName}}" name="categoryElement">
                 <label for="category{{.ID}}"><img src="{{.CategoryIconPath}}">{{.CategoryName}}</label>
@@ -65,6 +65,7 @@
         </div>
     </form>
     <script src="/assets/scripts/post-creation.js" type="module"></script>
+    <script src="/assets/scripts/dropdown.js"></script>
     
 </body>
 
