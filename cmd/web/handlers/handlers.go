@@ -193,7 +193,7 @@ func (webForm *WebApp) Creation(w http.ResponseWriter, r *http.Request) {
 }
 
 // update post page
-func (WebForum *WebApp) Update(w http.ResponseWriter, r *http.Request) {
+func (WebForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
 	if err != nil {
 		http.Error(w, "invalid id", http.StatusInternalServerError)
@@ -253,7 +253,7 @@ func (WebApp *WebApp) Updating(w http.ResponseWriter, r *http.Request) {
 }
 
 // delete post
-func (webForum *WebApp) Delete(w http.ResponseWriter, r *http.Request) {
+func (webForum *WebApp) DeletePost(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
 	if err != nil {
 		http.Error(w, "invalid id", http.StatusInternalServerError)

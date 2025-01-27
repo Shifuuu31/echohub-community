@@ -57,6 +57,7 @@ const desplayPosts = async (category = "All", append = false) => {
                     <img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
                     <h3>${post.PostUserName}<br><span>${new Date(post.PostTime).toUTCString()}</span></h3>
                     <button class="create"><a href="/deletePost?ID=${post.PostId}">Delete</a></button>
+                    <button class="create"><a href="/updatePost?ID=${post.PostId}">Update</a></button>
                 </div>
                 <div class="post-info-2">
                     <h3>${post.PostTitle}</h3>

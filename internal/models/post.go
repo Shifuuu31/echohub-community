@@ -172,8 +172,8 @@ func (PostModel *PostModel) CreatePost(title, content string) (int, error) {
 }
 
 // get post by id to update
-func (PostModel *PostModel) UpdatePost(idPost int) (post Post, err error) {
-	err = PostModel.DB.QueryRow("SELECT p.id,p.title,p.content FROM PostTable p WHERE id = ?", idPost).Scan(&post.PostId, &post.PostTitle, &post.PostContent)
+func (PostModel *PostModel) UpdatePost(user_id, idPost int) (post Post, err error) {
+	err = PostModel.DB.QueryRow("SELECT p.id,p.title,p.content FROM PostTable p WHERE id = ? AND p.user_id = ?", idPost, user_id).Scan(&post.PostId, &post.PostTitle, &post.PostContent)
 	if err != nil {
 		return Post{}, errors.New("no post with this ID : ")
 	}
