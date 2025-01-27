@@ -14,20 +14,22 @@ import (
 )
 
 func main() {
-	var webForum handlers.WebApp
 	db, err := sql.Open("sqlite3", "./internal/database/forum.db")
 	if err != nil {
 		log.Fatalln(err)
 	}
-	webForum.Post = &models.PostModel{}
-	webForum.Post.DB = db
+	webForum := handlers.WebApp{
+		Post: &models.PostModel{
+			DB: db,
+		},
+	}
 	port := os.Args[1]
 	server := http.Server{
-		Addr:    ":"+port,
+		Addr:    ":" + port,
 		Handler: webForum.Routes(),
 	}
 
-	fmt.Println("listening in port : http://localhost:"+port)
+	fmt.Println("listening in port : http://localhost:" + port)
 
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatalln(err)
