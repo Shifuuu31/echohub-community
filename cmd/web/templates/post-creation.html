@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="/assets/styles/categories.post-creation.css">
+    <link rel="stylesheet" href="/assets/styles/post-input.post-creation.css">
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <link rel="stylesheet" href="/assets/styles/nav.global.css">
+    <link rel="stylesheet" href="/assets/styles/buttons.global.css">
+    <link rel="stylesheet" href="/assets/styles/dropdown.global.css">
+    <link rel="stylesheet" href="/assets/styles/responsive.global.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <title>echoHub - Post Creation</title>
+
+</head>
+
+<body>
+    <nav>
+        <a href="/" class="logo">
+            <img src="/assets/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
+        </a>
+        <a href="/createPost"><button class="create"><img src="/assets/imgs/create.png"></i>Create
+                Post</button></a>
+        <div class="profile-dropdown">
+            <div class="profile-picture-container">
+                <img class="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
+            </div>
+            <div class="dropdown">
+                <img src="/assets/imgs/avatar.png" alt="Profile Picture">
+                <h2>@unkind<br><span>unkind@mail.com</span></h2>
+                <hr>
+                <div class="dropdown-content">
+                    <a href="#">Profile Settings</a>
+                    <a href="#">Dark Mode (coming soon)</a>
+                    <hr>
+                    <a href="#">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <form class="wraper wraper-extra" action="/createPost" method="POST">
+        <ul class="categories">
+            {{range .}}
+            <li class="category">
+                <input type="checkbox" id="category{{.ID}}" value="{{.CategoryName}}" name="categoryElement">
+                <label for="category{{.ID}}"><img src="{{.CategoryIconPath}}">{{.CategoryName}}</label>
+            </li>
+            {{end}}
+        </ul>
+        <div class="post-inputs">
+            <label for="post-title">
+                <input name="title" type="text" id="post-title" placeholder="Post Title *" maxlength="70" required>
+            </label>
+            <textarea name="content" id="" placeholder="Type Something here..." maxlength="5000" required></textarea>
+            <button id="submit" type="submit"><img
+                    src="/assets/imgs/send.png">Post</button>
+        </div>
+    </form>
+    <script src="/assets/scripts/post-creation.js" type="module"></script>
+    
+</body>
+
+</html>
