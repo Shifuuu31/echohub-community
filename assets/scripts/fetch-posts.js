@@ -60,7 +60,7 @@ const desplayPosts = async (category = "All", append = false) => {
                 </div>
                 <div class="post-info-2">
                     <h3>${post.PostTitle}</h3>
-                    <p>${post.PostContent}</p>
+                    <pre>${post.PostContent}</pre>
                 </div>
                 <div class="post-info-3">
                     <div class="links">
