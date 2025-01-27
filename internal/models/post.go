@@ -90,7 +90,7 @@ func (postModel *PostModel) GetPosts(current int, category string) (posts Post, 
 		WHERE p.id = $1;`
 		args = append(args, current)
 	case "MyPosts":
-		query = `SELECT p.id,u.username,p.title,p.content,p.creation_date
+		query = `SELECT p.id,u.username,p.title,p.post_content,p.creation_date
 		FROM PostTable p
 		JOIN UserTable u ON u.id = p.user_id
 		WHERE user_id = $2;`
@@ -101,7 +101,7 @@ func (postModel *PostModel) GetPosts(current int, category string) (posts Post, 
 		if categoryId, err = strconv.Atoi(category); err != nil {
 			return Post{}, errors.New("This category not defined")
 		}
-		query = `SELECT p.id,u.username,p.title,p.content,p.creation_date
+		query = `SELECT p.id,u.username,p.title,p.post_content,p.creation_date
 		FROM PostTable p
 		JOIN Categories_Posts cp ON p.id = cp.post_id
     	JOIN UserTable u ON u.id = p.user_id

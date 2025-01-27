@@ -34,7 +34,7 @@ const desplayPosts = async (category = "All", append = false) => {
     const url = `${window.location.origin}/post`;
     if (!append) {
         const maxId = await GetMaxID();
-        
+
         if (maxId == null) {
             console.error("Failed to get maxId");
             return;
@@ -44,7 +44,7 @@ const desplayPosts = async (category = "All", append = false) => {
         posts.innerHTML = '';
     }
     let countPosts = 0
-    
+
     while (countPosts < 10 && DataToFetch.postID > 0) {
         const post = await fetchData(url, DataToFetch);
         if (post) {
@@ -72,7 +72,7 @@ const desplayPosts = async (category = "All", append = false) => {
             </div>`
             posts.append(postData)
         }
-            DataToFetch.postID--;
+        DataToFetch.postID--;
     }
     if (countPosts === 0 && !append) {
         posts.innerHTML = `<h1 style="text-align: center;">No posts to display.</h1>`
@@ -81,6 +81,7 @@ const desplayPosts = async (category = "All", append = false) => {
 };
 
 const categories = document.querySelectorAll("input[id^=category]");
+
 categories.forEach(category => {
     category.addEventListener('change', (target) => {
         desplayPosts(target.target.defaultValue)
