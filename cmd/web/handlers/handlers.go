@@ -196,12 +196,6 @@ func (webForm *WebApp) Creation(w http.ResponseWriter, r *http.Request) {
 func (WebForum *WebApp) Update(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
 	if err != nil {
-		// models.Error{
-		// 	User:       &models.User{},
-		// 	StatusCode: http.StatusInternalServerError,
-		// 	Message:    "500 Internal Server Error",
-		// 	SubMessage: "Oops! " + err.Error(),
-		// }.RenderError(w)
 		http.Error(w, "invalid id", http.StatusInternalServerError)
 		return
 	}
@@ -239,7 +233,9 @@ func (WebApp *WebApp) Updating(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
 		return
 	}
-	if postData.Title == "" || postData.Content == "" || len(postData.Categories) == 0 || len(postData.Categories) > 3 {
+
+	if postData.Title == "" || len(postData.Title) > 70 || postData.Content == "" || len(postData.Content) > 5000 || len(postData.Categories) == 0 || len(postData.Categories) > 3 {
+		http.Redirect(w, r, "/update/post?ID="+postData.Id, http.StatusSeeOther)
 		return
 	}
 

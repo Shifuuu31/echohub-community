@@ -5,7 +5,7 @@ let isLoading = false;
 // Get max ID 
 const GetMaxID = async () => {
     try {
-        const response = await fetch(`${window.location.origin}/max-id`);
+        const response = await fetch(`${window.location.origin}/maxId`);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const maxId = await response.json();
         return maxId;
@@ -34,6 +34,7 @@ const desplayPosts = async (category = "All", append = false) => {
     const url = `${window.location.origin}/post`;
     if (!append) {
         const maxId = await GetMaxID();
+        
         if (maxId == null) {
             console.error("Failed to get maxId");
             return;
@@ -43,7 +44,7 @@ const desplayPosts = async (category = "All", append = false) => {
         posts.innerHTML = '';
     }
     let countPosts = 0
-
+    
     while (countPosts < 10 && DataToFetch.postID > 0) {
         const post = await fetchData(url, DataToFetch);
         if (post) {

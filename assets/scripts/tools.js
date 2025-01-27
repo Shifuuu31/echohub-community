@@ -1,7 +1,6 @@
 export { CheckClick, CheckLength }
 
 const CheckClick = () => {
-    console.log('hoho');
     const categoriesChecked = document.querySelectorAll('input[id^=category]:checked')
     if (categoriesChecked.length == 0) {
         alert(`Select at least one category`)

@@ -17,7 +17,7 @@ const fetchData = async (url, obj) => {
 }
 
 const update = async () => {
-    const url = `${window.location.origin}/postUpdate`;
+    const url = `${window.location.origin}/updatePost`;
 
     let DataToFetch = {
         id: document.getElementsByClassName("wraper")[0].id,
@@ -26,9 +26,6 @@ const update = async () => {
         categories: [],
     };
     document.querySelectorAll("input[id^=category]:checked").forEach(category => { DataToFetch.categories.push(category.name) })
-
-    console.log(typeof DataToFetch.id);
-
     await fetchData(url, DataToFetch)
     window.location.href = "/";
 }
@@ -44,13 +41,8 @@ categories.forEach((category) => {
 
 // eventlistner to button submit
 submitBtn.addEventListener('click', async () => {
-    // console.log(CheckClick() )
-// console.log('hooo');
-
-if (CheckClick() == true) {
-        // console.log('hiiii');
+    if (CheckClick() == true) {
         await update()
-
     }
 });
 

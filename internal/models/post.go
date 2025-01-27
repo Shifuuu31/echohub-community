@@ -63,9 +63,9 @@ func (PostModel *PostModel) GetCategories() (Categories []Category, err error) {
 
 // Get maxID of posts
 func (postModel *PostModel) GetMaxID() (maxID int, err error) {
-	if err = postModel.DB.QueryRow("SELECT p.id	FROM PostTable p ORDER BY id DESC LIMIT 1").Scan(&maxID); err != nil {
+	if err = postModel.DB.QueryRow("SELECT p.id	FROM PostTable p ORDER BY p.id DESC LIMIT 1").Scan(&maxID); err != nil {
 		if err == sql.ErrNoRows {
-			return 0, err
+			return 0, nil
 		}
 		return -1, fmt.Errorf("error scanning max ID: %w", err)
 	}
@@ -84,7 +84,7 @@ func (postModel *PostModel) GetPosts(current int, category string) (posts Post, 
 
 	switch category {
 	case "All":
-		query = `SELECT p.id,u.username,p.title,p.content,p.creation_date
+		query = `SELECT p.id,u.username,p.title,p.post_content,p.creation_date
 		FROM PostTable p
 		JOIN UserTable u ON u.id = p.user_id
 		WHERE p.id = $1;`
@@ -158,7 +158,7 @@ func (PostModel *PostModel) GetCategoriesPost(postId int) (postCategories []stri
 // create post (insert in DB)
 func (PostModel *PostModel) CreatePost(title, content string) (int, error) {
 	var id int
-	err := PostModel.DB.QueryRow("INSERT INTO PostTable (title, user_id, content) VALUES (?, ?, ?) RETURNING id", title, 1, content).Scan(&id)
+	err := PostModel.DB.QueryRow("INSERT INTO PostTable (title, user_id, post_content) VALUES (?, ?, ?) RETURNING id", title, 1, content).Scan(&id)
 	if err != nil {
 		return 0, err
 	}
@@ -167,26 +167,12 @@ func (PostModel *PostModel) CreatePost(title, content string) (int, error) {
 
 // get post by id to update
 func (PostModel *PostModel) UpdatePost(idPost int) (post Post, err error) {
-	err = PostModel.DB.QueryRow("SELECT p.id,p.title,p.content FROM PostTable p WHERE id = $1", idPost).Scan(&post.PostId, &post.PostTitle, &post.PostContent)
+	err = PostModel.DB.QueryRow("SELECT p.id,p.title,p.post_content FROM PostTable p WHERE id = $1", idPost).Scan(&post.PostId, &post.PostTitle, &post.PostContent)
 	if err != nil {
-		return Post{}, err
+		return Post{}, errors.New("no post with this ID : ")
 	}
 
-	rows, err := PostModel.DB.Query("SELECT c.category_name FROM Categories_Posts cp JOIN Categories c ON c.id = cp.category_id WHERE cp.post_id = ?", idPost)
-	if err != nil {
-		return Post{}, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var category string
-		if err := rows.Scan(&category); err != nil {
-			return Post{}, err
-		}
-		post.PostCategories = append(post.PostCategories, category)
-	}
-
-	if err = rows.Err(); err != nil {
+	if post.PostCategories, err = PostModel.GetCategoriesPost(post.PostId); err != nil {
 		return Post{}, err
 	}
 
@@ -195,7 +181,7 @@ func (PostModel *PostModel) UpdatePost(idPost int) (post Post, err error) {
 
 // update post
 func (PostModel *PostModel) EditPost(idPost int, title string, content string, Categories []string) (err error) {
-	_, err = PostModel.DB.Exec("UPDATE PostTable SET title = $1, content = $2 WHERE ID = $3", title, content, idPost)
+	_, err = PostModel.DB.Exec("UPDATE PostTable SET title = $1, post_content = $2 WHERE ID = $3", title, content, idPost)
 	if err != nil {
 		return err
 	}

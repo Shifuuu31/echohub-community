@@ -27,7 +27,7 @@
         <a href="/" class="logo">
             <img src="/assets/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
         </a>
-        <a href="/create-post"><button class="create"><img src="/assets/imgs/create.png"></i>Create
+        <a href="/createPost"><button class="create"><img src="/assets/imgs/create.png"></i>Create
                 Post</button></a>
         <div class="profile-dropdown">
             <div class="profile-picture-container">
@@ -50,7 +50,7 @@
         <ul class="categories">
             {{range .}}
             <li class="category">
-                <input type="checkbox" id="category{{.ID}}" value="{{.CategoryName}}">
+                <input type="checkbox" id="category{{.ID}}" value="{{.CategoryName}}" name="categoryElement">
                 <label for="category{{.ID}}"><img src="{{.CategoryIconPath}}">{{.CategoryName}}</label>
             </li>
             {{end}}
