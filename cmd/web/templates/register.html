@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/assets/styles/nav.global.css">
     <link rel="stylesheet" href="/assets/styles/buttons.global.css">
     <link rel="stylesheet" href="/assets/styles/dropdown.global.css">
+    <link rel="stylesheet" href="/assets/styles/popup.login-register.css">
     <link rel="stylesheet" href="/assets/styles/responsive.global.css">
     <link rel="stylesheet" href="/assets/styles/register-login.css">
     <link rel="stylesheet" href="/assets/styles/responsive-animation.register-login.css">
@@ -59,10 +60,17 @@
             
             <p class="signin">Already have an account? <a href="/login">Sign in</a></p>
         </form>
+        <div id="overlay">
+            <div id="popup">
+                <h2>Welcome!</h2>
+                <p>You almost there!</p>
+                <a  id="gobtn">Try to login ➜</a>
+            </div>
+        </div>
         
         <img src="/assets/imgs/welcome.png">
     </div>
-    <script src="/assets/scripts/register.js"></script>
+    <script src="/assets/scripts/register.js" type="module"></script>
 
 </body>
 

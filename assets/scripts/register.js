@@ -1,7 +1,10 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const loginButton = document.getElementById('registerBtn')
+import { fetchResponse, displayMessages } from "./tools.js"
 
-    loginButton.addEventListener('click', async (event) => {
+
+document.addEventListener('DOMContentLoaded', () => {
+    const registerBtn = document.getElementById('registerBtn')
+
+    registerBtn.addEventListener('click', async (event) => {
         event.preventDefault()
 
         const newUser = {
@@ -10,56 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
             password: document.getElementById('password').value,
             rpassword: document.getElementById('rPassword').value,
         }
-        console.log(newUser.username)
-        console.log(newUser.email)
-        console.log(newUser.password)
-        console.log(newUser.rpassword)
 
         try {
-            const msgs = await fetchResponse(`${window.location.origin}/confirmRegister`, newUser)
-            // console.log(msgs)
-
-            displayMessages(msgs)
+            const msgs = await fetchResponse(`/confirmRegister`, newUser)
+            displayMessages(msgs, '/login', `${newUser.username}, You're Registred Successfully!`)
         } catch (error) {
             console.error('Error fetching response:', error)
         }
     })
 })
 
-const fetchResponse = async (url, obj) => {
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(obj),
-    })
-
-    // console.log(JSON.stringify(obj))
-    
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
-    return response.json()
-}
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-
- const displayMessages =  (messages) => {
-    const errorMsgsDiv = document.getElementById('errorMsgs')
-    errorMsgsDiv.innerHTML = ''
-
-    messages.forEach(async  (msg) => {
-        const paragraph = document.createElement('p')
-        paragraph.textContent = msg
-        paragraph.style.color = 'red'
-        paragraph.style.fontWeight = 600
-        paragraph.style.fontSize = '16px'
-// console.log("msg",msg[0]);
-        errorMsgsDiv.appendChild(paragraph)
-        console.log(msg);
-        console.log('ho');
-        if (msg == 'User Registred successfully!') {
-            console.log('hi');
-            paragraph.style.color = 'green'
-            await sleep(1000)
-            window.location.href = '/login'
-
-        }
-    })
-}
