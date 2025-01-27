@@ -38,13 +38,13 @@ const desplayPosts = async (category = "All", append = false) => {
             console.error("Failed to get maxId");
             return;
         }
-        DataToFetch.PostID = maxId;
-        DataToFetch.Category = category;
+        DataToFetch.postID = maxId;
+        DataToFetch.category = category;
         posts.innerHTML = '';
     }
     let countPosts = 0
 
-    while (countPosts < 10 && DataToFetch.PostID > 0) {
+    while (countPosts < 10 && DataToFetch.postID > 0) {
         const post = await fetchData(url, DataToFetch);
         if (post) {
             countPosts++
@@ -71,7 +71,7 @@ const desplayPosts = async (category = "All", append = false) => {
             </div>`
             posts.append(postData)
         }
-        DataToFetch.PostID--;
+            DataToFetch.postID--;
     }
     if (countPosts === 0 && !append) {
         posts.innerHTML = `<h1 style="text-align: center;">No posts to display.</h1>`
@@ -89,8 +89,8 @@ categories.forEach(category => {
 
 window.addEventListener('scroll', async () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !isLoading) {
-        isLoading = true; 
-        await desplayPosts(DataToFetch.Category, true);
+        isLoading = true;
+        await desplayPosts(DataToFetch.category, true);
     }
 });
 

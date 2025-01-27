@@ -63,18 +63,7 @@ func (PostModel *PostModel) GetCategories() (Categories []Category, err error) {
 
 // Get maxID of posts
 func (postModel *PostModel) GetMaxID() (maxID int, err error) {
-	query := `SELECT p.id
-	FROM PostTable p
-	ORDER BY id DESC
-	LIMIT 1`
-
-	stmt, err := postModel.DB.Prepare(query)
-	if err != nil {
-		return -1, err
-	}
-	defer stmt.Close()
-
-	if err = stmt.QueryRow().Scan(&maxID); err != nil {
+	if err = postModel.DB.QueryRow("SELECT p.id	FROM PostTable p ORDER BY id DESC LIMIT 1").Scan(&maxID); err != nil {
 		if err == sql.ErrNoRows {
 			return 0, err
 		}
@@ -143,7 +132,8 @@ func (postModel *PostModel) GetPosts(current int, category string) (posts Post, 
 
 // get cateogries of post
 func (PostModel *PostModel) GetCategoriesPost(postId int) (postCategories []string, err error) {
-	query := "SELECT c.category_name FROM Categories_Posts cp JOIN Categories c ON cp.category_id = c.id WHERE cp.post_id = ?"
+	query := `SELECT c.category_name FROM Categories_Posts cp
+	JOIN Categories c ON cp.category_id = c.id WHERE cp.post_id = ?`
 	rows, err := PostModel.DB.Query(query, postId)
 	if err != nil {
 		return nil, err
@@ -165,6 +155,7 @@ func (PostModel *PostModel) GetCategoriesPost(postId int) (postCategories []stri
 	return postCategories, nil
 }
 
+// create post (insert in DB)
 func (PostModel *PostModel) CreatePost(title, content string) (int, error) {
 	var id int
 	err := PostModel.DB.QueryRow("INSERT INTO PostTable (title, user_id, content) VALUES (?, ?, ?) RETURNING id", title, 1, content).Scan(&id)
@@ -174,6 +165,60 @@ func (PostModel *PostModel) CreatePost(title, content string) (int, error) {
 	return id, nil
 }
 
+// get post by id to update
+func (PostModel *PostModel) UpdatePost(idPost int) (post Post, err error) {
+	err = PostModel.DB.QueryRow("SELECT p.id,p.title,p.content FROM PostTable p WHERE id = $1", idPost).Scan(&post.PostId, &post.PostTitle, &post.PostContent)
+	if err != nil {
+		return Post{}, err
+	}
+
+	rows, err := PostModel.DB.Query("SELECT c.category_name FROM Categories_Posts cp JOIN Categories c ON c.id = cp.category_id WHERE cp.post_id = ?", idPost)
+	if err != nil {
+		return Post{}, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var category string
+		if err := rows.Scan(&category); err != nil {
+			return Post{}, err
+		}
+		post.PostCategories = append(post.PostCategories, category)
+	}
+
+	if err = rows.Err(); err != nil {
+		return Post{}, err
+	}
+
+	return post, nil
+}
+
+// update post
+func (PostModel *PostModel) EditPost(idPost int, title string, content string, Categories []string) (err error) {
+	_, err = PostModel.DB.Exec("UPDATE PostTable SET title = $1, content = $2 WHERE ID = $3", title, content, idPost)
+	if err != nil {
+		return err
+	}
+
+	_, err = PostModel.DB.Exec("DELETE FROM Categories_Posts WHERE post_id == $1", idPost)
+	if err != nil {
+		return err
+	}
+
+	idsCategoreis, err := PostModel.GetIdsCategories(Categories)
+	if err != nil {
+		return err
+	}
+
+	err = PostModel.AddCategoriesPost(idPost, idsCategoreis)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// get ids of categories
 func (PostModel *PostModel) GetIdsCategories(Categories []string) ([]int, error) {
 	ids := []int{}
 	for i := 0; i < len(Categories); i++ {
@@ -197,7 +242,8 @@ func (PostModel *PostModel) GetIdsCategories(Categories []string) ([]int, error)
 	return ids, nil
 }
 
-func (PostModel *PostModel) AddcategoryPost(post_id int, ids []int) error {
+// add categories for post
+func (PostModel *PostModel) AddCategoriesPost(post_id int, ids []int) error {
 	query := "INSERT INTO Categories_Posts (category_id,post_id) VALUES (?,?)"
 	cmd, err := PostModel.DB.Prepare(query)
 	if err != nil {
@@ -215,86 +261,15 @@ func (PostModel *PostModel) AddcategoryPost(post_id int, ids []int) error {
 	return nil
 }
 
-// func (PostModel *PostModel) DeletePost(idPost int) error {
-// 	_, err := PostModel.DB.Exec("DELETE FROM PostTable WHERE ID = $1", idPost)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	_, err = PostModel.DB.Exec("DELETE FROM Categories_Posts WHERE post_id = $1", idPost)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	return nil
-// }
-
-func (PostModel *PostModel) UpdatePost(idPost int) (string, string, []string, error) {
-	post := Post{}
-
-	err := PostModel.DB.QueryRow("SELECT user_id,title,content FROM PostTable WHERE id = $1", idPost).Scan(&post.PostId, &post.PostTitle, &post.PostContent)
-	if err != nil {
-		return "", "", nil, err
-	}
-
-	rows, err := PostModel.DB.Query("SELECT category_id FROM Categories_Posts WHERE post_id = ?", idPost)
-	if err != nil {
-		return "", "", nil, err
-	}
-	defer rows.Close()
-
-	var Categories []categoryPost
-
-	for rows.Next() {
-		categoryPost := categoryPost{
-			Post_id: idPost,
-		}
-		if err := rows.Scan(&categoryPost.category_id); err != nil {
-			return "", "", nil, err
-		}
-		Categories = append(Categories, categoryPost)
-	}
-
-	if err = rows.Err(); err != nil {
-		return "", "", nil, err
-	}
-
-	categorys, err := PostModel.GetCategories()
-	if err != nil {
-		return "", "", nil, err
-	}
-
-	var selected []string
-
-	for i := 0; i < len(categorys); i++ {
-		for j := 0; j < len(Categories); j++ {
-			if categorys[i].ID == Categories[j].category_id {
-				selected = append(selected, categorys[i].CategoryName)
-			}
-		}
-	}
-
-	return post.PostTitle, post.PostContent, selected, nil
-}
-
-func (PostModel *PostModel) EditPost(idPost int, title string, content string, Categories []string) (err error) {
-	_, err = PostModel.DB.Exec("UPDATE PostTable SET title = $1, content = $2 WHERE ID = $3", title, content, idPost)
+// delete post
+func (PostModel *PostModel) DeletePost(idPost int) error {
+	_, err := PostModel.DB.Exec("DELETE FROM PostTable WHERE ID = $1", idPost)
 	if err != nil {
 		return err
 	}
-
-	_, err = PostModel.DB.Exec("DELETE FROM Categories_Posts WHERE post_id == $1", idPost)
+	_, err = PostModel.DB.Exec("DELETE FROM Categories_Posts WHERE post_id = $1", idPost)
 	if err != nil {
 		return err
 	}
-
-	idsCategoreis, err := PostModel.GetIdsCategories(Categories)
-	if err != nil {
-		return err
-	}
-
-	err = PostModel.AddcategoryPost(idPost, idsCategoreis)
-	if err != nil {
-		return err
-	}
-
 	return nil
 }

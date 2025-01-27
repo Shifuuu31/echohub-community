@@ -24,17 +24,17 @@
 
 <body>
     <nav>
-        <a href="home.html" class="logo">
-            <img src="/static/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
+        <a href="/" class="logo">
+            <img src="assets/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
         </a>
-        <a href="post-create.html"><button class="create"><img src="./imgs/create.png"></i>Create
+        <a href="/createPost"><button class="create"><img src="assets/imgs/create.png"></i>Create
                 Post</button></a>
         <div class="profile-dropdown">
             <div class="profile-picture-container">
-                <img class="profile-picture" src="./imgs/avatar.png" alt="Profile Picture" loading="lazy">
+                <img class="profile-picture" src="assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
             </div>
             <div class="dropdown">
-                <img src="./imgs/avatar.png" alt="Profile Picture">
+                <img src="assets/imgs/avatar.png" alt="Profile Picture">
                 <h2>@unkind<br><span>unkind@mail.com</span></h2>
                 <hr>
                 <div class="dropdown-content">
@@ -46,7 +46,7 @@
             </div>
         </div>
     </nav>
-    <div class="wraper wraper-extra">
+    <div class="wraper wraper-extra" id="{{.Post_info.PostId}}">
         <ul class="categories">
             {{range .Categories}}
             <li class="category">
@@ -56,16 +56,16 @@
             {{end}}
         </ul>
         <div class="post-inputs"><label for="post-title">
-                <input type="text" id="post-title" placeholder="Post Title *" value="{{.Title}}" required>
+                <input type="text" id="post-title" placeholder="Post Title *" value="{{.Post_info.PostTitle}}" required>
             </label>
-            <textarea name="" id="" placeholder="Type Something here...">{{.Content}}</textarea>
-            <button id ="submit" type="submit"><img src="./imgs/send.png">Post</button>
+            <textarea id="content" placeholder="Type Something here...">{{.Post_info.PostContent}}</textarea>
+            <button id="submit" type="submit"><img src="/assets/imgs/send.png">Post</button>
         </div>
     </div>
     <script>
-        const selected = {{.Categories_selected}}
+        const selected = "{{.Post_info.PostCategories}}"
     </script>
-    <script src="assets/scripts/post-update.js"></script>
+    <script src="assets/scripts/post-update.js" type="module"></script>
 </body>
 
 </html>

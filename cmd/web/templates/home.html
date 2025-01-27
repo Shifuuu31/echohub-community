@@ -54,7 +54,7 @@
                 <input type="radio" id="categoryAll" name="categoryElement" value="All" checked>
                 <label for="categoryAll"><img src="/assets/imgs/categories-Icons/all.png">All</label>
             </li>
-            {{range .}}
+            {{range .Categories}}
             <li class="category">
                 <input type="radio" id="category{{.ID}}" name="categoryElement" value="{{.ID}}">
                 <label for="category{{.ID}}"><img src="{{.CategoryIconPath}}">{{.CategoryName}}</label>
@@ -63,6 +63,8 @@
         </ul>
         <div id="posts"></div>
     </div>
+
+    <!-- dorpdown for comment -->
 </body>
 
 <script src="/assets/scripts/fetch-posts.js"></script>

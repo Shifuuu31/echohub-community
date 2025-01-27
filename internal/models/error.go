@@ -8,6 +8,7 @@ import (
 var Template = template.Must(template.ParseGlob("./cmd/web/templates/*.html"))
 
 type Error struct {
+	User       *User
 	StatusCode int
 	Message    string
 	SubMessage string
