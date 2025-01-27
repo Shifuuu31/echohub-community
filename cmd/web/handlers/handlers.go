@@ -196,12 +196,12 @@ func (webForm *WebApp) Creation(w http.ResponseWriter, r *http.Request) {
 func (WebForum *WebApp) Update(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
 	if err != nil {
-		models.Error{
-			User:       &models.User{},
-			StatusCode: http.StatusInternalServerError,
-			Message:    "500 Internal Server Error",
-			SubMessage: "Oops! " + err.Error(),
-		}.RenderError(w)
+		// models.Error{
+		// 	User:       &models.User{},
+		// 	StatusCode: http.StatusInternalServerError,
+		// 	Message:    "500 Internal Server Error",
+		// 	SubMessage: "Oops! " + err.Error(),
+		// }.RenderError(w)
 		http.Error(w, "invalid id", http.StatusInternalServerError)
 		return
 	}
@@ -227,7 +227,7 @@ func (WebForum *WebApp) Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := Template.ExecuteTemplate(w, "post-update.html", data); err != nil {
-		http.Error(w, "Error loading UpdatePage"+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Error loading UpdatePage", http.StatusInternalServerError)
 	}
 }
 
