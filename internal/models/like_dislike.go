@@ -13,7 +13,7 @@ type Interaction struct {
 type TotalLikesDislikes struct {
 	Likes    int  `json:"likes"`
 	Dislikes int  `json:"dislikes"`
-	IsLiked  bool `json:"isLiked"`
+	IsLiked  sql.NullBool `json:"isLiked"` 
 }
 
 type LikesDislikesModel struct {
@@ -78,6 +78,16 @@ func (ldm *LikesDislikesModel) GetTotalLikesDislikes(entityID int, entityType st
     // Count dislikes
     err = ldm.DB.QueryRow(query, entityID, entityType, false).Scan(&total.Dislikes)
     if err != nil {
+        return total, err
+    }
+
+	// Check if user liked/disliked
+	query = `
+        SELECT liked FROM Likes_Dislikes
+        WHERE entity_id = ? AND entity_type = ? AND user_id = ?
+    `
+    err = ldm.DB.QueryRow(query, entityID, entityType, userID).Scan(&total.IsLiked)
+    if err != nil && err != sql.ErrNoRows {
         return total, err
     }
 

@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
     posts.forEach(async (post) => {
       const likeButton = post.querySelector('.like-btn');
+      const dislikeButton = post.querySelector('.dislike-btn');
       const entityId = likeButton.getAttribute('data-entity-id');
       const entityType = likeButton.getAttribute('data-entity-type');
   
@@ -40,10 +41,25 @@ document.addEventListener('DOMContentLoaded', () => {
       const dislikeCountElement = post.querySelector('.dislike-count');
       if (likeCountElement) likeCountElement.textContent = data.likes;
       if (dislikeCountElement) dislikeCountElement.textContent = data.dislikes;
+
+      // Update active class based on isLiked
+      if (data.isLiked.Valid) {
+        if (data.isLiked.Bool) {
+            likeButton.classList.add('active');
+            dislikeButton.classList.remove('active');
+        } else {
+            dislikeButton.classList.add('active');
+            likeButton.classList.remove('active');
+        }
+    } else {
+        likeButton.classList.remove('active');
+        dislikeButton.classList.remove('active');
+    }
     });
   
     comments.forEach(async (comment) => {
       const likeButton = comment.querySelector('.like-btn');
+      const dislikeButton = comment.querySelector('.dislike-btn');
       const entityId = likeButton.getAttribute('data-entity-id');
       const entityType = likeButton.getAttribute('data-entity-type');
   
@@ -53,6 +69,20 @@ document.addEventListener('DOMContentLoaded', () => {
       const dislikeCountElement = comment.querySelector('.dislike-count');
       if (likeCountElement) likeCountElement.textContent = data.likes;
       if (dislikeCountElement) dislikeCountElement.textContent = data.dislikes;
+
+      // Update active class based on isLiked
+      if (data.isLiked.Valid) {
+        if (data.isLiked.Bool) {
+            likeButton.classList.add('active');
+            dislikeButton.classList.remove('active');
+        } else {
+            dislikeButton.classList.add('active');
+            likeButton.classList.remove('active');
+        }
+    } else {
+        likeButton.classList.remove('active');
+        dislikeButton.classList.remove('active');
+    }
     });
   }
   
@@ -88,6 +118,22 @@ async function handleLikeDislike(button, isLike) {
   
         if (likeCountElement) likeCountElement.textContent = data.likes;
         if (dislikeCountElement) dislikeCountElement.textContent = data.dislikes;
+
+        const likeButton = parent.querySelector('.like-btn');
+          const dislikeButton = parent.querySelector('.dislike-btn');
+
+          if (data.isLiked.Valid) {
+              if (data.isLiked.Bool) {
+                  likeButton.classList.add('active');
+                  dislikeButton.classList.remove('active');
+              } else {
+                  dislikeButton.classList.add('active');
+                  likeButton.classList.remove('active');
+              }
+          } else {
+              likeButton.classList.remove('active');
+              dislikeButton.classList.remove('active');
+          }
       });
   
     } catch (error) {

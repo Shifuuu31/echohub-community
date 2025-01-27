@@ -93,7 +93,6 @@
 #popup-comment button img {
     width: 20px;
     height: 20px;
-    filter: invert(50%);
     vertical-align: middle;
 }
 
@@ -163,12 +162,16 @@
     transition: transform 0.2s, filter 0.2s;
 }
 
-.buttons button.active img {
-    filter: invert(58%) sepia(61%) saturate(2878%) hue-rotate(230deg) brightness(102%) contrast(101%);
-}
-
 .buttons button:active {
     transform: scale(1.2);
+}
+
+button.like-btn.active img {
+    filter: invert(23%) sepia(100%) saturate(2000%) hue-rotate(90deg) brightness(1.3) contrast(1.8);
+}
+
+button.dislike-btn.active img {
+    filter: invert(20%) sepia(100%) saturate(1500%) hue-rotate(330deg) brightness(1.3) contrast(1.8);
 }
 
 .user-comment {
