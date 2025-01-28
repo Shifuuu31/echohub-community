@@ -62,7 +62,7 @@ const desplayPosts = async (category = "All", append = false) => {
                 </div>
                 <div class="post-info-3">
                     <div class="links">
-                        ${(post.PostCategories).map(category => `<li>${category}</li>`).join(' ')}
+                        ${(post.PostCategories || []).map(category => `<li>${category}</li>`).join(' ')}
                     </div>
                     <div class="buttons">
                         <button><img src="/assets/imgs/like.png" alt="Like"> ${post.LikeCount}</button>
