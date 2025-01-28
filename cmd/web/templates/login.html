@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <link rel="stylesheet" href="/assets/styles/nav.global.css">
+    <link rel="stylesheet" href="/assets/styles/buttons.global.css">
+    <link rel="stylesheet" href="/assets/styles/dropdown.global.css">
+    <link rel="stylesheet" href="/assets/styles/popup.login-register.css">
+    <link rel="stylesheet" href="/assets/styles/responsive.global.css">
+    <link rel="stylesheet" href="/assets/styles/register-login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <title>echoHub - Login</title>
+
+</head>
+
+<body>
+    <nav>
+        <a href="/" class="logo">
+            <img src="/assets/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
+        </a>
+        <a href="/register"><button class="register"><img src="/assets/imgs/register.png">Register</button></a>
+        <a href="/login"><button class="login">Login</button></a>
+    </nav>
+    <div class="container">
+        <form class="form">
+            <p class="title">We've missed you! </p>
+            <p class="message">Discover the community newest and update. </p>
+            <label>
+                <input class="input" id="username" type="text" placeholder="" required="">
+                <span>Username</span>
+            </label>
+
+            <label>
+                <input class="input" id="password" type="password" placeholder="" required="">
+                <span>Password</span>
+            </label>
+            <label class="remember-me signin">
+                <input type="checkbox" id="remember"> Remember me for 30 days
+            </label>
+            <div id="errorMsgs"></div>
+            <button class="submit" id="loginButton">Login</button>
+            <p class="signin">Don't have an account? <a href="/register">Create One</a> </p>
+        </form>
+        <div id="overlay">
+            <div id="popup">
+                <h2>Welcome!</h2>
+                <p>We're glad you're here. Enjoy exploring the site!</p>
+                <a  id="gobtn">Explore Our Forum ➜</a>
+            </div>
+        </div>
+        <img src="/assets/imgs/welcome.png">
+    </div>
+    <script src="/assets/scripts/login.js" type="module"></script>
+</body>
+
+</html>

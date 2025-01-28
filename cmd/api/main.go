@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -18,18 +17,31 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
 	webForum := handlers.WebApp{
+		Users: &models.UserModel{
+			DB: db,
+		},
+		Sessions: &models.SessionModel{
+			DB: db,
+		},
 		Post: &models.PostModel{
 			DB: db,
 		},
 	}
-	port := os.Args[1]
+	
+	port := ":" + os.Getenv("PORT")
+	if port == ":" {
+		port += "8080"
+	}
+	go webForum.Sessions.CleanupExpiredSessions()
+
 	server := http.Server{
-		Addr:    ":" + port,
-		Handler: webForum.Routes(),
+		Addr:    port,
+		Handler: webForum.Router(),
 	}
 
-	fmt.Println("listening in port : http://localhost:" + port)
+	log.Println("server listening on http://localhost" + port)
 
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatalln(err)

@@ -162,9 +162,9 @@ func (PostModel *PostModel) GetCategoriesPost(postId int) (postCategories []stri
 }
 
 // create post (insert in DB)
-func (PostModel *PostModel) CreatePost(title, content string) (int, error) {
+func (PostModel *PostModel) CreatePost(userId int, title, content string) (int, error) {
 	var id int
-	err := PostModel.DB.QueryRow("INSERT INTO PostTable (title, user_id, content) VALUES (?, ?, ?) RETURNING id", title, 1, content).Scan(&id)
+	err := PostModel.DB.QueryRow("INSERT INTO PostTable (title, user_id, content) VALUES (?, ?, ?) RETURNING id", title, userId, content).Scan(&id)
 	if err != nil {
 		return 0, err
 	}
@@ -254,8 +254,8 @@ func (PostModel *PostModel) AddCategoriesPost(post_id int, ids []int) error {
 }
 
 // delete post
-func (PostModel *PostModel) DeletePost(idPost int) error {
-	_, err := PostModel.DB.Exec("DELETE FROM PostTable WHERE ID = ?", idPost)
+func (PostModel *PostModel) DeletePost(userId, idPost int) error {
+	_, err := PostModel.DB.Exec("DELETE FROM PostTable WHERE id = ? AND user_id = ?", idPost, userId)
 	if err != nil {
 		return err
 	}

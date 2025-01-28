@@ -9,9 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/styles/categories.post-creation.css">
     <link rel="stylesheet" href="/assets/styles/post-input.post-creation.css">
-    <link rel="stylesheet" href="/assets/styles/global.css">
-    <link rel="stylesheet" href="/assets/styles/nav.global.css">
-    <link rel="stylesheet" href="/assets/styles/buttons.global.css">
+    <link rel="stylesheet" href="/assets/styles/general.css">
     <link rel="stylesheet" href="/assets/styles/dropdown.global.css">
     <link rel="stylesheet" href="/assets/styles/responsive.global.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,53 +17,50 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
     <title>echoHub - Post Creation</title>
-
 </head>
 
 <body>
     <nav>
-        <a href="/" class="logo">
+        <a href="/">
             <img src="/assets/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
         </a>
-        <a href="/createPost"><button class="create"><img src="/assets/imgs/create.png"></i>Create
-                Post</button></a>
-        <div class="profile-dropdown">
-            <div class="profile-picture-container">
-                <img class="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
+        <div id="profile-dropdown">
+            <div id="profile-picture-container">
+                <img id="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
             </div>
-            <div class="dropdown">
-                <img src="/assets/imgs/avatar.png" alt="Profile Picture">
-                <h2>@unkind<br><span>unkind@mail.com</span></h2>
+            <div id="dropdown">
+                <img id="inner-profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture">
+				<h2>@{{.User.UserName}}<br><span>{{.User.Email}}</span></h2>
                 <hr>
-                <div class="dropdown-content">
-                    <a href="#">Profile Settings</a>
-                    <a href="#">Dark Mode (coming soon)</a>
+                <div id="dropdown-content">
+                    <a href="/profile-settings"><img src="/assets/imgs/settings.png"> Profile Settings</a>
+                    <a href="#"><img src="/assets/imgs/dark-mode.png"> Dark Mode (coming soon)</a>
+                    <a href="https://tally.so/r/wd80WD"><img src="/assets/imgs/report.png"> Report</a>
                     <hr>
-                    <a href="#">Log Out</a>
+                    <a href="/logout"><img src="/assets/imgs/logout.png"> Log Out</a>
                 </div>
             </div>
         </div>
     </nav>
     <form class="wraper wraper-extra" action="/createPost" method="POST">
-        <ul class="categories">
-            {{range .}}
-            <li class="category">
+        <ul id="categories">
+            {{range .Categories}}
+            <li id="category">
                 <input type="checkbox" id="category{{.ID}}" value="{{.CategoryName}}" name="categoryElement">
                 <label for="category{{.ID}}"><img src="{{.CategoryIconPath}}">{{.CategoryName}}</label>
             </li>
             {{end}}
         </ul>
-        <div class="post-inputs">
+        <div id="post-inputs">
             <label for="post-title">
                 <input name="title" type="text" id="post-title" placeholder="Post Title *" maxlength="70" required>
             </label>
-            <textarea name="content" id="" placeholder="Type Something here..." maxlength="5000" required></textarea>
-            <button id="submit" type="submit"><img
-                    src="/assets/imgs/send.png">Post</button>
+            <textarea name="content" placeholder="Type Something here..." maxlength="5000" required></textarea>
+            <button id="submit" type="submit"><i class="fas fa-paper-plane"></i>&ensp;Post</button>
         </div>
     </form>
     <script src="/assets/scripts/post-creation.js" type="module"></script>
-    
+    <script src="/assets/scripts/dropdown.js"></script>
 </body>
 
 </html>

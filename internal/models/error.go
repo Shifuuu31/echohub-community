@@ -16,13 +16,14 @@ type Error struct {
 
 func (err Error) RenderError(w http.ResponseWriter) {
 	if err := Template.ExecuteTemplate(w, "error.html", err); err != nil {
+		// log.Printf("Error rendering template: %v", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
 	}
 }
 
 func RenderPage(w http.ResponseWriter, name string, obj interface{}) {
 	if err := Template.ExecuteTemplate(w, name, obj); err != nil {
-		Error{StatusCode: http.StatusInternalServerError, Message: "Internal Server Error", SubMessage: "Error loading page"}.RenderError(w)
 		return
 	}
 }
