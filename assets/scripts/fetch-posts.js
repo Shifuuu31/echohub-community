@@ -1,10 +1,10 @@
-export {desplayPosts}
+export { desplayPosts }
 
 const desplayPosts = async (category = "All", append = false) => {
     const posts = document.getElementById("posts")
     let DataToFetch = {}
     // let isLoading = false
- 
+
     const GetMaxID = async () => {
         try {
             const response = await fetch(`${window.location.origin}/maxId`)
@@ -48,29 +48,30 @@ const desplayPosts = async (category = "All", append = false) => {
         if (post) {
             countPosts++
             const postData = document.createElement('div')
+
+
             postData.innerHTML = `
-            <div id="post">
-                <div class="post-info-1">
-                    <img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
-                    <h3>${post.PostUserName}<br><span>${new Date(post.PostTime).toUTCString()}</span></h3>
-                    <button class="create"><a href="/deletePost?ID=${post.PostId}">Delete</a></button>
-                    <button class="create"><a href="/updatePost?ID=${post.PostId}">Update</a></button>
-                </div>
-                <div class="post-info-2">
-                    <h3>${post.PostTitle}</h3>
-                    <pre>${post.PostContent}</pre>
-                </div>
-                <div class="post-info-3">
-                    <div class="links">
-                        ${(post.PostCategories || []).map(category => `<li>${category}</li>`).join(' ')}
+                <div id="post">
+                    <div id="user-post-info"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
+                        <h3>@${post.PostUserName} <br><span>${new Date(post.PostTime).toUTCString()}</span></h3>
+                        <button class="create"><a href="/deletePost?ID=${post.PostId}">Delete</a></button>
+                        <button class="create"><a href="/updatePost?ID=${post.PostId}">Update</a></button>
                     </div>
-                    <div class="buttons">
-                        <button><img src="/assets/imgs/like.png" alt="Like"> ${post.LikeCount}</button>
-                        <button><img src="/assets/imgs/dislike.png" alt="Dislike"> ${post.DislikeCount}</button>
-                        <button id="commentBtn"><img src="/assets/imgs/comment.png" alt="Comment"> ${post.CommentsCount}</button>
+                    <div id="post-body">
+                        <h3>${post.PostTitle}</h3>
+                        <pre>${post.PostContent}</pre>
                     </div>
-                </div>
-            </div>`
+                    <div id="post-categories">
+                        <div id="links">
+                            ${(post.PostCategories || []).map(category => `<li>${category}</li>`).join(' ')}
+                        </div>
+                        <div id="buttons">
+                            <button><img src="/assets/imgs/like.png" alt="Like"> ${post.LikeCount}</button>
+                            <button><img src="/assets/imgs/dislike.png" alt="Dislike"> ${post.DislikeCount}</button>
+                            <button id="commentBtn"><img src="/assets/imgs/comment.png" alt="Comment"> ${post.CommentsCount}</button>
+                        </div>
+                    </div>
+                </div>`
             posts.append(postData)
         }
         DataToFetch.postID--

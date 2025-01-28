@@ -4,31 +4,30 @@
   box-shadow: 0px 0px 5px 0px var(--border-color);
 }
 
-ul.categories {
+ul#categories {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   padding: 10px 0;
-  margin: 0 10px;
 }
 
-li.category {
+li#category {
   list-style: none;
   flex-shrink: 0;
   margin: 5px;
 }
 
-.categories img {
+#categories img {
   width: 16px;
   height: 16px;
   vertical-align: middle;
 }
 
-.category input[type="checkbox"] {
+#category input[type="checkbox"] {
   display: none;
 }
 
-.category input[type="checkbox"] + label {
+#category input[type="checkbox"] + label {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -45,12 +44,12 @@ li.category {
   max-width: 200px;
 }
 
-.category input[type="checkbox"]:checked + label {
+#category input[type="checkbox"]:checked + label {
   color: white;
   background-color: var(--primary-color);
 }
 
-.category input[type="checkbox"]:checked + label img {
+#category input[type="checkbox"]:checked + label img {
   filter: brightness(0) invert(1);
   transition: filter 0s;
 }

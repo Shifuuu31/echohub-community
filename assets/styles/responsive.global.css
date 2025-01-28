@@ -1,92 +1,334 @@
+#logo-small {
+    display: none;
+}
+
 @media (max-width: 900px) {
     .wraper {
         width: 680px;
     }
+
+    #post-inputs input[type="text"],
+    #post-inputs textarea {
+        width: 500px;
+    }
 }
 
 @media (max-width: 768px) {
-    nav h1 {
-        font-size: 42px;
+    nav {
+        justify-content: space-between;
     }
 
-    .logo {
-        padding-left: 25px;
+    #profile-picture-container {
+        margin: 0 20px;
     }
 
-    .login,
-    .register,
-    .create,
-    .profile-picture-container {
+    #logo {
+        flex-grow: 0;
+    }
+
+    #login,
+    #register {
         display: none;
-    }
-
-    .wraper {
-        width: 90%;
     }
 }
 
 @media (max-width: 720px) {
-    nav h1 {
-        font-size: 36px;
-    }
-
     .wraper {
         width: 600px;
+    }
+
+    body #edit {
+        width: 500px;
     }
 }
 
 @media (max-width: 610px) {
-    nav h1 {
-        font-size: 28px;
+    #post {
+        padding: 10px 10px;
+    }
+
+    body #edit {
+        width: 400px;
+    }
+
+    body #input-group label {
+        width: 300px;
+    }
+
+    #category input[type=radio]+label {
+        padding: 5px 12px;
+        font-size: 14px;
+    }
+
+    #post-categories {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #post-categories #links,
+    #post-categories #buttons {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    #post-categories a {
+        font-size: 14px;
+        padding: 5px 12px;
+    }
+
+    #user-comment-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #user-comment-info img {
+        width: 45px;
+        height: 45px;
+    }
+
+    #user-comment-info h3 {
+        font-size: 14px;
+    }
+
+    #user-comment {
+        padding: 0;
+    }
+
+    #comment-field {
+        width: 100%;
+        height: 50px;
+        margin: 15px 0;
+        overflow: hidden;
+        padding-bottom: 40px;
+    }
+
+    #comment-group {
+        flex-direction: column;
+        padding-bottom: 15px;
+    }
+
+    #new-comment {
+        right: 15px;
+        bottom: 25px;
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+
+    #post,
+    .wraper-extra {
+        padding: 20px;
     }
 
     .wraper {
         width: 390px;
     }
+
+    #buttons button,
+    #post-inputs button {
+        margin: 0 15px;
+    }
+
+    #create,
+    #login,
+    #register {
+        font-size: 0;
+        padding: 17px;
+    }
+
+    #create img {
+        margin: 0;
+        width: 20px;
+        height: 20px;
+    }
+
+    #post-inputs input[type="text"],
+    #post-inputs textarea {
+        width: 300px;
+    }
+
+    #category input[type="checkbox"]+label {
+        padding: 5px 15px;
+        font-size: 14px;
+    }
+
+    nav>*:not(#logo-small) {
+        flex-grow: 0;
+    }
+
+    #logo {
+        display: none;
+    }
+
+    #logo-small {
+        display: block;
+        width: 75px;
+        margin-top: 12px;
+    }
+
+    #new-comment {
+        bottom: 46px;
+    }
 }
 
 @media (max-width: 430px) {
-    nav h1 {
-        font-size: 24px;
-    }
 
-    .wraper {
+    .wraper,
+    body #edit {
         width: 280px;
     }
-}
 
-@media (max-width: 360px) {
-    nav h1 {
-        font-size: 20px;
+    #links li {
+        padding: 5px 15px;
+        font-size: 14px;
     }
 
-    .logo {
-        padding-left: 15px;
-    }
-}
-
-@media (max-width: 240px) {
-    nav h1 {
-        font-size: 16px;
+    #buttons button {
+        margin: 0 10px;
     }
 
-    .logo {
-        padding-left: 10px;
+    #post-inputs input[type="text"],
+    #post-inputs textarea {
+        width: 200px;
     }
 
-    .register,
-    .login,
-    .create,
-    .update,
-    .new-comment {
-        width: 80px;
-        height: 30px;
+    #category input[type="checkbox"]+label {
+        padding: 5px 15px;
+        font-size: 14px;
+    }
+
+    #user-info {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    body #user-info img {
+        margin: 0 0 15px 0;
+    }
+
+    body #input-group label {
+        width: 200px;
+    }
+
+    #user-info-and-buttons {
+        flex-direction: column;
+    }
+
+    #user-info-and-buttons img {
+        margin: auto;
+    }
+
+    #user-info-and-buttons {
+        text-align: center;
+    }
+
+    #user-comment-info h3 {
         font-size: 12px;
-        margin: 0 5px;
     }
 
-    .profile-picture-container {
-        width: 40px;
-        height: 40px;
+    #user-comment-info p {
+        text-align: center;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 300px) {
+
+    .wraper,
+    body #edit {
+        width: 200px;
+    }
+
+    body #edit {
+        padding: 15px;
+    }
+
+    #user-post-info img {
+        width: 45px;
+        height: 45px;
+    }
+
+    #user-post-info h3 {
+        font-size: 14px;
+    }
+
+    #post-body h3 {
+        font-size: 14px;
+    }
+
+    #post-body p {
+        font-size: 13px;
+    }
+
+    #links li {
+        padding: 5px 7px;
+        font-size: 11px;
+    }
+
+    #buttons button {
+        font-size: 11px;
+        margin: 0;
+    }
+
+    #post-inputs input[type="text"],
+    #post-inputs textarea {
+        width: 150px;
+    }
+
+    #category input[type="checkbox"]+label {
+        padding: 5px 7px;
+        font-size: 11px;
+    }
+
+    li#category {
+        margin: 2px;
+    }
+
+    #error-code {
+        font-size: 90px;
+    }
+
+    body #input-group label {
+        width: 150px;
+        font-size: 14px;
+    }
+
+    #logo-small {
+        width: 55px;
+        height: 55px;
+    }
+
+    #create {
+        margin-right: 0;
+        padding: 10px;
+    }
+
+    #profile-picture-container {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    #container img {
+        width: 800px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    #container img {
+        display: none;
+    }
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(0.9);
+        opacity: 1;
+    }
+
+    to {
+        transform: scale(1.8);
+        opacity: 0;
     }
 }

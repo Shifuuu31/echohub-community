@@ -2,70 +2,70 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
-		rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-	<link rel="stylesheet" href="/assets/styles/categories.home.css">
-	<link rel="stylesheet" href="/assets/styles/comments.popup.home.css">
-	<link rel="stylesheet" href="/assets/styles/posts.home.css">
-	<link rel="stylesheet" href="/assets/styles/post-skeleton.home.css">
-	<link rel="stylesheet" href="/assets/styles/responsive.home.css">
-	<link rel="stylesheet" href="/assets/styles/global.css">
-	<link rel="stylesheet" href="/assets/styles/nav.global.css">
-	<link rel="stylesheet" href="/assets/styles/buttons.global.css">
-	<link rel="stylesheet" href="/assets/styles/dropdown.global.css">
-	<link rel="stylesheet" href="/assets/styles/responsive.global.css">
-	<title>echoHub - Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="/assets/styles/categories.home.css">
+    <link rel="stylesheet" href="/assets/styles/comments.popup.home.css">
+    <!-- <link rel="stylesheet" href="/assets/styles/posts.home.css"> -->
+    <!-- <link rel="stylesheet" href="/assets/styles/responsive.home.css"> -->
+    <link rel="stylesheet" href="/assets/styles/general.css">
+    <link rel="stylesheet" href="/assets/styles/dropdown.global.css">
+    <link rel="stylesheet" href="/assets/styles/responsive.global.css">
+    <link rel="stylesheet" href="/assets/styles/post-skeleton.home.css">
+
+
+    <title>echoHub - Home</title>
 </head>
 
 <body style="overflow-y: scroll;">
-	<nav>
-		<a href="/" class="logo">
-			<img src="/assets/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
-		</a>
+    <nav>
+        <a href="/">
+            <img id="logo" src="/assets/imgs/logo.png" alt="echoHub-Comunnity Logo">
+        </a>
+        <a href="/">
+            <img id="logo-small" src="/assets/imgs/logo-small.png" alt="echoHub-Comunnity Logo">
+        </a>
 		{{ if eq .User.UserType "authenticated" }}
-		<a href="/createPost"><button class="create"><img src="/assets/imgs/create.png">Create
-				Post</button></a>
-		<div class="profile-dropdown">
-			<div class="profile-picture-container" id="profile-picture-container">
-				<img class="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
-			</div>
-			<div class="dropdown" id="dropdown">
-				<img src="/assets/imgs/avatar.png" alt="Profile Picture">
+        <a href="/createPost"><button id="create"><img src="/assets/imgs/create.png"></i>&nbsp;New
+                Post</button></a>
+        <div id="profile-dropdown">
+            <div id="profile-picture-container">
+                <img id="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
+            </div>
+            <div id="dropdown">
+                <img id="inner-profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture">
 				<h2>@{{.User.UserName}}<br><span>{{.User.Email}}</span></h2>
-				<hr>
-				<div class="dropdown-content">
-					<a href="/profile-settings"><img src="/assets/imgs/settings.png">Profile Settings</a>
-					<a href=""><img src="/assets/imgs/dark-mode.png">Dark Mode (coming soon)</a>
-					<hr>
-					<a href="/logout"><img src="/assets/imgs/logout.png">Log Out</a>
-				</div>
-			</div>
-		</div>
-		{{ else }}
-		<a href="/register"><button class="register"><img src="/assets/imgs/register.png">Register</button></a>
-		<a href="/login"><button class="login">Login</button></a>
-		{{ end }}
-	</nav>
-	<div class="wraper">
-		<ul class="categories">
-            <li class="category">
+                <hr>
+                <div id="dropdown-content">
+                    <a href="/profile-settings"><img src="imgs/settings.png"> Profile Settings</a>
+                    <a href="#"><img src="imgs/dark-mode.png"> Dark Mode (coming soon)</a>
+                    <a href="https://tally.so/r/wd80WD"><img src="imgs/report.png"> Report</a>
+                    <hr>
+                    <a href="/logout"><img src="imgs/logout.png"> Log Out</a>
+                </div>
+            </div>
+        </div>
+		{{else}}
+		<a href="/register"><button id="register"><img src="/assets/imgs/register.png">Register</button></a>
+		<a href="/login"><button id="login">Login</button></a>
+		{{end}}
+    </nav>
+    <div class="wraper">
+		<ul id="categories">
+            <li id="category">
                 <input type="radio" id="categoryAll" name="categoryElement" value="All" checked>
                 <label for="categoryAll"><img src="/assets/imgs/categories-Icons/all.png">All</label>
             </li>
+			<!-- add MyPosts/likedPosts -->
             {{range .Categories}}
-            <li class="category">
+            <li id="category">
                 <input type="radio" id="category{{.ID}}" name="categoryElement" value="{{.ID}}">
                 <label for="category{{.ID}}"><img src="{{.CategoryIconPath}}">{{.CategoryName}}</label>
             </li>
             {{end}}
         </ul>
 		<div id="posts"></div>
-
 		<div id="post-placeholder">
 			<div class="post-info-placeholder-1">
 				<div class="avatar-placeholder"></div>
@@ -92,105 +92,103 @@
 				</div>
 			</div>
 		</div>
-		<div class="popup-background">
-			<div id="popup">
-				<div class="wraper">
-					<div id="post">
-						<div id="popup-comment">
-							<div class="comment-info-1"><img src="/assets/imgs/avatar.png" alt="User Avatar"
-									loading="lazy">
-								<h3>Username <br><span>Time</span></h3>
-							</div>
-							<div><button><i class="close fa-solid fa-xmark"></i></button></div>
-						</div>
-						<div class="post-info-2">
-							<h3>Post Title</h3>
-							<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
-								accusantium quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
-						</div>
-						<div class="post-info-3">
-							<div class="links">
-								<li>Health</li>
-								<li>Fashion</li>
-								<li>Daily</li>
-							</div>
-							<div class="buttons">
-								<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
-								<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
-								<button><img src="/assets/imgs/comment.png" alt="Comment"> 4</button>
-							</div>
-						</div>
-					</div>
-					<p class="seperator">Comments</p>
-					<hr>
-					<div class="comments-section">
-						<div class="comment">
-							<div id="popup-comment">
-								<div class="comment-info-2">
-									<img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
-									<h3>CommenterUsername <br><span>2 hours ago</span></h3>
-								</div>
-								<div class="buttons">
-									<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
-									<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
-								</div>
-							</div>
-							<div class="comment-info-2">
-								<p>This is an example comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-									Quisquam, quos.</p>
-							</div>
-						</div>
-						<div class="comment">
-							<div id="popup-comment">
-								<div class="comment-info-2">
-									<img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
-									<h3>CommenterUsername2 <br><span>2 hours ago</span></h3>
-								</div>
-								<div class="buttons">
-									<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
-									<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
-								</div>
-							</div>
-							<div class="comment-info-2">
-								<p>This is an example comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-									Quisquam, quos.</p>
-							</div>
-						</div>
-						<div class="comment">
-							<div id="popup-comment">
-								<div class="comment-info-2">
-									<img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
-									<h3>CommenterUsername3 <br><span>2 hours ago</span></h3>
-								</div>
-								<div class="buttons">
-									<button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
-									<button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
-								</div>
-							</div>
-							<div class="comment-info-2">
-								<p>This is an example comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-									Quisquam, quos.</p>
-							</div>
-						</div>
-					</div>
-					<hr>
-					{{ if eq .User.UserType "authenticated" }}
-					<div class="user-comment">
-						<div class="comment-info-1"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
-							<h3>Username</h3>
-						</div>
-						<div class="comment-group">
-							<textarea placeholder="Type a comment..." type="text" id="comment-field"></textarea>
+    </div>
+    <div id="popup-background">
+        <div id="popup">
+            <div class="wraper">
+                <!-- ***NOTICE*** -->
+                <!-- this is the post inside the popup  -->
+                <div id="post">
+                    <div id="user-post-info"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
+                        <h3>Username <br><span>Time</span></h3>
+                    </div>
+					<div><button><i class="close fa-solid fa-xmark"></i></button></div>
 
-						</div>
-					</div>
-					{{end}}
-				</div>
-			</div>
-		</div>
-
-		<script src="/assets/scripts/main.js" type="module"></script>
-		<script src="/assets/scripts/dropdown.js"></script>
+                    <div id="post-body">
+                        <h3>Post Title</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolore corporis consequuntur
+                            accusantium
+                            quibusdam debitis? Obcaecati corrupti quasi quae modi. lore</p>
+                    </div>
+                    <div id="post-categories">
+                        <div id="links">
+                            <li>Health</li>
+                            <li>Fashion</li>
+                            <li>Daily</li>
+                        </div>
+                        <div id="buttons">
+                            <button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
+                            <button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
+                            <button><img src="/assets/imgs/comment.png" alt="Comment"> 4</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- end of ***NOTICE***  -->
+                <p id="seperator">Comments</p>
+                <hr>
+                <div id="comments-section">
+                    <div id="comment">
+                        <div id="user-info-and-buttons">
+                            <div id="user-comment-info">
+                                <img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
+                                <h3>CommenterUsername <br><span>2 hours ago</span></h3>
+                            </div>
+                            <div id="buttons">
+                                <button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
+                                <button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
+                            </div>
+                        </div>
+                        <div id="user-comment-info">
+                            <p>This is an example comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                Quisquam, quos.</p>
+                        </div>
+                    </div>
+                    <div id="comment">
+                        <div id="user-info-and-buttons">
+                            <div id="user-comment-info">
+                                <img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
+                                <h3>CommenterUsername2 <br><span>2 hours ago</span></h3>
+                            </div>
+                            <div id="buttons">
+                                <button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
+                                <button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
+                            </div>
+                        </div>
+                        <div id="user-comment-info">
+                            <p>This is an example comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                Quisquam, quos.</p>
+                        </div>
+                    </div>
+                    <div id="comment">
+                        <div id="user-info-and-buttons">
+                            <div id="user-comment-info">
+                                <img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
+                                <h3>CommenterUsername3 <br><span>2 hours ago</span></h3>
+                            </div>
+                            <div id="buttons">
+                                <button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
+                                <button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
+                            </div>
+                        </div>
+                        <div id="user-comment-info">
+                            <p>This is an example comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                Quisquam, quos.</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="user-comment">
+                    <div id="user-comment-info"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
+                        <h3>Username</h3>
+                    </div>
+                    <div id="comment-group">
+                        <textarea placeholder="Type a comment..." type="text" id="comment-field"></textarea>
+                        <button id="new-comment"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/scripts/main.js" type="module"></script>
 </body>
 
 </html>

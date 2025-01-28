@@ -2,11 +2,11 @@ export{Popup}
 
 const Popup = () => {
     const popup = document.getElementById("popup")
-    const popupBackground = document.querySelector(".popup-background")
+    const popupBackground = document.getElementById("popup-background")
     const closeButton = document.querySelector(".close")
 
     const attachEventListeners = () => {
-        const postsBtns = document.querySelectorAll("#commentBtn, .post-info-2")
+        const postsBtns = document.querySelectorAll("#commentBtn, #post-body")
         
         postsBtns.forEach(postBtn => {
             postBtn.removeEventListener("click", openPopup)
