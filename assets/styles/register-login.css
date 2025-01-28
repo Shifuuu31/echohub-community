@@ -100,7 +100,7 @@ p a {
     position: relative;
 }
 
-#form label #input {
+#form label .input {
     width: 100%;
     padding: 20px 5px 5px 20px;
     background-color: white;
@@ -111,7 +111,7 @@ p a {
     outline: none;
 }
 
-#form label #input+span {
+#form label .input+span {
     position: absolute;
     left: 20px;
     top: 5px;
@@ -122,21 +122,21 @@ p a {
     font-weight: 600;
 }
 
-#form label #input:placeholder-shown+span {
+#form label .input:placeholder-shown+span {
     top: 10px;
 }
 
-#form label #input:focus+span {
+#form label .input:focus+span {
     top: 1px;
     color: var(--primary-color);
 }
 
-/* #form label #input:valid+span {
+/* #form label .input:valid+span {
     color: forestgreen;
     font-size: 13px;
 } */
 
-#submit {
+.submit {
     border: none;
     outline: none;
     padding: 10px;
@@ -148,6 +148,6 @@ p a {
     transition: 0.3s;
 }
 
-#submit:hover {
+.submit:hover {
     background-color: var(--hover-color);
 }

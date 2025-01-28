@@ -1,9 +1,10 @@
 import { fetchResponse, displayMessages } from "./tools.js"
 
 document.addEventListener('DOMContentLoaded', () => {
-    const loginButton = document.getElementById('loginButton')
+    const loginBtn = document.getElementById('loginBtn')
 
-    loginButton.addEventListener('click', async (event) => {
+    loginBtn.addEventListener('click', async (event) => {
+        console.log('dsds')
         event.preventDefault()
 
         const credentials = {
