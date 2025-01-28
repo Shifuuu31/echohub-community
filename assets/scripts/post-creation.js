@@ -1,7 +1,5 @@
 import { CheckClick, CheckLength } from "./tools.js";
 
-
-
 const categories = document.querySelectorAll('input[id^=category]')
 const submitBtn = document.getElementById('submit')
 

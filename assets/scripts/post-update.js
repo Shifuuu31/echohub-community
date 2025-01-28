@@ -25,7 +25,9 @@ const update = async () => {
         content: document.getElementById("content").value,
         categories: [],
     };
-    document.querySelectorAll("input[id^=category]:checked").forEach(category => { DataToFetch.categories.push(category.name) })
+
+    
+    document.querySelectorAll("input[id^=category]:checked").forEach(category => { DataToFetch.categories.push(category.value) })
     await fetchData(url, DataToFetch)
     window.location.href = "/";
 }
@@ -34,7 +36,6 @@ const update = async () => {
 categories.forEach((category) => {
     category.addEventListener('change', () => {
         const categoriesChecked = document.querySelectorAll('input[id^=category]:checked')
-        console.log('hihi', categoriesChecked);
         CheckLength(category, categoriesChecked.length)
     })
 });
@@ -46,10 +47,10 @@ submitBtn.addEventListener('click', async () => {
     }
 });
 
+
 // check categories of post
-const selectedCategories = document.querySelectorAll('[id^=category]');
-selectedCategories.forEach(category => {
-    if (selected.includes(category.name)) {
+categories.forEach(category => {
+    if (selected.includes(category.value)) {
         category.setAttribute("checked", "true")
     }
 });

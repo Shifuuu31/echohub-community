@@ -397,16 +397,6 @@ func (webForum *WebApp) CreatePost(w http.ResponseWriter, r *http.Request) {
 		Categories: categories,
 	}
 	models.RenderPage(w, "post-creation.html", CreatePostData)
-
-	// if err := Template.ExecuteTemplate(w, "post-creation.html", Categories); err != nil {
-	// 	models.Error{
-	// 		User:       &models.User{},
-	// 		StatusCode: http.StatusNotFound,
-	// 		Message:    "404 Page Not Found",
-	// 		SubMessage: "Oops! the page you looking for does not exist",
-	// 	}.RenderError(w)
-	// 	return
-	// }
 }
 
 func (webForum *WebApp) Creation(w http.ResponseWriter, r *http.Request) {
@@ -571,18 +561,16 @@ func (webForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
+		User       *models.User
 		Post_info  models.Post
 		Categories []models.Category
 	}{
+		User:       user,
 		Post_info:  post,
 		Categories: Categorys,
 	}
 
 	models.RenderPage(w, "post-update.html", data)
-
-	// if err := Template.ExecuteTemplate(w, "post-update.html", data); err != nil {
-	// 	http.Error(w, "Error loading UpdatePage", http.StatusInternalServerError)
-	// }
 }
 
 type PostUpdate struct {
@@ -619,7 +607,6 @@ func (webForum *WebApp) Updating(w http.ResponseWriter, r *http.Request) {
 }
 
 func (webForum *WebApp) DeletePost(w http.ResponseWriter, r *http.Request) {
-
 	user := &models.User{}
 	var err error
 
