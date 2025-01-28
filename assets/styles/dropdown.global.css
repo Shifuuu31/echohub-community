@@ -41,14 +41,29 @@
     position: absolute;
     top: 100%;
     right: 0;
-    display: none;
+    /* display: none; */
     background-color: #f9f9f9;
     min-width: 200px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     border-radius: 8px;
     overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
 }
+
+/* .dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background-color: #fff;
+    min-width: 240px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    z-index: 1000;
+    border-radius: 12px;
+    transform: translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+} */
 
 #inner-profile-picture {
     width: 80px;
@@ -115,6 +130,8 @@
     filter: brightness(0) invert(1);
 }
 
-#profile-dropdown:hover #dropdown {
-    display: block;
+#dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
