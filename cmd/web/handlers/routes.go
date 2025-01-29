@@ -45,7 +45,10 @@ func (webForum *WebApp) Router() http.Handler {
 	mux.Handle("GET /deletePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.DeletePost)))
 	// mux.HandleFunc("GET /deletePost", webForum.DeletePost)
 
+	//madara dzb
 	mux.HandleFunc("POST /comments", webForum.GetComments)
+	mux.HandleFunc("POST /createComment", webForum.HandleCreateComment)
+
 
 	return mux
 }

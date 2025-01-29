@@ -698,6 +698,52 @@ func (webForum *WebApp) GetComments(w http.ResponseWriter, r *http.Request) {
 	sendJsontoHeader(w, comments)
 }
 
+type CreateComment struct {
+	PostID         string `json:"postid"`
+	UserID         int `json:"userid"`
+	CommentContent string `json:"content"`
+}
+
+func (webForum *WebApp) HandleCreateComment(w http.ResponseWriter, r *http.Request) {
+	var commentData CreateComment
+	err := json.NewDecoder(r.Body).Decode(&commentData)
+	fmt.Println(commentData)
+	if err != nil {
+		fmt.Fprint(w,"HAHHAHAHHAHA")
+		// http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+		return
+	}
+	
+	if r.Method != http.MethodPost {
+		fmt.Fprint(w, "11111")
+		// http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	postID, err := strconv.Atoi(commentData.PostID)
+	userID := commentData.UserID
+	if err != nil {
+		fmt.Fprint(w,"222222")
+		// http.Error(w, "Invalid post ID or user ID", http.StatusBadRequest)
+		return
+	}
+	
+	content := commentData.CommentContent
+	if content == "" {
+		fmt.Fprint(w,"333333")
+		// http.Error(w, "Comment cannot be empty", http.StatusBadRequest)
+		return
+	}
+	commentModel := &models.CommentModel{DB: webForum.Post.DB}
+	err = commentModel.CreateComment(postID, userID, content)
+	if err != nil {
+		fmt.Fprint(w,"444444")
+		// http.Error(w, "Failed to create comment", http.StatusInternalServerError)
+		return
+	}
+	// fmt.Fprintln(w, "comment created")
+	// sendJsontoHeader(w, commentData)
+}
+
 // tools-------------------------------------
 
 func sendJsontoHeader(w http.ResponseWriter, obj interface{}) error {

@@ -7,7 +7,10 @@ const fetchResponse = async (url, obj) => {
         body: JSON.stringify(obj),
     })
 
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+    if (!response.ok) {
+        // console.log('error', response)
+        throw new Error(`HTTP error! status: ${response.status}`)
+    }
     return response.json()
 }
 

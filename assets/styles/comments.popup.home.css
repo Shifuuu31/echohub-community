@@ -188,7 +188,7 @@
     overflow: hidden;
 }
 
-#new-comment {
+.new-comment {
     position: absolute;
     right: 20px;
     bottom: 20px;
@@ -202,12 +202,12 @@
     align-items: center;
 }
 
-#new-comment:hover {
+.new-comment:hover {
     background-color: var(--hover-color);
     transition: 0.3s;
 }
 
-#new-comment:active {
+.new-comment:active {
     transform: translate(0px, 2px);
 }
 
