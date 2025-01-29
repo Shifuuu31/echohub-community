@@ -21,15 +21,11 @@ submitBtn.addEventListener('click', async () => {
 
 
 // check categories of post
-// categories.forEach(category => {
-//     if (selected.includes(category.value)) {
-//         category.setAttribute("checked", "true")
-//     }
-// });
-
-const selectedSet = new Set(selected);
 categories.forEach(category => {
-    if (selectedSet.has(category.value)) {
-        category.setAttribute("checked", "true");
+    if (selected.includes(category.value)) {
+        category.setAttribute("checked", "true")
+        const label = document.querySelector(`label[for="${category.id}"]`);
+        label.style.color = 'white';
+        label.style.backgroundColor = '#8552ff';
     }
 });

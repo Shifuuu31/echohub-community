@@ -44,11 +44,6 @@ li#category {
   max-width: 200px;
 }
 
-#category input[type="checkbox"]:checked + label {
-  color: white;
-  background-color: var(--primary-color);
-}
-
 #category input[type="checkbox"]:checked + label img {
   filter: brightness(0) invert(1);
   transition: filter 0s;
