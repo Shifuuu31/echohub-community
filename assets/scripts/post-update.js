@@ -21,21 +21,15 @@ submitBtn.addEventListener('click', async () => {
 
 
 // check categories of post
-categories.forEach(category => {
-    if (selected.includes(category.value)) {
-        category.setAttribute("checked", "true")
-    }
-});
-// const x = selected.split(' ')
-
-// const selectedSet = new Set(x);
-
 // categories.forEach(category => {
-//     if (selectedSet.has(category.value)) {
-//         category.setAttribute("checked", "true");
+//     if (selected.includes(category.value)) {
+//         category.setAttribute("checked", "true")
 //     }
 // });
 
-// console.log('sel', selected)
-// console.log('x', x)
-// console.log('set', selectedSet)
+const selectedSet = new Set(selected);
+categories.forEach(category => {
+    if (selectedSet.has(category.value)) {
+        category.setAttribute("checked", "true");
+    }
+});

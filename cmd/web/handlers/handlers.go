@@ -571,7 +571,6 @@ func (webForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
 		Post_info:  post,
 		Categories: Categorys,
 	}
-	fmt.Println("",post.PostCategories,)
 
 	models.RenderPage(w, "post-update.html", data)
 }

@@ -60,7 +60,10 @@
         </div>
     </div>
     <script>
-        const selected = "{{.Post_info.PostCategories}}"
+        const selected = []
+        {{range .Post_info.PostCategories}}
+        selected.push("{{.}}")
+        {{end}}
     </script>
     <script src="/assets/scripts/post-update.js" type="module"></script>
     <script src="/assets/scripts/dropdown.js"></script>
