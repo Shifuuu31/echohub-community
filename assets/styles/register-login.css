@@ -121,6 +121,14 @@ p a {
     transition: 0.3s ease;
     font-weight: 600;
 }
+#form label img {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    height: 16px;
+    width: 16px;
+
+}
 
 #form label .input:placeholder-shown+span {
     top: 10px;
