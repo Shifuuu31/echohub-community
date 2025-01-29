@@ -62,7 +62,7 @@ const desplayPosts = async (category = "All", append = false) => {
                     </div>
                     <div id="post-body">
                         <h3>${post.PostTitle}</h3>
-                        <pre>${post.PostContent}</pre>
+                        <pre>${wrapLinks(post.PostContent)}</pre>
                     </div>
                     <div id="post-categories">
                         <div id="links">
@@ -86,4 +86,14 @@ const desplayPosts = async (category = "All", append = false) => {
     }
 
     return true
+}
+
+function wrapLinks(text) {
+    const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
+
+    const wrappedText = text.replace(urlRegex, (url)=> {
+        return `<a href='${url}' target="_blank">${url}</a>`
+    })
+
+    return wrappedText
 }
