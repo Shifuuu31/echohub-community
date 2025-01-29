@@ -7,24 +7,24 @@ const Popup = () => {
 
     const attachEventListeners = () => {
         const postsBtns = document.querySelectorAll("#commentBtn, #post-title")
-        let popupPost = document.querySelector("#popup #post")
-        console.log('popup post', popupPost)
-
+        // console.log('popup post', popupPost)
+        
         postsBtns.forEach(postBtn => {
             postBtn.removeEventListener("click", openPopup)
             postBtn.addEventListener("click", (event) => {
-                let targetedPost = event.target.closest('#post')
-                console.log(targetedPost)
-                popupPost.replaceWith(targetedPost)
-                openPopup()
+                
+                openPopup(event)
             })
         })
     }
-
-    const openPopup = () => {
+    
+    const openPopup = (event) => {
         if (popup && popupBackground) {
             popupBackground.style.display = popup.style.display = "block"
-
+            let popupPost = document.querySelector("#popup #post")
+            const targetedPost = event.target.closest('#post')
+                // console.log(targetedPost)
+                popupPost.replaceWith(targetedPost.cloneNode(true))
         }
     }
 
