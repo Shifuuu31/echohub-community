@@ -301,6 +301,7 @@ type FetchPosts struct {
 	Category string `json:"category"`
 }
 
+// change in handler to fetch 10 posts
 func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 	var postData FetchPosts
 	err := json.NewDecoder(r.Body).Decode(&postData)
@@ -312,22 +313,13 @@ func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	post, err := webForum.Post.GetPosts(postData.Post_id, postData.Category)
-	if err != nil || post.PostId == 0 {
+	posts, err := webForum.Post.GetPosts(postData.Post_id, postData.Category)
+	if err != nil || len(posts) == 0 {
 		fmt.Fprintf(w, "null")
 		return
 	}
 
-	var postsBuffer bytes.Buffer
-	encoder := json.NewEncoder(&postsBuffer)
-	if err := encoder.Encode(post); err != nil {
-		http.Error(w, "Oops! Failed to get posts", http.StatusInternalServerError)
-		return
-	}
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-
-	fmt.Fprintf(w, postsBuffer.String())
+	sendJsontoHeader(w, posts)
 }
 
 func (webForum *WebApp) CreatePost(w http.ResponseWriter, r *http.Request) {
@@ -700,7 +692,7 @@ func (webForum *WebApp) GetComments(w http.ResponseWriter, r *http.Request) {
 
 type CreateComment struct {
 	PostID         string `json:"postid"`
-	UserID         int `json:"userid"`
+	UserID         int    `json:"userid"`
 	CommentContent string `json:"content"`
 }
 
@@ -709,11 +701,11 @@ func (webForum *WebApp) HandleCreateComment(w http.ResponseWriter, r *http.Reque
 	err := json.NewDecoder(r.Body).Decode(&commentData)
 	fmt.Println(commentData)
 	if err != nil {
-		fmt.Fprint(w,"HAHHAHAHHAHA")
+		fmt.Fprint(w, "HAHHAHAHHAHA")
 		// http.Error(w, "Invalid JSON format", http.StatusBadRequest)
 		return
 	}
-	
+
 	if r.Method != http.MethodPost {
 		fmt.Fprint(w, "11111")
 		// http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -722,21 +714,21 @@ func (webForum *WebApp) HandleCreateComment(w http.ResponseWriter, r *http.Reque
 	postID, err := strconv.Atoi(commentData.PostID)
 	userID := commentData.UserID
 	if err != nil {
-		fmt.Fprint(w,"222222")
+		fmt.Fprint(w, "222222")
 		// http.Error(w, "Invalid post ID or user ID", http.StatusBadRequest)
 		return
 	}
-	
+
 	content := commentData.CommentContent
 	if content == "" {
-		fmt.Fprint(w,"333333")
+		fmt.Fprint(w, "333333")
 		// http.Error(w, "Comment cannot be empty", http.StatusBadRequest)
 		return
 	}
 	commentModel := &models.CommentModel{DB: webForum.Post.DB}
 	err = commentModel.CreateComment(postID, userID, content)
 	if err != nil {
-		fmt.Fprint(w,"444444")
+		fmt.Fprint(w, "444444")
 		// http.Error(w, "Failed to create comment", http.StatusInternalServerError)
 		return
 	}

@@ -71,9 +71,9 @@ func (postModel *PostModel) GetMaxID() (maxID int, err error) {
 }
 
 // get posts from DB with cateogry
-func (postModel *PostModel) GetPosts(current int, category string) (posts Post, err error) {
+func (postModel *PostModel) GetPosts(current int, category string) (posts []Post, err error) { // change to fetch 10 posts
 	if current <= 0 {
-		return Post{}, errors.New("no argements")
+		return []Post{}, errors.New("no arguments")
 	}
 	var (
 		query      string
@@ -83,57 +83,63 @@ func (postModel *PostModel) GetPosts(current int, category string) (posts Post, 
 
 	switch category {
 	case "All":
-		query = `
-			SELECT p.id, u.username, p.title, p.content, p.creation_date
-			FROM PostTable p
-			JOIN UserTable u ON u.id = p.user_id
-			WHERE p.id = ?;
-		`
+		query = `SELECT p.id,u.username,p.title,p.content,p.creation_date
+                 FROM PostTable p 
+                 JOIN UserTable u ON u.id = p.user_id
+                 WHERE p.id <= ?
+                 ORDER BY p.id DESC
+                 LIMIT 10;`
 		args = append(args, current)
 	case "MyPosts":
-		query = `
-			SELECT p.id, u.username, p.title, p.content, p.creation_date
-			FROM PostTable p
-			JOIN UserTable u ON u.id = p.user_id
-			WHERE u.id = ?;
-		`
+		query = `SELECT p.id, u.username, p.title, p.content, p.creation_date
+                 FROM PostTable p
+                 JOIN UserTable u ON u.id = p.user_id
+                 WHERE u.id = ?
+                 ORDER BY p.id DESC
+                 LIMIT 10;`
 		args = append(args, current)
 	case "LikedPosts":
 		// Placeholder for "LikedPosts" case
 	default:
 		var err error
 		if categoryID, err = strconv.Atoi(category); err != nil {
-			return Post{}, errors.New("invalid category")
+			return []Post{}, errors.New("invalid category")
 		}
-		query = `
-			SELECT p.id, u.username, p.title, p.content, p.creation_date
-			FROM PostTable p
-			JOIN Categories_Posts cp ON p.id = cp.post_id
-			JOIN UserTable u ON u.id = p.user_id
-			WHERE cp.category_id = ? AND p.id = ?
-			ORDER BY p.id DESC;
-		`
+		query = `SELECT p.id, u.username, p.title, p.content, p.creation_date
+                 FROM PostTable p
+                 JOIN Categories_Posts cp ON p.id = cp.post_id
+                 JOIN UserTable u ON u.id = p.user_id
+                 WHERE cp.category_id = ? AND p.id <= ?
+                 ORDER BY p.id DESC
+                 LIMIT 10;`
 		args = append(args, categoryID, current)
 	}
 
-	stmt, err := postModel.DB.Prepare(query)
+	rows, err := postModel.DB.Query(query, args...)
 	if err != nil {
-		return Post{}, err
+		return []Post{}, err
 	}
-	defer stmt.Close()
+	defer rows.Close()
 
-	post := Post{}
-	err = stmt.QueryRow(args...).Scan(&post.PostId, &post.PostUserName, &post.PostTitle, &post.PostContent, &post.PostTime)
-	if err != nil {
-		return Post{}, nil
+	for rows.Next() {
+		post := Post{}
+		err = rows.Scan(&post.PostId, &post.PostUserName, &post.PostTitle, &post.PostContent, &post.PostTime)
+		if err != nil {
+			return []Post{}, err
+		}
+
+		if post.PostCategories, err = postModel.GetCategoriesPost(post.PostId); err != nil {
+			return []Post{}, err
+		}
+		post.PostTime = post.PostTime.UTC()
+		posts = append(posts, post)
 	}
 
-	if post.PostCategories, err = postModel.GetCategoriesPost(post.PostId); err != nil {
-		return Post{}, err
+	if err = rows.Err(); err != nil {
+		return []Post{}, err
 	}
-	post.PostTime = post.PostTime.UTC()
 
-	return post, nil
+	return posts, nil
 }
 
 // get cateogries of post
