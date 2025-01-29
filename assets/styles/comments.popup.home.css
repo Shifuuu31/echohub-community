@@ -39,13 +39,14 @@
 
 #post-body,
 #user-comment-info {
-    margin-top: 25px;
+    margin-left: 20px;
 }
 
 #post-categories {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 0px 20px;
 }
 
 #post-categories #links {
@@ -123,17 +124,19 @@
     background-color: white;
     justify-content: center;
     flex-direction: column;
+    width: 85%;
     border-radius: 30px;
     box-shadow: 0px 0px 5px 0px var(--border-color);
     background: linear-gradient(to right, var(--hover-color) 7px, transparent 7px) no-repeat left center / 7px 100%;
-    padding: 0px 25px 25px 25px;
-    margin: 25px 0;
+    padding: 25px ;
+    margin: 25px auto;
 }
 
 #user-info-and-buttons {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    /* gap: 400px */
 }
 
 #user-info-and-buttons #comment-info {
