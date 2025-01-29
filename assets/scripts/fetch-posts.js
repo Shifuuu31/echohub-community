@@ -46,29 +46,30 @@ const desplayPosts = async (category = "All", append = false) => {
     while (countPosts < 10 && DataToFetch.postID > 0) {
         const post = await fetchData(url, DataToFetch)
         if (post) {
+            // console.log()
             countPosts++
             const postData = document.createElement('div')
 
 
             postData.innerHTML = `
-                <div id="post">
+                <div id="post" post-id="${post.PostId}">
                     <div id="user-post-info"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
                         <h3>@${post.PostUserName} <br><span>${new Date(post.PostTime).toUTCString()}</span></h3>
                         <div id="dropdown-content" style="margin-left:auto">
-                            <a href="/updatePost?ID=${post.PostId}" target="_blank "><img src="/assets/imgs/update.png" style="border:none; border-radius:0px;"> Update Post</a>
+                            <a href="/updatePost?ID=${post.PostId}"><img src="/assets/imgs/update.png" style="border:none; border-radius:0px;"> Update Post</a>
                             <hr>
                             <a href="/deletePost?ID=${post.PostId}"><img src="/assets/imgs/delete.png" style="border:none; border-radius:0px;"> Delete Post</a>
                         </div>
                     </div>
                     <div id="post-body">
-                        <h3>${post.PostTitle}</h3>
+                        <h3 id="post-title">${post.PostTitle}</h3>
                         <pre>${wrapLinks(post.PostContent)}</pre>
                     </div>
                     <div id="post-categories">
                         <div id="links">
                             ${(post.PostCategories || []).map(category => `<li>${category}</li>`).join(' ')}
                         </div>
-                        <div id="buttons">
+                        <div id="buttons" >
                             <button><img src="/assets/imgs/like.png" alt="Like"> ${post.LikeCount}</button>
                             <button><img src="/assets/imgs/dislike.png" alt="Dislike"> ${post.DislikeCount}</button>
                             <button id="commentBtn"><img src="/assets/imgs/comment.png" alt="Comment"> ${post.CommentsCount}</button>
