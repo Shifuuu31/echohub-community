@@ -671,6 +671,33 @@ func (webForum *WebApp) DeletePost(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
+// madara
+type FetchComments struct {
+	Id string `json:ID`
+}
+
+func (webForum *WebApp) GetComments(w http.ResponseWriter, r *http.Request) {
+	var commentData FetchComments
+	err := json.NewDecoder(r.Body).Decode(&commentData)
+	if err != nil {
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+		return
+	}
+
+	PostId, err := strconv.Atoi(commentData.Id)
+	fmt.Println(PostId)
+	if err != nil {
+		return
+	}
+	commentModel := &models.CommentModel{DB: webForum.Post.DB}
+	comments, err := commentModel.GetComments(PostId)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	sendJsontoHeader(w, comments)
+}
+
 // tools-------------------------------------
 
 func sendJsontoHeader(w http.ResponseWriter, obj interface{}) error {
