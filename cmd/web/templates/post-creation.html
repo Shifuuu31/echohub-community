@@ -42,7 +42,7 @@
             </div>
         </div>
     </nav>
-    <form class="wraper wraper-extra" action="/createPost" method="POST">
+    <div class="wraper wraper-extra" id="">
         <ul id="categories">
             {{range .Categories}}
             <li id="category">
@@ -53,12 +53,12 @@
         </ul>
         <div id="post-inputs">
             <label for="post-title">
-                <input name="title" type="text" id="post-title" placeholder="Post Title *" maxlength="70" required>
+                <input type="text" id="post-title" placeholder="Post Title *" maxlength="70" required>
             </label>
-            <textarea name="content" placeholder="Type Something here..." maxlength="5000" required></textarea>
+            <textarea id="content" placeholder="Type Something here..." maxlength="5000" required></textarea>
             <button id="submit" type="submit"><i class="fas fa-paper-plane"></i>&ensp;Post</button>
         </div>
-    </form>
+    </div>
     <script src="/assets/scripts/post-creation.js" type="module"></script>
     <script src="/assets/scripts/dropdown.js"></script>
 </body>

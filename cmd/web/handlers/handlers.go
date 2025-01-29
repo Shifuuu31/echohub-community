@@ -447,18 +447,20 @@ func (webForum *WebApp) Creation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	user.UserType = userType
-	New := models.Post{
-		PostTitle:   r.FormValue("title"),
-		PostContent: r.FormValue("content"),
-	}
-	categoriesForm := r.Form["categoryElement"]
 
-	if New.PostTitle == "" || len(New.PostTitle) > 70 || New.PostContent == "" || len(New.PostContent) > 5000 || len(categoriesForm) == 0 || len(categoriesForm) > 3 {
+	var postData PostUpdate
+	err = json.NewDecoder(r.Body).Decode(&postData)
+	if err != nil {
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+		return
+	}
+
+	if postData.Title == "" || len(postData.Title) > 70 || postData.Content == "" || len(postData.Content) > 5000 || len(postData.Categories) == 0 || len(postData.Categories) > 3 {
 		http.Redirect(w, r, "/createPost", http.StatusSeeOther)
 		return
 	}
 
-	ids, err := webForum.Post.GetIdsCategories(categoriesForm)
+	ids, err := webForum.Post.GetIdsCategories(postData.Categories)
 	if err != nil {
 		models.Error{
 			User:       &models.User{},
@@ -469,7 +471,7 @@ func (webForum *WebApp) Creation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	idPost, err := webForum.Post.CreatePost(userID, New.PostTitle, New.PostContent)
+	idPost, err := webForum.Post.CreatePost(userID, postData.Title, postData.Content)
 	if err != nil {
 		models.Error{
 			User:       &models.User{},
@@ -569,6 +571,7 @@ func (webForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
 		Post_info:  post,
 		Categories: Categorys,
 	}
+	fmt.Println("",post.PostCategories,)
 
 	models.RenderPage(w, "post-update.html", data)
 }
