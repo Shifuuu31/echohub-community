@@ -5,6 +5,7 @@ const fetchResponse = async (url, obj) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj),
+        // credentials: 'include'
     })
 
     if (!response.ok) {

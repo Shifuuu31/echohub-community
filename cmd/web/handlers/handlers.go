@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -20,16 +21,25 @@ var (
 
 func (webForum *WebApp) AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		userType := "guest"
 		var userID int
+		var userType string = "authenticated"
 
-		sessionToken, err := r.Cookie("userSession")
-		if err == nil {
-			userID, err = webForum.Sessions.ValidateSession(sessionToken.Value)
-			if err == nil {
-				userType = "authenticated"
+		userCookie, err := r.Cookie("userSession")
+		if err != nil || err == http.ErrNoCookie{
+			userType = "guest"
+		}
+		if err != http.ErrNoCookie {
+			userID, sessionErr := webForum.Sessions.ValidateSession(userCookie.Value)
+			if userID == 0 {
+				if sessionErr.Type == "server" {
+					sessionErr.RenderError(w)
+					return
+				}
+				userType = "guest"
 			}
 		}
+
+		w.WriteHeader(http.StatusFound)
 
 		ctx := r.Context()
 		ctx = context.WithValue(ctx, userIDKey, userID)
@@ -668,6 +678,8 @@ type FetchComments struct {
 }
 
 func (webForum *WebApp) GetComments(w http.ResponseWriter, r *http.Request) {
+	// w.Header().Set("Access-Control-Allow-Credentials", "false")
+	log.Println(r.Cookie("userSession"))
 	var commentData FetchComments
 	err := json.NewDecoder(r.Body).Decode(&commentData)
 	if err != nil {

@@ -12,11 +12,12 @@ type Error struct {
 	StatusCode int
 	Message    string
 	SubMessage string
+	Type string
 }
 
 func (err Error) RenderError(w http.ResponseWriter) {
 	if err := Template.ExecuteTemplate(w, "error.html", err); err != nil {
-		// log.Printf("Error rendering template: %v", err)
+		print("hjgcysgycs")
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}

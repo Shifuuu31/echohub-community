@@ -63,37 +63,40 @@ func (session *SessionModel) InsertOrUpdateSession(newSession Session) (newCooki
 	}
 
 	newCookie = http.Cookie{
-		Name:    "userSession",
-		Value:   newSession.Token,
-		Path:    "/",
-		Expires: newSession.ExpirationDate.Add(time.Hour), // accounts for time zone difference
+		Name:     "userSession",
+		Value:    newSession.Token,
+		Path:     "/",
+		HttpOnly: true,
+		Expires:  newSession.ExpirationDate.Add(time.Hour), // accounts for time zone difference
 	}
 
 	return newCookie, nil
 }
 
 // ValidateSession checks if a session token is valid and returns the associated user ID.
-func (session *SessionModel) ValidateSession(sessionToken string) (userID int, err error) {
+func (session *SessionModel) ValidateSession(sessionToken string) (userID int, sessionErr Error) {
 	selectStmt := `
 		SELECT user_id, expiration_date 
 		FROM UserSessions 
 		WHERE session_token = ?`
 
 	var expirationDate time.Time
-
-	err = session.DB.QueryRow(selectStmt, sessionToken).Scan(&userID, &expirationDate)
-	if err != nil {
+	if err := session.DB.QueryRow(selectStmt, sessionToken).Scan(&userID, &expirationDate); err != nil {
 		if err == sql.ErrNoRows {
-			return 0, errors.New("invalid session token")
+			return 0, sessionErr
 		}
-		return 0, err
+		return 0, Error{
+			// User: &User{},
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			Type:       "server",
+		}
 	}
 
 	if time.Now().After(expirationDate) {
-		return 0, errors.New("session expired")
+		return 0, sessionErr
 	}
-
-	return userID, nil
+	return userID, sessionErr
 }
 
 // DeleteSession removes a session based on its token.
@@ -135,9 +138,6 @@ func (session *SessionModel) deleteExpiredSessions() error {
 	log.Printf("Cleanup: Deleted %d expired session(s).", rowsAffected)
 	return nil
 }
-
-
-
 
 // CleanupExpiredSessions periodically cleans up expired sessions from the database.
 // This runs in an infinite loop with a 30-second delay between each execution.
