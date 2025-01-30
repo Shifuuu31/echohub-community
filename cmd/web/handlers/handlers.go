@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -733,20 +732,20 @@ func (webForum *WebApp) HandleCreateComment(w http.ResponseWriter, r *http.Reque
 		return
 	}
 	// fmt.Fprintln(w, "comment created")
-	// sendJsontoHeader(w, commentData)
+	sendJsontoHeader(w, "{}")
 }
 
 // tools-------------------------------------
 
 func sendJsontoHeader(w http.ResponseWriter, obj interface{}) error {
-	fmt.Println("OBJ:\x1b[1;31m", obj, "\x1b[1;39m")
+	// fmt.Println("OBJ:\x1b[1;31m", obj, "\x1b[1;39m")
 	w.Header().Set("Content-Type", "application/json")
-	var jsonData bytes.Buffer
-	encoder := json.NewEncoder(&jsonData)
+	// var jsonData bytes.Buffer
+	encoder := json.NewEncoder(w)
 	if err := encoder.Encode(obj); err != nil {
 		return errors.New("failed to encode object: " + err.Error())
 	}
-	fmt.Fprintf(w, jsonData.String())
+	// fmt.Fprintf(w, jsonData.String())
 
 	return nil
 }

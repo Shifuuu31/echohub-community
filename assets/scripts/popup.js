@@ -35,11 +35,13 @@ const Popup = () => {
             // console.log(newCmntBtn)
 
             newCmntBtn.addEventListener('click', async()=>{
+                const cmntTxt = document.getElementById('comment-field')
                 const newCmnt = {
                     postid: postid,
                     userid: 1, // to be handled
-                    content : document.getElementById('comment-field').value, 
+                    content : cmntTxt.value, 
                 }
+                cmntTxt.value = ''
                 // console.log('hre=>>>>',newCmnt)
                 // console.log(typeof newCmnt.postid)
                 await createComment(newCmnt)
@@ -52,11 +54,12 @@ const Popup = () => {
       };
 
       const createComment = async (newCmnt) => {
-          console.log(newCmnt)
-        const msg= await fetchResponse('/createComment', newCmnt)
-        console.log(msg)
+        //   console.log(newCmnt)
+          console.log(newCmnt.postid);
+        await fetchResponse('/createComment', newCmnt)
+        // console.log(msg)
         // comment created
-        await displaycomment(newCmnt.postId)
+        await displaycomment(newCmnt.postid)
       }
    
 
@@ -78,6 +81,7 @@ const Popup = () => {
 const displaycomment = async (postid) => {
     commentSex.innerHTML=''
     const obj = { ID: postid };
+    console.log(obj);
     const cmnts = await fetchResponse(`/comments`, obj);
     for (let cmnt of cmnts) {
       let comment = document.createElement("div");
