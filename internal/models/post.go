@@ -3,7 +3,6 @@ package models
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -69,14 +68,20 @@ func (PostModel *PostModel) GetCategories() (Categories []Category, catsErr Erro
 }
 
 // Get maxID of posts
-func (postModel *PostModel) GetMaxID() (maxID int, err error) {
-	if err = postModel.DB.QueryRow("SELECT p.id	FROM PostTable p ORDER BY p.id DESC LIMIT 1").Scan(&maxID); err != nil {
+func (postModel *PostModel) GetMaxId() (maxID int, maxIdError Error) {
+	if err := postModel.DB.QueryRow("SELECT p.id FROM PostTable p ORDER BY p.id DESC LIMIT 1").Scan(&maxID); err != nil {
 		if err == sql.ErrNoRows {
-			return 0, nil
+			return 0, Error{
+				StatusCode: http.StatusNoContent,
+				Message: "no maxId",
+			}
 		}
-		return -1, fmt.Errorf("error scanning max ID: %w", err)
+		return -1, Error{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+		}
 	}
-	return maxID, nil
+	return maxID, maxIdError
 }
 
 // get posts from DB with cateogry

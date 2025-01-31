@@ -5,24 +5,33 @@ const desplayPosts = async (category = "All", append = false) => {
     const posts = document.getElementById("posts")
     let DataToFetch = {}
 
-    const GetMaxID = async () => {
-        try {
-            const response = await fetch(`${window.location.origin}/maxId`)
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
-            const maxId = await response.json()
-            return maxId
-        } catch (err) {
-            console.error("Error fetching maxId:", err)
-        }
-    }
-
     if (!append) {
-        const maxId = await GetMaxID()
-        if (maxId == null) {
+        try {
+            const response = await fetchResponse(`/confirmLogin`, credentials)
+
+            if (response.status === 401) {
+                console.log("Unauthorized: Invalid credentials.")
+
+            } else if (response.status === 200) {
+                console.log("Login successful" )
+            } else {
+                console.log("Unexpected response:", response.body)
+            }
+            displayMessages(response.body.messages, "/",  `Hello, ${credentials.username.charAt(0).toUpperCase()+ credentials.username.slice(1) }!`)
+    
+        } catch (error) {
+            console.error('Error during login process:', error)
+        }
+
+
+        const maxId = await fetchResponse("/maxId")
+        console.log(maxId);
+        
+        if (maxId.status != 200) {
             console.error("Failed to get maxId")
             return false
         }
-        DataToFetch.postID = maxId
+        DataToFetch.postID = maxId.body
         DataToFetch.category = category
         posts.innerHTML = ''
     }

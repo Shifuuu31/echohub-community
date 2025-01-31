@@ -1,6 +1,6 @@
 export { fetchResponse, displayMessages, CheckClick, CheckLength }
 
-const fetchResponse = async (url, obj) => {
+const fetchResponse = async (url, obj = {}) => {
     try {
         const response = await fetch(url, {
             method: 'POST',

@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"forum/internal/models"
@@ -188,58 +189,43 @@ func (webForum *WebApp) UserRegister(w http.ResponseWriter, r *http.Request) {
 	// fmt.Println("error", errors)
 }
 
-// func (webForum *WebApp) GetMaxID(w http.ResponseWriter, r *http.Request) {
-// 	maxID, err := webForum.Post.GetMaxID()
-// 	if err != nil {
-// 		models.Error{
-// 			User:       &models.User{},
-// 			StatusCode: http.StatusInternalServerError,
-// 			Message:    "500 Internal Server Error",
-// 			SubMessage: "Oops! Failed to fetch the maximum ID at the moment.",
-// 		}.RenderError(w)
-// 		return
-// 	}
+func (webForum *WebApp) MaxID(w http.ResponseWriter, r *http.Request) {
+	maxID, maxIdErr := webForum.Post.GetMaxId()
+	if maxIdErr.Type != "" {
+		if err := encodeJsonData(w, maxIdErr.StatusCode, maxIdErr); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
+		return
+	}
+	
+	if err := encodeJsonData(w, http.StatusOK, maxID); err != nil {
+		http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+	}
+}
 
-// 	w.Header().Set("Content-Type", "application/json")
-// 	w.WriteHeader(http.StatusOK)
+func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
+	FetchPostsData := struct {
+		StartId  int    `json:"postID"`
+		Category string `json:"category"`
+	}{}
+	decodeErr := decodeJsonData(r, &FetchPostsData)
+	if decodeErr != nil {
+		http.Error(w, "failed to decode object.", http.StatusInternalServerError)
+		return
+	}
 
-// 	// encodeJsonData(w, maxID)
-// 	if err := json.NewEncoder(w).Encode(maxID); err != nil { // to be replaced look on top
-// 		models.Error{
-// 			User:       &models.User{},
-// 			StatusCode: http.StatusInternalServerError,
-// 			Message:    "500 Internal Server Error",
-// 			SubMessage: "Oops! Failed to fetch the maximum ID at the moment.",
-// 		}.RenderError(w)
-// 		return
-// 	}
-// }
+	if FetchPostsData.Category == "" {
+		return
+	}
 
-// type FetchPosts struct {
-// 	Post_id  int    `json:"postID"`
-// 	Category string `json:"category"`
-// }
+	posts, err := webForum.Post.GetPosts(FetchPostsData.StartId, FetchPostsData.Category)
+	if err != nil || len(posts) == 0 {
+		fmt.Fprintf(w, "null")
+		return
+	}
 
-// // change in handler to fetch 10 posts
-// func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
-// 	var postData FetchPosts
-// 	err := json.NewDecoder(r.Body).Decode(&postData)
-// 	if err != nil {
-// 		http.Error(w, "Oops! Failed to get posts", http.StatusInternalServerError)
-// 		return
-// 	}
-// 	if postData.Category == "" {
-// 		return
-// 	}
-
-// 	posts, err := webForum.Post.GetPosts(postData.Post_id, postData.Category)
-// 	if err != nil || len(posts) == 0 {
-// 		fmt.Fprintf(w, "null")
-// 		return
-// 	}
-
-// 	encodeJsonData(w, posts)
-// }
+	encodeJsonData(w, http.StatusOK, posts)
+}
 
 // func (webForum *WebApp) CreatePost(w http.ResponseWriter, r *http.Request) {
 // 	user := &models.User{}
