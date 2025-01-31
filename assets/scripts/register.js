@@ -37,11 +37,28 @@ document.addEventListener('DOMContentLoaded', () => {
             rpassword: rPasswordInput.value,
         }
 
+        // try {
+        //     const msgs = await fetchResponse(`/confirmRegister`, newUser)
+        //     displayMessages(msgs, )
+        // } catch (error) {
+        //     console.error('Error fetching response:', error)
+        // }
+
         try {
-            const msgs = await fetchResponse(`/confirmRegister`, newUser)
-            displayMessages(msgs, '/login', `${newUser.username}, You're Registred Successfully!`)
+            const response = await fetchResponse(`/confirmRegister`, newUser)
+            console.log(response)
+            if (response.status === 400) {
+                console.log("Bad request: Invalid info Or Missing field.")
+
+            } else if (response.status === 200) {
+                console.log("Login successful" )
+            } else {
+                console.log("Unexpected response:", response.body)
+            }
+            displayMessages(response.body.messages,'/login', `${newUser.username.charAt(0).toUpperCase()+ newUser.username.slice(1)}, You're Registred Successfully!`)
+    
         } catch (error) {
-            console.error('Error fetching response:', error)
+            console.error('Error during login process:', error)
         }
     })
 })

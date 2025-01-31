@@ -24,7 +24,7 @@ func (webForum *WebApp) Router() http.Handler {
 
 	// // Registration routes
 	mux.Handle("GET /register", webForum.AuthMiddleware(http.HandlerFunc(webForum.RegisterPage)))
-	// mux.HandleFunc("POST /confirmRegister", webForum.UserRegister)
+	mux.HandleFunc("POST /confirmRegister", webForum.UserRegister)
 
 	// // Login routes
 	mux.Handle("GET /login", webForum.AuthMiddleware(http.HandlerFunc(webForum.LoginPage)))
