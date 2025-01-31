@@ -1,3 +1,6 @@
+-- enable foreign_keys
+PRAGMA foreign_keys = ON;
+
 CREATE TABLE IF NOT EXISTS UserTable (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username VARCHAR(20) UNIQUE NOT NULL,
