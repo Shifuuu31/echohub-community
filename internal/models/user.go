@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"net/http"
 	"strings"
 	"time"
 
@@ -25,19 +26,54 @@ type UserModel struct {
 	DB *sql.DB
 }
 
+type contextKey string
+
+var (
+	UserIDKey   contextKey = "UserID"
+	UserTypeKey contextKey = "UserType"
+)
+
+func (user *UserModel) RetrieveUser( r *http.Request) (*User, Error){
+	var foundUser User
+	var err error
+	userErr := Error{
+		StatusCode: http.StatusInternalServerError,
+		Message:    "Internal Server Error",
+		SubMessage: "Unable to retrieve user information.",
+		Type: "server",
+	}
+	// fmt.Println("[",Error{}.Type,"]")
+
+	userID, ok := r.Context().Value(UserIDKey).(int)
+	if !ok {
+		return &User{}, userErr
+	}
+	userType, ok := r.Context().Value(UserTypeKey).(string)
+	if !ok {
+		return &User{}, userErr
+		
+	}
+	if userID == 0 {
+		return &foundUser, Error{}
+	}
+	foundUser, err = user.FindUserByID(userID)
+	if err != nil {
+		return &User{}, userErr
+		
+	}
+	foundUser.UserType = userType
+	return &foundUser, Error{}
+}
+
 // FindUserByID retrieves a user by their ID from the database.
-func (user *UserModel) FindUserByID(userID int) (*User, error) {
-	foundUser := &User{}
+func (user *UserModel) FindUserByID(userID int) (foundUser User, err error) {
+	// foundUser := &User{}
 
 	selectStmt := `SELECT id, username, email FROM UserTable WHERE id = ?`
-	err := user.DB.QueryRow(selectStmt, userID).Scan(&foundUser.ID, &foundUser.UserName, &foundUser.Email)
+	err = user.DB.QueryRow(selectStmt, userID).Scan(&foundUser.ID, &foundUser.UserName, &foundUser.Email)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, errors.New("user not found")
-		}
-		return nil, err
+		return foundUser, err
 	}
-	fmt.Println("foundUser:", foundUser)
 
 	return foundUser, nil
 }
@@ -53,7 +89,9 @@ func (user *UserModel) ValidateUserCredentials(username, password string) (UserI
 	}
 
 	hashedPassword := ""
-	selectStmt := `SELECT id, hashed_password FROM UserTable WHERE username = ?`
+	selectStmt := `	SELECT id, hashed_password
+					FROM UserTable WHERE username = ?`
+
 	userErr := user.DB.QueryRow(selectStmt, username).Scan(&UserID, &hashedPassword)
 	if UserID < 1 || userErr != nil {
 		errors = append(errors, "User not found.")
@@ -64,9 +102,11 @@ func (user *UserModel) ValidateUserCredentials(username, password string) (UserI
 			errors = append(errors, "Invalid password.")
 		}
 	}
+
 	if len(errors) != 0 {
 		return -1, errors
 	}
+	
 	return UserID, errors
 }
 
@@ -81,22 +121,32 @@ func (user *UserModel) InsertUser(newUser User) (err error) {
 	return nil
 }
 
+type NewUserInfo struct {
+	UserName     string `json:"username"`
+	Email        string `json:"email"`
+	Password     string `json:"password"`
+	RepeatedPass string `json:"rPassword"`
+}
+type Response struct {
+	Messages []string `json:"messages"`
+}
+
 // ValidateNewUser validates new user details and creates a User struct if valid.
-func (user *UserModel) ValidateNewUser(username, email, password, repeatedPassword string) (newUser User, errors []string) {
+func (user *UserModel) ValidateNewUser(new NewUserInfo) (newUser User, errors Response) {
 	var err error
-	if newUser.UserName, err = user.usernameCheck(username); err != nil {
-		errors = append(errors, err.Error())
+	if newUser.UserName, err = user.usernameCheck(new.UserName); err != nil {
+		errors.Messages = append(errors.Messages, err.Error())
 	}
-	if newUser.Email, err = user.emailCheck(email); err != nil {
-		errors = append(errors, err.Error())
+	if newUser.Email, err = user.emailCheck(new.Email); err != nil {
+		errors.Messages = append(errors.Messages, err.Error())
 	}
 
-	if password, err = passwordCheck(password, repeatedPassword); err != nil {
-		errors = append(errors, err.Error())
+	if new.Password, err = passwordCheck(new.Password, new.RepeatedPass); err != nil {
+		errors.Messages = append(errors.Messages, err.Error())
 	}
-	hash, err := bcrypt.GenerateFromPassword([]byte(password), 12)
+	hash, err := bcrypt.GenerateFromPassword([]byte(new.Password), 12)
 	if err != nil {
-		errors = append(errors, err.Error())
+		errors.Messages = append(errors.Messages, err.Error())
 	}
 	newUser.HashedPassword = string(hash)
 

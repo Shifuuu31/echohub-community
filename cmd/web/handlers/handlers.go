@@ -3,118 +3,57 @@ package handlers
 import (
 	"context"
 	"encoding/json"
-	"errors"
-	"fmt"
-	"log"
 	"net/http"
-	"strconv"
 
 	"forum/internal/models"
-)
-
-type contextKey string
-
-var (
-	userIDKey   contextKey = "UserID"
-	userTypeKey contextKey = "UserType"
 )
 
 func (webForum *WebApp) AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var userID int
-		var userType string = "authenticated"
+		var userType string
+		var sessionErr models.Error
+		ctx := r.Context()
 
 		userCookie, err := r.Cookie("userSession")
-		if err != nil || err == http.ErrNoCookie{
+		if err != nil {
 			userType = "guest"
-		}
-		if err != http.ErrNoCookie {
-			userID, sessionErr := webForum.Sessions.ValidateSession(userCookie.Value)
-			if userID == 0 {
-				if sessionErr.Type == "server" {
-					sessionErr.RenderError(w)
-					return
-				}
-				userType = "guest"
+		} else {
+			userID, sessionErr = webForum.Sessions.ValidateSession(userCookie.Value)
+			if sessionErr.Type == "server" {
+				sessionErr.RenderError(w)
+				return
+			}
+			if userID > 0 {
+				userType = "authenticated"
 			}
 		}
-
-		w.WriteHeader(http.StatusFound)
-
-		ctx := r.Context()
-		ctx = context.WithValue(ctx, userIDKey, userID)
-		ctx = context.WithValue(ctx, userTypeKey, userType)
-
+		ctx = context.WithValue(ctx, models.UserIDKey, userID)
+		ctx = context.WithValue(ctx, models.UserTypeKey, userType)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
 
 func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
-	user := &models.User{}
-	var err error
-
-	userID, ok := r.Context().Value(userIDKey).(int)
-	if !ok {
-		models.Error{
-			User:       user,
-			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
-			SubMessage: "Unable to retrieve user information.",
-		}.RenderError(w)
+	user, userErr := webForum.Users.RetrieveUser(r)
+	if userErr.Type == "server" {
+		userErr.RenderError(w)
 		return
 	}
 
-	if userID != 0 {
-		user, err = webForum.Users.FindUserByID(userID)
-		if err != nil {
-			if err.Error() == "user not found" {
-				user = &models.User{
-					UserType: "guest",
-				}
-			} else {
-				models.Error{
-					User:       user,
-					StatusCode: http.StatusInternalServerError,
-					Message:    "Internal Server Error",
-					SubMessage: err.Error(),
-				}.RenderError(w)
-				return
-			}
-		}
-	} else {
-		user = &models.User{
-			UserType: "guest",
-		}
-	}
-	userType, ok := r.Context().Value(userTypeKey).(string)
-	if !ok {
-		models.Error{
-			User:       user,
-			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
-			SubMessage: "Unable to retrieve user type.",
-		}.RenderError(w)
-		return
-	}
-	user.UserType = userType
 	if r.URL.Path != "/" {
-		err := models.Error{
+		models.Error{
 			User:       user,
 			StatusCode: http.StatusNotFound,
 			Message:    "404 Page Not Found",
 			SubMessage: "Oops! The page you are looking for does not exist",
-		}
-		err.RenderError(w)
+		}.RenderError(w)
 		return
 	}
-	categories, err := webForum.Post.GetCategories()
-	if err != nil {
-		models.Error{
-			User:       &models.User{},
-			StatusCode: http.StatusInternalServerError,
-			Message:    "500 Internal Server Error",
-			SubMessage: "Oops! Cannot retrieve categories at the moment",
-		}.RenderError(w)
+
+	categories, catsErr := webForum.Post.GetCategories()
+	if catsErr.Type == "server" {
+		catsErr.RenderError(w)
 		return
 	}
 
@@ -130,93 +69,63 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 }
 
 func (webForum *WebApp) LoginPage(w http.ResponseWriter, r *http.Request) {
-	user := &models.User{}
-	var err error
-
-	userID, ok := r.Context().Value(userIDKey).(int)
-	if !ok {
-		models.Error{
-			User:       user,
-			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
-			SubMessage: "Unable to retrieve user information.",
-		}.RenderError(w)
+	user, userErr := webForum.Users.RetrieveUser(r)
+	if userErr.Type == "server" {
+		userErr.RenderError(w)
 		return
 	}
 
-	if userID != 0 {
-		user, err = webForum.Users.FindUserByID(userID)
-		if err != nil {
-			if err.Error() == "user not found" {
-				user = &models.User{
-					UserType: "guest",
-				}
-			} else {
-				models.Error{
-					User:       user,
-					StatusCode: http.StatusInternalServerError,
-					Message:    "Internal Server Error",
-					SubMessage: err.Error(),
-				}.RenderError(w)
-				return
-			}
-		}
-	} else {
-		user = &models.User{
-			UserType: "guest",
-		}
-	}
-	userType, ok := r.Context().Value(userTypeKey).(string)
-	if !ok {
-		models.Error{
-			User:       user,
-			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
-			SubMessage: "Unable to retrieve user type.",
-		}.RenderError(w)
-		return
-	}
-	if userType == "authenticated" {
+	if user.UserType == "authenticated" {
 		http.Redirect(w, r, "/", http.StatusFound)
 	}
+
 	models.RenderPage(w, "login.html", nil)
 }
 
-type UserCredentials struct {
-	UserName   string `json:"username"`
-	Password   string `json:"password"`
-	RememberMe bool   `json:"rememberMe"`
-}
-
 func (webForum *WebApp) ConfirmLogin(w http.ResponseWriter, r *http.Request) {
-	var credentials UserCredentials
-	w.Header().Set("Content-Type", "application/json")
-
-	err := json.NewDecoder(r.Body).Decode(&credentials)
-	if err != nil {
-		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+	credentials := struct {
+		UserName   string `json:"username"`
+		Password   string `json:"password"`
+		RememberMe bool   `json:"rememberMe"`
+	}{}
+	decodeErr := decodeJsonData(r, &credentials)
+	if decodeErr != nil {
+		http.Error(w, "failed to decode object.", http.StatusInternalServerError)
 		return
 	}
 
-	userID, errors := webForum.Users.ValidateUserCredentials(credentials.UserName, credentials.Password)
-	fmt.Println(userID)
+	var userID int
+	response := models.Response{}
+	userID, response.Messages = webForum.Users.ValidateUserCredentials(credentials.UserName, credentials.Password)
 	if userID > 0 {
-		newSession, err := webForum.Sessions.GenerateNewSession(userID, credentials.RememberMe)
-		if err != nil {
-			http.Error(w, "Internal Server Error1", http.StatusInternalServerError)
+		newSession, newSessionErr := webForum.Sessions.GenerateNewSession(userID, credentials.RememberMe)
+		if newSessionErr.Type == "server" {
+			if err := encodeJsonData(w, http.StatusInternalServerError, newSessionErr); err != nil {
+				http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+			}
 			return
 		}
 
-		newCookie, err := webForum.Sessions.InsertOrUpdateSession(newSession)
-		if err != nil {
-			http.Error(w, "Internal Server Error2", http.StatusInternalServerError)
+		newCookie, newSessionErr := webForum.Sessions.InsertOrUpdateSession(newSession)
+		if newSessionErr.Type == "server" {
+			if err := encodeJsonData(w, http.StatusInternalServerError, newSessionErr); err != nil {
+				http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+			}
 			return
 		}
 		http.SetCookie(w, &newCookie)
 
-		sendJsontoHeader(w, []string{"Login successful!"})
+		response.Messages = append(response.Messages, "Login successful!")
+		if err := encodeJsonData(w, http.StatusOK, response); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
+
+		// fmt.Println("ok",response)
 	} else {
-		sendJsontoHeader(w, errors)
+		if err := encodeJsonData(w, http.StatusUnauthorized, response); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
+		// fmt.Println("unautorized",response)
 	}
 }
 
@@ -227,13 +136,9 @@ func (webForum *WebApp) UserLogout(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = webForum.Sessions.DeleteSession(sessionCookie.Value)
-	if err != nil {
-		models.Error{
-			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
-			SubMessage: "Failed to delete session",
-		}.RenderError(w)
+	delSessionErr := webForum.Sessions.DeleteSession(sessionCookie.Value)
+	if delSessionErr.Type == "server" {
+		delSessionErr.RenderError(w)
 		return
 	}
 
@@ -248,516 +153,524 @@ func (webForum *WebApp) UserLogout(w http.ResponseWriter, r *http.Request) {
 }
 
 func (webForum *WebApp) RegisterPage(w http.ResponseWriter, r *http.Request) {
+	user, userErr := webForum.Users.RetrieveUser(r)
+	if userErr.Type == "server" {
+		userErr.RenderError(w)
+		return
+	}
+
+	if user.UserType == "authenticated" {
+		http.Redirect(w, r, "/", http.StatusFound)
+	}
+
 	models.RenderPage(w, "register.html", nil)
 }
 
-type NewUserInfo struct {
-	UserName     string `json:"username"`
-	Email        string `json:"email"`
-	Password     string `json:"password"`
-	RepeatedPass string `json:"rPassword"`
-}
-
 func (webForum *WebApp) UserRegister(w http.ResponseWriter, r *http.Request) {
-	var newUserinfo NewUserInfo
-	err := json.NewDecoder(r.Body).Decode(&newUserinfo)
-	if err != nil {
-		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+	var newUserinfo models.NewUserInfo
+	decodeErr := decodeJsonData(r, &newUserinfo)
+	if decodeErr != nil {
+		http.Error(w, "failed to decode object.", http.StatusInternalServerError)
 		return
 	}
-	newUser, errors := webForum.Users.ValidateNewUser(newUserinfo.UserName, newUserinfo.Email, newUserinfo.Password, newUserinfo.RepeatedPass)
-	if len(errors) == 0 {
+
+	newUser, response := webForum.Users.ValidateNewUser(newUserinfo)
+	if len(response.Messages) == 0 {
 		if err := webForum.Users.InsertUser(newUser); err != nil {
 			models.Error{StatusCode: http.StatusInternalServerError, Message: "Internal Server Error", SubMessage: "Cannot insert new user"}.RenderError(w)
 			return
 		}
-		sendJsontoHeader(w, []string{"User Registred successfully!"})
+		response.Messages = append(response.Messages, "User Registred successfully!")
+		encodeJsonData(w, http.StatusOK, response)
 	} else {
-		sendJsontoHeader(w, errors)
+		encodeJsonData(w, http.StatusBadRequest, response)
 	}
-	fmt.Println("error", errors)
+	// fmt.Println("error", errors)
 }
 
-func (webForum *WebApp) GetMaxID(w http.ResponseWriter, r *http.Request) {
-	maxID, err := webForum.Post.GetMaxID()
-	if err != nil {
-		models.Error{
-			User:       &models.User{},
-			StatusCode: http.StatusInternalServerError,
-			Message:    "500 Internal Server Error",
-			SubMessage: "Oops! Failed to fetch the maximum ID at the moment.",
-		}.RenderError(w)
-		return
-	}
+// func (webForum *WebApp) GetMaxID(w http.ResponseWriter, r *http.Request) {
+// 	maxID, err := webForum.Post.GetMaxID()
+// 	if err != nil {
+// 		models.Error{
+// 			User:       &models.User{},
+// 			StatusCode: http.StatusInternalServerError,
+// 			Message:    "500 Internal Server Error",
+// 			SubMessage: "Oops! Failed to fetch the maximum ID at the moment.",
+// 		}.RenderError(w)
+// 		return
+// 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+// 	w.Header().Set("Content-Type", "application/json")
+// 	w.WriteHeader(http.StatusOK)
 
-	// sendJsontoHeader(w, maxID)
-	if err := json.NewEncoder(w).Encode(maxID); err != nil { // to be replaced look on top
-		models.Error{
-			User:       &models.User{},
-			StatusCode: http.StatusInternalServerError,
-			Message:    "500 Internal Server Error",
-			SubMessage: "Oops! Failed to fetch the maximum ID at the moment.",
-		}.RenderError(w)
-		return
-	}
+// 	// encodeJsonData(w, maxID)
+// 	if err := json.NewEncoder(w).Encode(maxID); err != nil { // to be replaced look on top
+// 		models.Error{
+// 			User:       &models.User{},
+// 			StatusCode: http.StatusInternalServerError,
+// 			Message:    "500 Internal Server Error",
+// 			SubMessage: "Oops! Failed to fetch the maximum ID at the moment.",
+// 		}.RenderError(w)
+// 		return
+// 	}
+// }
+
+// type FetchPosts struct {
+// 	Post_id  int    `json:"postID"`
+// 	Category string `json:"category"`
+// }
+
+// // change in handler to fetch 10 posts
+// func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
+// 	var postData FetchPosts
+// 	err := json.NewDecoder(r.Body).Decode(&postData)
+// 	if err != nil {
+// 		http.Error(w, "Oops! Failed to get posts", http.StatusInternalServerError)
+// 		return
+// 	}
+// 	if postData.Category == "" {
+// 		return
+// 	}
+
+// 	posts, err := webForum.Post.GetPosts(postData.Post_id, postData.Category)
+// 	if err != nil || len(posts) == 0 {
+// 		fmt.Fprintf(w, "null")
+// 		return
+// 	}
+
+// 	encodeJsonData(w, posts)
+// }
+
+// func (webForum *WebApp) CreatePost(w http.ResponseWriter, r *http.Request) {
+// 	user := &models.User{}
+// 	// var err error
+// 	categories, err := webForum.Post.GetCategories()
+// 	if err != nil {
+// 		models.Error{
+// 			User:       &models.User{},
+// 			StatusCode: http.StatusInternalServerError,
+// 			Message:    "500 Internal Server Error",
+// 			SubMessage: "Oops! Cannot retrieve categories at the moment",
+// 		}.RenderError(w)
+// 		return
+// 	}
+
+// userID, ok := r.Context().Value(models.UserIDKey).(int)
+// if !ok {
+// 	models.Error{
+// 		User:       user,
+// 		StatusCode: http.StatusInternalServerError,
+// 		Message:    "Internal Server Error",
+// 		SubMessage: "Unable to retrieve user information.",
+// 	}.RenderError(w)
+// 	return
+// }
+
+// if userID != 0 {
+// 	user, err = webForum.Users.FindUserByID(userID)
+// 	if err != nil {
+// 		if err.Error() == "user not found" {
+// 			user = &models.User{
+// 				UserType: "guest",
+// 			}
+// 		} else {
+// 			models.Error{
+// 				User:       user,
+// 				StatusCode: http.StatusInternalServerError,
+// 				Message:    "Internal Server Error",
+// 				SubMessage: err.Error(),
+// 			}.RenderError(w)
+// 			return
+// 		}
+// 	}
+// } else {
+// 	user = &models.User{
+// 		UserType: "guest",
+// 	}
+// }
+// userType, ok := r.Context().Value(userTypeKey).(string)
+// if !ok {
+// 	models.Error{
+// 		User:       user,
+// 		StatusCode: http.StatusInternalServerError,
+// 		Message:    "Internal Server Error",
+// 		SubMessage: "Unable to retrieve user type.",
+// 	}.RenderError(w)
+// 	return
+// }
+// user.UserType = userType
+
+// 	CreatePostData := struct {
+// 		User       *models.User
+// 		Categories []models.Category
+// 	}{
+// 		User:       user,
+// 		Categories: categories,
+// 	}
+// 	models.RenderPage(w, "post-creation.html", CreatePostData)
+// }
+
+// func (webForum *WebApp) Creation(w http.ResponseWriter, r *http.Request) {
+// 	user := &models.User{}
+// 	var err error
+
+// 	userID, ok := r.Context().Value(models.UserIDKey).(int)
+// 	if !ok {
+// 		models.Error{
+// 			User:       user,
+// 			StatusCode: http.StatusInternalServerError,
+// 			Message:    "Internal Server Error",
+// 			SubMessage: "Unable to retrieve user information.",
+// 		}.RenderError(w)
+// 		return
+// 	}
+
+// 	if userID != 0 {
+// 		user, err = webForum.Users.FindUserByID(userID)
+// 		if err != nil {
+// 			if err.Error() == "user not found" {
+// 				user = &models.User{
+// 					UserType: "guest",
+// 				}
+// 			} else {
+// 				models.Error{
+// 					User:       user,
+// 					StatusCode: http.StatusInternalServerError,
+// 					Message:    "Internal Server Error",
+// 					SubMessage: err.Error(),
+// 				}.RenderError(w)
+// 				return
+// 			}
+// 		}
+// 	} else {
+// 		user = &models.User{
+// 			UserType: "guest",
+// 		}
+// 	}
+// 	userType, ok := r.Context().Value(userTypeKey).(string)
+// 	if !ok {
+// 		models.Error{
+// 			User:       user,
+// 			StatusCode: http.StatusInternalServerError,
+// 			Message:    "Internal Server Error",
+// 			SubMessage: "Unable to retrieve user type.",
+// 		}.RenderError(w)
+// 		return
+// 	}
+// 	user.UserType = userType
+
+// 	var postData PostUpdate
+// 	err = json.NewDecoder(r.Body).Decode(&postData)
+// 	if err != nil {
+// 		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+// 		return
+// 	}
+
+// 	if postData.Title == "" || len(postData.Title) > 70 || postData.Content == "" || len(postData.Content) > 5000 || len(postData.Categories) == 0 || len(postData.Categories) > 3 {
+// 		http.Redirect(w, r, "/createPost", http.StatusSeeOther)
+// 		return
+// 	}
+
+// 	ids, err := webForum.Post.GetIdsCategories(postData.Categories)
+// 	if err != nil {
+// 		models.Error{
+// 			User:       &models.User{},
+// 			StatusCode: http.StatusInternalServerError,
+// 			Message:    "500 Internal Server Error",
+// 			SubMessage: "Oops! " + err.Error(),
+// 		}.RenderError(w)
+// 		return
+// 	}
+
+// 	idPost, err := webForum.Post.CreatePost(userID, postData.Title, postData.Content)
+// 	if err != nil {
+// 		models.Error{
+// 			User:       &models.User{},
+// 			StatusCode: http.StatusInternalServerError,
+// 			Message:    "500 Internal Server Error",
+// 			SubMessage: "Oops! " + err.Error(),
+// 		}.RenderError(w)
+// 		return
+// 	}
+
+// 	err = webForum.Post.AddCategoriesPost(idPost, ids)
+// 	if err != nil {
+// 		models.Error{
+// 			User:       &models.User{},
+// 			StatusCode: http.StatusInternalServerError,
+// 			Message:    "500 Internal Server Error",
+// 			SubMessage: "Oops! " + err.Error(),
+// 		}.RenderError(w)
+// 		return
+// 	}
+// 	http.Redirect(w, r, "/", http.StatusSeeOther)
+// }
+
+// func (webForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
+// 	user := &models.User{}
+// 	var err error
+
+// 	userID, ok := r.Context().Value(models.UserIDKey).(int)
+// 	if !ok {
+// 		models.Error{
+// 			User:       user,
+// 			StatusCode: http.StatusInternalServerError,
+// 			Message:    "Internal Server Error",
+// 			SubMessage: "Unable to retrieve user information.",
+// 		}.RenderError(w)
+// 		return
+// 	}
+
+// 	if userID != 0 {
+// 		user, err = webForum.Users.FindUserByID(userID)
+// 		if err != nil {
+// 			if err.Error() == "user not found" {
+// 				user = &models.User{
+// 					UserType: "guest",
+// 				}
+// 			} else {
+// 				models.Error{
+// 					User:       user,
+// 					StatusCode: http.StatusInternalServerError,
+// 					Message:    "Internal Server Error",
+// 					SubMessage: err.Error(),
+// 				}.RenderError(w)
+// 				return
+// 			}
+// 		}
+// 	} else {
+// 		user = &models.User{
+// 			UserType: "guest",
+// 		}
+// 	}
+// 	userType, ok := r.Context().Value(userTypeKey).(string)
+// 	if !ok {
+// 		models.Error{
+// 			User:       user,
+// 			StatusCode: http.StatusInternalServerError,
+// 			Message:    "Internal Server Error",
+// 			SubMessage: "Unable to retrieve user type.",
+// 		}.RenderError(w)
+// 		return
+// 	}
+// 	user.UserType = userType
+
+// 	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
+// 	if err != nil {
+// 		http.Error(w, "invalid id", http.StatusInternalServerError)
+// 		return
+// 	}
+
+// 	post, err := webForum.Post.UpdatePost(userID, id)
+// 	if err != nil {
+// 		http.Error(w, err.Error(), http.StatusInternalServerError)
+// 		return
+// 	}
+
+// 	Categorys, err := webForum.Post.GetCategories()
+// 	if err != nil {
+// 		http.Error(w, err.Error(), http.StatusInternalServerError)
+// 		return
+// 	}
+
+// 	data := struct {
+// 		User       *models.User
+// 		Post_info  models.Post
+// 		Categories []models.Category
+// 	}{
+// 		User:       user,
+// 		Post_info:  post,
+// 		Categories: Categorys,
+// 	}
+
+// 	models.RenderPage(w, "post-update.html", data)
+// }
+
+// type PostUpdate struct {
+// 	Id         string   `json:"id`
+// 	Title      string   `json:"title"`
+// 	Content    string   `json:"content"`
+// 	Categories []string `json:"categories"`
+// }
+
+// func (webForum *WebApp) Updating(w http.ResponseWriter, r *http.Request) {
+// 	var postData PostUpdate
+// 	err := json.NewDecoder(r.Body).Decode(&postData)
+// 	if err != nil {
+// 		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+// 		return
+// 	}
+
+// 	if postData.Title == "" || len(postData.Title) > 70 || postData.Content == "" || len(postData.Content) > 5000 || len(postData.Categories) == 0 || len(postData.Categories) > 3 {
+// 		http.Redirect(w, r, "/update/post?ID="+postData.Id, http.StatusSeeOther)
+// 		return
+// 	}
+
+// 	id, err := strconv.Atoi(postData.Id)
+// 	if err != nil {
+// 		http.Error(w, "invalid id", http.StatusInternalServerError)
+// 		return
+// 	}
+
+// 	err = webForum.Post.EditPost(id, postData.Title, postData.Content, postData.Categories)
+// 	if err != nil {
+// 		http.Error(w, err.Error(), http.StatusInternalServerError)
+// 		return
+// 	}
+// }
+
+// func (webForum *WebApp) DeletePost(w http.ResponseWriter, r *http.Request) {
+// 	user := &models.User{}
+// 	var err error
+
+// 	userID, ok := r.Context().Value(models.UserIDKey).(int)
+// 	if !ok {
+// 		models.Error{
+// 			User:       user,
+// 			StatusCode: http.StatusInternalServerError,
+// 			Message:    "Internal Server Error",
+// 			SubMessage: "Unable to retrieve user information.",
+// 		}.RenderError(w)
+// 		return
+// 	}
+
+// 	if userID != 0 {
+// 		user, err = webForum.Users.FindUserByID(userID)
+// 		if err != nil {
+// 			if err.Error() == "user not found" {
+// 				user = &models.User{
+// 					UserType: "guest",
+// 				}
+// 			} else {
+// 				models.Error{
+// 					User:       user,
+// 					StatusCode: http.StatusInternalServerError,
+// 					Message:    "Internal Server Error",
+// 					SubMessage: err.Error(),
+// 				}.RenderError(w)
+// 				return
+// 			}
+// 		}
+// 	} else {
+// 		user = &models.User{
+// 			UserType: "guest",
+// 		}
+// 	}
+// 	userType, ok := r.Context().Value(userTypeKey).(string)
+// 	if !ok {
+// 		models.Error{
+// 			User:       user,
+// 			StatusCode: http.StatusInternalServerError,
+// 			Message:    "Internal Server Error",
+// 			SubMessage: "Unable to retrieve user type.",
+// 		}.RenderError(w)
+// 		return
+// 	}
+// 	user.UserType = userType
+
+// 	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
+// 	if err != nil {
+// 		http.Error(w, "invalid id", http.StatusInternalServerError)
+// 		return
+// 	}
+
+// 	err = webForum.Post.DeletePost(userID, id)
+// 	if err != nil {
+// 		http.Error(w, err.Error(), http.StatusInternalServerError)
+// 		return
+// 	}
+// 	http.Redirect(w, r, "/", http.StatusSeeOther)
+// }
+
+// // madara
+// type FetchComments struct {
+// 	Id string `json:ID`
+// }
+
+// func (webForum *WebApp) GetComments(w http.ResponseWriter, r *http.Request) {
+// 	// w.Header().Set("Access-Control-Allow-Credentials", "false")
+// 	log.Println(r.Cookie("userSession"))
+// 	var commentData FetchComments
+// 	err := json.NewDecoder(r.Body).Decode(&commentData)
+// 	if err != nil {
+// 		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+// 		return
+// 	}
+
+// 	PostId, err := strconv.Atoi(commentData.Id)
+// 	fmt.Println(PostId)
+// 	if err != nil {
+// 		return
+// 	}
+// 	commentModel := &models.CommentModel{DB: webForum.Post.DB}
+// 	comments, err := commentModel.GetComments(PostId)
+// 	if err != nil {
+// 		http.Error(w, err.Error(), http.StatusInternalServerError)
+// 		return
+// 	}
+// 	encodeJsonData(w, comments)
+// }
+
+// type CreateComment struct {
+// 	PostID         string `json:"postid"`
+// 	UserID         int    `json:"userid"`
+// 	CommentContent string `json:"content"`
+// }
+
+// func (webForum *WebApp) HandleCreateComment(w http.ResponseWriter, r *http.Request) {
+// 	var commentData CreateComment
+// 	err := json.NewDecoder(r.Body).Decode(&commentData)
+// 	fmt.Println(commentData)
+// 	if err != nil {
+// 		fmt.Fprint(w, "HAHHAHAHHAHA")
+// 		// http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+// 		return
+// 	}
+
+// 	if r.Method != http.MethodPost {
+// 		fmt.Fprint(w, "11111")
+// 		// http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+// 		return
+// 	}
+// 	postID, err := strconv.Atoi(commentData.PostID)
+// 	userID := commentData.UserID
+// 	if err != nil {
+// 		fmt.Fprint(w, "222222")
+// 		// http.Error(w, "Invalid post ID or user ID", http.StatusBadRequest)
+// 		return
+// 	}
+
+// 	content := commentData.CommentContent
+// 	if content == "" {
+// 		fmt.Fprint(w, "333333")
+// 		// http.Error(w, "Comment cannot be empty", http.StatusBadRequest)
+// 		return
+// 	}
+// 	commentModel := &models.CommentModel{DB: webForum.Post.DB}
+// 	err = commentModel.CreateComment(postID, userID, content)
+// 	if err != nil {
+// 		fmt.Fprint(w, "444444")
+// 		// http.Error(w, "Failed to create comment", http.StatusInternalServerError)
+// 		return
+// 	}
+// 	// fmt.Fprintln(w, "comment created")
+// 	encodeJsonData(w, "{}")
+// }
+
+// // tools-------------------------------------
+
+func decodeJsonData(r *http.Request, obj interface{}) error {
+	return json.NewDecoder(r.Body).Decode(obj)
 }
 
-type FetchPosts struct {
-	Post_id  int    `json:"postID"`
-	Category string `json:"category"`
-}
-
-// change in handler to fetch 10 posts
-func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
-	var postData FetchPosts
-	err := json.NewDecoder(r.Body).Decode(&postData)
-	if err != nil {
-		http.Error(w, "Oops! Failed to get posts", http.StatusInternalServerError)
-		return
-	}
-	if postData.Category == "" {
-		return
-	}
-
-	posts, err := webForum.Post.GetPosts(postData.Post_id, postData.Category)
-	if err != nil || len(posts) == 0 {
-		fmt.Fprintf(w, "null")
-		return
-	}
-
-	sendJsontoHeader(w, posts)
-}
-
-func (webForum *WebApp) CreatePost(w http.ResponseWriter, r *http.Request) {
-	user := &models.User{}
-	// var err error
-	categories, err := webForum.Post.GetCategories()
-	if err != nil {
-		models.Error{
-			User:       &models.User{},
-			StatusCode: http.StatusInternalServerError,
-			Message:    "500 Internal Server Error",
-			SubMessage: "Oops! Cannot retrieve categories at the moment",
-		}.RenderError(w)
-		return
-	}
-
-	userID, ok := r.Context().Value(userIDKey).(int)
-	if !ok {
-		models.Error{
-			User:       user,
-			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
-			SubMessage: "Unable to retrieve user information.",
-		}.RenderError(w)
-		return
-	}
-
-	if userID != 0 {
-		user, err = webForum.Users.FindUserByID(userID)
-		if err != nil {
-			if err.Error() == "user not found" {
-				user = &models.User{
-					UserType: "guest",
-				}
-			} else {
-				models.Error{
-					User:       user,
-					StatusCode: http.StatusInternalServerError,
-					Message:    "Internal Server Error",
-					SubMessage: err.Error(),
-				}.RenderError(w)
-				return
-			}
-		}
-	} else {
-		user = &models.User{
-			UserType: "guest",
-		}
-	}
-	userType, ok := r.Context().Value(userTypeKey).(string)
-	if !ok {
-		models.Error{
-			User:       user,
-			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
-			SubMessage: "Unable to retrieve user type.",
-		}.RenderError(w)
-		return
-	}
-	user.UserType = userType
-
-	CreatePostData := struct {
-		User       *models.User
-		Categories []models.Category
-	}{
-		User:       user,
-		Categories: categories,
-	}
-	models.RenderPage(w, "post-creation.html", CreatePostData)
-}
-
-func (webForum *WebApp) Creation(w http.ResponseWriter, r *http.Request) {
-	user := &models.User{}
-	var err error
-
-	userID, ok := r.Context().Value(userIDKey).(int)
-	if !ok {
-		models.Error{
-			User:       user,
-			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
-			SubMessage: "Unable to retrieve user information.",
-		}.RenderError(w)
-		return
-	}
-
-	if userID != 0 {
-		user, err = webForum.Users.FindUserByID(userID)
-		if err != nil {
-			if err.Error() == "user not found" {
-				user = &models.User{
-					UserType: "guest",
-				}
-			} else {
-				models.Error{
-					User:       user,
-					StatusCode: http.StatusInternalServerError,
-					Message:    "Internal Server Error",
-					SubMessage: err.Error(),
-				}.RenderError(w)
-				return
-			}
-		}
-	} else {
-		user = &models.User{
-			UserType: "guest",
-		}
-	}
-	userType, ok := r.Context().Value(userTypeKey).(string)
-	if !ok {
-		models.Error{
-			User:       user,
-			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
-			SubMessage: "Unable to retrieve user type.",
-		}.RenderError(w)
-		return
-	}
-	user.UserType = userType
-
-	var postData PostUpdate
-	err = json.NewDecoder(r.Body).Decode(&postData)
-	if err != nil {
-		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
-		return
-	}
-
-	if postData.Title == "" || len(postData.Title) > 70 || postData.Content == "" || len(postData.Content) > 5000 || len(postData.Categories) == 0 || len(postData.Categories) > 3 {
-		http.Redirect(w, r, "/createPost", http.StatusSeeOther)
-		return
-	}
-
-	ids, err := webForum.Post.GetIdsCategories(postData.Categories)
-	if err != nil {
-		models.Error{
-			User:       &models.User{},
-			StatusCode: http.StatusInternalServerError,
-			Message:    "500 Internal Server Error",
-			SubMessage: "Oops! " + err.Error(),
-		}.RenderError(w)
-		return
-	}
-
-	idPost, err := webForum.Post.CreatePost(userID, postData.Title, postData.Content)
-	if err != nil {
-		models.Error{
-			User:       &models.User{},
-			StatusCode: http.StatusInternalServerError,
-			Message:    "500 Internal Server Error",
-			SubMessage: "Oops! " + err.Error(),
-		}.RenderError(w)
-		return
-	}
-
-	err = webForum.Post.AddCategoriesPost(idPost, ids)
-	if err != nil {
-		models.Error{
-			User:       &models.User{},
-			StatusCode: http.StatusInternalServerError,
-			Message:    "500 Internal Server Error",
-			SubMessage: "Oops! " + err.Error(),
-		}.RenderError(w)
-		return
-	}
-	http.Redirect(w, r, "/", http.StatusSeeOther)
-}
-
-func (webForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
-	user := &models.User{}
-	var err error
-
-	userID, ok := r.Context().Value(userIDKey).(int)
-	if !ok {
-		models.Error{
-			User:       user,
-			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
-			SubMessage: "Unable to retrieve user information.",
-		}.RenderError(w)
-		return
-	}
-
-	if userID != 0 {
-		user, err = webForum.Users.FindUserByID(userID)
-		if err != nil {
-			if err.Error() == "user not found" {
-				user = &models.User{
-					UserType: "guest",
-				}
-			} else {
-				models.Error{
-					User:       user,
-					StatusCode: http.StatusInternalServerError,
-					Message:    "Internal Server Error",
-					SubMessage: err.Error(),
-				}.RenderError(w)
-				return
-			}
-		}
-	} else {
-		user = &models.User{
-			UserType: "guest",
-		}
-	}
-	userType, ok := r.Context().Value(userTypeKey).(string)
-	if !ok {
-		models.Error{
-			User:       user,
-			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
-			SubMessage: "Unable to retrieve user type.",
-		}.RenderError(w)
-		return
-	}
-	user.UserType = userType
-
-	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
-	if err != nil {
-		http.Error(w, "invalid id", http.StatusInternalServerError)
-		return
-	}
-
-	post, err := webForum.Post.UpdatePost(userID, id)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	Categorys, err := webForum.Post.GetCategories()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	data := struct {
-		User       *models.User
-		Post_info  models.Post
-		Categories []models.Category
-	}{
-		User:       user,
-		Post_info:  post,
-		Categories: Categorys,
-	}
-
-	models.RenderPage(w, "post-update.html", data)
-}
-
-type PostUpdate struct {
-	Id         string   `json:"id`
-	Title      string   `json:"title"`
-	Content    string   `json:"content"`
-	Categories []string `json:"categories"`
-}
-
-func (webForum *WebApp) Updating(w http.ResponseWriter, r *http.Request) {
-	var postData PostUpdate
-	err := json.NewDecoder(r.Body).Decode(&postData)
-	if err != nil {
-		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
-		return
-	}
-
-	if postData.Title == "" || len(postData.Title) > 70 || postData.Content == "" || len(postData.Content) > 5000 || len(postData.Categories) == 0 || len(postData.Categories) > 3 {
-		http.Redirect(w, r, "/update/post?ID="+postData.Id, http.StatusSeeOther)
-		return
-	}
-
-	id, err := strconv.Atoi(postData.Id)
-	if err != nil {
-		http.Error(w, "invalid id", http.StatusInternalServerError)
-		return
-	}
-
-	err = webForum.Post.EditPost(id, postData.Title, postData.Content, postData.Categories)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-}
-
-func (webForum *WebApp) DeletePost(w http.ResponseWriter, r *http.Request) {
-	user := &models.User{}
-	var err error
-
-	userID, ok := r.Context().Value(userIDKey).(int)
-	if !ok {
-		models.Error{
-			User:       user,
-			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
-			SubMessage: "Unable to retrieve user information.",
-		}.RenderError(w)
-		return
-	}
-
-	if userID != 0 {
-		user, err = webForum.Users.FindUserByID(userID)
-		if err != nil {
-			if err.Error() == "user not found" {
-				user = &models.User{
-					UserType: "guest",
-				}
-			} else {
-				models.Error{
-					User:       user,
-					StatusCode: http.StatusInternalServerError,
-					Message:    "Internal Server Error",
-					SubMessage: err.Error(),
-				}.RenderError(w)
-				return
-			}
-		}
-	} else {
-		user = &models.User{
-			UserType: "guest",
-		}
-	}
-	userType, ok := r.Context().Value(userTypeKey).(string)
-	if !ok {
-		models.Error{
-			User:       user,
-			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
-			SubMessage: "Unable to retrieve user type.",
-		}.RenderError(w)
-		return
-	}
-	user.UserType = userType
-
-	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
-	if err != nil {
-		http.Error(w, "invalid id", http.StatusInternalServerError)
-		return
-	}
-
-	err = webForum.Post.DeletePost(userID, id)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	http.Redirect(w, r, "/", http.StatusSeeOther)
-}
-
-// madara
-type FetchComments struct {
-	Id string `json:ID`
-}
-
-func (webForum *WebApp) GetComments(w http.ResponseWriter, r *http.Request) {
-	// w.Header().Set("Access-Control-Allow-Credentials", "false")
-	log.Println(r.Cookie("userSession"))
-	var commentData FetchComments
-	err := json.NewDecoder(r.Body).Decode(&commentData)
-	if err != nil {
-		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
-		return
-	}
-
-	PostId, err := strconv.Atoi(commentData.Id)
-	fmt.Println(PostId)
-	if err != nil {
-		return
-	}
-	commentModel := &models.CommentModel{DB: webForum.Post.DB}
-	comments, err := commentModel.GetComments(PostId)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	sendJsontoHeader(w, comments)
-}
-
-type CreateComment struct {
-	PostID         string `json:"postid"`
-	UserID         int    `json:"userid"`
-	CommentContent string `json:"content"`
-}
-
-func (webForum *WebApp) HandleCreateComment(w http.ResponseWriter, r *http.Request) {
-	var commentData CreateComment
-	err := json.NewDecoder(r.Body).Decode(&commentData)
-	fmt.Println(commentData)
-	if err != nil {
-		fmt.Fprint(w, "HAHHAHAHHAHA")
-		// http.Error(w, "Invalid JSON format", http.StatusBadRequest)
-		return
-	}
-
-	if r.Method != http.MethodPost {
-		fmt.Fprint(w, "11111")
-		// http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-	postID, err := strconv.Atoi(commentData.PostID)
-	userID := commentData.UserID
-	if err != nil {
-		fmt.Fprint(w, "222222")
-		// http.Error(w, "Invalid post ID or user ID", http.StatusBadRequest)
-		return
-	}
-
-	content := commentData.CommentContent
-	if content == "" {
-		fmt.Fprint(w, "333333")
-		// http.Error(w, "Comment cannot be empty", http.StatusBadRequest)
-		return
-	}
-	commentModel := &models.CommentModel{DB: webForum.Post.DB}
-	err = commentModel.CreateComment(postID, userID, content)
-	if err != nil {
-		fmt.Fprint(w, "444444")
-		// http.Error(w, "Failed to create comment", http.StatusInternalServerError)
-		return
-	}
-	// fmt.Fprintln(w, "comment created")
-	sendJsontoHeader(w, "{}")
-}
-
-// tools-------------------------------------
-
-func sendJsontoHeader(w http.ResponseWriter, obj interface{}) error {
+func encodeJsonData(w http.ResponseWriter, statusCode int, obj interface{}) error {
 	// fmt.Println("OBJ:\x1b[1;31m", obj, "\x1b[1;39m")
 	w.Header().Set("Content-Type", "application/json")
-	// var jsonData bytes.Buffer
-	encoder := json.NewEncoder(w)
-	if err := encoder.Encode(obj); err != nil {
-		return errors.New("failed to encode object: " + err.Error())
+
+	w.WriteHeader(statusCode)
+	if err := json.NewEncoder(w).Encode(obj); err != nil {
+		return err
 	}
-	// fmt.Fprintf(w, jsonData.String())
 
 	return nil
 }

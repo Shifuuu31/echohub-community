@@ -25,10 +25,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const msgs = await fetchResponse(`/confirmLogin`, credentials)
-            displayMessages(msgs, '/', `Hello, ${credentials.username}!`)
+            const response = await fetchResponse(`/confirmLogin`, credentials)
+
+            if (response.status === 401) {
+                console.log("Unauthorized: Invalid credentials.")
+
+            } else if (response.status === 200) {
+                console.log("Login successful" )
+            } else {
+                console.log("Unexpected response:", response.body)
+            }
+            displayMessages(response.body.messages, "/",  `Hello, ${credentials.username.charAt(0).toUpperCase()+ credentials.username.slice(1) }!`)
+    
         } catch (error) {
-            console.error('Error fetching response:', error)
+            console.error('Error during login process:', error)
         }
     })
 })

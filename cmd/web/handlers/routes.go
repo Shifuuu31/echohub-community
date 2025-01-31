@@ -22,33 +22,32 @@ func (webForum *WebApp) Router() http.Handler {
 	// authentication middleware
 	mux.Handle("GET /", webForum.AuthMiddleware(http.HandlerFunc(webForum.HomePage)))
 
-	// Registration routes
+	// // Registration routes
 	mux.Handle("GET /register", webForum.AuthMiddleware(http.HandlerFunc(webForum.RegisterPage)))
-	mux.HandleFunc("POST /confirmRegister", webForum.UserRegister)
+	// mux.HandleFunc("POST /confirmRegister", webForum.UserRegister)
 
-	// Login routes
+	// // Login routes
 	mux.Handle("GET /login", webForum.AuthMiddleware(http.HandlerFunc(webForum.LoginPage)))
 	mux.HandleFunc("POST /confirmLogin", webForum.ConfirmLogin)
 
-	// Logout route
+	// // Logout route
 	mux.HandleFunc("GET /logout", webForum.UserLogout)
 
-	mux.HandleFunc("GET /maxId", webForum.GetMaxID)
-	mux.HandleFunc("POST /post", webForum.GetPosts)
+	// mux.HandleFunc("GET /maxId", webForum.GetMaxID)
+	// mux.HandleFunc("POST /post", webForum.GetPosts)
 
-	mux.Handle("GET /createPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.CreatePost)))
-	mux.Handle("POST /createPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.Creation)))
+	// mux.Handle("GET /createPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.CreatePost)))
+	// mux.Handle("POST /createPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.Creation)))
 
-	mux.Handle("GET /updatePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.UpdatePost)))
-	mux.HandleFunc("POST /updatePost", webForum.Updating)
+	// mux.Handle("GET /updatePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.UpdatePost)))
+	// mux.HandleFunc("POST /updatePost", webForum.Updating)
 
-	mux.Handle("GET /deletePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.DeletePost)))
-	// mux.HandleFunc("GET /deletePost", webForum.DeletePost)
+	// mux.Handle("GET /deletePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.DeletePost)))
+	// // mux.HandleFunc("GET /deletePost", webForum.DeletePost)
 
-	//madara dzb
-	mux.HandleFunc("POST /comments", webForum.GetComments)
-	mux.HandleFunc("POST /createComment", webForum.HandleCreateComment)
-
+	// //madara dzb
+	// mux.HandleFunc("POST /comments", webForum.GetComments)
+	// mux.HandleFunc("POST /createComment", webForum.HandleCreateComment)
 
 	return mux
 }

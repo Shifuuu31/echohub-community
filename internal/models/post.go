@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"net/http"
 	"strconv"
 	"time"
 )
@@ -37,26 +38,34 @@ type PostModel struct {
 }
 
 // get categories from DB
-func (PostModel *PostModel) GetCategories() (Categories []Category, err error) {
-	rowsDB, err := PostModel.DB.Query("SELECT id,category_name,category_icon_path FROM Categories")
+func (PostModel *PostModel) GetCategories() (Categories []Category, catsErr Error) {
+	selectStmt := `	SELECT id,category_name,category_icon_path
+					FROM Categories`
+	catsErr = Error{
+		StatusCode: http.StatusInternalServerError,
+		Message:    "Internal Server Error",
+		SubMessage: "Unable to get categories.",
+		Type:       "server",
+	}
+	rowsDB, err := PostModel.DB.Query(selectStmt)
 	if err != nil {
-		return nil, err
+		return nil, catsErr
 	}
 	defer rowsDB.Close()
 
 	for rowsDB.Next() {
 		category := Category{}
 		if err := rowsDB.Scan(&category.ID, &category.CategoryName, &category.CategoryIconPath); err != nil {
-			return nil, err
+			return nil, catsErr
 		}
 		Categories = append(Categories, category)
 	}
 
 	if err = rowsDB.Err(); err != nil {
-		return nil, err
+		return nil, catsErr
 	}
 
-	return Categories, nil
+	return Categories, Error{}
 }
 
 // Get maxID of posts

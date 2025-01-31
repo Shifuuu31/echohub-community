@@ -1,18 +1,20 @@
 export { fetchResponse, displayMessages, CheckClick, CheckLength }
 
 const fetchResponse = async (url, obj) => {
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(obj),
-        // credentials: 'include'
-    })
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(obj),
+        })
 
-    if (!response.ok) {
-        // console.log('error', response)
-        throw new Error(`HTTP error! status: ${response.status}`)
+        const responseBody = await response.json()
+        
+        return { status: response.status, body: responseBody }
+    } catch (error) {
+        console.error('Error fetching response:', error)
+        throw error
     }
-    return response.json()
 }
 
 
