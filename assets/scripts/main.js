@@ -3,12 +3,12 @@ import { desplayPosts } from "./fetch-posts.js"
 
 let isLoading = false
 let attachPopupListeners = null
-// let DataToFetch = {}
+let DataToFetch = {}
 
 const initializePosts = async () => {
     attachPopupListeners = Popup()
     const postsAdded = await desplayPosts()
-    
+
     if (postsAdded) {
         attachPopupListeners()
     }
@@ -16,22 +16,21 @@ const initializePosts = async () => {
 
 const handleScroll = async () => {
     const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight
-    
+
     if (isAtBottom && !isLoading) {
         isLoading = true
         const newPostsAdded = await desplayPosts(DataToFetch.category, true)
-        
         if (newPostsAdded) {
             attachPopupListeners()
         }
-        
+
         isLoading = false
     }
 }
 
 const handleCategoryChange = async (event) => {
     const postsLoaded = await desplayPosts(event.target.defaultValue)
-    
+
     if (postsLoaded) {
         attachPopupListeners()
     }

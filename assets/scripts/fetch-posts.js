@@ -9,7 +9,6 @@ const desplayPosts = async (category = "All", scroll = false) => {
     if (!scroll) {
         try {
             const response = await fetchResponse(`/maxId`)
-
             if (response.status === 200) {
                 if (response.body == 0) {
                     postMsg.innerHTML = `<h1 style="text-align: center">No posts to display1</h1>`
@@ -31,16 +30,15 @@ const desplayPosts = async (category = "All", scroll = false) => {
     try {
         const response = await fetchResponse(`/posts`, DataToFetch)
         if (response.status === 200) {
-            console.log("111")
             console.log("Posts Fetched succefully")
             FetchedPosts = response.body
-        }else if (response.status === 100) {
+        } else if (response.status === 100) {
             console.log("222")
             FetchedPosts = null
             console.log('No posts to display2')
             postMsg.innerHTML = `<h1 style="text-align: center">No posts to display2</h1>`
             return false
-        }else if (response.status === 400) {
+        } else if (response.status === 400) {
             console.log("3333")
             console.log("Bad Request", response.status, response.body.message)
         } else {
@@ -52,10 +50,10 @@ const desplayPosts = async (category = "All", scroll = false) => {
         console.error('Error during fetching Posts:', error)
     }
 
-        if (FetchedPosts.length != 0) {
-            for (let i = 0; i < FetchedPosts.length; i++) {
-                const postData = document.createElement('div')
-                postData.innerHTML = `          
+    if (FetchedPosts instanceof Array) {
+        for (let i = 0; i < FetchedPosts.length; i++) {
+            const postData = document.createElement('div')
+            postData.innerHTML = `          
                 <div id="post" post-id="${FetchedPosts[i].PostId}">
                     <div id="user-post-info"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
                         <h3>@${FetchedPosts[i].PostUserName} <br><span>${new Date(FetchedPosts[i].PostTime).toUTCString()}</span></h3>
@@ -79,13 +77,13 @@ const desplayPosts = async (category = "All", scroll = false) => {
                             <button id="commentBtn"><img src="/assets/imgs/comment.png" alt="Comment"> ${FetchedPosts[i].CommentsCount}</button>
                         </div>
                     </div>`
-                posts.append(postData)
-            }
-            DataToFetch.postID = FetchedPosts[FetchedPosts.length - 1].PostId - 1
-        } else {
-            postMsg.innerHTML = `<h1 style="text-align: center">No posts to display2</h1>`
-
+            posts.append(postData)
         }
+        DataToFetch.postID = FetchedPosts[FetchedPosts.length - 1].PostId - 1
+    } else {
+        postMsg.innerHTML = `<h1 style="text-align: center">No posts to display2</h1>`
+
+    }
     return true
 }
 

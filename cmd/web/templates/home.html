@@ -26,7 +26,7 @@
         <a href="/">
             <img id="logo-small" src="/assets/imgs/logo-small.png" alt="echoHub-Comunnity Logo">
         </a>
-		{{ if eq .User.UserType "authenticated" }}
+        {{ if eq .User.UserType "authenticated" }}
         <a href="/createPost"><button id="create"><img src="/assets/imgs/create.png"></i>&nbsp;New
                 Post</button></a>
         <div id="profile-dropdown">
@@ -35,7 +35,7 @@
             </div>
             <div id="dropdown">
                 <img id="inner-profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture">
-				<h2>@{{.User.UserName}}<br><span>{{.User.Email}}</span></h2>
+                <h2>@{{.User.UserName}}<br><span>{{.User.Email}}</span></h2>
                 <hr>
                 <div id="dropdown-content">
                     <a href="/profile-settings"><img src="/assets/imgs/settings.png"> Profile Settings</a>
@@ -46,18 +46,18 @@
                 </div>
             </div>
         </div>
-		{{else}}
-		<a href="/register"><button id="register"><img src="/assets/imgs/register.png">Register</button></a>
-		<a href="/login"><button id="login">Login</button></a>
-		{{end}}
+        {{else}}
+        <a href="/register"><button id="register"><img src="/assets/imgs/register.png">Register</button></a>
+        <a href="/login"><button id="login">Login</button></a>
+        {{end}}
     </nav>
     <div class="wraper">
-		<ul id="categories">
+        <ul id="categories">
             <li id="category">
                 <input type="radio" id="categoryAll" name="categoryElement" value="All" checked>
                 <label for="categoryAll"><img src="/assets/imgs/categories-Icons/all.png">All</label>
             </li>
-			<!-- add MyPosts/likedPosts -->
+            <!-- add MyPosts/likedPosts -->
             {{range .Categories}}
             <li id="category">
                 <input type="radio" id="category{{.ID}}" name="categoryElement" value="{{.ID}}">
@@ -65,42 +65,43 @@
             </li>
             {{end}}
         </ul>
-        
-		<div id="posts">
-        </div>
-        <div id="postMsg"></div>
-		<div id="post-placeholder">
-			<div class="post-info-placeholder-1">
-				<div class="avatar-placeholder"></div>
-				<div class="post-info-placeholder-2">
-					<div class="username-placeholder"></div>
 
-					<div class="time-placeholder"></div>
-				</div>
-			</div>
-			<div class="post-info-placeholder-2">
-				<div class="title-placeholder"></div>
-				<div class="text-placeholder"></div>
-			</div>
-			<div class="post-info-placeholder-3">
-				<div class="links-placeholder">
-					<div class="link-item-placeholder"></div>
-					<div class="link-item-placeholder"></div>
-					<div class="link-item-placeholder"></div>
-				</div>
-				<div class="buttons-placeholder">
-					<div class="button-item-placeholder"></div>
-					<div class="button-item-placeholder"></div>
-					<div class="button-item-placeholder"></div>
-				</div>
-			</div>
-		</div>
+        <div id="posts">
+        </div>
+        <div id="postMsg">
+        </div>
+        <div id="post-placeholder">
+            <div class="post-info-placeholder-1">
+                <div class="avatar-placeholder"></div>
+                <div class="post-info-placeholder-2">
+                    <div class="username-placeholder"></div>
+
+                    <div class="time-placeholder"></div>
+                </div>
+            </div>
+            <div class="post-info-placeholder-2">
+                <div class="title-placeholder"></div>
+                <div class="text-placeholder"></div>
+            </div>
+            <div class="post-info-placeholder-3">
+                <div class="links-placeholder">
+                    <div class="link-item-placeholder"></div>
+                    <div class="link-item-placeholder"></div>
+                    <div class="link-item-placeholder"></div>
+                </div>
+                <div class="buttons-placeholder">
+                    <div class="button-item-placeholder"></div>
+                    <div class="button-item-placeholder"></div>
+                    <div class="button-item-placeholder"></div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="popup-background">
         <div id="popup">
             <div><button><i class="close fa-solid fa-xmark"></i></button></div>
             <div class="wraper">
-                <div id="post" ></div>
+                <div id="post"></div>
                 <p id="seperator">Comments</p>
                 <hr>
                 <div id="comments-section"></div>
@@ -109,7 +110,7 @@
                         <h3>Username</h3>
                     </div>
                     <div id="comment-group">
-                        
+
                     </div>
                 </div>
             </div>

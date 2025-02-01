@@ -142,7 +142,6 @@ func (postModel *PostModel) GetPosts(startId int, category string) (posts []Post
 				Type:       "client",
 			}
 		}
-		
 
 		query = `SELECT
 					PostTable.id,
@@ -162,10 +161,8 @@ func (postModel *PostModel) GetPosts(startId int, category string) (posts []Post
 				LIMIT
 					10;`
 		args = append(args, categoryID, startId)
-
 	}
 	
-
 	rows, err := postModel.DB.Query(query, args...)
 	if err != nil {
 		return []Post{}, Error{
