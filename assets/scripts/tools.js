@@ -7,7 +7,6 @@ const fetchResponse = async (url, obj = {}) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(obj),
         })
-
         const responseBody = await response.json()
         
         return { status: response.status, body: responseBody }

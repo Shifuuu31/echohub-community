@@ -3,7 +3,6 @@ package handlers
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"forum/internal/models"
@@ -89,8 +88,8 @@ func (webForum *WebApp) ConfirmLogin(w http.ResponseWriter, r *http.Request) {
 		Password   string `json:"password"`
 		RememberMe bool   `json:"rememberMe"`
 	}{}
-	decodeErr := decodeJsonData(r, &credentials)
-	if decodeErr != nil {
+
+	if decodeErr := decodeJsonData(r, &credentials); decodeErr != nil {
 		http.Error(w, "failed to decode object.", http.StatusInternalServerError)
 		return
 	}
@@ -120,13 +119,10 @@ func (webForum *WebApp) ConfirmLogin(w http.ResponseWriter, r *http.Request) {
 		if err := encodeJsonData(w, http.StatusOK, response); err != nil {
 			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
 		}
-
-		// fmt.Println("ok",response)
 	} else {
 		if err := encodeJsonData(w, http.StatusUnauthorized, response); err != nil {
 			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
 		}
-		// fmt.Println("unautorized",response)
 	}
 }
 
@@ -169,8 +165,8 @@ func (webForum *WebApp) RegisterPage(w http.ResponseWriter, r *http.Request) {
 
 func (webForum *WebApp) UserRegister(w http.ResponseWriter, r *http.Request) {
 	var newUserinfo models.NewUserInfo
-	decodeErr := decodeJsonData(r, &newUserinfo)
-	if decodeErr != nil {
+
+	if decodeErr := decodeJsonData(r, &newUserinfo); decodeErr != nil {
 		http.Error(w, "failed to decode object.", http.StatusInternalServerError)
 		return
 	}
@@ -182,49 +178,52 @@ func (webForum *WebApp) UserRegister(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		response.Messages = append(response.Messages, "User Registred successfully!")
-		encodeJsonData(w, http.StatusOK, response)
+		if err := encodeJsonData(w, http.StatusOK, response); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
 	} else {
-		encodeJsonData(w, http.StatusBadRequest, response)
+		if err := encodeJsonData(w, http.StatusBadRequest, response); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
 	}
-	// fmt.Println("error", errors)
 }
 
 func (webForum *WebApp) MaxID(w http.ResponseWriter, r *http.Request) {
 	maxID, maxIdErr := webForum.Post.GetMaxId()
-	if maxIdErr.Type != "" {
+	if maxIdErr.Type == "server" {
 		if err := encodeJsonData(w, maxIdErr.StatusCode, maxIdErr); err != nil {
 			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
 		}
 		return
 	}
-	
+
 	if err := encodeJsonData(w, http.StatusOK, maxID); err != nil {
 		http.Error(w, "failed to encode object.", http.StatusInternalServerError)
 	}
 }
 
 func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
-	FetchPostsData := struct {
+	postsData := struct {
 		StartId  int    `json:"postID"`
 		Category string `json:"category"`
 	}{}
-	decodeErr := decodeJsonData(r, &FetchPostsData)
-	if decodeErr != nil {
+
+	if decodeErr := decodeJsonData(r, &postsData); decodeErr != nil {
 		http.Error(w, "failed to decode object.", http.StatusInternalServerError)
 		return
 	}
 
-	if FetchPostsData.Category == "" {
+	posts, postErr := webForum.Post.GetPosts(postsData.StartId, postsData.Category)
+	if postErr.Type != "" {
+		if err := encodeJsonData(w, postErr.StatusCode, postErr); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
 		return
 	}
 
-	posts, err := webForum.Post.GetPosts(FetchPostsData.StartId, FetchPostsData.Category)
-	if err != nil || len(posts) == 0 {
-		fmt.Fprintf(w, "null")
-		return
+	if err := encodeJsonData(w, http.StatusOK, posts); err != nil {
+		http.Error(w, "failed to encode object.", http.StatusInternalServerError)
 	}
-
-	encodeJsonData(w, http.StatusOK, posts)
 }
 
 // func (webForum *WebApp) CreatePost(w http.ResponseWriter, r *http.Request) {

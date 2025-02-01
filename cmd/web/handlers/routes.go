@@ -34,7 +34,7 @@ func (webForum *WebApp) Router() http.Handler {
 	mux.HandleFunc("GET /logout", webForum.UserLogout)
 
 	mux.HandleFunc("POST /maxId", webForum.MaxID)
-	mux.HandleFunc("POST /post", webForum.GetPosts)
+	mux.HandleFunc("POST /posts", webForum.GetPosts)
 
 	// mux.Handle("GET /createPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.CreatePost)))
 	// mux.Handle("POST /createPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.Creation)))

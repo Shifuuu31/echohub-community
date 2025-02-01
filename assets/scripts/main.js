@@ -1,9 +1,9 @@
 import { Popup } from "./popup.js"
-import { desplayPosts } from "./fetch-posts.js"
+import { desplayPosts, DataToFetch } from "./fetch-posts.js"
 
 let isLoading = false
 let attachPopupListeners = null
-let DataToFetch = {}
+// let DataToFetch = {}
 
 const initializePosts = async () => {
     attachPopupListeners = Popup()

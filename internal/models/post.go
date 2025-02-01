@@ -71,24 +71,22 @@ func (PostModel *PostModel) GetCategories() (Categories []Category, catsErr Erro
 func (postModel *PostModel) GetMaxId() (maxID int, maxIdError Error) {
 	if err := postModel.DB.QueryRow("SELECT p.id FROM PostTable p ORDER BY p.id DESC LIMIT 1").Scan(&maxID); err != nil {
 		if err == sql.ErrNoRows {
-			return 0, Error{
-				StatusCode: http.StatusNoContent,
-				Message: "no maxId",
-			}
+			return maxID, maxIdError
 		}
-		return -1, Error{
+		return maxID, Error{
 			StatusCode: http.StatusInternalServerError,
 			Message:    "Internal Server Error",
+			Type:       "server",
 		}
 	}
 	return maxID, maxIdError
 }
 
 // get posts from DB with cateogry
-func (postModel *PostModel) GetPosts(current int, category string) (posts []Post, err error) { // change to fetch 10 posts
-	if current <= 0 {
-		return []Post{}, errors.New("no arguments")
-	}
+func (postModel *PostModel) GetPosts(startId int, category string) (posts []Post, postsErr Error) { // change to fetch 10 posts
+	// if startId <= 0 {
+	// 	return []Post{}, errors.New("no arguments")
+	// }
 	var (
 		query      string
 		args       []interface{}
@@ -97,41 +95,111 @@ func (postModel *PostModel) GetPosts(current int, category string) (posts []Post
 
 	switch category {
 	case "All":
-		query = `SELECT p.id,u.username,p.title,p.content,p.creation_date
-                 FROM PostTable p 
-                 JOIN UserTable u ON u.id = p.user_id
-                 WHERE p.id <= ?
-                 ORDER BY p.id DESC
-                 LIMIT 10;`
-		args = append(args, current)
+		query = `SELECT
+					PostTable.id,
+					UserTable.username,
+					PostTable.title,
+					PostTable.content,
+					PostTable.creation_date
+				FROM
+					PostTable
+					JOIN UserTable ON UserTable.id = PostTable.user_id
+				WHERE
+					PostTable.id <= ?
+				ORDER BY
+					PostTable.id DESC
+				LIMIT
+					10;`
+		args = append(args, startId)
+
 	case "MyPosts":
-		query = `SELECT p.id, u.username, p.title, p.content, p.creation_date
-                 FROM PostTable p
-                 JOIN UserTable u ON u.id = p.user_id
-                 WHERE u.id = ?
-                 ORDER BY p.id DESC
-                 LIMIT 10;`
-		args = append(args, current)
+		query = `SELECT
+					PostTable.id,
+					UserTable.username,
+					PostTable.title,
+					PostTable.content,
+					PostTable.creation_date
+				FROM
+					PostTable
+					JOIN UserTable ON UserTable.id = PostTable.user_id
+				WHERE
+					UserTable.id = ?
+				ORDER BY
+					PostTable.id DESC
+				LIMIT
+					10;`
+		args = append(args, startId)
+
 	case "LikedPosts":
 		// Placeholder for "LikedPosts" case
+
 	default:
 		var err error
 		if categoryID, err = strconv.Atoi(category); err != nil {
-			return []Post{}, errors.New("invalid category")
+			return []Post{}, Error{
+				StatusCode: http.StatusBadRequest,
+				Message:    "Invalid category",
+				Type:       "client",
+			}
 		}
-		query = `SELECT p.id, u.username, p.title, p.content, p.creation_date
-                 FROM PostTable p
-                 JOIN Categories_Posts cp ON p.id = cp.post_id
-                 JOIN UserTable u ON u.id = p.user_id
-                 WHERE cp.category_id = ? AND p.id <= ?
-                 ORDER BY p.id DESC
-                 LIMIT 10;`
-		args = append(args, categoryID, current)
+		checkCategory := `	SELECT
+								id
+							FROM
+								Categories
+							WHERE
+								id = ?;`
+
+		err = postModel.DB.QueryRow(checkCategory, categoryID).Scan()
+		if err != nil {
+			if err == sql.ErrNoRows {
+				return []Post{}, Error{
+					StatusCode: http.StatusBadRequest,
+					Message:    "Invalid category",
+					Type:       "client",
+				}
+			}
+			return []Post{}, Error{
+				StatusCode: http.StatusInternalServerError,
+				Message:    "Internal Server Error",
+				Type:       "server",
+			}
+		}
+
+		query = `SELECT
+					PostTable.id,
+					UserTable.username,
+					PostTable.title,
+					PostTable.content,
+					PostTable.creation_date
+				FROM
+					PostTable
+					JOIN Categories_Posts ON PostTable.id = Categories_Posts.post_id
+					JOIN UserTable ON UserTable.id = PostTable.user_id
+				WHERE
+					Categories_Posts.category_id = ?
+					AND PostTable.id <= ?
+				ORDER BY
+					PostTable.id DESC
+				LIMIT
+					10;`
+		args = append(args, categoryID, startId)
+
 	}
 
 	rows, err := postModel.DB.Query(query, args...)
 	if err != nil {
-		return []Post{}, err
+		if err == sql.ErrNoRows {
+			return []Post{}, Error{
+				StatusCode: http.StatusOK,
+				Message:    "No posts available",
+				Type:       "client",
+			}
+		}
+		return []Post{}, Error{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			Type:       "server",
+		}
 	}
 	defer rows.Close()
 
@@ -139,25 +207,37 @@ func (postModel *PostModel) GetPosts(current int, category string) (posts []Post
 		post := Post{}
 		err = rows.Scan(&post.PostId, &post.PostUserName, &post.PostTitle, &post.PostContent, &post.PostTime)
 		if err != nil {
-			return []Post{}, err
+			return []Post{}, Error{
+				StatusCode: http.StatusInternalServerError,
+				Message:    "Internal Server Error",
+				Type:       "server",
+			}
 		}
 
-		if post.PostCategories, err = postModel.GetCategoriesPost(post.PostId); err != nil {
-			return []Post{}, err
+		if post.PostCategories, err = postModel.GetPostCategories(post.PostId); err != nil {
+			return []Post{}, Error{
+				StatusCode: http.StatusInternalServerError,
+				Message:    "Internal Server Error",
+				Type:       "server",
+			}
 		}
 		post.PostTime = post.PostTime.UTC()
 		posts = append(posts, post)
 	}
 
 	if err = rows.Err(); err != nil {
-		return []Post{}, err
+		return []Post{}, Error{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			Type:       "server",
+		}
 	}
 
-	return posts, nil
+	return posts, postsErr
 }
 
 // get cateogries of post
-func (PostModel *PostModel) GetCategoriesPost(postId int) (postCategories []string, err error) {
+func (PostModel *PostModel) GetPostCategories(postId int) (postCategories []string, err error) {
 	query := `SELECT c.category_name FROM Categories_Posts cp
 	JOIN Categories c ON cp.category_id = c.id WHERE cp.post_id = ?`
 	rows, err := PostModel.DB.Query(query, postId)
@@ -198,7 +278,7 @@ func (PostModel *PostModel) UpdatePost(user_id, idPost int) (post Post, err erro
 		return Post{}, errors.New("no post with this ID : ")
 	}
 
-	if post.PostCategories, err = PostModel.GetCategoriesPost(post.PostId); err != nil {
+	if post.PostCategories, err = PostModel.GetPostCategories(post.PostId); err != nil {
 		return Post{}, err
 	}
 

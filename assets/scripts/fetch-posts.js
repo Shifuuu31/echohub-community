@@ -1,43 +1,51 @@
-export { desplayPosts }
+export { desplayPosts, DataToFetch }
 import { fetchResponse } from "./tools.js"
+let DataToFetch = {}
 
-const desplayPosts = async (category = "All", append = false) => {
+const desplayPosts = async (category = "All", scroll = false) => {
     const posts = document.getElementById("posts")
-    let DataToFetch = {}
 
-    if (!append) {
+    if (!scroll) {
         try {
-            const response = await fetchResponse(`/confirmLogin`, credentials)
+            const response = await fetchResponse(`/maxId`)
 
-            if (response.status === 401) {
-                console.log("Unauthorized: Invalid credentials.")
-
-            } else if (response.status === 200) {
-                console.log("Login successful" )
+            if (response.status === 200) {
+                if (response.body == 0) {
+                    posts.innerHTML = `<h1 style="text-align: center">No posts to display1</h1>`
+                    return false
+                }
+                DataToFetch.postID = response.body
+                DataToFetch.category = category
+                posts.innerHTML = ''
             } else {
                 console.log("Unexpected response:", response.body)
             }
-            displayMessages(response.body.messages, "/",  `Hello, ${credentials.username.charAt(0).toUpperCase()+ credentials.username.slice(1) }!`)
-    
+
         } catch (error) {
-            console.error('Error during login process:', error)
+            console.error('Error during fetching maxId:', error)
+        }
+    }
+    let FetchedPosts = []
+
+    try {
+        const response = await fetchResponse(`/posts`, DataToFetch)
+        if (response.status === 200) {
+            if (response.body.type == 'client') {
+                posts.innerHTML = `<h1 style="text-align: center">No posts to display2</h1>`
+                return false
+            }
+            console.log("Posts Fetched succefully")
+            FetchedPosts = response.body
+        }else if (response.status === 400) {
+            console.log("Bad Request", response.status, response.body.message)
+        } else {
+            console.log("Unexpected response:", response.body)
         }
 
-
-        const maxId = await fetchResponse("/maxId")
-        console.log(maxId);
-        
-        if (maxId.status != 200) {
-            console.error("Failed to get maxId")
-            return false
-        }
-        DataToFetch.postID = maxId.body
-        DataToFetch.category = category
-        posts.innerHTML = ''
+    } catch (error) {
+        console.error('Error during fetching Posts:', error)
     }
 
-    if (DataToFetch.postID) {
-        const FetchedPosts = await fetchResponse("/post", DataToFetch)
         if (FetchedPosts) {
             for (let i = 0; i < FetchedPosts.length; i++) {
                 const postData = document.createElement('div')
@@ -67,12 +75,9 @@ const desplayPosts = async (category = "All", append = false) => {
                     </div>`
                 posts.append(postData)
             }
-            DataToFetch.postID = FetchedPosts[FetchedPosts.length - 1].PostId
-        } else if (!append) {
-            posts.innerHTML = `<h1 style="text-align: center">No posts to display.</h1>`
-            return false
+            DataToFetch.postID = FetchedPosts[FetchedPosts.length - 1].PostId - 1
         }
-    }
+    
 
     return true
 }
