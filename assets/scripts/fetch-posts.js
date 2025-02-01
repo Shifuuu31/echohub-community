@@ -4,6 +4,7 @@ let DataToFetch = {}
 
 const desplayPosts = async (category = "All", scroll = false) => {
     const posts = document.getElementById("posts")
+    const postMsg = document.getElementById("postMsg")
 
     if (!scroll) {
         try {
@@ -11,7 +12,7 @@ const desplayPosts = async (category = "All", scroll = false) => {
 
             if (response.status === 200) {
                 if (response.body == 0) {
-                    posts.innerHTML = `<h1 style="text-align: center">No posts to display1</h1>`
+                    postMsg.innerHTML = `<h1 style="text-align: center">No posts to display1</h1>`
                     return false
                 }
                 DataToFetch.postID = response.body
@@ -30,15 +31,20 @@ const desplayPosts = async (category = "All", scroll = false) => {
     try {
         const response = await fetchResponse(`/posts`, DataToFetch)
         if (response.status === 200) {
-            if (response.body.type == 'client') {
-                posts.innerHTML = `<h1 style="text-align: center">No posts to display2</h1>`
-                return false
-            }
+            console.log("111")
             console.log("Posts Fetched succefully")
             FetchedPosts = response.body
+        }else if (response.status === 100) {
+            console.log("222")
+            FetchedPosts = null
+            console.log('No posts to display2')
+            postMsg.innerHTML = `<h1 style="text-align: center">No posts to display2</h1>`
+            return false
         }else if (response.status === 400) {
+            console.log("3333")
             console.log("Bad Request", response.status, response.body.message)
         } else {
+            console.log("44")
             console.log("Unexpected response:", response.body)
         }
 
@@ -46,7 +52,7 @@ const desplayPosts = async (category = "All", scroll = false) => {
         console.error('Error during fetching Posts:', error)
     }
 
-        if (FetchedPosts) {
+        if (FetchedPosts.length != 0) {
             for (let i = 0; i < FetchedPosts.length; i++) {
                 const postData = document.createElement('div')
                 postData.innerHTML = `          
@@ -76,9 +82,10 @@ const desplayPosts = async (category = "All", scroll = false) => {
                 posts.append(postData)
             }
             DataToFetch.postID = FetchedPosts[FetchedPosts.length - 1].PostId - 1
-        }
-    
+        } else {
+            postMsg.innerHTML = `<h1 style="text-align: center">No posts to display2</h1>`
 
+        }
     return true
 }
 

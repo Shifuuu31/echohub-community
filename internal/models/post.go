@@ -142,28 +142,7 @@ func (postModel *PostModel) GetPosts(startId int, category string) (posts []Post
 				Type:       "client",
 			}
 		}
-		checkCategory := `	SELECT
-								id
-							FROM
-								Categories
-							WHERE
-								id = ?;`
-
-		err = postModel.DB.QueryRow(checkCategory, categoryID).Scan()
-		if err != nil {
-			if err == sql.ErrNoRows {
-				return []Post{}, Error{
-					StatusCode: http.StatusBadRequest,
-					Message:    "Invalid category",
-					Type:       "client",
-				}
-			}
-			return []Post{}, Error{
-				StatusCode: http.StatusInternalServerError,
-				Message:    "Internal Server Error",
-				Type:       "server",
-			}
-		}
+		
 
 		query = `SELECT
 					PostTable.id,
@@ -185,16 +164,10 @@ func (postModel *PostModel) GetPosts(startId int, category string) (posts []Post
 		args = append(args, categoryID, startId)
 
 	}
+	
 
 	rows, err := postModel.DB.Query(query, args...)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return []Post{}, Error{
-				StatusCode: http.StatusOK,
-				Message:    "No posts available",
-				Type:       "client",
-			}
-		}
 		return []Post{}, Error{
 			StatusCode: http.StatusInternalServerError,
 			Message:    "Internal Server Error",

@@ -1,5 +1,5 @@
 import { Popup } from "./popup.js"
-import { desplayPosts, DataToFetch } from "./fetch-posts.js"
+import { desplayPosts } from "./fetch-posts.js"
 
 let isLoading = false
 let attachPopupListeners = null

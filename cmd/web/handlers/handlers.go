@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"forum/internal/models"
@@ -214,11 +215,28 @@ func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	posts, postErr := webForum.Post.GetPosts(postsData.StartId, postsData.Category)
+	fmt.Println(len(posts))
+	if len(posts) == 0 {
+		fmt.Println(posts)
+	}
 	if postErr.Type != "" {
 		if err := encodeJsonData(w, postErr.StatusCode, postErr); err != nil {
 			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
 		}
 		return
+	}
+	if len(posts) == 0 {
+		postErr = models.Error{
+			StatusCode: http.StatusContinue,
+			Message:    "No posts available",
+			Type:       "client",
+		}
+		fmt.Println("here")
+		if err := encodeJsonData(w, postErr.StatusCode, postErr); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
+		return
+
 	}
 
 	if err := encodeJsonData(w, http.StatusOK, posts); err != nil {

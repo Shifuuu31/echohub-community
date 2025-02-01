@@ -32,7 +32,6 @@ const Popup = () => {
                         <button class="new-comment" id="${postid}"><i class="fas fa-paper-plane"></i></button>`
             
             const newCmntBtn = document.getElementById(`${postid}`)
-            // console.log(newCmntBtn)
 
             newCmntBtn.addEventListener('click', async()=>{
                 const cmntTxt = document.getElementById('comment-field')
@@ -42,8 +41,7 @@ const Popup = () => {
                     content : cmntTxt.value, 
                 }
                 cmntTxt.value = ''
-                // console.log('hre=>>>>',newCmnt)
-                // console.log(typeof newCmnt.postid)
+
                 await createComment(newCmnt)
                 
             })
@@ -54,11 +52,8 @@ const Popup = () => {
       };
 
       const createComment = async (newCmnt) => {
-        //   console.log(newCmnt)
           console.log(newCmnt.postid);
         await fetchResponse('/createComment', newCmnt)
-        // console.log(msg)
-        // comment created
         await displaycomment(newCmnt.postid)
       }
    
