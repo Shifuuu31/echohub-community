@@ -1,65 +1,60 @@
-    <!DOCTYPE html>
-    <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="/assets/styles/error.css">
-        <link rel="stylesheet" href="/assets/styles/responsive.error.css">
-        <link rel="stylesheet" href="/assets/styles/global.css">
-        <link rel="stylesheet" href="/assets/styles/nav.global.css">
-        <link rel="stylesheet" href="/assets/styles/buttons.global.css">
-        <link rel="stylesheet" href="/assets/styles/dropdown.global.css">
-        <link rel="stylesheet" href="/assets/styles/responsive.global.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-        
-        <title>echoHub - Post Creation</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=League+Spartan:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik+Vinyl&family=Shrikhand&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/styles/error.css">
+    <link rel="stylesheet" href="/assets/styles/responsive.error.css">
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <link rel="stylesheet" href="/assets/styles/dropdown.global.css">
+    <link rel="stylesheet" href="/assets/styles/responsive.global.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <title>echoHub - Post Creation</title>
+</head>
 
-    <body>
-        <nav>
-            <a href="/" class="logo">
-                <img src="/assets/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
-            </a>
-                {{ if eq .User.UserType "authenticated" }}
-                <a href="/create-post"><button class="create"><img src="/assets/imgs/create.png">Create
-                    Post</button></a>
-                    <div class="profile-dropdown">
-                        <div class="profile-picture-container" id="profile-picture-container">
-                            <img class="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
-                        </div>
-                        <div class="dropdown" id="dropdown">
-                            <img src="/assets/imgs/avatar.png" alt="Profile Picture">
-                            <h2>@{{.User.UserName}}<br><span>{{.User.Email}}</span></h2>
-                            <hr>
-                            <div class="dropdown-content">
-                                <a href="/profile-settings"><img src="/assets/imgs/settings.png">Profile Settings</a>
-                                <a href=""><img src="/assets/imgs/dark-mode.png">Dark Mode (coming soon)</a>
-                                <hr>
-                                <a href="/logout"><img src="/assets/imgs/logout.png">Log Out</a>
-                            </div>
-                        </div>
-                    </div>
-                {{ else }}
-                    <a href="/register"><button class="register"><img src="/assets/imgs/register.png">Register</button></a>
-                    <a href="/login"><button class="login">Login</button></a>
-                {{ end }}
-        </nav>
-        <main>
-            <h1>{{.StatusCode}}</h1>
-            <h2>{{.Message}}</h2>
-            <p>{{.SubMessage}}</p>
-            <a href="/" class="button-back">← Back to Posts</a>
-        </main>
+<body>
+    <nav>
+        <a href="/">
+            <img id="logo" src="/assets/imgs/logo.png" alt="echoHub-Comunnity Logo">
+        </a>
+        <a href="/">
+            <img id="logo-small" src="/assets/imgs/logo-small.png" alt="echoHub-Comunnity Logo">
+        </a>
+		{{ if eq .User.UserType "authenticated" }}
+        <a href="/createPost"><button id="create"><img src="/assets/imgs/create.png"></i>&nbsp;New
+                Post</button></a>
+        <div id="profile-dropdown">
+            <div id="profile-picture-container">
+                <img id="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
+            </div>
+            <div id="dropdown">
+                <img id="inner-profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture">
+				<h2>@{{.User.UserName}}<br><span>{{.User.Email}}</span></h2>
+                <hr>
+                <div id="dropdown-content">
+                    <a href="/profile-settings"><img src="/assets/imgs/settings.png"> Profile Settings</a>
+                    <a href="#"><img src="/assets/imgs/dark-mode.png"> Dark Mode (coming soon)</a>
+                    <a href="https://tally.so/r/wd80WD" target="_blank"><img src="/assets/imgs/report.png"> Report</a>
+                    <hr>
+                    <a href="/logout"><img src="/assets/imgs/logout.png"> Log Out</a>
+                </div>
+            </div>
+        </div>
+		{{else}}
+		<a href="/register"><button id="register"><img src="/assets/imgs/register.png">Register</button></a>
+		<a href="/login"><button id="login">Login</button></a>
+		{{end}}
+    </nav>
+    <div class="wraper" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <p id="error-code">{{.StatusCode}}</p>
+        <p id="error-message">{{.Message}}</p>
+        <p id="message">{{.SubMessage}}</p>
+        <a href="/"><button id="update"><img src="/assets/imgs/back.png"></i>Return</button></a>
+    </div>
     <script src="/assets/scripts/dropdown.js"></script>
-    </body>
 
-    </html>
+</body>
+</html>

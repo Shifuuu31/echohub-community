@@ -8,15 +8,16 @@ import (
 var Template = template.Must(template.ParseGlob("./cmd/web/templates/*.html"))
 
 type Error struct {
-	User       *User
-	StatusCode int
-	Message    string
-	SubMessage string
+	User       *User `json:"user"`
+	StatusCode int  `json:"statusCode"`
+	Message    string `json:"message"`
+	SubMessage string `json:"subMessage"`
+	Type string `json:"type"`
 }
 
 func (err Error) RenderError(w http.ResponseWriter) {
 	if err := Template.ExecuteTemplate(w, "error.html", err); err != nil {
-		// log.Printf("Error rendering template: %v", err)
+		// print("hjgcysgycs")
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}

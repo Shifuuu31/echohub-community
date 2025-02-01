@@ -1,86 +1,75 @@
-export { desplayPosts }
+export { displayPosts, DataToFetch }
+import { fetchResponse, addPost } from "./tools.js"
+let DataToFetch = {}
 
-const desplayPosts = async (category = "All", append = false) => {
-    const posts = document.getElementById("posts")
-    let DataToFetch = {}
-    // let isLoading = false
+const displayPosts = async (category = "All", scroll = false) => {
+    const postsContainer = document.getElementById("posts")
+    const postMsg = document.getElementById("postMsg")
 
-    const GetMaxID = async () => {
+    if (!scroll) {
+        // get max id
         try {
-            const response = await fetch(`${window.location.origin}/maxId`)
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
-            const maxId = await response.json()
-            return maxId
-        } catch (err) {
-            console.error("Error fetching maxId:", err)
+            const response = await fetchResponse(`/maxId`)
+            if (response.status === 200) {
+                if (response.body == 0) {
+                    console.log('No posts to display')
+                    postMsg.innerHTML = `<h1 style="text-align: center">No posts to display</h1>`
+                    return false
+                }
+                DataToFetch.start = response.body
+                DataToFetch.category = category
+                postsContainer.innerHTML = ''
+                postMsg.innerHTML = ''
+            } else {
+                console.log("Unexpected response:", response.body)
+                return false
+            }
+        } catch (error) {
+            console.error('Error during fetching maxId:', error)
         }
     }
 
-    const fetchData = async (url, obj) => {
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(obj),
-            })
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
-            return response.json()
-        } catch (e) {
-            console.error("Error fetching data:", e.message)
-        }
-    }
-
-    const url = `${window.location.origin}/post`
-    if (!append) {
-        const maxId = await GetMaxID()
-        if (maxId == null) {
-            console.error("Failed to get maxId")
+    let FetchedPosts = []
+    // get posts
+    try {
+        const response = await fetchResponse(`/posts`, DataToFetch)
+        if (response.status === 200) {
+            console.log("Posts Fetched succefully")
+            FetchedPosts = response.body
+        } else if (response.status === 100) {
+            console.log('No posts to display')
+            postMsg.innerHTML = `<h1 style="text-align: center">No posts to display</h1>`
+            return false
+        } else if (response.status === 400) {
+            console.log("Bad Request", response.status, response.body.message)
+            return false
+        } else {
+            console.log("Unexpected response:", response.body)
             return false
         }
-        DataToFetch.postID = maxId
-        DataToFetch.category = category
-        posts.innerHTML = ''
+    } catch (error) {
+        console.error('Error during fetching Posts:', error)
     }
 
-    let countPosts = 0
-    while (countPosts < 10 && DataToFetch.postID > 0) {
-        const post = await fetchData(url, DataToFetch)
-        if (post) {
-            countPosts++
-            const postData = document.createElement('div')
-
-
-            postData.innerHTML = `
-                <div id="post">
-                    <div id="user-post-info"><img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
-                        <h3>@${post.PostUserName} <br><span>${new Date(post.PostTime).toUTCString()}</span></h3>
-                        <button class="create"><a href="/deletePost?ID=${post.PostId}">Delete</a></button>
-                        <button class="create"><a href="/updatePost?ID=${post.PostId}">Update</a></button>
-                    </div>
-                    <div id="post-body">
-                        <h3>${post.PostTitle}</h3>
-                        <pre>${post.PostContent}</pre>
-                    </div>
-                    <div id="post-categories">
-                        <div id="links">
-                            ${(post.PostCategories || []).map(category => `<li>${category}</li>`).join(' ')}
-                        </div>
-                        <div id="buttons">
-                            <button><img src="/assets/imgs/like.png" alt="Like"> ${post.LikeCount}</button>
-                            <button><img src="/assets/imgs/dislike.png" alt="Dislike"> ${post.DislikeCount}</button>
-                            <button id="commentBtn"><img src="/assets/imgs/comment.png" alt="Comment"> ${post.CommentsCount}</button>
-                        </div>
-                    </div>
-                </div>`
-            posts.append(postData)
+    // check if there is posts
+    if (FetchedPosts.length > 0) {
+        for (let i = 0; i < FetchedPosts.length; i++) {
+            let postData = addPost(FetchedPosts[i])
+            postsContainer.append(postData)
         }
-        DataToFetch.postID--
-    }
-
-    if (countPosts === 0 && !append) {
-        posts.innerHTML = `<h1 style="text-align: center">No posts to display.</h1>`
-        return false
+        if (FetchedPosts.length < 10) {
+            console.log('No more posts to display')
+            postMsg.innerHTML = `<h1 style="text-align: center">No more posts to display</h1>`
+            return false
+        } else {
+            // send last post fetched id for scroll
+            DataToFetch.start = FetchedPosts[FetchedPosts.length - 1].PostId - 1
+        }
+    }  else {
+        postMsg.innerHTML = `<h1 style="text-align: center">${scroll ? 'No more posts to display' : 'No posts to display'}</h1>`;
+        return false;
     }
 
     return true
 }
+

@@ -1,3 +1,6 @@
+-- enable foreign_keys
+PRAGMA foreign_keys = ON;
+
 CREATE TABLE IF NOT EXISTS UserTable (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username VARCHAR(20) UNIQUE NOT NULL,
@@ -36,6 +39,17 @@ CREATE TABLE IF NOT EXISTS Categories_Posts(
     FOREIGN KEY(category_id) REFERENCES Categories(id) ON DELETE CASCADE,
     FOREIGN KEY(post_id) REFERENCES PostTable(id) ON DELETE CASCADE
 );
+
+CREATE TABLE
+    IF NOT EXISTS CommentTable (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        post_id INTEGER NOT NULL,
+        user_id INTEGER NOT NULL,
+        comment_content TEXT NOT NULL,
+        creation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES UserTable (id) ON DELETE CASCADE,
+        FOREIGN KEY (post_id) REFERENCES PostTable (id) ON DELETE CASCADE
+    );
 
 INSERT INTO
     Categories (category_name, Category_icon_path)

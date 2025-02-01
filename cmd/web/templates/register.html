@@ -4,17 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/styles/global.css">
-    <link rel="stylesheet" href="/assets/styles/nav.global.css">
-    <link rel="stylesheet" href="/assets/styles/buttons.global.css">
     <link rel="stylesheet" href="/assets/styles/dropdown.global.css">
-    <link rel="stylesheet" href="/assets/styles/popup.login-register.css">
     <link rel="stylesheet" href="/assets/styles/responsive.global.css">
     <link rel="stylesheet" href="/assets/styles/register-login.css">
-    <link rel="stylesheet" href="/assets/styles/responsive-animation.register-login.css">
+    <link rel="stylesheet" href="/assets/styles/popup.login-register.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
@@ -24,54 +20,54 @@
 
 <body>
     <nav>
-        <a href="/" class="logo">
-            <img src="/assets/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
+        <a href="/">
+            <img id="logo" src="/assets/imgs/logo.png" alt="echoHub-Comunnity Logo">
         </a>
-        <a href="/register"><button class="register"><img src="/assets/imgs/register.png">Register</button></a>
-        <a href="/login"><button class="login">Login</button></a>    
+        <a href="/">
+            <img id="logo-small" src="/assets/imgs/logo-small.png" alt="echoHub-Comunnity Logo">
+        </a>
+        <a href="/register"><button id="register"><img src="/assets/imgs/register.png">Register</button></a>
+        <a href="/login"><button id="login">Login</button></a>
     </nav>
-    <div class="container">
-        <form class="form" >
-            <p class="title">Join EchoHub community</p>
-            <p class="message">Get more features and privileges by joining the most helpful community.</p>
-            
+    <div id="container">
+        <form id="form">
+            <p id="title">Join EchoHub community </p>
+            <p id="message">Get more features and priviliges by joining to the most helpful community. </p>
             <label>
-                <input class="input" id="username" name="username" type="text" placeholder="" >
+                <input class="input" id="username" type="text" placeholder="" required="">
                 <span>Username</span>
             </label>
-            
             <label>
-                <input class="input" id="email" name="email" type="email" placeholder="" >
+                <input class="input" id="email" type="email" placeholder="">
                 <span>Email</span>
             </label>
-    
+
             <label>
-                <input class="input" id="password" name="password" type="password" placeholder="" >
+                <input class="input" id="password" type="password" placeholder="">
                 <span>Password</span>
+                <img id="passShow" src="/assets/imgs/unvisible.png">
+
             </label>
-            
             <label>
-                <input class="input" id="rPassword" name="rPassword" type="password" placeholder="">
+                <input class="input" id="rPassword" type="password" placeholder="">
                 <span>Confirm password</span>
+                <img id="rPassShow" src="/assets/imgs/unvisible.png">
+
             </label>
-            
             <div id="errorMsgs"></div>
             <button class="submit" id="registerBtn">Register</button>
-            
-            <p class="signin">Already have an account? <a href="/login">Sign in</a></p>
+            <p id="signin">Already have an account? <a href="/login">Signin</a> </p>
         </form>
         <div id="overlay">
             <div id="popup">
                 <h2>Welcome!</h2>
-                <p>You almost there!</p>
-                <a  id="gobtn">Try to login ➜</a>
+                <p>We're glad you're here. Enjoy exploring the site!</p>
+                <a id="gobtn">Explore Our Forum ➜</a>
             </div>
         </div>
-        
-        <img src="/assets/imgs/welcome.png">
+        <img src="/assets/./imgs/welcome.png">
     </div>
     <script src="/assets/scripts/register.js" type="module"></script>
-
 </body>
 
 </html>
