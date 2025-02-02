@@ -1,5 +1,6 @@
 import { Popup } from "./popup.js"
-import { displayPosts, DataToFetch } from "./fetch-posts.js"
+import { displayPosts, DataToFetch } from "./display.js"
+import { DropDown } from "./tools.js"
 
 let attachPopupListeners = null
 
@@ -56,6 +57,7 @@ const setupScrollListener = () => {
 
 const initialize = async () => {
     try {
+        DropDown()
         await initializePosts()
         setupCategoryListeners()
         setupScrollListener()

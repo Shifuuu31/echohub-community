@@ -629,7 +629,7 @@ func (webForum *WebApp) CreateComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if user.UserType != "authenticated" {
-		http.Error(w, http.StatusText(401), http.StatusUnauthorized)
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
 
