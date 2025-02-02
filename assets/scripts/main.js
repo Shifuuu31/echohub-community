@@ -1,14 +1,11 @@
 import { Popup } from "./popup.js"
-import { desplayPosts } from "./fetch-posts.js"
+import { displayPosts, DataToFetch } from "./fetch-posts.js"
 
-let isLoading = false
 let attachPopupListeners = null
-let DataToFetch = {}
 
 const initializePosts = async () => {
     attachPopupListeners = Popup()
-    const postsAdded = await desplayPosts()
-
+    const postsAdded = await displayPosts()
     if (postsAdded) {
         attachPopupListeners()
     }
@@ -17,34 +14,44 @@ const initializePosts = async () => {
 const handleScroll = async () => {
     const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight
 
-    if (isAtBottom && !isLoading) {
-        isLoading = true
-        const newPostsAdded = await desplayPosts(DataToFetch.category, true)
+    if (isAtBottom) {
+        const newPostsAdded = await displayPosts(DataToFetch.category, true)
+
         if (newPostsAdded) {
             attachPopupListeners()
         }
-
-        isLoading = false
     }
 }
 
+
 const handleCategoryChange = async (event) => {
-    const postsLoaded = await desplayPosts(event.target.defaultValue)
+    const postsLoaded = await displayPosts(event.target.defaultValue)
 
     if (postsLoaded) {
         attachPopupListeners()
     }
 }
 
+// event listner for sort by category
 const setupCategoryListeners = () => {
     const categories = document.querySelectorAll("input[id^=category]")
     categories.forEach(category => {
         category.addEventListener('change', handleCategoryChange)
     })
 }
-
+let isThrottled = true;
+// event listner for scroll
 const setupScrollListener = () => {
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', () => {
+        if (isThrottled) {
+            isThrottled = false;
+
+            setTimeout(() => {
+                handleScroll();
+                isThrottled = true;
+            }, 100);
+        }
+    });
 }
 
 const initialize = async () => {

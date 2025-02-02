@@ -28,8 +28,11 @@ func main() {
 		Post: &models.PostModel{
 			DB: db,
 		},
+		Comments: &models.CommentModel{
+			DB: db,
+		},
 	}
-	
+
 	port := ":" + os.Getenv("PORT")
 	if port == ":" {
 		port += "8080"

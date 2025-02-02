@@ -10,6 +10,7 @@ type WebApp struct {
 	Users    *models.UserModel
 	Sessions *models.SessionModel
 	Post     *models.PostModel
+	Comments *models.CommentModel
 }
 
 func (webForum *WebApp) Router() http.Handler {
@@ -22,15 +23,15 @@ func (webForum *WebApp) Router() http.Handler {
 	// authentication middleware
 	mux.Handle("GET /", webForum.AuthMiddleware(http.HandlerFunc(webForum.HomePage)))
 
-	// // Registration routes
+	// Registration routes
 	mux.Handle("GET /register", webForum.AuthMiddleware(http.HandlerFunc(webForum.RegisterPage)))
 	mux.HandleFunc("POST /confirmRegister", webForum.UserRegister)
 
-	// // Login routes
+	// Login routes
 	mux.Handle("GET /login", webForum.AuthMiddleware(http.HandlerFunc(webForum.LoginPage)))
 	mux.HandleFunc("POST /confirmLogin", webForum.ConfirmLogin)
 
-	// // Logout route
+	// Logout route
 	mux.HandleFunc("GET /logout", webForum.UserLogout)
 
 	mux.HandleFunc("POST /maxId", webForum.MaxID)
@@ -46,7 +47,7 @@ func (webForum *WebApp) Router() http.Handler {
 	// // mux.HandleFunc("GET /deletePost", webForum.DeletePost)
 
 	// //madara dzb
-	// mux.HandleFunc("POST /comments", webForum.GetComments)
+	mux.HandleFunc("POST /comments", webForum.GetComments)
 	// mux.HandleFunc("POST /createComment", webForum.HandleCreateComment)
 
 	return mux

@@ -38,14 +38,20 @@ type PostModel struct {
 
 // get categories from DB
 func (PostModel *PostModel) GetCategories() (Categories []Category, catsErr Error) {
-	selectStmt := `	SELECT id,category_name,category_icon_path
-					FROM Categories`
+	selectStmt := `	SELECT
+					    id,
+					    category_name,
+					    category_icon_path
+					FROM
+					    Categories;`
+
 	catsErr = Error{
 		StatusCode: http.StatusInternalServerError,
 		Message:    "Internal Server Error",
 		SubMessage: "Unable to get categories.",
 		Type:       "server",
 	}
+
 	rowsDB, err := PostModel.DB.Query(selectStmt)
 	if err != nil {
 		return nil, catsErr
@@ -84,9 +90,6 @@ func (postModel *PostModel) GetMaxId() (maxID int, maxIdError Error) {
 
 // get posts from DB with cateogry
 func (postModel *PostModel) GetPosts(startId int, category string) (posts []Post, postsErr Error) { // change to fetch 10 posts
-	// if startId <= 0 {
-	// 	return []Post{}, errors.New("no arguments")
-	// }
 	var (
 		query      string
 		args       []interface{}
@@ -162,7 +165,7 @@ func (postModel *PostModel) GetPosts(startId int, category string) (posts []Post
 					10;`
 		args = append(args, categoryID, startId)
 	}
-	
+
 	rows, err := postModel.DB.Query(query, args...)
 	if err != nil {
 		return []Post{}, Error{
@@ -208,8 +211,14 @@ func (postModel *PostModel) GetPosts(startId int, category string) (posts []Post
 
 // get cateogries of post
 func (PostModel *PostModel) GetPostCategories(postId int) (postCategories []string, err error) {
-	query := `SELECT c.category_name FROM Categories_Posts cp
-	JOIN Categories c ON cp.category_id = c.id WHERE cp.post_id = ?`
+	query := `SELECT
+			      Categories.category_name
+			  FROM
+			      Categories_Posts
+			      JOIN Categories ON Categories_Posts.category_id = Categories.id
+			  WHERE
+			      Categories_Posts.post_id = ?;`
+
 	rows, err := PostModel.DB.Query(query, postId)
 	if err != nil {
 		return nil, err

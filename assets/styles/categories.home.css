@@ -3,7 +3,7 @@ ul#categories {
     justify-content: start;
     overflow-x: auto;
     scrollbar-width: none;
-    padding: 10px 0;
+    margin-bottom: 30px;
 }
 
 ul#categories::-webkit-scrollbar {

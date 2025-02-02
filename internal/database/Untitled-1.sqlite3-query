@@ -1,8 +1,0 @@
--- database: ./forum.db
-SELECT
-    c.id,
-    c.category_name
-FROM
-    Categories c
-WHERE
-    c.id = ?;

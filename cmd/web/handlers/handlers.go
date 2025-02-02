@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"forum/internal/models"
 )
@@ -192,9 +193,7 @@ func (webForum *WebApp) UserRegister(w http.ResponseWriter, r *http.Request) {
 func (webForum *WebApp) MaxID(w http.ResponseWriter, r *http.Request) {
 	maxID, maxIdErr := webForum.Post.GetMaxId()
 	if maxIdErr.Type == "server" {
-		if err := encodeJsonData(w, maxIdErr.StatusCode, maxIdErr); err != nil {
-			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
-		}
+		maxIdErr.RenderError(w)
 		return
 	}
 
@@ -205,7 +204,7 @@ func (webForum *WebApp) MaxID(w http.ResponseWriter, r *http.Request) {
 
 func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 	postsData := struct {
-		StartId  int    `json:"postID"`
+		StartId  int    `json:"start"`
 		Category string `json:"category"`
 	}{}
 
@@ -215,23 +214,25 @@ func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	posts, postErr := webForum.Post.GetPosts(postsData.StartId, postsData.Category)
-	fmt.Println(len(posts))
-	if len(posts) == 0 {
-		fmt.Println(posts)
-	}
 	if postErr.Type != "" {
+		if postErr.Type == "server" {
+			postErr.RenderError(w)
+			return
+		}
+
 		if err := encodeJsonData(w, postErr.StatusCode, postErr); err != nil {
 			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
 		}
 		return
 	}
+
 	if len(posts) == 0 {
 		postErr = models.Error{
 			StatusCode: http.StatusContinue,
 			Message:    "No posts available",
 			Type:       "client",
 		}
-		fmt.Println("here")
+
 		if err := encodeJsonData(w, postErr.StatusCode, postErr); err != nil {
 			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
 		}
@@ -586,33 +587,35 @@ func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 // }
 
 // // madara
-// type FetchComments struct {
-// 	Id string `json:ID`
-// }
+type FetchComments struct {
+	PostId string `json:"ID"`
+}
 
-// func (webForum *WebApp) GetComments(w http.ResponseWriter, r *http.Request) {
-// 	// w.Header().Set("Access-Control-Allow-Credentials", "false")
-// 	log.Println(r.Cookie("userSession"))
-// 	var commentData FetchComments
-// 	err := json.NewDecoder(r.Body).Decode(&commentData)
-// 	if err != nil {
-// 		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
-// 		return
-// 	}
+func (webForum *WebApp) GetComments(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("hahahha")
+	var commentData FetchComments
 
-// 	PostId, err := strconv.Atoi(commentData.Id)
-// 	fmt.Println(PostId)
-// 	if err != nil {
-// 		return
-// 	}
-// 	commentModel := &models.CommentModel{DB: webForum.Post.DB}
-// 	comments, err := commentModel.GetComments(PostId)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-// 	encodeJsonData(w, comments)
-// }
+	if decodeErr := decodeJsonData(r, &commentData); decodeErr != nil {
+		http.Error(w, "failed to decode object.", http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Println("postId:", commentData.PostId)
+	PostID, err := strconv.Atoi(commentData.PostId)
+	if err != nil {
+		http.Error(w, "Invalid PostID", http.StatusBadRequest)
+		return
+	}
+	comments, err := webForum.Comments.Comments(PostID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	fmt.Println("comments:", comments)
+	if err := encodeJsonData(w, http.StatusOK, comments); err != nil {
+		http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+	}
+}
 
 // type CreateComment struct {
 // 	PostID         string `json:"postid"`
@@ -657,7 +660,7 @@ func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 // 		return
 // 	}
 // 	// fmt.Fprintln(w, "comment created")
-// 	encodeJsonData(w, "{}")
+// 	// encodeJsonData(w, http.StatusOK,"[]")
 // }
 
 // // tools-------------------------------------

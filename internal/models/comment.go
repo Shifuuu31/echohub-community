@@ -7,19 +7,19 @@ import (
 )
 
 type Comment struct {
-	ID             int
-	PostID         int
-	UserID         int
-	UserName       string
-	CommentContent string
-	CreationDate   time.Time
+	ID           int
+	PostID       int
+	UserID       int
+	UserName     string
+	Content      string
+	CreationDate time.Time
 }
 
 type CommentModel struct {
 	DB *sql.DB
 }
 
-func (cm *CommentModel) GetComments(postID int) ([]Comment, error) {
+func (comment *CommentModel) Comments(postID int) ([]Comment, error) {
 	comments := []Comment{}
 	cmd := `
         SELECT c.id, c.post_id, c.user_id, u.username, c.comment_content, c.creation_date 
@@ -28,7 +28,7 @@ func (cm *CommentModel) GetComments(postID int) ([]Comment, error) {
         WHERE c.post_id = ? 
         ORDER BY c.creation_date DESC`
 
-	rows, err := cm.DB.Query(cmd, postID)
+	rows, err := comment.DB.Query(cmd, postID)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +41,7 @@ func (cm *CommentModel) GetComments(postID int) ([]Comment, error) {
 			&comment.PostID,
 			&comment.UserID,
 			&comment.UserName,
-			&comment.CommentContent,
+			&comment.Content,
 			&comment.CreationDate,
 		)
 		if err != nil {
@@ -57,7 +57,7 @@ func (cm *CommentModel) GetComments(postID int) ([]Comment, error) {
 	return comments, nil
 }
 
-func (cm *CommentModel) CreateComment(postID, userID int, content string) error {
+func (comment *CommentModel) CreateComment(postID, userID int, content string) error {
 	if content == "" {
 		return errors.New("comment content cannot be empty")
 	}
@@ -65,7 +65,7 @@ func (cm *CommentModel) CreateComment(postID, userID int, content string) error 
         INSERT INTO CommentTable (post_id, user_id, comment_content, creation_date) 
         VALUES (?, ?, ?, ?)`
 
-	stmt, err := cm.DB.Prepare(query)
+	stmt, err := comment.DB.Prepare(query)
 	if err != nil {
 		return err
 	}
@@ -76,17 +76,17 @@ func (cm *CommentModel) CreateComment(postID, userID int, content string) error 
 	return err
 }
 
-func (PostModel *PostModel) CreateComment(postID, userID int, content string) error {
-	query := `
-        INSERT INTO CommentTable (post_id, user_id, comment_content, creation_date) 
-        VALUES (?, ?, ?, ?)`
+// func (comment *CommentModel) CreateComment(postID, userID int, content string) error {
+// 	query := `
+//         INSERT INTO CommentTable (post_id, user_id, comment_content, creation_date)
+//         VALUES (?, ?, ?, ?)`
 
-	stmt, err := PostModel.DB.Prepare(query)
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-	creationDate := time.Now()
-	_, err = stmt.Exec(postID, userID, content, creationDate)
-	return err
-}
+// 	stmt, err := PostModel.DB.Prepare(query)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	defer stmt.Close()
+// 	creationDate := time.Now()
+// 	_, err = stmt.Exec(postID, userID, content, creationDate)
+// 	return err
+// }
