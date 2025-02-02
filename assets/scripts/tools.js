@@ -1,4 +1,4 @@
-export { fetchResponse, displayMessages, CheckClick, CheckLength, addPost, throttle }
+export { fetchResponse, displayMessages, CheckClick, CheckLength, addPost }
 
 const fetchResponse = async (url, obj = {}) => {
     try {
@@ -63,6 +63,7 @@ const CheckLength = (category, checkedLength) => {
     }
 }
 
+// add post div to html
 const addPost = (post) => {
     const postData = document.createElement('div')
     postData.innerHTML = `          
@@ -103,14 +104,4 @@ function wrapLinks(text) {
     return wrappedText
 }
 
-// Throttler function
-const throttle = (func, limit) => {
-    let inThrottle = false;
-    return function(...args) {
-        if (!inThrottle) {
-            func.apply(this, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
-        }
-    }
-}
+// add Skeleton

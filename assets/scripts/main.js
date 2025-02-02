@@ -1,13 +1,11 @@
 import { Popup } from "./popup.js"
 import { displayPosts, DataToFetch } from "./fetch-posts.js"
-import { throttle } from "./tools.js"
 
 // let attachPopupListeners = null
 
 const initializePosts = async () => {
     // attachPopupListeners = Popup()
     const postsAdded = await displayPosts()
-
     if (postsAdded) {
         // attachPopupListeners()
     }
@@ -25,7 +23,6 @@ const handleScroll = async () => {
     }
 }
 
-const throttledHandleScroll = throttle(handleScroll, 300);
 
 const handleCategoryChange = async (event) => {
     const postsLoaded = await displayPosts(event.target.defaultValue)
@@ -42,10 +39,19 @@ const setupCategoryListeners = () => {
         category.addEventListener('change', handleCategoryChange)
     })
 }
-
+let isThrottled = true;
 // event listner for scroll
 const setupScrollListener = () => {
-    window.addEventListener('scroll', throttledHandleScroll)
+    window.addEventListener('scroll', () => {
+        if (isThrottled) {
+            isThrottled = false;
+
+            setTimeout(() => {
+                handleScroll();
+                isThrottled = true;
+            }, 100);
+        }
+    });
 }
 
 const initialize = async () => {

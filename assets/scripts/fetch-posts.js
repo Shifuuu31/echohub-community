@@ -5,6 +5,8 @@ let DataToFetch = {}
 const displayPosts = async (category = "All", scroll = false) => {
     const postsContainer = document.getElementById("posts")
     const postMsg = document.getElementById("postMsg")
+    const Skeleton = document.getElementById("post-placeholder")
+
 
     if (!scroll) {
         // get max id
@@ -14,6 +16,7 @@ const displayPosts = async (category = "All", scroll = false) => {
                 if (response.body == 0) {
                     console.log('No posts to display')
                     postMsg.innerHTML = `<h1 style="text-align: center">No posts to display</h1>`
+                    Skeleton.style.display = 'none'
                     return false
                 }
                 DataToFetch.start = response.body
@@ -39,6 +42,7 @@ const displayPosts = async (category = "All", scroll = false) => {
         } else if (response.status === 100) {
             console.log('No posts to display')
             postMsg.innerHTML = `<h1 style="text-align: center">No posts to display</h1>`
+            Skeleton.style.display = 'none'
             return false
         } else if (response.status === 400) {
             console.log("Bad Request", response.status, response.body.message)
@@ -60,13 +64,16 @@ const displayPosts = async (category = "All", scroll = false) => {
         if (FetchedPosts.length < 10) {
             console.log('No more posts to display')
             postMsg.innerHTML = `<h1 style="text-align: center">No more posts to display</h1>`
+            Skeleton.style.display = 'none'
             return false
         } else {
             // send last post fetched id for scroll
             DataToFetch.start = FetchedPosts[FetchedPosts.length - 1].PostId - 1
         }
-    }  else {
-        postMsg.innerHTML = `<h1 style="text-align: center">${scroll ? 'No more posts to display' : 'No posts to display'}</h1>`;
+    } else {
+        console.log(`${scroll ? 'No more posts to display' : 'No posts to display'}`);
+        postMsg.innerHTML = `<h1 style="text-align: center">${scroll ? 'No more posts to display' : 'No posts to display'}</h1>`
+        Skeleton.style.display = 'none'
         return false;
     }
 
