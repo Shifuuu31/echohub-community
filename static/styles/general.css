@@ -105,6 +105,7 @@ nav img {
 }
 
 #post {
+    position: relative;
     display: flex;
     background-color: white;
     justify-content: center;
