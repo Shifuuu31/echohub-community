@@ -3,9 +3,9 @@ package handlers
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"forum/internal/models"
 )
@@ -92,7 +92,7 @@ func (webForum *WebApp) ConfirmLogin(w http.ResponseWriter, r *http.Request) {
 	}{}
 
 	if decodeErr := decodeJsonData(r, &credentials); decodeErr != nil {
-		http.Error(w, "failed to decode object.", http.StatusInternalServerError)
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
 		return
 	}
 
@@ -169,7 +169,7 @@ func (webForum *WebApp) UserRegister(w http.ResponseWriter, r *http.Request) {
 	var newUserinfo models.NewUserInfo
 
 	if decodeErr := decodeJsonData(r, &newUserinfo); decodeErr != nil {
-		http.Error(w, "failed to decode object.", http.StatusInternalServerError)
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
 		return
 	}
 
@@ -209,7 +209,7 @@ func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 	}{}
 
 	if decodeErr := decodeJsonData(r, &postsData); decodeErr != nil {
-		http.Error(w, "failed to decode object.", http.StatusInternalServerError)
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
 		return
 	}
 
@@ -592,15 +592,14 @@ type FetchComments struct {
 }
 
 func (webForum *WebApp) GetComments(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("hahahha")
 	var commentData FetchComments
 
 	if decodeErr := decodeJsonData(r, &commentData); decodeErr != nil {
-		http.Error(w, "failed to decode object.", http.StatusInternalServerError)
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
 		return
 	}
 
-	fmt.Println("postId:", commentData.PostId)
+	// fmt.Println("postId:", commentData.PostId)
 	PostID, err := strconv.Atoi(commentData.PostId)
 	if err != nil {
 		http.Error(w, "Invalid PostID", http.StatusBadRequest)
@@ -611,57 +610,54 @@ func (webForum *WebApp) GetComments(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	fmt.Println("comments:", comments)
+	// fmt.Println("comments:", comments)
 	if err := encodeJsonData(w, http.StatusOK, comments); err != nil {
 		http.Error(w, "failed to encode object.", http.StatusInternalServerError)
 	}
 }
 
-// type CreateComment struct {
-// 	PostID         string `json:"postid"`
-// 	UserID         int    `json:"userid"`
-// 	CommentContent string `json:"content"`
-// }
+type CreateComment struct {
+	PostID  string `json:"postid"`
+	// UserID  string `json:"userid"`
+	Content string `json:"content"`
+}
 
-// func (webForum *WebApp) HandleCreateComment(w http.ResponseWriter, r *http.Request) {
-// 	var commentData CreateComment
-// 	err := json.NewDecoder(r.Body).Decode(&commentData)
-// 	fmt.Println(commentData)
-// 	if err != nil {
-// 		fmt.Fprint(w, "HAHHAHAHHAHA")
-// 		// http.Error(w, "Invalid JSON format", http.StatusBadRequest)
-// 		return
-// 	}
+func (webForum *WebApp) CreateComment(w http.ResponseWriter, r *http.Request) {
+	user, userErr := webForum.Users.RetrieveUser(r)
+	if userErr.Type == "server" {
+		http.Error(w, userErr.Message, userErr.StatusCode)
+		return
+	}
+	if user.UserType != "authenticated" {
+		http.Error(w, http.StatusText(401), http.StatusUnauthorized)
+		return
+	}
 
-// 	if r.Method != http.MethodPost {
-// 		fmt.Fprint(w, "11111")
-// 		// http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-// 		return
-// 	}
-// 	postID, err := strconv.Atoi(commentData.PostID)
-// 	userID := commentData.UserID
-// 	if err != nil {
-// 		fmt.Fprint(w, "222222")
-// 		// http.Error(w, "Invalid post ID or user ID", http.StatusBadRequest)
-// 		return
-// 	}
+	var newCmntData CreateComment
+	if decodeErr := decodeJsonData(r, &newCmntData); decodeErr != nil {
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+		return
+	}
+	postID, err := strconv.Atoi(newCmntData.PostID)
+	if err != nil {
+		http.Error(w, "Invalid Post ID ", http.StatusBadRequest)
+		return
+	}
 
-// 	content := commentData.CommentContent
-// 	if content == "" {
-// 		fmt.Fprint(w, "333333")
-// 		// http.Error(w, "Comment cannot be empty", http.StatusBadRequest)
-// 		return
-// 	}
-// 	commentModel := &models.CommentModel{DB: webForum.Post.DB}
-// 	err = commentModel.CreateComment(postID, userID, content)
-// 	if err != nil {
-// 		fmt.Fprint(w, "444444")
-// 		// http.Error(w, "Failed to create comment", http.StatusInternalServerError)
-// 		return
-// 	}
-// 	// fmt.Fprintln(w, "comment created")
-// 	// encodeJsonData(w, http.StatusOK,"[]")
-// }
+	if strings.TrimSpace(newCmntData.Content) == "" {
+		http.Error(w, "Comment cannot be empty", http.StatusBadRequest)
+		return
+	}
+	err = webForum.Comments.CreateComment(postID, user.ID, newCmntData.Content)
+	if err != nil {
+		http.Error(w, "Failed to create comment", http.StatusInternalServerError)
+		return
+	}
+
+	if err := encodeJsonData(w, http.StatusOK, "comments created succesfully"); err != nil {
+		http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+	}
+}
 
 // // tools-------------------------------------
 

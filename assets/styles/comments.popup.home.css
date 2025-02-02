@@ -1,6 +1,7 @@
 #comments-section {
-    height: 30vh;
+    height: 40vh;
     overflow-y: auto;
+    background-color: #f9f9f9;
 }
 
 #user-post-info,
@@ -114,6 +115,7 @@
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     z-index: 101;
     padding: 0px 25px;
+    overflow-y: auto;
 }
 
 #close {
@@ -123,7 +125,7 @@
 
 #comment {
     display: flex;
-    background-color: white;
+    /* background-color: white; */
     justify-content: center;
     flex-direction: column;
     width: 85%;

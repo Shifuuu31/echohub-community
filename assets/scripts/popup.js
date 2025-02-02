@@ -28,23 +28,24 @@ const Popup = () => {
             const postID =targetedPost.getAttribute("post-id")
             popupPost.replaceWith(targetedPost.cloneNode(true))
             const cmntGrp = document.getElementById('comment-group')
-            cmntGrp.innerHTML = `<textarea placeholder="Type a comment..." type="text" id="comment-field"></textarea>
-                        <button class="new-comment" id="${postID}"><i class="fas fa-paper-plane"></i></button>`
-
-            const newCmntBtn = document.getElementById(`${postID}`)
-
-            newCmntBtn.addEventListener('click', async () => {
-                const cmntTxt = document.getElementById('comment-field')
-                const newCmnt = {
-                    postid: postID,
-                    userid: 1, // to be handled
-                    content: cmntTxt.value,
-                }
-                cmntTxt.value = ''
-
-                // await createComment(newCmnt)
-
-            })
+            if (cmntGrp){
+                cmntGrp.innerHTML = `<textarea placeholder="Type a comment..." type="text" id="comment-field"></textarea>
+                            <button class="new-comment" id="${postID}"><i class="fas fa-paper-plane"></i></button>`
+    
+                const newCmntBtn = document.getElementById(`${postID}`)
+    
+                newCmntBtn.addEventListener('click', async () => {
+                    const cmntTxt = document.getElementById('comment-field')
+                    const newCmnt = {
+                        postid: postID,
+                        content: cmntTxt.value,
+                    }
+                    cmntTxt.value = ''
+    
+                    await createComment(newCmnt)
+    
+                })
+            }
 
             await displayComments(postID);
 
@@ -54,8 +55,8 @@ const Popup = () => {
     const displayComments = async (postid) => {
         commentsSection.innerHTML = ''
         let comments
-        console.log(typeof postid)
-        console.log(postid);
+        // console.log(typeof postid)
+        // console.log(postid);
         try {
             const response = await fetchResponse(`/comments`, { ID: postid })
             if (response.status === 200) {
@@ -78,8 +79,21 @@ const Popup = () => {
 
     const createComment = async (newCmnt) => {
         console.log(newCmnt.postid);
-        await fetchResponse('/createComment', newCmnt)
-        // await displayComments(newCmnt.postid)
+        try {
+            const response = await fetchResponse(`/createComment`, newCmnt)
+            if (response.status === 200) {
+                console.log(response.body)
+                await displayComments(newCmnt.postid)
+            }else if (response.status === 400) {
+                console.log(response.body)
+
+            } else {
+                console.log("Unexpected response:", response.body)
+            }
+    
+        } catch (error) {
+            console.error('Error during login process:', error)
+        }
     }
 
 

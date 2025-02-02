@@ -2,7 +2,6 @@ package models
 
 import (
 	"database/sql"
-	"errors"
 	"time"
 )
 
@@ -58,35 +57,14 @@ func (comment *CommentModel) Comments(postID int) ([]Comment, error) {
 }
 
 func (comment *CommentModel) CreateComment(postID, userID int, content string) error {
-	if content == "" {
-		return errors.New("comment content cannot be empty")
-	}
-	query := `
-        INSERT INTO CommentTable (post_id, user_id, comment_content, creation_date) 
-        VALUES (?, ?, ?, ?)`
+	insertStmt := `
+    INSERT INTO CommentTable (post_id, user_id, comment_content) 
+    VALUES (?, ?, ?) `
 
-	stmt, err := comment.DB.Prepare(query)
+	_, err := comment.DB.Exec(insertStmt, postID, userID, content)
 	if err != nil {
 		return err
 	}
-	defer stmt.Close()
 
-	creationDate := time.Now()
-	_, err = stmt.Exec(postID, userID, content, creationDate)
-	return err
+	return nil
 }
-
-// func (comment *CommentModel) CreateComment(postID, userID int, content string) error {
-// 	query := `
-//         INSERT INTO CommentTable (post_id, user_id, comment_content, creation_date)
-//         VALUES (?, ?, ?, ?)`
-
-// 	stmt, err := PostModel.DB.Prepare(query)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	defer stmt.Close()
-// 	creationDate := time.Now()
-// 	_, err = stmt.Exec(postID, userID, content, creationDate)
-// 	return err
-// }

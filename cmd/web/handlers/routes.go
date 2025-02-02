@@ -30,7 +30,7 @@ func (webForum *WebApp) Router() http.Handler {
 	// Login routes
 	mux.Handle("GET /login", webForum.AuthMiddleware(http.HandlerFunc(webForum.LoginPage)))
 	mux.HandleFunc("POST /confirmLogin", webForum.ConfirmLogin)
-
+	
 	// Logout route
 	mux.HandleFunc("GET /logout", webForum.UserLogout)
 
@@ -45,10 +45,10 @@ func (webForum *WebApp) Router() http.Handler {
 
 	// mux.Handle("GET /deletePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.DeletePost)))
 	// // mux.HandleFunc("GET /deletePost", webForum.DeletePost)
-
+	
 	// //madara dzb
 	mux.HandleFunc("POST /comments", webForum.GetComments)
-	// mux.HandleFunc("POST /createComment", webForum.HandleCreateComment)
+	mux.Handle("POST /createComment", webForum.AuthMiddleware(http.HandlerFunc(webForum.CreateComment)))
 
 	return mux
 }
