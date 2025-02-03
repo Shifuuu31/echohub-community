@@ -42,17 +42,10 @@ func (user *UserModel) RetrieveUser( r *http.Request) (*User, Error){
 		SubMessage: "Unable to retrieve user information.",
 		Type: "server",
 	}
-	// fmt.Println("[",Error{}.Type,"]")
 
-	userID, ok := r.Context().Value(UserIDKey).(int)
-	if !ok {
-		return &User{}, userErr
-	}
-	userType, ok := r.Context().Value(UserTypeKey).(string)
-	if !ok {
-		return &User{}, userErr
-		
-	}
+	userID, _ := r.Context().Value(UserIDKey).(int)
+	
+	
 	if userID == 0 {
 		return &foundUser, Error{}
 	}
@@ -61,7 +54,7 @@ func (user *UserModel) RetrieveUser( r *http.Request) (*User, Error){
 		return &User{}, userErr
 		
 	}
-	foundUser.UserType = userType
+	foundUser.UserType = r.Context().Value(UserTypeKey).(string)
 	return &foundUser, Error{}
 }
 

@@ -37,8 +37,8 @@ func (webForum *WebApp) Router() http.Handler {
 	mux.HandleFunc("POST /maxId", webForum.MaxID)
 	mux.HandleFunc("POST /posts", webForum.GetPosts)
 
-	mux.Handle("GET /createPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.CreatePost)))
-	mux.Handle("POST /createPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.Creation)))
+	mux.Handle("GET /createPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.NewPost)))
+	mux.Handle("POST /addNewPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.AddNewPost)))
 
 	// mux.Handle("GET /updatePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.UpdatePost)))
 	// mux.HandleFunc("POST /updatePost", webForum.Updating)

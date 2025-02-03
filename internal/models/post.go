@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -240,6 +241,34 @@ func (PostModel *PostModel) GetPostCategories(postId int) (postCategories []stri
 	return postCategories, nil
 }
 
+type PostData struct {
+	Id         string   `json:"id`
+	Title      string   `json:"title"`
+	Content    string   `json:"content"`
+	Categories []string `json:"selectedCategories"`
+}
+
+func CheckNewPost(newPost PostData) (response Response) {
+	if len(newPost.Categories) == 0 {
+		response.Messages = append(response.Messages, "Select at least one category")
+	}
+	if len(newPost.Categories) > 3 {
+		response.Messages = append(response.Messages, "You can only select up to 3 categories")
+	}
+	if strings.TrimSpace(newPost.Title) == "" {
+		response.Messages = append(response.Messages, "Title cannot be empty")
+	}
+
+	if len(newPost.Title) > 70 {
+		response.Messages = append(response.Messages, "Title length up to 70 character")
+	}
+
+	if len(newPost.Content) > 5000 {
+		response.Messages = append(response.Messages, "Content length up to 5000 character")
+	}
+	return response
+}
+
 // type PostData struct {
 // 	Id         string   `json:"id`
 // 	Title      string   `json:"title"`
@@ -332,12 +361,7 @@ func (PostModel *PostModel) EditPost(idPost int, title string, content string, C
 		return err
 	}
 
-	idsCategoreis, err := PostModel.GetIdsCategories(Categories)
-	if err != nil {
-		return err
-	}
-
-	err = PostModel.AddCategoriesPost(idPost, idsCategoreis)
+	err = PostModel.AddCategoriesPost(idPost, Categories)
 	if err != nil {
 		return err
 	}
@@ -345,32 +369,30 @@ func (PostModel *PostModel) EditPost(idPost int, title string, content string, C
 	return nil
 }
 
-// get ids of categories
-func (PostModel *PostModel) GetIdsCategories(Categories []string) ([]int, error) {
+// add categories for post
+func (pm *PostModel) AddCategoriesPost(postID int, categories []string) error {
 	ids := []int{}
-	for i := 0; i < len(Categories); i++ {
-		category := Category{}
 
-		err := PostModel.DB.QueryRow("SELECT id FROM Categories WHERE category_name = ?", Categories[i]).Scan(&category)
+	for _, categoryName := range categories {
+		var categoryID int
+		err := pm.DB.QueryRow(
+			"SELECT id FROM categories WHERE category_name = ?",
+			categoryName,
+		).Scan(&categoryID)
 		if err != nil {
-			return nil, err
+			return err
 		}
+		ids = append(ids, categoryID)
 	}
 
-	return ids, nil
-}
-
-// add categories for post
-func (PostModel *PostModel) AddCategoriesPost(post_id int, ids []int) error {
-	query := "INSERT INTO Categories_Posts (category_id,post_id) VALUES (?,?)"
-	cmd, err := PostModel.DB.Prepare(query)
+	stmt, err := pm.DB.Prepare("INSERT INTO categories_posts (category_id, post_id) VALUES (?, ?)")
 	if err != nil {
 		return err
 	}
-	defer cmd.Close()
+	defer stmt.Close()
 
-	for i := 0; i < len(ids); i++ {
-		_, err = cmd.Exec(ids[i], post_id)
+	for _, categoryID := range ids {
+		_, err = stmt.Exec(categoryID, postID)
 		if err != nil {
 			return err
 		}

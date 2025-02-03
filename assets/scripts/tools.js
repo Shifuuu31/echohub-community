@@ -1,4 +1,4 @@
-export { fetchResponse, displayMessages, DropDown, AddPost, AddComment, updateCreatePost, handleCategorySelection }
+export { fetchResponse, displayMessages, DropDown, AddPost, AddComment }
 
 const fetchResponse = async (url, obj = {}) => {
     try {
@@ -11,7 +11,7 @@ const fetchResponse = async (url, obj = {}) => {
 
         return { status: response.status, body: responseBody }
     } catch (error) {
-        console.error('Error fetching response:', error)
+        // console.error('Error fetching response:', error)
         throw error
     }
 }
@@ -97,6 +97,22 @@ const AddPost = (post) => {
     return postData
 }
 
+const AddComment = (comment) => {
+    const commentDiv = document.createElement("div");
+    commentDiv.id = "comment";
+    commentDiv.innerHTML = `
+        <div id="user-info-and-buttons">
+            <div id="user-comment-info">
+                <img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
+                <h3>${comment.UserName} <br><span>${timeAgo(comment.CreationDate)}</span></h3>
+            </div>
+        </div>
+        <div id="user-comment-info">
+            <p>${comment.Content}</p>
+        </div>`
+    return commentDiv
+}
+
 function wrapLinks(text) {
     const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
 
@@ -132,70 +148,6 @@ function timeAgo(input) {
 }
 
 
-// add post div to html
-const AddComment = (comment) => {
-    const commentDiv = document.createElement("div");
-    commentDiv.id = "comment";
-    commentDiv.innerHTML = `
-                                <div id="user-info-and-buttons">
-                                    <div id="user-comment-info">
-                                        <img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
-                                        <h3>${comment.UserName} <br><span>${timeAgo(comment.CreationDate)}</span></h3>
-                                    </div>
-                                </div>
-                                <div id="user-comment-info">
-                                    <p>${comment.Content}</p>
-                                </div>`;
-    return commentDiv
-}
 
-// take values from create/update post form
-const updateCreatePost = async (url) => {
-    let DataToFetch = {
-        id: document.getElementsByClassName("wraper")[0].id,
-        title: document.getElementById("post-title").value,
-        content: document.getElementById("content").value,
-        categories: [],
-    };
-    document.querySelectorAll("input[id^=category]:checked").forEach(category => { DataToFetch.categories.push(category.value) })
 
-    const response = await fetchResponse(url, DataToFetch)
-    console.log(response);
-    
-    if (response.status != 200) {
-        displayError(response.body.message)
-        return
-    }
-    window.location.href = "/";
-}
 
-const errorMsgsDiv = document.querySelector('#errMsg');
-const displayError = (message) => {
-    errorMsgsDiv.innerHTML = '';
-    const paragraph = document.createElement('p');
-    paragraph.textContent = message;
-    paragraph.style.cssText = "color: red; font-weight: 600; font-size: 16px;";
-    errorMsgsDiv.append(paragraph);
-};
-
-const handleCategorySelection = (url) => {
-    const MAX_CATEGORIES = 3;
-    const submitBtn = document.getElementById("submit");
-    const categories = document.querySelectorAll('input[id^=category]');
-
-    categories.forEach((category) => {
-        category.addEventListener('change', () => {
-            const categoriesChecked = document.querySelectorAll('input[id^=category]:checked');
-            if (categoriesChecked.length > MAX_CATEGORIES) {
-                category.checked = false;
-                displayError(`You can only select up to ${MAX_CATEGORIES} categories.`);
-            } else {
-                errorMsgsDiv.innerHTML = '';
-            }
-        });
-    });
-
-    submitBtn.addEventListener('click', async () => {
-        await updateCreatePost(url);
-    });
-};

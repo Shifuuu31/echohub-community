@@ -52,15 +52,13 @@
             {{end}}
         </ul>
         <div id="post-inputs">
-            <label for="post-title">
-                <input type="text" id="post-title" placeholder="Post Title *" maxlength="70" required>
-            </label>
-            <textarea id="content" placeholder="Type Something here..." maxlength="5000" required></textarea>
-            <div id="errMsg"></div>
-            <button id="submit" type="submit"><i class="fas fa-paper-plane"></i>&ensp;Post</button>
+            <input type="text" id="title" placeholder="Post Title *✱" maxlength="70">
+            <p id="errMsgs" style="color: red;"></p>
+            <textarea id="content" placeholder="Type Something here..." maxlength="5000"></textarea>
+            <button id="submitPost"><i class="fas fa-paper-plane"></i>&ensp;Post</button>
         </div>
     </div>
-    <script src="/assets/scripts/post-creation.js" type="module"></script>
+    <script src="/assets/scripts/newPost.js" type="module"></script>
 </body>
 
 </html>

@@ -17,7 +17,6 @@ type Error struct {
 
 func (err Error) RenderError(w http.ResponseWriter) {
 	if err := Template.ExecuteTemplate(w, "error.html", err); err != nil {
-		// print("hjgcysgycs")
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}

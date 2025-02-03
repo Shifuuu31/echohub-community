@@ -142,7 +142,7 @@ func (session *SessionModel) deleteExpiredSessions() error {
 // This runs in an infinite loop with a 30-second delay between each execution.
 func (session *SessionModel) CleanupExpiredSessions() {
 	for {
-		time.Sleep(30 * time.Second)
+		time.Sleep(30 * time.Minute)
 		err := session.deleteExpiredSessions()
 		if err != nil {
 			log.Printf("Error removing expired sessions: %v", err)
