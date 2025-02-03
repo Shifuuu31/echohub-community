@@ -46,13 +46,12 @@ const openPopup = async (event) => {
 
             newCmntBtn.addEventListener('click', async () => {
                 const cmntField = document.getElementById('comment-field')
-                cmntField.value = ''
-
+                
                 await createComment({
                     postid: postID,
                     content: cmntField.value,
                 })
-
+                cmntField.value = ''
             })
         }
 
@@ -61,12 +60,9 @@ const openPopup = async (event) => {
     }
 }
 
-
-
 const closePopup = (event) => {
     if (event.target === popupBackground || event.target === closeButton) {
         popupBackground.style.display = popup.style.display = "none"
-
     }
 }
 
@@ -75,7 +71,7 @@ const createComment = async (newCmnt) => {
     try {
         const response = await fetchResponse(`/createComment`, newCmnt)
         if (response.status === 200) {
-            console.log(response.body)
+            // console.log(response.body)
             await displayComments(newCmnt.postid)
         }else if (response.status === 400) {
             console.log(response.body)
@@ -97,7 +93,6 @@ const displayComments = async (postid) => {
         const response = await fetchResponse(`/comments`, { ID: postid })
         if (response.status === 200) {
             console.log("comments recieved succesfully" )
-            console.log(response.body)
             comments = response.body
 
         } else {

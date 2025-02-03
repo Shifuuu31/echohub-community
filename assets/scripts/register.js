@@ -1,6 +1,5 @@
 import { fetchResponse, displayMessages } from "./tools.js"
 
-
 document.addEventListener('DOMContentLoaded', () => {
     const registerBtn = document.getElementById('registerBtn')
     const passwordInput = document.getElementById("password")

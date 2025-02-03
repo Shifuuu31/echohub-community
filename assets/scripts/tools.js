@@ -1,4 +1,4 @@
-export { fetchResponse, displayMessages,DropDown, CheckClick, CheckLength, AddPost, AddComment }
+export { fetchResponse, displayMessages, DropDown, AddPost, AddComment, updateCreatePost, handleCategorySelection }
 
 const fetchResponse = async (url, obj = {}) => {
     try {
@@ -18,15 +18,15 @@ const fetchResponse = async (url, obj = {}) => {
 const DropDown = () => {
     const profilePictureContainer = document.getElementById('profile-picture-container')
     const dropdown = document.getElementById('dropdown')
-    if ( profilePictureContainer && dropdown) {
-        
-            const toggleDropdown = (event) => {
-                event.stopPropagation()
-                dropdown.classList.toggle('active')
-            }
-        
-            profilePictureContainer.addEventListener('click', toggleDropdown)
-            document.addEventListener('click', ()=>{dropdown.classList.remove('active')})
+    if (profilePictureContainer && dropdown) {
+
+        const toggleDropdown = (event) => {
+            event.stopPropagation()
+            dropdown.classList.toggle('active')
+        }
+
+        profilePictureContainer.addEventListener('click', toggleDropdown)
+        document.addEventListener('click', () => { dropdown.classList.remove('active') })
     }
 }
 
@@ -58,30 +58,11 @@ const displayMessages = (messages, redirectUrl, popupMsg) => {
     })
 }
 
-// const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-const CheckClick = () => {
-    const categoriesChecked = document.querySelectorAll('input[id^=category]:checked')
-    if (categoriesChecked.length == 0) {
-        alert(`Select at least one category`)
-        return false;
-    }
-    return true;
-}
-
-const MAX_CATEGORIES = 3
-const CheckLength = (category, checkedLength) => {
-    if (checkedLength > MAX_CATEGORIES) {
-        category.checked = false
-        alert(`You can only select up to ${MAX_CATEGORIES} categories.`)
-    }
-}
-
 // add post div to html
 const AddPost = (post) => {
     const postData = document.createElement('div')
-    postData.innerHTML = 
-    `<div id="post" post-id="${post.PostId}">
+    postData.innerHTML =
+        `<div id="post" post-id="${post.PostId}">
     <div id="user-post-info">
         <section style="display: flex;">
             <img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
@@ -90,7 +71,7 @@ const AddPost = (post) => {
         ${Username === post.PostUserName ? '<button><img src="/assets/imgs/option.png"></button>' : ''}
     </div>
     ${Username === post.PostUserName ?
-    `<div id="post-dropdown">
+            `<div id="post-dropdown">
         <div id="dropdown-content">
             <a href="/updatePost?ID=${post.PostId}"><img src="/assets/imgs/update.png"> Update Post</a>
             <hr>
@@ -130,32 +111,32 @@ function timeAgo(input) {
     const date = input instanceof Date ? input : new Date(input);
     const formatter = new Intl.RelativeTimeFormat('en');
     const seconds = (Date.now() - date) / 1000;
-  
+
     const units = [
-      ['year', 31536000],
-      ['month', 2592000],
-      ['week', 604800],
-      ['day', 86400],
-      ['hour', 3600],
-      ['minute', 60],
-      ['second', 1]
+        ['year', 31536000],
+        ['month', 2592000],
+        ['week', 604800],
+        ['day', 86400],
+        ['hour', 3600],
+        ['minute', 60],
+        ['second', 1]
     ];
-  
+
     for (const [unit, secondsInUnit] of units) {
-      if (Math.abs(seconds) >= secondsInUnit) {
-        return formatter.format(-Math.round(seconds / secondsInUnit), unit);
-      }
+        if (Math.abs(seconds) >= secondsInUnit) {
+            return formatter.format(-Math.round(seconds / secondsInUnit), unit);
+        }
     }
-    
+
     return 'just now';
-  }
+}
 
 
-  // add post div to html
+// add post div to html
 const AddComment = (comment) => {
     const commentDiv = document.createElement("div");
-            commentDiv.id = "comment";
-            commentDiv.innerHTML = `
+    commentDiv.id = "comment";
+    commentDiv.innerHTML = `
                                 <div id="user-info-and-buttons">
                                     <div id="user-comment-info">
                                         <img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
@@ -167,4 +148,54 @@ const AddComment = (comment) => {
                                 </div>`;
     return commentDiv
 }
-// add Skeleton
+
+// take values from create/update post form
+const updateCreatePost = async (url) => {
+    let DataToFetch = {
+        id: document.getElementsByClassName("wraper")[0].id,
+        title: document.getElementById("post-title").value,
+        content: document.getElementById("content").value,
+        categories: [],
+    };
+    document.querySelectorAll("input[id^=category]:checked").forEach(category => { DataToFetch.categories.push(category.value) })
+
+    const response = await fetchResponse(url, DataToFetch)
+    console.log(response);
+    
+    if (response.status != 200) {
+        displayError(response.body.message)
+        return
+    }
+    window.location.href = "/";
+}
+
+const errorMsgsDiv = document.querySelector('#errMsg');
+const displayError = (message) => {
+    errorMsgsDiv.innerHTML = '';
+    const paragraph = document.createElement('p');
+    paragraph.textContent = message;
+    paragraph.style.cssText = "color: red; font-weight: 600; font-size: 16px;";
+    errorMsgsDiv.append(paragraph);
+};
+
+const handleCategorySelection = (url) => {
+    const MAX_CATEGORIES = 3;
+    const submitBtn = document.getElementById("submit");
+    const categories = document.querySelectorAll('input[id^=category]');
+
+    categories.forEach((category) => {
+        category.addEventListener('change', () => {
+            const categoriesChecked = document.querySelectorAll('input[id^=category]:checked');
+            if (categoriesChecked.length > MAX_CATEGORIES) {
+                category.checked = false;
+                displayError(`You can only select up to ${MAX_CATEGORIES} categories.`);
+            } else {
+                errorMsgsDiv.innerHTML = '';
+            }
+        });
+    });
+
+    submitBtn.addEventListener('click', async () => {
+        await updateCreatePost(url);
+    });
+};

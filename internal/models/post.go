@@ -89,7 +89,7 @@ func (postModel *PostModel) GetMaxId() (maxID int, maxIdError Error) {
 }
 
 // get posts from DB with cateogry
-func (postModel *PostModel) GetPosts(startId int, category string) (posts []Post, postsErr Error) { // change to fetch 10 posts
+func (postModel *PostModel) GetPosts(startId int, category string) (posts []Post, postsErr Error) {
 	var (
 		query      string
 		args       []interface{}
@@ -240,10 +240,66 @@ func (PostModel *PostModel) GetPostCategories(postId int) (postCategories []stri
 	return postCategories, nil
 }
 
+// type PostData struct {
+// 	Id         string   `json:"id`
+// 	Title      string   `json:"title"`
+// 	Content    string   `json:"content"`
+// 	Categories []string `json:"categories"`
+// }
+
+// // check form create/update
+// func (PostModel *PostModel) CheckErrors(postData PostData, user *User) (postErr Error) {
+// 	if len(postData.Categories) == 0 {
+// 		return Error{
+// 			User:       user,
+// 			StatusCode: http.StatusBadRequest,
+// 			Type:       "client",
+// 			Message:    "Select at least one category",
+// 		}
+// 	}
+// 	if postData.Title == "" {
+// 		return Error{
+// 			User:       user,
+// 			StatusCode: http.StatusBadRequest,
+// 			Type:       "client",
+// 			Message:    "Title is reqared",
+// 		}
+// 	}
+// 	if postData.Content == "" {
+// 		return Error{
+// 			User:       user,
+// 			StatusCode: http.StatusBadRequest,
+// 			Type:       "client",
+// 			Message:    "Content is reqared",
+// 		}
+// 	}
+// 	if len(postData.Title) > 70 {
+// 		return Error{
+// 			User:       user,
+// 			StatusCode: http.StatusBadRequest,
+// 			Type:       "client",
+// 			Message:    "Title length must be up to 70 charactaire",
+// 		}
+// 	}
+// 	if len(postData.Content) > 5000 {
+// 		return Error{
+// 			User:       user,
+// 			StatusCode: http.StatusBadRequest,
+// 			Type:       "client",
+// 			Message:    "Content length must be up to 70 charactaire",
+// 		}
+// 	}
+// 	return postErr
+// }
+
 // create post (insert in DB)
 func (PostModel *PostModel) CreatePost(userId int, title, content string) (int, error) {
 	var id int
-	err := PostModel.DB.QueryRow("INSERT INTO PostTable (title, user_id, content) VALUES (?, ?, ?) RETURNING id", title, userId, content).Scan(&id)
+	query := `	INSERT INTO
+				    PostTable (title, user_id, content)
+				VALUES
+				    (?, ?, ?) RETURNING id;`
+	err := PostModel.DB.QueryRow(query, title, userId, content).Scan(&id)
 	if err != nil {
 		return 0, err
 	}
@@ -295,18 +351,9 @@ func (PostModel *PostModel) GetIdsCategories(Categories []string) ([]int, error)
 	for i := 0; i < len(Categories); i++ {
 		category := Category{}
 
-		cmd, err := PostModel.DB.Query("SELECT id, category_name FROM Categories WHERE category_name = ?", Categories[i])
+		err := PostModel.DB.QueryRow("SELECT id FROM Categories WHERE category_name = ?", Categories[i]).Scan(&category)
 		if err != nil {
 			return nil, err
-		}
-		defer cmd.Close()
-
-		for cmd.Next() {
-			err = cmd.Scan(&category.ID, &category.CategoryName)
-			if err != nil {
-				return nil, err
-			}
-			ids = append(ids, category.ID)
 		}
 	}
 

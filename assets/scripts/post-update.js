@@ -1,23 +1,10 @@
-import { CheckClick, CheckLength } from "./tools.js";
-import { update } from "./post-create-update.js";
+import { handleCategorySelection } from "./tools.js";
 
-const categories = document.querySelectorAll('input[id^="category"]')
-const submitBtn = document.getElementById("submit")
 const urlUpdate = `${window.location.origin}/updatePost`;
+const categories = document.querySelectorAll('input[id^=category]');
 
-categories.forEach((category) => {
-    category.addEventListener('change', () => {
-        const categoriesChecked = document.querySelectorAll('input[id^=category]:checked')
-        CheckLength(category, categoriesChecked.length)
-    })
-});
 
-// eventlistner to button submit
-submitBtn.addEventListener('click', async () => {
-    if (CheckClick() == true) {
-        await update(urlUpdate)
-    }
-});
+handleCategorySelection(urlUpdate)
 
 
 // check categories of post
