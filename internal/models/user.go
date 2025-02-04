@@ -231,10 +231,6 @@ func passwordCheck(password, repeatedPassword string) (string, error) {
 		return "", errors.New("Password is required.")
 	}
 
-	if len(password) < 8 || len(password) > 64 {
-		return "", errors.New("password must be between 8 and 64 characters")
-	}
-
 	specialChars := "!@#$%^&*()-_=+[]{}|;:',.<>?/"
 
 	for _, char := range password {
@@ -261,6 +257,9 @@ func passwordCheck(password, repeatedPassword string) (string, error) {
 		return "", errors.New("password must contain at least one number")
 	case hasSpecial:
 		return "", errors.New("password must contain at least one special character")
+	}
+	if len(password) < 8 || len(password) > 64 {
+		return "", errors.New("password must be between 8 and 64 characters")
 	}
 	if repeatedPassword == "" {
 		return "", errors.New("Confirm your password.")
