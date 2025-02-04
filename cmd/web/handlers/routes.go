@@ -45,7 +45,7 @@ func (webForum *WebApp) Router() http.Handler {
 	mux.Handle("POST /addNewPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.AddNewPost)))
 
 	mux.Handle("GET /updatePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.UpdatePost)))
-	// mux.HandleFunc("POST /updatingPost", webForum.UpdatingPost)
+	mux.HandleFunc("POST /updatingPost", webForum.UpdatingPost)
 
 	// mux.Handle("GET /deletePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.DeletePost)))
 	// // mux.HandleFunc("GET /deletePost", webForum.DeletePost)

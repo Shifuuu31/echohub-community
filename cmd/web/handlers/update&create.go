@@ -108,7 +108,7 @@ func (webForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	post, err := webForum.Posts.UpdatePost(user.ID, postId)
+	post, err := webForum.Posts.GetPost(user.ID, postId)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -133,31 +133,38 @@ func (webForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
 	models.RenderPage(w, "updatePost.html", data)
 }
 
-// func (webForum *WebApp) UpdatingPost(w http.ResponseWriter, r *http.Request) {
-// 	var postData PostUpdate
-// 	err := json.NewDecoder(r.Body).Decode(&postData)
-// 	if err != nil {
-// 		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
-// 		return
-// 	}
+func (webForum *WebApp) UpdatingPost(w http.ResponseWriter, r *http.Request) {
+	var toUpdate models.PostData
 
-// 	if postData.Title == "" || len(postData.Title) > 70 || postData.Content == "" || len(postData.Content) > 5000 || len(postData.Categories) == 0 || len(postData.Categories) > 3 {
-// 		http.Redirect(w, r, "/update/post?ID="+postData.Id, http.StatusSeeOther)
-// 		return
-// 	}
+	if decodeErr := decodeJsonData(r, &toUpdate); decodeErr != nil {
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+		return
+	}
 
-// 	id, err := strconv.Atoi(postData.Id)
-// 	if err != nil {
-// 		http.Error(w, "invalid id", http.StatusInternalServerError)
-// 		return
-// 	}
+	response := models.CheckNewPost(toUpdate)
+	if len(response.Messages) != 0 {
+		if err := encodeJsonData(w, http.StatusBadRequest, response); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
+		return
+	}
 
-// 	err = webForum.Post.EditPost(id, postData.Title, postData.Content, postData.Categories)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-// }
+	postID, err := strconv.Atoi(r.URL.Query().Get("ID"))
+	if err != nil {
+		http.Error(w, "Invalid PostID", http.StatusBadRequest)
+		return
+	}
+
+	err = webForum.Posts.EditPost(postID, toUpdate.Title, toUpdate.Content, toUpdate.Categories)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	if err := encodeJsonData(w, http.StatusOK, ""); err != nil {
+		http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+	}
+}
 
 // func (webForum *WebApp) DeletePost(w http.ResponseWriter, r *http.Request) {
 // 	user := &models.User{}

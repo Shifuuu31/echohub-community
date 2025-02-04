@@ -1,4 +1,4 @@
-export { fetchResponse, displayMessages, DropDown, AddPost, AddComment, displayErr }
+export { fetchResponse, displayMessages, DropDown, AddPost, AddComment, displayErr, AddOrUpdatePost, CategoriesSelection }
 
 const fetchResponse = async (url, obj = {}) => {
     try {
@@ -21,7 +21,7 @@ const DropDown = () => {
 
         const toggleDropdown = (event) => {
             console.log("pD")
-            // event.stopPropagation()
+            event.stopPropagation()
             dropdown.classList.toggle('active')
         }
 
@@ -131,6 +131,52 @@ const AddComment = (comment) => {
             <p>${comment.Content}</p>
         </div>`
     return commentDiv
+}
+
+
+
+const AddOrUpdatePost = async (url) => {
+    console.log(url)
+    const newPost = {
+        title: document.getElementById('title').value,
+        content: document.getElementById('content').value,
+        selectedCategories: []
+    }
+    document.querySelectorAll('input[id^=category]:checked').forEach((selectedCategory) => {
+        newPost.selectedCategories.push(selectedCategory.value)
+    })
+
+    console.log(newPost)
+
+    const response = await fetchResponse(url, newPost)
+    console.log(response.body);
+    if (response.status === 401) {
+        console.log("Unauthorized: try to login")
+    } else if (response.status === 400) {
+        console.log(response.body);
+        displayErr(response.body.messages)
+    } else if (response.status === 200) {
+        console.log("post added successfully")
+        window.location.href = "/"
+    } else {
+        console.log("Unexpected response:", response.body)
+    }
+
+}
+
+
+const CategoriesSelection = () => {
+    let categories = document.querySelectorAll('input[id^=category]')
+
+    categories.forEach((category) => {
+        category.addEventListener('change', () => {
+            const checkedCategories = document.querySelectorAll('input[id^=category]:checked')
+            if (checkedCategories.length > 3) {
+                category.checked = false
+                displayErr(['You can only select up to 3 categories'])
+            }
+        })
+    })
 }
 
 const displayErr = (msgs) => {

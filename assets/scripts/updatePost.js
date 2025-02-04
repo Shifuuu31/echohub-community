@@ -1,5 +1,4 @@
-import { DropDown } from "./tools.js"
-import { AddOrUpdatePost, CategoriesSelection } from "./newPost.js"
+import { AddOrUpdatePost, CategoriesSelection, DropDown } from "./tools.js"
 
 document.addEventListener("DOMContentLoaded", () => {
   const categories = document.querySelectorAll('input[id^=category]')
@@ -15,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitPost = document.getElementById('submitPost')
 
   submitPost.addEventListener('click', () => {
-    AddOrUpdatePost(`/updatePost`)
+    // console.log(document.querySelector('.wraper').id)
+    AddOrUpdatePost(`/updatingPost?ID=${document.querySelector('.wraper').id}`)
   })
 })
