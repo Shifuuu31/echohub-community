@@ -16,20 +16,25 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
+    <link rel="shortcut icon" href="/assets/imgs/logo-small.png" type="image/x-icon">
+
     <title>echoHub - Post Creation</title>
 </head>
 
 <body>
     <nav>
         <a href="/">
-            <img src="/assets/imgs/echoHub-Logo_SM-Purple.png" alt="echoHub-Comunnity Logo">
+            <img id="logo" src="/assets/imgs/logo.png" alt="echoHub-Comunnity Logo">
+        </a>
+        <a href="/">
+            <img id="logo-small" src="/assets/imgs/logo-small.png" alt="echoHub-Comunnity Logo">
         </a>
         <div id="profile-dropdown">
             <div id="profile-picture-container">
-                <img id="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
+                <img id="profile-picture" src="{{.User.ProfileImg}}" alt="Profile Picture" loading="lazy">
             </div>
             <div id="dropdown">
-                <img id="inner-profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture">
+                <img id="inner-profile-picture" src="{{.User.ProfileImg}}" alt="Profile Picture">
                 <h2>@{{.User.UserName}}<br><span>{{.User.Email}}</span></h2>
                 <hr>
                 <div id="dropdown-content">
@@ -52,7 +57,7 @@
             {{end}}
         </ul>
         <div id="post-inputs">
-            <input type="text" id="title" placeholder="Post Title *✱" maxlength="70">
+            <input type="text" id="title" placeholder="Post Title *" maxlength="70">
             <p id="errMsgs" style="color: red;"></p>
             <textarea id="content" placeholder="Type Something here..." maxlength="5000"></textarea>
             <button id="submitPost"><i class="fas fa-paper-plane"></i>&ensp;Post</button>
