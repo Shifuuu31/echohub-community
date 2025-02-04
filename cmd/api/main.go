@@ -25,7 +25,7 @@ func main() {
 		Sessions: &models.SessionModel{
 			DB: db,
 		},
-		Post: &models.PostModel{
+		Posts: &models.PostModel{
 			DB: db,
 		},
 		Comments: &models.CommentModel{

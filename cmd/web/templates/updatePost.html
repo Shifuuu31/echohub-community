@@ -30,7 +30,7 @@
             </div>
             <div id="dropdown">
                 <img id="inner-profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture">
-				<h2>@{{.User.UserName}}<br><span>{{.User.Email}}</span></h2>
+                <h2>@{{.User.UserName}}<br><span>{{.User.Email}}</span></h2>
                 <hr>
                 <div id="dropdown-content">
                     <a href="/profile-settings"><img src="/assets/imgs/settings.png"> Profile Settings</a>
@@ -52,20 +52,21 @@
             {{end}}
         </ul>
         <div id="post-inputs">
-            <label for="post-title">
-                <input type="text" id="post-title" placeholder="Post Title *" value="{{.Post_info.PostTitle}}" maxlength="70" required>
-            </label>
-            <textarea id="content" placeholder="Type Something here..." maxlength="5000" required>{{.Post_info.PostContent}}</textarea>
-            <button id="submit" type="submit"><i class="fas fa-paper-plane"></i>&ensp;Update</button>
+            <input type="text" id="post-title" placeholder="Post Title *" value="{{.Post_info.PostTitle}}"
+                maxlength="70" required>
+            <p id="errMsgs" style="color: red;"></p>
+            <textarea id="content" placeholder="Type Something here..." maxlength="5000"
+                required>{{.Post_info.PostContent}}</textarea>
+            <button id="updatePost" ><i class="fas fa-paper-plane"></i>&ensp;Update</button>
         </div>
     </div>
     <script>
         const selected = []
-        {{range .Post_info.PostCategories}}
+        { { range.Post_info.PostCategories } }
         selected.push("{{.}}")
-        {{end}}
+        { { end } }
     </script>
-    <script src="/assets/scripts/post-update.js" type="module"></script>
+    <script src="/assets/scripts/updatePost.js" type="module"></script>
 </body>
 
 </html>

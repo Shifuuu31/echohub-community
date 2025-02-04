@@ -224,6 +224,7 @@
 #user-post-info button {
     background-color: transparent;
     border: none;
+    margin-bottom: auto;
 }
 #user-post-info button img {
     width: 24px;
@@ -235,14 +236,21 @@
 #post-dropdown {
     position: absolute;
     right: 25px;
+    top: 50px;
     background-color: #f9f9f9;
     max-width: 150px;
     min-width: 150px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     overflow: hidden;
-    /* opacity: 0;
-    visibility: hidden; */
+    opacity: 0;
+    visibility: hidden;
+}
+
+#post-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 #post-dropdown hr {
     width: 60%;

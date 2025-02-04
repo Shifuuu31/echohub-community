@@ -26,7 +26,7 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	categories, catsErr := webForum.Post.GetCategories()
+	categories, catsErr := webForum.Posts.GetCategories()
 	if catsErr.Type == "server" {
 		catsErr.RenderError(w)
 		return
@@ -44,7 +44,7 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 }
 
 func (webForum *WebApp) MaxID(w http.ResponseWriter, r *http.Request) {
-	maxID, maxIdErr := webForum.Post.GetMaxId()
+	maxID, maxIdErr := webForum.Posts.GetMaxId()
 	if maxIdErr.Type == "server" {
 		maxIdErr.RenderError(w)
 		return
@@ -66,7 +66,7 @@ func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	posts, postErr := webForum.Post.GetPosts(postsData.StartId, postsData.Category)
+	posts, postErr := webForum.Posts.GetPosts(postsData.StartId, postsData.Category)
 	if postErr.Type != "" {
 		if postErr.Type == "server" {
 			postErr.RenderError(w)

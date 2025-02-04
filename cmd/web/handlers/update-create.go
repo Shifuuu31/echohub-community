@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 
 	"forum/internal/models"
 )
@@ -24,7 +25,7 @@ func (webForum *WebApp) NewPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	categories, catsErr := webForum.Post.GetCategories()
+	categories, catsErr := webForum.Posts.GetCategories()
 	if catsErr.Type == "server" {
 		catsErr.RenderError(w)
 		return
@@ -66,13 +67,13 @@ func (webForum *WebApp) AddNewPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	postID, err := webForum.Post.CreatePost(user.ID, newPost.Title, newPost.Content)
+	postID, err := webForum.Posts.CreatePost(user.ID, newPost.Title, newPost.Content)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
-	err = webForum.Post.AddCategoriesPost(postID, newPost.Categories)
+	err = webForum.Posts.AddCategoriesPost(postID, newPost.Categories)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
@@ -83,87 +84,56 @@ func (webForum *WebApp) AddNewPost(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// func (webForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
-// 	user := &models.User{}
-// 	var err error
+func (webForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
+	user, userErr := webForum.Users.RetrieveUser(r)
+	if userErr.Type == "server" {
+		userErr.RenderError(w)
+		return
+	}
 
-// 	userID, ok := r.Context().Value(models.UserIDKey).(int)
-// 	if !ok {
-// 		models.Error{
-// 			User:       user,
-// 			StatusCode: http.StatusInternalServerError,
-// 			Message:    "Internal Server Error",
-// 			SubMessage: "Unable to retrieve user information.",
-// 		}.RenderError(w)
-// 		return
-// 	}
+	if user.UserType != "authenticated" {
+		userErr = models.Error{
+			StatusCode: http.StatusUnauthorized,
+			Message:    "Unauthorized",
+			SubMessage: "Please try to login",
+		}
 
-// 	if userID != 0 {
-// 		user, err = webForum.Users.FindUserByID(userID)
-// 		if err != nil {
-// 			if err.Error() == "user not found" {
-// 				user = &models.User{
-// 					UserType: "guest",
-// 				}
-// 			} else {
-// 				models.Error{
-// 					User:       user,
-// 					StatusCode: http.StatusInternalServerError,
-// 					Message:    "Internal Server Error",
-// 					SubMessage: err.Error(),
-// 				}.RenderError(w)
-// 				return
-// 			}
-// 		}
-// 	} else {
-// 		user = &models.User{
-// 			UserType: "guest",
-// 		}
-// 	}
-// 	userType, ok := r.Context().Value(userTypeKey).(string)
-// 	if !ok {
-// 		models.Error{
-// 			User:       user,
-// 			StatusCode: http.StatusInternalServerError,
-// 			Message:    "Internal Server Error",
-// 			SubMessage: "Unable to retrieve user type.",
-// 		}.RenderError(w)
-// 		return
-// 	}
-// 	user.UserType = userType
+		userErr.RenderError(w)
+		return
+	}
 
-// 	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
-// 	if err != nil {
-// 		http.Error(w, "invalid id", http.StatusInternalServerError)
-// 		return
-// 	}
+	postId, err := strconv.Atoi(r.URL.Query().Get("ID"))
+	if err != nil {
+		http.Error(w, "Invalid PostID", http.StatusBadRequest)
+		return
+	}
 
-// 	post, err := webForum.Post.UpdatePost(userID, id)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
+	post, err := webForum.Posts.UpdatePost(user.ID, postId)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-// 	Categorys, err := webForum.Post.GetCategories()
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
+	categories, catsErr := webForum.Posts.GetCategories()
+	if catsErr.Type == "server" {
+		catsErr.RenderError(w)
+		return
+	}
 
-// 	data := struct {
-// 		User       *models.User
-// 		Post_info  models.Post
-// 		Categories []models.Category
-// 	}{
-// 		User:       user,
-// 		Post_info:  post,
-// 		Categories: Categorys,
-// 	}
+	data := struct {
+		User       *models.User
+		Post_info  models.Post
+		Categories []models.Category
+	}{
+		User:       user,
+		Post_info:  post,
+		Categories: categories,
+	}
 
-// 	models.RenderPage(w, "post-update.html", data)
-// }
+	models.RenderPage(w, "updatePost.html", data)
+}
 
-// func (webForum *WebApp) Updating(w http.ResponseWriter, r *http.Request) {
+// func (webForum *WebApp) UpdatingPost(w http.ResponseWriter, r *http.Request) {
 // 	var postData PostUpdate
 // 	err := json.NewDecoder(r.Body).Decode(&postData)
 // 	if err != nil {

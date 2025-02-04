@@ -47,7 +47,7 @@ const displayMessages = (messages, redirectUrl, popupMsg) => {
             paragraph.style.color = 'green'
             const overlay = document.getElementById('overlay')
             const goBtn = document.getElementById('gobtn')
-            const h2Element = document.querySelector("#popup h2");
+            const h2Element = document.querySelector("#popup h2")
             h2Element.textContent = popupMsg
             overlay.classList.add('show')
             goBtn.addEventListener('click', () => {
@@ -64,14 +64,14 @@ const AddPost = (post) => {
     postData.innerHTML =
         `<div id="post" post-id="${post.PostId}">
     <div id="user-post-info">
-        <section style="display: flex;">
+        <section style="display: flex">
             <img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
             <h3>@${post.PostUserName} <br><span>${timeAgo(post.PostTime)}</span></h3>
         </section>
-        ${Username === post.PostUserName ? '<button><img src="/assets/imgs/option.png"></button>' : ''}
+        ${Username === post.PostUserName ? '<button class="options-btn" ><img src="/assets/imgs/option.png"></button>' : ''}
     </div>
     ${Username === post.PostUserName ?
-            `<div id="post-dropdown">
+            `<div id="post-dropdown" class="post-dropdown${post.PostId}">
         <div id="dropdown-content">
             <a href="/updatePost?ID=${post.PostId}"><img src="/assets/imgs/update.png"> Update Post</a>
             <hr>
@@ -94,12 +94,28 @@ const AddPost = (post) => {
     </div>
 </div>`
 
+if (Username === post.PostUserName) {
+    const optionsButton = postData.querySelector('.options-btn')
+    const dropdown = postData.querySelector(`.post-dropdown${post.PostId}`)
+
+    optionsButton.addEventListener('click', (event) => {
+        event.stopPropagation()
+        dropdown.classList.toggle('active')
+    })
+
+    document.addEventListener('click', (event) => {
+        if (!dropdown.contains(event.target) && !optionsButton.contains(event.target)) {
+            dropdown.classList.remove('active')
+        }
+    })
+}
+
     return postData
 }
 
 const AddComment = (comment) => {
-    const commentDiv = document.createElement("div");
-    commentDiv.id = "comment";
+    const commentDiv = document.createElement("div")
+    commentDiv.id = "comment"
     commentDiv.innerHTML = `
         <div id="user-info-and-buttons">
             <div id="user-comment-info">
@@ -114,7 +130,7 @@ const AddComment = (comment) => {
 }
 
 function wrapLinks(text) {
-    const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
+    const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.]*[-A-Z0-9+&@#\/%=~_|])/ig
 
     const wrappedText = text.replace(urlRegex, (url) => {
         return `<a href='${url}' target="_blank">${url}</a>`
@@ -124,9 +140,9 @@ function wrapLinks(text) {
 }
 
 function timeAgo(input) {
-    const date = input instanceof Date ? input : new Date(input);
-    const formatter = new Intl.RelativeTimeFormat('en');
-    const seconds = (Date.now() - date) / 1000;
+    const date = input instanceof Date ? input : new Date(input)
+    const formatter = new Intl.RelativeTimeFormat('en')
+    const seconds = (Date.now() - date) / 1000
 
     const units = [
         ['year', 31536000],
@@ -136,15 +152,15 @@ function timeAgo(input) {
         ['hour', 3600],
         ['minute', 60],
         ['second', 1]
-    ];
+    ]
 
     for (const [unit, secondsInUnit] of units) {
         if (Math.abs(seconds) >= secondsInUnit) {
-            return formatter.format(-Math.round(seconds / secondsInUnit), unit);
+            return formatter.format(-Math.round(seconds / secondsInUnit), unit)
         }
     }
 
-    return 'just now';
+    return 'just now'
 }
 
 
