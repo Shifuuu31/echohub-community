@@ -12,6 +12,8 @@ type Comment struct {
 	UserName     string
 	ProfileImg     string
 	Content      string
+	LikeCount      int
+	DislikeCount   int
 	CreationDate time.Time
 }
 
@@ -22,11 +24,11 @@ type CommentModel struct {
 func (comment *CommentModel) Comments(postID int) ([]Comment, error) {
 	comments := []Comment{}
 	cmd := `
-        SELECT c.id, c.post_id, c.user_id, u.username, u.profile_img, c.comment_content, c.creation_date 
-        FROM CommentTable c 
-        JOIN UserTable u ON c.user_id = u.id 
-        WHERE c.post_id = ? 
-        ORDER BY c.creation_date DESC`
+        SELECT CommentTable.id, CommentTable.post_id, CommentTable.user_id, UserTable.username, UserTable.profile_img, CommentTable.comment_content, CommentTable.creation_date 
+        FROM CommentTable 
+        JOIN UserTable ON CommentTable.user_id = UserTable.id 
+        WHERE CommentTable.post_id = ? 
+        ORDER BY CommentTable.creation_date DESC`
 
 	rows, err := comment.DB.Query(cmd, postID)
 	if err != nil {

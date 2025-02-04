@@ -10,16 +10,16 @@ import (
 )
 
 type Post struct {
-	PostId         int
-	PostUserName   string
-	ProfileImg     string
-	PostTime       time.Time
-	PostTitle      string
-	PostContent    string
-	PostCategories []string
-	LikeCount      int
-	DislikeCount   int
-	CommentsCount  int
+	ID            int
+	UserName      string
+	ProfileImg    string
+	CreatedAt     time.Time
+	Title         string
+	Content       string
+	Categories    []string
+	LikeCount     int
+	DislikeCount  int
+	CommentsCount int
 }
 
 type Category struct {
@@ -28,11 +28,11 @@ type Category struct {
 	CategoryIconPath string
 }
 
-type categoryPost struct {
-	ID          int
-	category_id int
-	Post_id     int
-}
+// type categoryPost struct {
+// 	ID          int
+// 	category_id int
+// 	Post_id     int
+// }
 
 type PostModel struct {
 	DB *sql.DB
@@ -183,7 +183,7 @@ func (postModel *PostModel) GetPosts(userID int, startId int, category string) (
 
 	for rows.Next() {
 		post := Post{}
-		err = rows.Scan(&post.PostId, &post.PostUserName, &post.ProfileImg, &post.PostTitle, &post.PostContent, &post.PostTime)
+		err = rows.Scan(&post.ID, &post.UserName, &post.ProfileImg, &post.Title, &post.Content, &post.CreatedAt)
 		if err != nil {
 			return []Post{}, Error{
 				StatusCode: http.StatusInternalServerError,
@@ -192,15 +192,15 @@ func (postModel *PostModel) GetPosts(userID int, startId int, category string) (
 			}
 		}
 
-		if post.PostCategories, err = postModel.GetPostCategories(post.PostId); err != nil {
+		if post.Categories, err = postModel.GetPostCategories(post.ID); err != nil {
 			return []Post{}, Error{
 				StatusCode: http.StatusInternalServerError,
 				Message:    "Internal Server Error",
 				Type:       "server",
 			}
 		}
-		post.PostTime = post.PostTime.UTC()
-		post.CommentsCount, err = postModel.GetCommentCount(post.PostId)
+		post.CreatedAt = post.CreatedAt.UTC()
+		post.CommentsCount, err = postModel.GetCommentCount(post.ID)
 		if err != nil {
 			return []Post{}, Error{
 				StatusCode: http.StatusInternalServerError,
@@ -288,58 +288,6 @@ func CheckNewPost(newPost PostData) (response Response) {
 	return response
 }
 
-// type PostData struct {
-// 	Id         string   `json:"id`
-// 	Title      string   `json:"title"`
-// 	Content    string   `json:"content"`
-// 	Categories []string `json:"categories"`
-// }
-
-// // check form create/update
-// func (PostModel *PostModel) CheckErrors(postData PostData, user *User) (postErr Error) {
-// 	if len(postData.Categories) == 0 {
-// 		return Error{
-// 			User:       user,
-// 			StatusCode: http.StatusBadRequest,
-// 			Type:       "client",
-// 			Message:    "Select at least one category",
-// 		}
-// 	}
-// 	if postData.Title == "" {
-// 		return Error{
-// 			User:       user,
-// 			StatusCode: http.StatusBadRequest,
-// 			Type:       "client",
-// 			Message:    "Title is reqared",
-// 		}
-// 	}
-// 	if postData.Content == "" {
-// 		return Error{
-// 			User:       user,
-// 			StatusCode: http.StatusBadRequest,
-// 			Type:       "client",
-// 			Message:    "Content is reqared",
-// 		}
-// 	}
-// 	if len(postData.Title) > 70 {
-// 		return Error{
-// 			User:       user,
-// 			StatusCode: http.StatusBadRequest,
-// 			Type:       "client",
-// 			Message:    "Title length must be up to 70 charactaire",
-// 		}
-// 	}
-// 	if len(postData.Content) > 5000 {
-// 		return Error{
-// 			User:       user,
-// 			StatusCode: http.StatusBadRequest,
-// 			Type:       "client",
-// 			Message:    "Content length must be up to 70 charactaire",
-// 		}
-// 	}
-// 	return postErr
-// }
-
 // create post (insert in DB)
 func (PostModel *PostModel) CreatePost(userId int, title, content string) (int, error) {
 	var id int
@@ -356,12 +304,12 @@ func (PostModel *PostModel) CreatePost(userId int, title, content string) (int, 
 
 // get post by id to update
 func (PostModel *PostModel) GetPost(user_id, idPost int) (post Post, err error) {
-	err = PostModel.DB.QueryRow("SELECT p.id,p.title,p.content FROM PostTable p WHERE id = ? AND p.user_id = ?", idPost, user_id).Scan(&post.PostId, &post.PostTitle, &post.PostContent)
+	err = PostModel.DB.QueryRow("SELECT p.id,p.title,p.content FROM PostTable p WHERE id = ? AND p.user_id = ?", idPost, user_id).Scan(&post.ID, &post.Title, &post.Content)
 	if err != nil {
 		return Post{}, errors.New("no post with this ID : ")
 	}
 
-	if post.PostCategories, err = PostModel.GetPostCategories(post.PostId); err != nil {
+	if post.Categories, err = PostModel.GetPostCategories(post.ID); err != nil {
 		return Post{}, err
 	}
 

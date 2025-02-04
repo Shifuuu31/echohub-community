@@ -17,8 +17,10 @@ const displayPosts = async (category = "All", scroll = false) => {
                 Skeleton.style.display = 'none'
                 return false
             }
-            DataToFetch.start = response.body
-            DataToFetch.category = category
+            DataToFetch= {
+                start: response.body,
+                category: category,
+            }
             postsContainer.innerHTML = ''
             postMsg.innerHTML = ''
         } else {
@@ -45,7 +47,7 @@ const displayPosts = async (category = "All", scroll = false) => {
         console.log("Unexpected response:", response.body)
         return false
     }
-    
+    // console.log(DataToFetch);
     // check if there is posts
     if (FetchedPosts.length > 0) {
         for (let i = 0; i < FetchedPosts.length; i++) {
@@ -59,7 +61,7 @@ const displayPosts = async (category = "All", scroll = false) => {
             return false
         } else {
             // send last post fetched id for scroll
-            DataToFetch.start = FetchedPosts[FetchedPosts.length - 1].PostId - 1
+            DataToFetch.start = FetchedPosts[FetchedPosts.length - 1].ID - 1
         }
     } else {
         console.log(`${scroll ? 'No more posts to display' : 'No posts to display'}`);

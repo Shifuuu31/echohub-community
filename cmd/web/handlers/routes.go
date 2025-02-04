@@ -38,19 +38,24 @@ func (webForum *WebApp) Router() http.Handler {
 	mux.Handle("GET /profileSettings", webForum.AuthMiddleware(http.HandlerFunc(webForum.ProfileSettings)))
 	// mux.HandleFunc("POST /UpdateProfile", webForum.UpdateProfile)
 	
+	// MaxID route
 	mux.HandleFunc("POST /maxId", webForum.MaxID)
+	
+	// GetPosts route
 	mux.Handle("POST /posts", webForum.AuthMiddleware(http.HandlerFunc(webForum.GetPosts)))
-
+	
+	// NewPost routes
 	mux.Handle("GET /newPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.NewPost)))
 	mux.Handle("POST /addNewPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.AddNewPost)))
-
+	
+	// UpdatePost routes
 	mux.Handle("GET /updatePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.UpdatePost)))
-	mux.HandleFunc("POST /updatingPost", webForum.UpdatingPost)
-
-	// mux.Handle("GET /deletePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.DeletePost)))
-	// // mux.HandleFunc("GET /deletePost", webForum.DeletePost)
-
-	// //madara dzb
+	mux.Handle("POST /updatingPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.UpdatingPost)))
+	
+	// DeletePost route
+	mux.Handle("GET /deletePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.DeletePost)))
+	
+	// Comments route
 	mux.HandleFunc("POST /comments", webForum.GetComments)
 	mux.Handle("POST /createComment", webForum.AuthMiddleware(http.HandlerFunc(webForum.CreateComment)))
 

@@ -62,25 +62,25 @@ const displayMessages = (messages, redirectUrl, popupMsg) => {
 const AddPost = (post) => {
     const postData = document.createElement('div')
     postData.innerHTML =
-        `<div id="post" post-id="${post.PostId}">
+        `<div id="post" post-id="${post.ID}">
     <div id="user-post-info">
         <section style="display: flex">
             <img src="${post.ProfileImg}" alt="User Avatar" loading="lazy">
-            <h3>@${post.PostUserName} <br><span>${timeAgo(post.PostTime)}</span></h3>
+            <h3>@${post.UserName} <br><span>${timeAgo(post.CreatedAt)}</span></h3>
         </section>
-        ${Username === post.PostUserName ? '<button class="options-btn" ><img src="/assets/imgs/option.png"></button>' : ''}
+        ${Username === post.UserName ? '<button class="options-btn" ><img src="/assets/imgs/option.png"></button>' : ''}
     </div>
-    ${Username === post.PostUserName ?
-            `<div id="post-dropdown" class="post-dropdown${post.PostId}">
+    ${Username === post.UserName ?
+            `<div id="post-dropdown" class="post-dropdown${post.ID}">
         <div id="dropdown-content">
-            <a href="/updatePost?ID=${post.PostId}"><img src="/assets/imgs/update.png"> Update Post</a>
+            <a href="/updatePost?ID=${post.ID}"><img src="/assets/imgs/update.png"> Update Post</a>
             <hr>
-            <a href="/deletePost?ID=${post.PostId}"><img src="/assets/imgs/delete.png"> Delete Post</a>
+            <a href="/deletePost?ID=${post.ID}"><img src="/assets/imgs/delete.png"> Delete Post</a>
         </div>
     </div>` : ''}
     <div id="post-body">
-        <h3 id="post-title">${post.PostTitle}</h3>
-        <pre>${wrapLinks(post.PostContent)}</pre>
+        <h3 id="post-title">${post.Title}</h3>
+        <pre>${wrapLinks(post.Content)}</pre>
     </div>
     <div id="post-categories">
         <div id="buttons">
@@ -89,14 +89,14 @@ const AddPost = (post) => {
             <button id="commentBtn"><img src="/assets/imgs/comment.png" alt="Comment"> ${post.CommentsCount}</button>
         </div>
         <div id="links">
-            ${(post.PostCategories || []).map(category => `<li>${category}</li>`).join(' ')}
+            ${(post.Categories || []).map(category => `<li>${category}</li>`).join(' ')}
         </div>
     </div>
 </div>`
 
-    if (Username === post.PostUserName) {
+    if (Username === post.UserName) {
         const optionsButton = postData.querySelector('.options-btn')
-        const dropdown = postData.querySelector(`.post-dropdown${post.PostId}`)
+        const dropdown = postData.querySelector(`.post-dropdown${post.ID}`)
 
         optionsButton.addEventListener('click', (event) => {
             event.stopPropagation()

@@ -42,8 +42,6 @@ func (webForum *WebApp) NewPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func (webForum *WebApp) AddNewPost(w http.ResponseWriter, r *http.Request) {
-	var newPost models.PostData
-
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {
 		http.Error(w, userErr.Message, userErr.StatusCode)
@@ -54,6 +52,7 @@ func (webForum *WebApp) AddNewPost(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
+	var newPost models.PostData
 
 	if decodeErr := decodeJsonData(r, &newPost); decodeErr != nil {
 		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
@@ -134,6 +133,17 @@ func (webForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
 }
 
 func (webForum *WebApp) UpdatingPost(w http.ResponseWriter, r *http.Request) {
+	user, userErr := webForum.Users.RetrieveUser(r)
+	if userErr.Type == "server" {
+		http.Error(w, userErr.Message, userErr.StatusCode)
+		return
+	}
+
+	if user.UserType != "authenticated" {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
 	var toUpdate models.PostData
 
 	if decodeErr := decodeJsonData(r, &toUpdate); decodeErr != nil {
@@ -166,65 +176,39 @@ func (webForum *WebApp) UpdatingPost(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// func (webForum *WebApp) DeletePost(w http.ResponseWriter, r *http.Request) {
-// 	user := &models.User{}
-// 	var err error
+func (webForum *WebApp) DeletePost(w http.ResponseWriter, r *http.Request) {
+	user, userErr := webForum.Users.RetrieveUser(r)
+	if userErr.Type == "server" {
+		userErr.RenderError(w)
+		return
+	}
 
-// 	userID, ok := r.Context().Value(models.UserIDKey).(int)
-// 	if !ok {
-// 		models.Error{
-// 			User:       user,
-// 			StatusCode: http.StatusInternalServerError,
-// 			Message:    "Internal Server Error",
-// 			SubMessage: "Unable to retrieve user information.",
-// 		}.RenderError(w)
-// 		return
-// 	}
+	if user.UserType != "authenticated" {
+		models.Error{
+			StatusCode: http.StatusUnauthorized,
+			Message:    "Unauthorized",
+			SubMessage: "Please try to login",
+		}.RenderError(w)
+		return
+	}
 
-// 	if userID != 0 {
-// 		user, err = webForum.Users.FindUserByID(userID)
-// 		if err != nil {
-// 			if err.Error() == "user not found" {
-// 				user = &models.User{
-// 					UserType: "guest",
-// 				}
-// 			} else {
-// 				models.Error{
-// 					User:       user,
-// 					StatusCode: http.StatusInternalServerError,
-// 					Message:    "Internal Server Error",
-// 					SubMessage: err.Error(),
-// 				}.RenderError(w)
-// 				return
-// 			}
-// 		}
-// 	} else {
-// 		user = &models.User{
-// 			UserType: "guest",
-// 		}
-// 	}
-// 	userType, ok := r.Context().Value(userTypeKey).(string)
-// 	if !ok {
-// 		models.Error{
-// 			User:       user,
-// 			StatusCode: http.StatusInternalServerError,
-// 			Message:    "Internal Server Error",
-// 			SubMessage: "Unable to retrieve user type.",
-// 		}.RenderError(w)
-// 		return
-// 	}
-// 	user.UserType = userType
+	postID, err := strconv.Atoi(r.URL.Query().Get("ID"))
+	if err != nil {
+		models.Error{
+			StatusCode: http.StatusBadRequest,
+			Message:    "Bad Request",
+			SubMessage: "Invalid PostID",
+		}.RenderError(w)
+		return
+	}
 
-// 	id, err := strconv.Atoi(r.URL.Query().Get("ID"))
-// 	if err != nil {
-// 		http.Error(w, "invalid id", http.StatusInternalServerError)
-// 		return
-// 	}
-
-// 	err = webForum.Post.DeletePost(userID, id)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-// 	http.Redirect(w, r, "/", http.StatusSeeOther)
-// }
+	err = webForum.Posts.DeletePost(user.ID, postID)
+	if err != nil {
+		models.Error{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+		}.RenderError(w)
+		return
+	}
+	http.Redirect(w, r, "/", http.StatusFound)
+}
