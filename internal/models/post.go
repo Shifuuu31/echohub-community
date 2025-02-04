@@ -3,7 +3,6 @@ package models
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -265,7 +264,6 @@ func (post *PostModel) GetCommentCount(postID int) (cmntCount int, err error) {
 	countStmt := `SELECT COUNT(*) FROM CommentTable WHERE post_id = ?`
 
 	err = post.DB.QueryRow(countStmt, postID).Scan(&cmntCount)
-	fmt.Println(cmntCount)
 	return cmntCount, err
 }
 

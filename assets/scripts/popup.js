@@ -106,6 +106,7 @@ const displayComments = async (postid) => {
         console.error('Error during login process:', error)
     }
     comments.forEach(comment => {
+        console.log(comment)
         commentsSection.appendChild(AddComment(comment));
     });
 

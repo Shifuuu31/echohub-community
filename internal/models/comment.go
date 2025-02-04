@@ -54,7 +54,6 @@ func (comment *CommentModel) Comments(postID int) ([]Comment, error) {
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
-	// fmt.Println(comments)
 	return comments, nil
 }
 

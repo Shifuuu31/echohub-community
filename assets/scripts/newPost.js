@@ -1,4 +1,4 @@
-import { fetchResponse, DropDown } from "./tools.js"
+import { fetchResponse, displayErr, DropDown } from "./tools.js"
 
 document.addEventListener("DOMContentLoaded", () => {
     DropDown()
@@ -18,9 +18,7 @@ const AddNewPost= async () =>{
     document.querySelectorAll('input[id^=category]:checked').forEach((selectedCategory) => {
         newPost.selectedCategories.push(selectedCategory.value)
     })
-    if (newPost.selectedCategories.length == 0) {
-        alert(`Select at least one category`)
-    }
+
     console.log(newPost)
 
     try {
@@ -30,8 +28,7 @@ const AddNewPost= async () =>{
             console.log("Unauthorized: try to login")
         } else if (response.status === 400) {
             console.log(response.body);
-            const errSection = document.getElementById('errMsgs')
-            response.body.messages.forEach((msg) => errSection.innerText = msg)
+            displayErr(response.body.messages)
         } else if (response.status === 200) {
             console.log("post added successfully" )
             window.location.href="/"
@@ -52,7 +49,7 @@ const CategoriesSelection = () => {
             const checkedCategories = document.querySelectorAll('input[id^=category]:checked')
             if (checkedCategories.length > 3) {
                 category.checked = false
-                alert(`You can only select up to 3 categories`)
+                displayErr(['You can only select up to 3 categories'])
             }
         })
     })

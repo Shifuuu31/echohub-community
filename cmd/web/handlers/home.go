@@ -111,7 +111,6 @@ func (webForum *WebApp) GetComments(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// fmt.Println("postId:", commentData.PostId)
 	PostID, err := strconv.Atoi(commentData.PostId)
 	if err != nil {
 		http.Error(w, "Invalid PostID", http.StatusBadRequest)
@@ -122,7 +121,6 @@ func (webForum *WebApp) GetComments(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// fmt.Println("comments:", comments)
 	if err := encodeJsonData(w, http.StatusOK, comments); err != nil {
 		http.Error(w, "failed to encode object.", http.StatusInternalServerError)
 	}
@@ -178,7 +176,6 @@ func decodeJsonData(r *http.Request, obj interface{}) error {
 }
 
 func encodeJsonData(w http.ResponseWriter, statusCode int, obj interface{}) error {
-	// fmt.Println("OBJ:\x1b[1;31m", obj, "\x1b[1;39m")
 	w.Header().Set("Content-Type", "application/json")
 
 	w.WriteHeader(statusCode)

@@ -34,6 +34,10 @@ func (webForum *WebApp) Router() http.Handler {
 	// Logout route
 	mux.HandleFunc("GET /logout", webForum.UserLogout)
 
+	// ProfileSettings routes
+	mux.Handle("GET /profileSettings", webForum.AuthMiddleware(http.HandlerFunc(webForum.ProfileSettings)))
+	// mux.HandleFunc("POST /UpdateProfile", webForum.UpdateProfile)
+
 	mux.HandleFunc("POST /maxId", webForum.MaxID)
 	mux.HandleFunc("POST /posts", webForum.GetPosts)
 

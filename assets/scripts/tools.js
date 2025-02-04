@@ -1,4 +1,4 @@
-export { fetchResponse, displayMessages, DropDown, AddPost, AddComment }
+export { fetchResponse, displayMessages, DropDown, AddPost, AddComment, displayErr}
 
 const fetchResponse = async (url, obj = {}) => {
     try {
@@ -121,12 +121,45 @@ const AddComment = (comment) => {
                 <img src="${comment.ProfileImg}" alt="User Avatar" loading="lazy">
                 <h3>@${comment.UserName} <br><span>${timeAgo(comment.CreationDate)}</span></h3>
             </div>
+            <div id="buttons">
+                <button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
+                <button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
+            </div>
         </div>
         <div id="user-comment-info">
             <p>${comment.Content}</p>
         </div>`
     return commentDiv
 }
+
+const displayErr = (msgs) => {
+    const errPopups = document.querySelectorAll('.errPopup')
+    console.log( errPopups)
+    errPopups.forEach(popup => popup.remove());
+    msgs.forEach((msg, index) => {
+        // console.log(document.querySelectorAll('div[id^=errPopup]'))
+      const errPopup = document.createElement("div")
+      errPopup.id = `errPopup-${index}`
+      errPopup.classList.add("errPopup")
+      errPopup.innerHTML = `
+        <p>${msg}</p>
+        <span class="close-btn">&times;</span>
+      `
+      index == 0 ? errPopup.style.top = '100px' : errPopup.style.top = `${(index+1) * 80}px`
+      
+      document.body.appendChild(errPopup);
+    //   console.log(errPopup);
+  
+      const closeBtn = errPopup.querySelector('.close-btn')
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function () {
+          console.log('text')
+          errPopup.remove()
+        })
+      }
+    })
+  }
+  
 
 function wrapLinks(text) {
     const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.]*[-A-Z0-9+&@#\/%=~_|])/ig

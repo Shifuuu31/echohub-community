@@ -41,7 +41,6 @@ func (session *SessionModel) GenerateNewSession(userID int, remember bool) (Sess
 		}
 	}
 
-	// fmt.Println("\x1b[1;31m", newSession.ExpirationDate, "\x1b[1;39m")
 	return Session{
 		UserID:         userID,
 		Token:          newToken.String(),

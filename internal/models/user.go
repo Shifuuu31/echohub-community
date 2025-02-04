@@ -3,7 +3,6 @@ package models
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -62,8 +61,8 @@ func (user *UserModel) RetrieveUser(r *http.Request) (*User, Error) {
 func (user *UserModel) FindUserByID(userID int) (foundUser User, err error) {
 	// foundUser := &User{}
 
-	selectStmt := `SELECT id, username, email, profile_img FROM UserTable WHERE id = ?`
-	err = user.DB.QueryRow(selectStmt, userID).Scan(&foundUser.ID, &foundUser.UserName, &foundUser.Email, &foundUser.ProfileImg)
+	selectStmt := `SELECT id, username, email, gender, profile_img FROM UserTable WHERE id = ?`
+	err = user.DB.QueryRow(selectStmt, userID).Scan(&foundUser.ID, &foundUser.UserName, &foundUser.Email, &foundUser.Gender, &foundUser.ProfileImg)
 	if err != nil {
 		return foundUser, err
 	}
@@ -91,7 +90,6 @@ func (user *UserModel) ValidateUserCredentials(username, password string) (UserI
 	} else {
 		passErr := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 		if passErr != nil {
-			fmt.Println(passErr.Error())
 			errors = append(errors, "Invalid password.")
 		}
 	}

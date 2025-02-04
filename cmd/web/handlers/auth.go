@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"forum/internal/models"
@@ -151,4 +152,25 @@ func (webForum *WebApp) UserRegister(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
 		}
 	}
+}
+
+func (webForum *WebApp) ProfileSettings(w http.ResponseWriter, r *http.Request) {
+	user, userErr := webForum.Users.RetrieveUser(r)
+	if userErr.Type == "server" {
+		userErr.RenderError(w)
+		return
+	}
+	println("hahhahha")
+	
+	if user.UserType != "authenticated" {
+		userErr = models.Error {
+			StatusCode: http.StatusUnauthorized,
+			Message: "Unauthorized",
+			SubMessage: "Try to login",
+			}
+		userErr.RenderError(w)
+		return
+	}
+	fmt.Println(user)
+	models.RenderPage(w, "profileSettings.html", user)
 }
