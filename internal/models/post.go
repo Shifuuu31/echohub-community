@@ -13,6 +13,7 @@ import (
 type Post struct {
 	PostId         int
 	PostUserName   string
+	ProfileImg   string
 	PostTime       time.Time
 	PostTitle      string
 	PostContent    string
@@ -103,6 +104,7 @@ func (postModel *PostModel) GetPosts(startId int, category string) (posts []Post
 		query = `SELECT
 					PostTable.id,
 					UserTable.username,
+					UserTable.profile_img,
 					PostTable.title,
 					PostTable.content,
 					PostTable.creation_date
@@ -121,6 +123,7 @@ func (postModel *PostModel) GetPosts(startId int, category string) (posts []Post
 		query = `SELECT
 					PostTable.id,
 					UserTable.username,
+					UserTable.profile_img,
 					PostTable.title,
 					PostTable.content,
 					PostTable.creation_date
@@ -151,6 +154,7 @@ func (postModel *PostModel) GetPosts(startId int, category string) (posts []Post
 		query = `SELECT
 					PostTable.id,
 					UserTable.username,
+					UserTable.profile_img,
 					PostTable.title,
 					PostTable.content,
 					PostTable.creation_date
@@ -180,7 +184,7 @@ func (postModel *PostModel) GetPosts(startId int, category string) (posts []Post
 
 	for rows.Next() {
 		post := Post{}
-		err = rows.Scan(&post.PostId, &post.PostUserName, &post.PostTitle, &post.PostContent, &post.PostTime)
+		err = rows.Scan(&post.PostId, &post.PostUserName, &post.ProfileImg, &post.PostTitle, &post.PostContent, &post.PostTime)
 		if err != nil {
 			return []Post{}, Error{
 				StatusCode: http.StatusInternalServerError,

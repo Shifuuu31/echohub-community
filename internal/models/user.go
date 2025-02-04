@@ -17,6 +17,8 @@ type User struct {
 	UserName       string
 	Email          string
 	HashedPassword string
+	Gender         string
+	ProfileImg     string
 	CreationDate   time.Time
 	UserType       string
 }
@@ -33,26 +35,24 @@ var (
 	UserTypeKey contextKey = "UserType"
 )
 
-func (user *UserModel) RetrieveUser( r *http.Request) (*User, Error){
+func (user *UserModel) RetrieveUser(r *http.Request) (*User, Error) {
 	var foundUser User
 	var err error
 	userErr := Error{
 		StatusCode: http.StatusInternalServerError,
 		Message:    "Internal Server Error",
 		SubMessage: "Unable to retrieve user information.",
-		Type: "server",
+		Type:       "server",
 	}
 
 	userID, _ := r.Context().Value(UserIDKey).(int)
-	
-	
+
 	if userID == 0 {
 		return &foundUser, Error{}
 	}
 	foundUser, err = user.FindUserByID(userID)
 	if err != nil {
 		return &User{}, userErr
-		
 	}
 	foundUser.UserType = r.Context().Value(UserTypeKey).(string)
 	return &foundUser, Error{}
@@ -62,8 +62,8 @@ func (user *UserModel) RetrieveUser( r *http.Request) (*User, Error){
 func (user *UserModel) FindUserByID(userID int) (foundUser User, err error) {
 	// foundUser := &User{}
 
-	selectStmt := `SELECT id, username, email FROM UserTable WHERE id = ?`
-	err = user.DB.QueryRow(selectStmt, userID).Scan(&foundUser.ID, &foundUser.UserName, &foundUser.Email)
+	selectStmt := `SELECT id, username, email, profile_img FROM UserTable WHERE id = ?`
+	err = user.DB.QueryRow(selectStmt, userID).Scan(&foundUser.ID, &foundUser.UserName, &foundUser.Email, &foundUser.ProfileImg)
 	if err != nil {
 		return foundUser, err
 	}
@@ -99,14 +99,21 @@ func (user *UserModel) ValidateUserCredentials(username, password string) (UserI
 	if len(errors) != 0 {
 		return -1, errors
 	}
-	
+
 	return UserID, errors
 }
 
 // InsertUser adds a new user to the database.
 func (user *UserModel) InsertUser(newUser User) (err error) {
-	insertStmt := `INSERT INTO UserTable (username, email, hashed_password) VALUES (?, ?, ?)`
-	_, err = user.DB.Exec(insertStmt, newUser.UserName, newUser.Email, newUser.HashedPassword)
+	avatarApiBaseUrl := "https://avatar.iran.liara.run/public/"
+	switch newUser.Gender {
+	case "male":
+		newUser.ProfileImg = avatarApiBaseUrl + "boy?username=" + newUser.UserName
+	case "female":
+		newUser.ProfileImg = avatarApiBaseUrl + "girl?username=" + newUser.UserName
+	}
+	insertStmt := `INSERT INTO UserTable (username, email, hashed_password, gender, profile_img) VALUES (?, ?, ?, ?, ?)`
+	_, err = user.DB.Exec(insertStmt, newUser.UserName, newUser.Email, newUser.HashedPassword, newUser.Gender, newUser.ProfileImg)
 	if err != nil {
 		return err
 	}
@@ -117,6 +124,7 @@ func (user *UserModel) InsertUser(newUser User) (err error) {
 type NewUserInfo struct {
 	UserName     string `json:"username"`
 	Email        string `json:"email"`
+	Gender       string `json:"gender"`
 	Password     string `json:"password"`
 	RepeatedPass string `json:"rPassword"`
 }
@@ -142,7 +150,10 @@ func (user *UserModel) ValidateNewUser(new NewUserInfo) (newUser User, errors Re
 		errors.Messages = append(errors.Messages, err.Error())
 	}
 	newUser.HashedPassword = string(hash)
-
+	if new.Gender != "male" && new.Gender != "female" {
+		errors.Messages = append(errors.Messages, "Invalid gender: must be 'male' or 'female'")
+	}
+	newUser.Gender = new.Gender
 	return newUser, errors
 }
 

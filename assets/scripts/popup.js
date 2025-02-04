@@ -1,4 +1,4 @@
-import { fetchResponse, AddComment, incNumInStr } from "./tools.js"
+import { fetchResponse, AddComment } from "./tools.js"
 export { Popup }
 
 const popup = document.getElementById("popup")
@@ -27,18 +27,15 @@ const Popup = () => {
 }
 
 const openPopup = async (event) => {
-    let popupPost = document.querySelector("#popup #post")
 
     if (popup && popupBackground) {
         popupBackground.style.display = popup.style.display = "block"
 
         const targetedPost = event.target.closest("#post")
-        const postID =targetedPost.getAttribute("post-id")
-
-        popupPost.replaceWith(targetedPost.cloneNode(true))
+        const postID = targetedPost.getAttribute("post-id")
 
         const cmntGrp = document.getElementById('comment-group')
-        if (cmntGrp){
+        if (cmntGrp) {
             cmntGrp.innerHTML = `<textarea placeholder="Type a comment..." type="text" id="comment-field"></textarea>
                         <button class="new-comment" id="${postID}"><i class="fas fa-paper-plane"></i></button>`
 
@@ -46,17 +43,16 @@ const openPopup = async (event) => {
 
             newCmntBtn.addEventListener('click', async () => {
                 const cmntField = document.getElementById('comment-field')
-                
-                const created =await createComment({
+
+                const created = await createComment({
                     postid: postID,
                     content: cmntField.value,
                 })
-                if (created == true) { 
-                const postCmntBtn = targetedPost.querySelector('#commentBtn')
-                let popupCmntBtn = document.querySelector("#popup #post #commentBtn")
-                popupCmntBtn.innerHTML = postCmntBtn.innerHTML = `<img src="/assets/imgs/comment.png" alt="Comment">${parseInt(postCmntBtn.textContent, 10)+1}`
-                cmntField.value = ''
-                
+                if (created == true) {
+                    const postCmntBtn = targetedPost.querySelector('#commentBtn')
+                    postCmntBtn.innerHTML = `<img src="/assets/imgs/comment.png" alt="Comment">${parseInt(postCmntBtn.textContent, 10) + 1}`
+                    cmntField.value = ''
+
                 }
             })
         }
@@ -78,13 +74,13 @@ const createComment = async (newCmnt) => {
         if (response.status === 200) {
             await displayComments(newCmnt.postid)
             return true
-        }else if (response.status === 400) {
+        } else if (response.status === 400) {
             console.log(response.body)
-            
+
         } else {
             console.log("Unexpected response:", response.body)
         }
-        
+
         return false
     } catch (error) {
         console.error('Error during login process:', error)
@@ -99,7 +95,7 @@ const displayComments = async (postid) => {
     try {
         const response = await fetchResponse(`/comments`, { ID: postid })
         if (response.status === 200) {
-            console.log("comments recieved succesfully" )
+            console.log("comments recieved succesfully")
             comments = response.body
 
         } else {

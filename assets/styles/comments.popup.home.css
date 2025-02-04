@@ -1,7 +1,6 @@
 #comments-section {
     height: 40vh;
     overflow-y: auto;
-    background-color: #f9f9f9;
 }
 
 #user-post-info,
@@ -39,10 +38,9 @@
     color: #5B5B66;
 }
 
-#post-body,
-#user-comment-info {
+#post-body {
+    margin-left: 15px;
     margin-top: 15px;
-    /* margin-left: 20px; */
 }
 
 #post-categories {
@@ -101,7 +99,7 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(3px);
-    z-index: 100;
+    z-index: 3;
 }
 
 #popup {
@@ -113,13 +111,16 @@
     background-color: white;
     border-radius: 30px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    z-index: 101;
+    z-index: 4;
     padding: 0px 25px;
     overflow-y: auto;
 }
 
-#close {
-    background: none;
+.close {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    color: var(--secondary-color);
     font-size: 28px;
 }
 
@@ -215,11 +216,6 @@
     transform: translate(0px, 2px);
 }
 
-.close {
-    background: none;
-    font-size: 28px;
-}
-
 
 #user-post-info button {
     background-color: transparent;
@@ -242,6 +238,7 @@
     min-width: 150px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
+    z-index: 2;
     overflow: hidden;
     opacity: 0;
     visibility: hidden;

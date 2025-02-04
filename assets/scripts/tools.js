@@ -1,4 +1,4 @@
-export { fetchResponse, displayMessages, DropDown, AddPost, AddComment,incNumInStr }
+export { fetchResponse, displayMessages, DropDown, AddPost, AddComment }
 
 const fetchResponse = async (url, obj = {}) => {
     try {
@@ -11,7 +11,6 @@ const fetchResponse = async (url, obj = {}) => {
 
         return { status: response.status, body: responseBody }
     } catch (error) {
-        // console.error('Error fetching response:', error)
         throw error
     }
 }
@@ -65,7 +64,7 @@ const AddPost = (post) => {
         `<div id="post" post-id="${post.PostId}">
     <div id="user-post-info">
         <section style="display: flex">
-            <img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
+            <img src="${post.ProfileImg}" alt="User Avatar" loading="lazy">
             <h3>@${post.PostUserName} <br><span>${timeAgo(post.PostTime)}</span></h3>
         </section>
         ${Username === post.PostUserName ? '<button class="options-btn" ><img src="/assets/imgs/option.png"></button>' : ''}
@@ -119,8 +118,8 @@ const AddComment = (comment) => {
     commentDiv.innerHTML = `
         <div id="user-info-and-buttons">
             <div id="user-comment-info">
-                <img src="/assets/imgs/avatar.png" alt="User Avatar" loading="lazy">
-                <h3>${comment.UserName} <br><span>${timeAgo(comment.CreationDate)}</span></h3>
+                <img src="${post.ProfileImg}" alt="User Avatar" loading="lazy">
+                <h3>@${comment.UserName} <br><span>${timeAgo(comment.CreationDate)}</span></h3>
             </div>
         </div>
         <div id="user-comment-info">
@@ -163,16 +162,7 @@ function timeAgo(input) {
     return 'just now'
 }
 
-function incNumInStr(str) {
-    const match = str.match(/\d+/)
 
-    if (match) {
-        const number = parseInt(match[0], 10)+ 1
-        return str.replace(match[0], number)
-    }
-
-    return str
-}
 
 
 

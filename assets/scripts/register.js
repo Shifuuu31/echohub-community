@@ -32,16 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const newUser = {
             username: document.getElementById('username').value,
             email: document.getElementById('email').value,
+            gender: document.getElementById('gender').value,
             password: passwordInput.value,
             rpassword: rPasswordInput.value,
         }
-
-        // try {
-        //     const msgs = await fetchResponse(`/confirmRegister`, newUser)
-        //     displayMessages(msgs, )
-        // } catch (error) {
-        //     console.error('Error fetching response:', error)
-        // }
+        console.log(newUser)
 
         try {
             const response = await fetchResponse(`/confirmRegister`, newUser)

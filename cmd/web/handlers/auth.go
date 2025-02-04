@@ -33,8 +33,6 @@ func (webForum *WebApp) AuthMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-
-
 func (webForum *WebApp) LoginPage(w http.ResponseWriter, r *http.Request) {
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {

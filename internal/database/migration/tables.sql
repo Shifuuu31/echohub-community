@@ -1,0 +1,54 @@
+-- enable foreign_keys
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE IF NOT EXISTS UserTable (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username VARCHAR(20) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    hashed_password VARCHAR(255) NOT NULL,
+    gender TEXT NOT NULL,
+    profile_img TEXT NOT NULL,
+    creation_date DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS UserSessions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER UNIQUE NOT NULL,
+    session_token TEXT UNIQUE NOT NULL,
+    expiration_date DATETIME,
+    FOREIGN KEY(user_id) REFERENCES UserTable(id) ON DELETE CASCADE
+);
+    
+CREATE TABLE IF NOT EXISTS PostTable (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    title VARCHAR(70) NOT NULL,
+    content TEXT NOT NULL,
+    creation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(user_id) REFERENCES UserTable(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    category_name VARCHAR(50) NOT NULL UNIQUE,
+    Category_icon_path TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS Categories_Posts(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    category_id INTEGER NOT NULL,
+    post_id INTEGER NOT NULL,
+    FOREIGN KEY(category_id) REFERENCES Categories(id) ON DELETE CASCADE,
+    FOREIGN KEY(post_id) REFERENCES PostTable(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS CommentTable (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        post_id INTEGER NOT NULL,
+        user_id INTEGER NOT NULL,
+        comment_content TEXT NOT NULL,
+        creation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES UserTable (id) ON DELETE CASCADE,
+        FOREIGN KEY (post_id) REFERENCES PostTable (id) ON DELETE CASCADE
+);
+

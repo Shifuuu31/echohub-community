@@ -98,9 +98,6 @@ func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
-
-
 // // madara
 type FetchComments struct {
 	PostId string `json:"ID"`

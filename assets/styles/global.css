@@ -25,6 +25,8 @@ body {
 a,
 button {
     cursor: pointer;
+    background-color: transparent;
+    border: none;
 }
 
 li,
@@ -133,7 +135,6 @@ nav img {
     color: var(--secondary-color);
     font-size: 24px;
     font-weight: 600;
-    margin-bottom: 15px;
 }
 
 .wraper hr {
