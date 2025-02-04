@@ -20,7 +20,8 @@ const DropDown = () => {
     if (profilePictureContainer && dropdown) {
 
         const toggleDropdown = (event) => {
-            event.stopPropagation()
+            console.log("pD")
+            // event.stopPropagation()
             dropdown.classList.toggle('active')
         }
 

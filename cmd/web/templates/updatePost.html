@@ -31,10 +31,10 @@
         </a>
         <div id="profile-dropdown">
             <div id="profile-picture-container">
-                <img id="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
+                <img id="profile-picture" src="{{.User.ProfileImg}}" alt="Profile Picture" loading="lazy">
             </div>
             <div id="dropdown">
-                <img id="inner-profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture">
+                <img id="inner-profile-picture" src="{{.User.ProfileImg}}" alt="Profile Picture">
                 <h2>@{{.User.UserName}}<br><span>{{.User.Email}}</span></h2>
                 <hr>
                 <div id="dropdown-content">
@@ -71,7 +71,7 @@
         selected.push("{{.}}")
         {{ end }}
     </script>
-    <script src="/assets/scripts/post-update.js" type="module"></script>
+    <script src="/assets/scripts/updatePost.js" type="module"></script>
 </body>
 
 </html>

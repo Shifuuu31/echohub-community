@@ -1,18 +1,18 @@
-export { AddUpdatePost, CategoriesSelection }
 import { fetchResponse, displayErr, DropDown } from "./tools.js"
+export { AddOrUpdatePost, CategoriesSelection }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     DropDown()
     CategoriesSelection()
     const submitPost = document.getElementById('submitPost')
 
     submitPost.addEventListener('click', () => {
-        AddUpdatePost(`/addNewPost`)
+        AddOrUpdatePost(`/addNewPost`)
     })
 })
 
 
-const AddUpdatePost = async (url) => {
+const AddOrUpdatePost = async (url) => {
     console.log(url)
     const newPost = {
         title: document.getElementById('title').value,
@@ -42,7 +42,7 @@ const AddUpdatePost = async (url) => {
 
 
 const CategoriesSelection = () => {
-    const categories = document.querySelectorAll('input[id^=category]')
+    let categories = document.querySelectorAll('input[id^=category]')
 
     categories.forEach((category) => {
         category.addEventListener('change', () => {
