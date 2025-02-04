@@ -9,49 +9,42 @@ const displayPosts = async (category = "All", scroll = false) => {
 
     if (!scroll) {
         // get max id
-        try {
-            const response = await fetchResponse(`/maxId`)
-            if (response.status === 200) {
-                if (response.body == 0) {
-                    console.log('No posts to display')
-                    postMsg.innerHTML = `<h1>No posts to display</h1>`
-                    Skeleton.style.display = 'none'
-                    return false
-                }
-                DataToFetch.start = response.body
-                DataToFetch.category = category
-                postsContainer.innerHTML = ''
-                postMsg.innerHTML = ''
-            } else {
-                console.log("Unexpected response:", response.body)
+
+        const response = await fetchResponse(`/maxId`)
+        if (response.status === 200) {
+            if (response.body == 0) {
+                console.log('No posts to display')
+                postMsg.innerHTML = `<h1>No posts to display</h1>`
+                Skeleton.style.display = 'none'
                 return false
             }
-        } catch (error) {
-            console.error('Error during fetching maxId:', error)
+            DataToFetch.start = response.body
+            DataToFetch.category = category
+            postsContainer.innerHTML = ''
+            postMsg.innerHTML = ''
+        } else {
+            console.log("Unexpected response:", response.body)
+            return false
         }
     }
 
     let FetchedPosts = []
     // get posts
-    try {
-        const response = await fetchResponse(`/posts`, DataToFetch)
-        if (response.status === 200) {
-            console.log("Posts Fetched succefully")
-            FetchedPosts = response.body
-        } else if (response.status === 100) {
-            console.log('No posts to display')
-            postMsg.innerHTML = `<h1>No posts to display</h1>`
-            Skeleton.style.display = 'none'
-            return false
-        } else if (response.status === 400) {
-            console.log("Bad Request", response.status, response.body.message)
-            return false
-        } else {
-            console.log("Unexpected response:", response.body)
-            return false
-        }
-    } catch (error) {
-        console.error('Error during fetching Posts:', error)
+    const response = await fetchResponse(`/posts`, DataToFetch)
+    if (response.status === 200) {
+        console.log("Posts Fetched succefully")
+        FetchedPosts = response.body
+    } else if (response.status === 100) {
+        console.log('No posts to display')
+        postMsg.innerHTML = `<h1>No posts to display</h1>`
+        Skeleton.style.display = 'none'
+        return false
+    } else if (response.status === 400) {
+        console.log("Bad Request", response.status, response.body.message)
+        return false
+    } else {
+        console.log("Unexpected response:", response.body)
+        return false
     }
 
     // check if there is posts
@@ -63,6 +56,7 @@ const displayPosts = async (category = "All", scroll = false) => {
             console.log('No more posts to display')
             postMsg.innerHTML = `<h1>No more posts to display</h1>`
             Skeleton.style.display = 'none'
+            DataToFetch.start = 0
             return false
         } else {
             // send last post fetched id for scroll

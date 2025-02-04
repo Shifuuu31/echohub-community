@@ -56,6 +56,13 @@ func (webForum *WebApp) MaxID(w http.ResponseWriter, r *http.Request) {
 }
 
 func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
+	user, userErr := webForum.Users.RetrieveUser(r)
+	if userErr.Type == "server" {
+		userErr.RenderError(w)
+		return
+	}
+
+	
 	postsData := struct {
 		StartId  int    `json:"start"`
 		Category string `json:"category"`
@@ -66,7 +73,7 @@ func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	posts, postErr := webForum.Posts.GetPosts(postsData.StartId, postsData.Category)
+	posts, postErr := webForum.Posts.GetPosts(user.ID,postsData.StartId, postsData.Category)
 	if postErr.Type != "" {
 		if postErr.Type == "server" {
 			postErr.RenderError(w)

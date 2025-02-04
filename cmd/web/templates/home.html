@@ -58,6 +58,16 @@
                 <input type="radio" id="categoryAll" name="categoryElement" value="All" checked>
                 <label for="categoryAll"><img src="/assets/imgs/categories-Icons/all.png">All</label>
             </li>
+            {{ if and .User (eq .User.UserType "authenticated") }}
+            <li id="category">
+                <input type="radio" id="categoryMyPosts" name="categoryElement" value="MyPosts">
+                <label for="categoryMyPosts"><img src="/assets/imgs/categories-Icons/my-posts.png">My Posts</label>
+            </li>
+            <li id="category">
+                <input type="radio" id="categoryLikedPosts" name="categoryElement" value="LikedPosts">
+                <label for="categoryLikedPosts"><img src="/assets/imgs/categories-Icons/liked-posts.png">Liked Posts</label>
+            </li>
+            {{end}}
             <!-- add MyPosts/likedPosts -->
             {{range .Categories}}
             <li id="category">

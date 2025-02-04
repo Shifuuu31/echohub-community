@@ -1,4 +1,4 @@
-export { fetchResponse, displayMessages, DropDown, AddPost, AddComment, displayErr}
+export { fetchResponse, displayMessages, DropDown, AddPost, AddComment, displayErr }
 
 const fetchResponse = async (url, obj = {}) => {
     try {
@@ -11,7 +11,7 @@ const fetchResponse = async (url, obj = {}) => {
 
         return { status: response.status, body: responseBody }
     } catch (error) {
-        throw error
+        console.error(error)
     }
 }
 const DropDown = () => {
@@ -93,21 +93,21 @@ const AddPost = (post) => {
     </div>
 </div>`
 
-if (Username === post.PostUserName) {
-    const optionsButton = postData.querySelector('.options-btn')
-    const dropdown = postData.querySelector(`.post-dropdown${post.PostId}`)
+    if (Username === post.PostUserName) {
+        const optionsButton = postData.querySelector('.options-btn')
+        const dropdown = postData.querySelector(`.post-dropdown${post.PostId}`)
 
-    optionsButton.addEventListener('click', (event) => {
-        event.stopPropagation()
-        dropdown.classList.toggle('active')
-    })
+        optionsButton.addEventListener('click', (event) => {
+            event.stopPropagation()
+            dropdown.classList.toggle('active')
+        })
 
-    document.addEventListener('click', (event) => {
-        if (!dropdown.contains(event.target) && !optionsButton.contains(event.target)) {
-            dropdown.classList.remove('active')
-        }
-    })
-}
+        document.addEventListener('click', (event) => {
+            if (!dropdown.contains(event.target) && !optionsButton.contains(event.target)) {
+                dropdown.classList.remove('active')
+            }
+        })
+    }
 
     return postData
 }
@@ -134,32 +134,32 @@ const AddComment = (comment) => {
 
 const displayErr = (msgs) => {
     const errPopups = document.querySelectorAll('.errPopup')
-    console.log( errPopups)
+    console.log(errPopups)
     errPopups.forEach(popup => popup.remove());
     msgs.forEach((msg, index) => {
         // console.log(document.querySelectorAll('div[id^=errPopup]'))
-      const errPopup = document.createElement("div")
-      errPopup.id = `errPopup-${index}`
-      errPopup.classList.add("errPopup")
-      errPopup.innerHTML = `
+        const errPopup = document.createElement("div")
+        errPopup.id = `errPopup-${index}`
+        errPopup.classList.add("errPopup")
+        errPopup.innerHTML = `
         <p>${msg}</p>
         <span class="close-btn">&times;</span>
       `
-      index == 0 ? errPopup.style.top = '100px' : errPopup.style.top = `${(index+1) * 80}px`
-      
-      document.body.appendChild(errPopup);
-    //   console.log(errPopup);
-  
-      const closeBtn = errPopup.querySelector('.close-btn')
-      if (closeBtn) {
-        closeBtn.addEventListener('click', function () {
-          console.log('text')
-          errPopup.remove()
-        })
-      }
+        index == 0 ? errPopup.style.top = '100px' : errPopup.style.top = `${(index + 1) * 80}px`
+
+        document.body.appendChild(errPopup);
+        //   console.log(errPopup);
+
+        const closeBtn = errPopup.querySelector('.close-btn')
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function () {
+                console.log('text')
+                errPopup.remove()
+            })
+        }
     })
-  }
-  
+}
+
 
 function wrapLinks(text) {
     const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.]*[-A-Z0-9+&@#\/%=~_|])/ig
