@@ -118,7 +118,7 @@ const AddComment = (comment) => {
     commentDiv.innerHTML = `
         <div id="user-info-and-buttons">
             <div id="user-comment-info">
-                <img src="${post.ProfileImg}" alt="User Avatar" loading="lazy">
+                <img src="${comment.ProfileImg}" alt="User Avatar" loading="lazy">
                 <h3>@${comment.UserName} <br><span>${timeAgo(comment.CreationDate)}</span></h3>
             </div>
         </div>

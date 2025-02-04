@@ -13,7 +13,7 @@ import (
 type Post struct {
 	PostId         int
 	PostUserName   string
-	ProfileImg   string
+	ProfileImg     string
 	PostTime       time.Time
 	PostTitle      string
 	PostContent    string

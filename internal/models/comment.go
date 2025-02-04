@@ -10,6 +10,7 @@ type Comment struct {
 	PostID       int
 	UserID       int
 	UserName     string
+	ProfileImg     string
 	Content      string
 	CreationDate time.Time
 }
@@ -21,7 +22,7 @@ type CommentModel struct {
 func (comment *CommentModel) Comments(postID int) ([]Comment, error) {
 	comments := []Comment{}
 	cmd := `
-        SELECT c.id, c.post_id, c.user_id, u.username, c.comment_content, c.creation_date 
+        SELECT c.id, c.post_id, c.user_id, u.username, u.profile_img, c.comment_content, c.creation_date 
         FROM CommentTable c 
         JOIN UserTable u ON c.user_id = u.id 
         WHERE c.post_id = ? 
@@ -40,6 +41,7 @@ func (comment *CommentModel) Comments(postID int) ([]Comment, error) {
 			&comment.PostID,
 			&comment.UserID,
 			&comment.UserName,
+			&comment.ProfileImg,
 			&comment.Content,
 			&comment.CreationDate,
 		)

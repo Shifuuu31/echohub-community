@@ -4,7 +4,7 @@ import { DropDown } from "./tools.js"
 
 let attachPopupListeners = null
 
-const initializePosts = async () => {
+const initPosts = async () => {
     attachPopupListeners = Popup()
     const postsAdded = await displayPosts()
     if (postsAdded) {
@@ -12,7 +12,7 @@ const initializePosts = async () => {
     }
 }
 
-const handleScroll = async () => {
+const infiniteScroll = async () => {
     const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight
 
     if (isAtBottom) {
@@ -25,7 +25,7 @@ const handleScroll = async () => {
 }
 
 
-const handleCategoryChange = async (event) => {
+const CategoriesFilter = async (event) => {
     const postsLoaded = await displayPosts(event.target.defaultValue)
 
     if (postsLoaded) {
@@ -37,33 +37,33 @@ const handleCategoryChange = async (event) => {
 const setupCategoryListeners = () => {
     const categories = document.querySelectorAll("input[id^=category]")
     categories.forEach(category => {
-        category.addEventListener('change', handleCategoryChange)
+        category.addEventListener('change', CategoriesFilter)
     })
 }
 let isThrottled = true;
 // event listner for scroll
-const setupScrollListener = () => {
+const throttleScroll = () => {
     window.addEventListener('scroll', () => {
         if (isThrottled) {
             isThrottled = false;
 
             setTimeout(() => {
-                handleScroll();
+                infiniteScroll();
                 isThrottled = true;
             }, 300);
         }
     });
 }
 
-const initialize = async () => {
+const init = async () => {
     try {
         DropDown()
-        await initializePosts()
+        await initPosts()
         setupCategoryListeners()
-        setupScrollListener()
+        throttleScroll()
     } catch (error) {
-        console.error('Failed to initialize application:', error)
+        console.error('Failed to init application:', error)
     }
 }
 
-document.addEventListener("DOMContentLoaded", initialize)// Entry point
+document.addEventListener("DOMContentLoaded", init)// Entry point
