@@ -91,7 +91,7 @@ func (postModel *PostModel) GetMaxId() (maxID int, maxIdError Error) {
 }
 
 // get posts from DB with cateogry
-func (postModel *PostModel) GetPosts(userID int,startId int, category string) (posts []Post, postsErr Error) {
+func (postModel *PostModel) GetPosts(userID int, startId int, category string) (posts []Post, postsErr Error) {
 	var (
 		query      string
 		args       []interface{}
@@ -130,12 +130,12 @@ func (postModel *PostModel) GetPosts(userID int,startId int, category string) (p
 					PostTable
 					JOIN UserTable ON UserTable.id = PostTable.user_id
 				WHERE
-					UserTable.id = ?
+					UserTable.id = ? AND PostTable.id <= ?
 				ORDER BY
 					PostTable.id DESC
 				LIMIT
 					10;`
-		args = append(args, userID)
+		args = append(args, userID, startId)
 
 	case "LikedPosts":
 		// Placeholder for "LikedPosts" case

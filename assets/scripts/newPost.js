@@ -1,3 +1,4 @@
+export { AddUpdatePost, CategoriesSelection }
 import { fetchResponse, displayErr, DropDown } from "./tools.js"
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -5,11 +6,14 @@ document.addEventListener("DOMContentLoaded", () => {
     CategoriesSelection()
     const submitPost = document.getElementById('submitPost')
 
-    submitPost.addEventListener('click', AddNewPost)
+    submitPost.addEventListener('click', () => {
+        AddUpdatePost(`/addNewPost`)
+    })
 })
 
 
-const AddNewPost = async () => {
+const AddUpdatePost = async (url) => {
+    console.log(url)
     const newPost = {
         title: document.getElementById('title').value,
         content: document.getElementById('content').value,
@@ -21,9 +25,7 @@ const AddNewPost = async () => {
 
     console.log(newPost)
 
-
-    const response = await fetchResponse(`/addNewPost`, newPost)
-
+    const response = await fetchResponse(url, newPost)
     if (response.status === 401) {
         console.log("Unauthorized: try to login")
     } else if (response.status === 400) {
@@ -31,10 +33,11 @@ const AddNewPost = async () => {
         displayErr(response.body.messages)
     } else if (response.status === 200) {
         console.log("post added successfully")
-        window.location.href = "/"
+        // window.location.href = "/"
     } else {
         console.log("Unexpected response:", response.body)
     }
+
 }
 
 

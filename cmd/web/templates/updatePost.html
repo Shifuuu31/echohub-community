@@ -57,21 +57,21 @@
             {{end}}
         </ul>
         <div id="post-inputs">
-            <input type="text" id="post-title" placeholder="Post Title *" value="{{.Post_info.PostTitle}}"
+            <input type="text" id="title" placeholder="Post Title *" value="{{.Post_info.PostTitle}}"
                 maxlength="70" required>
             <p id="errMsgs" style="color: red;"></p>
             <textarea id="content" placeholder="Type Something here..." maxlength="5000"
                 required>{{.Post_info.PostContent}}</textarea>
-            <button id="updatePost" ><i class="fas fa-paper-plane"></i>&ensp;Update</button>
+            <button id="submitPost"><i class="fas fa-paper-plane"></i>&ensp;Update</button>
         </div>
     </div>
     <script>
         const selected = []
-        { { range.Post_info.PostCategories } }
+        {{ range .Post_info.PostCategories }}
         selected.push("{{.}}")
-        { { end } }
+        {{ end }}
     </script>
-    <script src="/assets/scripts/updatePost.js" type="module"></script>
+    <script src="/assets/scripts/post-update.js" type="module"></script>
 </body>
 
 </html>

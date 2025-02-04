@@ -1,18 +1,23 @@
-// import { handleCategorySelection } from "./tools.js";
+import { AddUpdatePost, CategoriesSelection } from "./newPost.js";
+import { DropDown } from "./tools.js"
 
-// const urlUpdate = `${window.location.origin}/updatePost`;
-// const categories = document.querySelectorAll('input[id^=category]');
+document.addEventListener("DOMContentLoaded", () => {
+    DropDown()
+    CategoriesSelection()
+    const submitPost = document.getElementById('submitPost')
 
+    submitPost.addEventListener('click', () => {
+        AddUpdatePost(`/updatePost`)
+    })
+})
 
-// handleCategorySelection(urlUpdate)
-
-
-// // check categories of post
-// categories.forEach(category => {
-//     if (selected.includes(category.value)) {
-//         category.setAttribute("checked", "true")
-//         const label = document.querySelector(`label[for="${category.id}"]`);
-//         label.style.color = 'white';
-//         label.style.backgroundColor = '#8552ff';
-//     }
-// });
+const categories = document.querySelectorAll('input[id^=category]');
+// check categories of post
+categories.forEach(category => {
+    if (selected.includes(category.value)) {
+        category.setAttribute("checked", "true")
+        const label = document.querySelector(`label[for="${category.id}"]`);
+        label.style.color = 'white';
+        label.style.backgroundColor = '#8552ff';
+    }
+});
