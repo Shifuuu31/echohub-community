@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -196,6 +197,14 @@ func (postModel *PostModel) GetPosts(startId int, category string) (posts []Post
 			}
 		}
 		post.PostTime = post.PostTime.UTC()
+		post.CommentsCount, err = postModel.GetCommentCount(post.PostId)
+		if err != nil {
+			return []Post{}, Error{
+				StatusCode: http.StatusInternalServerError,
+				Message:    "Internal Server Error",
+				Type:       "server",
+			}
+		}
 		posts = append(posts, post)
 	}
 
@@ -211,7 +220,7 @@ func (postModel *PostModel) GetPosts(startId int, category string) (posts []Post
 }
 
 // get cateogries of post
-func (PostModel *PostModel) GetPostCategories(postId int) (postCategories []string, err error) {
+func (post *PostModel) GetPostCategories(postId int) (postCategories []string, err error) {
 	query := `SELECT
 			      Categories.category_name
 			  FROM
@@ -220,7 +229,7 @@ func (PostModel *PostModel) GetPostCategories(postId int) (postCategories []stri
 			  WHERE
 			      Categories_Posts.post_id = ?;`
 
-	rows, err := PostModel.DB.Query(query, postId)
+	rows, err := post.DB.Query(query, postId)
 	if err != nil {
 		return nil, err
 	}
@@ -246,6 +255,14 @@ type PostData struct {
 	Title      string   `json:"title"`
 	Content    string   `json:"content"`
 	Categories []string `json:"selectedCategories"`
+}
+
+func (post *PostModel) GetCommentCount(postID int) (cmntCount int, err error) {
+	countStmt := `SELECT COUNT(*) FROM CommentTable WHERE post_id = ?`
+
+	err = post.DB.QueryRow(countStmt, postID).Scan(&cmntCount)
+	fmt.Println(cmntCount)
+	return cmntCount, err
 }
 
 func CheckNewPost(newPost PostData) (response Response) {

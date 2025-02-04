@@ -68,3 +68,4 @@ func (comment *CommentModel) CreateComment(postID, userID int, content string) e
 
 	return nil
 }
+

@@ -50,7 +50,7 @@ const setupScrollListener = () => {
             setTimeout(() => {
                 handleScroll();
                 isThrottled = true;
-            }, 100);
+            }, 300);
         }
     });
 }

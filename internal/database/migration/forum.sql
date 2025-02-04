@@ -40,8 +40,7 @@ CREATE TABLE IF NOT EXISTS Categories_Posts(
     FOREIGN KEY(post_id) REFERENCES PostTable(id) ON DELETE CASCADE
 );
 
-CREATE TABLE
-    IF NOT EXISTS CommentTable (
+CREATE TABLE IF NOT EXISTS CommentTable (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         post_id INTEGER NOT NULL,
         user_id INTEGER NOT NULL,
@@ -49,7 +48,7 @@ CREATE TABLE
         creation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES UserTable (id) ON DELETE CASCADE,
         FOREIGN KEY (post_id) REFERENCES PostTable (id) ON DELETE CASCADE
-    );
+);
 
 
 -- Uncomment those fields just in need

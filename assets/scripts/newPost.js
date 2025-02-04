@@ -1,6 +1,7 @@
-import { fetchResponse } from "./tools.js"
+import { fetchResponse, DropDown } from "./tools.js"
 
 document.addEventListener("DOMContentLoaded", () => {
+    DropDown()
     CategoriesSelection()
     const submitPost = document.getElementById('submitPost')
 
