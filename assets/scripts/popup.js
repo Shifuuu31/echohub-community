@@ -13,7 +13,7 @@ const Popup = () => {
         postsBtns.forEach(postBtn => {
             postBtn.removeEventListener("click", openPopup)
             postBtn.addEventListener("click", (event) => {
-
+                console.log("hhha");
                 openPopup(event)
             })
         })
@@ -91,6 +91,8 @@ const createComment = async (newCmnt) => {
 
 const displayComments = async (postid) => {
     commentsSection.innerHTML = ''
+
+
     let comments
     try {
         const response = await fetchResponse(`/comments`, { ID: postid })
@@ -105,9 +107,13 @@ const displayComments = async (postid) => {
     } catch (error) {
         console.error('Error during login process:', error)
     }
-    comments.forEach(comment => {
-        console.log(comment)
-        commentsSection.appendChild(AddComment(comment));
-    });
-
+    
+    if (comments.length > 0) {
+        comments.forEach(comment => {
+            console.log(comment);
+            commentsSection.appendChild(AddComment(comment))
+        })
+    } else {
+        commentsSection.innerHTML = `<div id="availabilityMsg" style="margin:20%"><h3>No comments yet</h3></div>`
+    }
 }

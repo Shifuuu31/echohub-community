@@ -4,7 +4,7 @@ let DataToFetch = {}
 
 const displayPosts = async (category = "All", scroll = false) => {
     const postsContainer = document.getElementById("posts")
-    const postMsg = document.getElementById("postMsg")
+    const postMsg = document.querySelector(".wraper #availabilityMsg")
     const Skeleton = document.getElementById("post-placeholder")
 
     if (!scroll) {
@@ -13,7 +13,7 @@ const displayPosts = async (category = "All", scroll = false) => {
         if (response.status === 200) {
             if (response.body == 0) {
                 console.log('No posts to display')
-                postMsg.innerHTML = `<h1>No posts to display</h1>`
+                postMsg.innerHTML = `<h2>No posts to display</h2>`
                 Skeleton.style.display = 'none'
                 return false
             }
@@ -35,7 +35,7 @@ const displayPosts = async (category = "All", scroll = false) => {
         FetchedPosts = response.body
     } else if (response.status === 100) {
         console.log('No posts to display')
-        postMsg.innerHTML = `<h1>No posts to display</h1>`
+        postMsg.innerHTML = `<h2>No posts to display</h2>`
         Skeleton.style.display = 'none'
         return false
     } else if (response.status === 400) {
@@ -53,7 +53,7 @@ const displayPosts = async (category = "All", scroll = false) => {
         }
         if (FetchedPosts.length < 10) {
             console.log('No more posts to display')
-            postMsg.innerHTML = `<h1>No more posts to display</h1>`
+            postMsg.innerHTML = `<h2>No more posts to display</h2>`
             Skeleton.style.display = 'none'
             DataToFetch.start = 0
             return false
@@ -63,7 +63,7 @@ const displayPosts = async (category = "All", scroll = false) => {
         }
     } else {
         console.log(`${scroll ? 'No more posts to display' : 'No posts to display'}`);
-        postMsg.innerHTML = `<h1>${scroll ? 'No more posts to display' : 'No posts to display'}</h1>`
+        postMsg.innerHTML = `<h2>${scroll ? 'No more posts to display' : 'No posts to display'}</h2>`
         Skeleton.style.display = 'none'
         return false;
     }

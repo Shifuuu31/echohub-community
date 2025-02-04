@@ -2,10 +2,10 @@ import { Popup } from "./popup.js"
 import { displayPosts, DataToFetch } from "./display.js"
 import { DropDown } from "./tools.js"
 
-let attachPopupListeners = null
+// let attachPopupListeners = null
 
 const initPosts = async () => {
-    attachPopupListeners = Popup()
+    const attachPopupListeners = Popup()
     const postsAdded = await displayPosts()
     if (postsAdded) {
         attachPopupListeners()
@@ -13,6 +13,7 @@ const initPosts = async () => {
 }
 
 const infiniteScroll = async () => {
+    const attachPopupListeners = Popup()
     const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight
 
     if (isAtBottom) {
@@ -26,6 +27,7 @@ const infiniteScroll = async () => {
 
 
 const CategoriesFilter = async (event) => {
+    const attachPopupListeners = Popup()
     const postsLoaded = await displayPosts(event.target.defaultValue)
 
     if (postsLoaded) {

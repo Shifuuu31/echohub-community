@@ -124,8 +124,8 @@ nav img {
     white-space: pre-wrap;
 }
 
-#postMsg {
-    margin-top: 20px;
+#availabilityMsg {
+    margin: auto;
     text-align: center;
     color: var(--secondary-color);
 }

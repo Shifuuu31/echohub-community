@@ -33,7 +33,7 @@ const AddUpdatePost = async (url) => {
         displayErr(response.body.messages)
     } else if (response.status === 200) {
         console.log("post added successfully")
-        // window.location.href = "/"
+        window.location.href = "/"
     } else {
         console.log("Unexpected response:", response.body)
     }
