@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <link rel="stylesheet" href="/assets/styles/dropdown.global.css">
+    <link rel="stylesheet" href="/assets/styles/responsive.global.css">
+    <link rel="stylesheet" href="/assets/styles/profileSettings.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="shortcut icon" href="/assets/imgs/logo-small.png" type="image/x-icon">
+
+    <title>echoHub - Profile Settings</title>
+
+</head>
+
+<body>
+    <nav>
+        <a href="/">
+            <img id="logo" src="/assets/imgs/logo.png" alt="echoHub-Comunnity Logo">
+        </a>
+        <a href="/">
+            <img id="logo-small" src="/assets/imgs/logo-small.png" alt="echoHub-Comunnity Logo">
+        </a>
+        <div id="profile-dropdown">
+            <div id="profile-picture-container">
+                <img id="profile-picture" src="{{.ProfileImg}}" alt="Profile Picture" loading="lazy">
+            </div>
+            <div id="dropdown">
+                <img id="inner-profile-picture" src="{{.ProfileImg}}" alt="Profile Picture">
+                <h2>@{{.UserName}}<br><span>{{.Email}}</span></h2>
+                <hr>
+                <div id="dropdown-content">
+                    <a href="/profileSettings"><img src="/asset/imgs/settings.png"> Profile Settings</a>
+                    <a href="#"><img src="/asset/imgs/dark-mode.png"> Dark Mode (coming soon)</a>
+                    <a href="https://tally.so/r/wd80WD" target="_blank"><img src="/asset/imgs/report.png"> Report</a>
+                    <hr>
+                    <a href="/logout"><img src="/asset/imgs/logout.png"> Log Out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div id="edit">
+        <div id="user-info">
+            <img src="{{.ProfileImg}}" alt="Profile Picture" loading="lazy">
+            <h3>{{.UserName}} <br> <span>{{.Email}}</span></h3>
+        </div>
+        </form>
+        <div id="user-info-edit">
+            <form action="" method="">
+                <div id="input-group">
+                    <label for="">Username</label>
+                    <input type="text" placeholder="{{.UserName}}">
+                    <label for="">Email</label>
+                    <input type="text" placeholder="{{.Email}}">
+                    <label for="">Gender</label>
+                    <input type="text" placeholder="{{.Gender}}" readonly>
+                    <label for="">Language <span>(we're working on adding new languages)</span></label>
+                    <select>
+                        <option value="english" selected>English</option>
+                    </select>
+                    <label for="">New Password</label>
+                    <input type="password" placeholder="••••••••••••••••">
+                    <label for="">Confirm New Password</label>
+                    <input type="password" placeholder="••••••••••••••••">
+                </div>
+
+                <a href="/newPost"><button id="update"><img src="/assets/imgs/update.png"></i>Update</button></a>
+        </div>
+    </div>
+</body>
+</html>
+

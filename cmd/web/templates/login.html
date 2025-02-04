@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <link rel="stylesheet" href="/assets/styles/dropdown.global.css">
+    <link rel="stylesheet" href="/assets/styles/responsive.global.css">
+    <link rel="stylesheet" href="/assets/styles/register-login.css">
+    <link rel="stylesheet" href="/assets/styles/popup.login-register.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="shortcut icon" href="/assets/imgs/logo-small.png" type="image/x-icon">
+
+    <title>echoHub - Login</title>
+
+</head>
+
+<body>
+    <nav>
+        <a href="/">
+            <img id="logo" src="/assets/imgs/logo.png" alt="echoHub-Comunnity Logo">
+        </a>
+        <a href="/">
+            <img id="logo-small" src="/assets/imgs/logo-small.png" alt="echoHub-Comunnity Logo">
+        </a>
+        <a href="/register"><button id="register"><img src="/assets/imgs/register.png">Register</button></a>
+        <a href="/login"><button id="login">Login</button></a>
+    </nav>
+
+    <div id="container">
+        <div id="form">
+            <p id="title">We've missed you! </p>
+            <p id="message">Discover the community newest and update. </p>
+            <label>
+                <input class="input" id="username" type="text" placeholder="">
+                <span>Username</span>
+            </label>
+            <label>
+                <input class="input" id="password" type="password" placeholder="">
+                <span>Password</span>
+                <img id="passShow" src="/assets/imgs/unvisible.png">
+            </label>
+            <label class="remember-me">
+                <input type="checkbox" id="remember"> Remember me.
+            </label>
+            <div id="errorMsgs"></div>
+            <button class="submit" id="loginBtn">Login</button>
+            <p id="signin">Don't have an account? <a href="/register">Create One</a> </p>
+        </div>
+        <div id="overlay">
+            <div id="popup">
+                <h2>Welcome!</h2>
+                <p>We're glad you're here. Enjoy exploring the site!</p>
+                <a  id="gobtn">Explore Our Forum ➜</a>
+            </div>
+        </div>
+        <img src="/assets/imgs/login.png">
+    </div>
+    <script src="/assets/scripts/login.js" type="module"></script>
+</body>
+</html>

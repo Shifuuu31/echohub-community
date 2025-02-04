@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="/assets/styles/categories.home.css">
+    <link rel="stylesheet" href="/assets/styles/comments.popup.home.css">
+    <!-- <link rel="stylesheet" href="/assets/styles/posts.home.css"> -->
+    <!-- <link rel="stylesheet" href="/assets/styles/responsive.home.css"> -->
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <link rel="stylesheet" href="/assets/styles/dropdown.global.css">
+    <link rel="stylesheet" href="/assets/styles/responsive.global.css">
+    <link rel="stylesheet" href="/assets/styles/post-skeleton.home.css">
+    <link rel="shortcut icon" href="/assets/imgs/logo-small.png" type="image/x-icon">
+
+
+    <title>echoHub - Home</title>
+</head>
+
+<body style="overflow-y: scroll;">
+    <nav>
+        <a href="/">
+            <img id="logo" src="/assets/imgs/logo.png" alt="echoHub-Comunnity Logo">
+        </a>
+        <a href="/">
+            <img id="logo-small" src="/assets/imgs/logo-small.png" alt="echoHub-Comunnity Logo">
+        </a>
+        {{ if and .User (eq .User.UserType "authenticated") }}
+        <a href="/newPost"><button id="create"><img src="/assets/imgs/create.png"></i>&nbsp;New
+                Post</button></a>
+        <div id="profile-dropdown">
+            <div id="profile-picture-container">
+                <img id="profile-picture" src="{{.User.ProfileImg}}" alt="Profile Picture" loading="lazy">
+            </div>
+            <div id="dropdown">
+                <img id="inner-profile-picture" src="{{.User.ProfileImg}}" alt="Profile Picture">
+                <h2>@{{.User.UserName}}<br><span>{{.User.Email}}</span></h2>
+                <hr>
+                <div id="dropdown-content">
+                    <a href="/profileSettings"><img src="/assets/imgs/settings.png"> Profile Settings</a>
+                    <a href="#"><img src="/assets/imgs/dark-mode.png"> Dark Mode (coming soon)</a>
+                    <a href="https://tally.so/r/wd80WD" target="_blank"><img src="/assets/imgs/report.png"> Report</a>
+                    <hr>
+                    <a href="/logout"><img src="/assets/imgs/logout.png"> Log Out</a>
+                </div>
+            </div>
+        </div>
+        {{else}}
+        <a href="/register"><button id="register"><img src="/assets/imgs/register.png">Register</button></a>
+        <a href="/login"><button id="login">Login</button></a>
+        {{end}}
+    </nav>
+    <div class="wraper">
+        <ul id="categories">
+            <li id="category">
+                <input type="radio" id="categoryAll" name="categoryElement" value="All" checked>
+                <label for="categoryAll"><img src="/assets/imgs/categories-Icons/all.png">All</label>
+            </li>
+            {{ if and .User (eq .User.UserType "authenticated") }}
+            <li id="category">
+                <input type="radio" id="categoryMyPosts" name="categoryElement" value="MyPosts">
+                <label for="categoryMyPosts"><img src="/assets/imgs/categories-Icons/my-posts.png">My Posts</label>
+            </li>
+            <li id="category">
+                <input type="radio" id="categoryLikedPosts" name="categoryElement" value="LikedPosts">
+                <label for="categoryLikedPosts"><img src="/assets/imgs/categories-Icons/liked-posts.png">Liked Posts</label>
+            </li>
+            {{end}}
+            <!-- add MyPosts/likedPosts -->
+            {{range .Categories}}
+            <li id="category">
+                <input type="radio" id="category{{.ID}}" name="categoryElement" value="{{.ID}}">
+                <label for="category{{.ID}}"><img src="{{.CategoryIconPath}}">{{.CategoryName}}</label>
+            </li>
+            {{end}}
+        </ul>
+
+        <div id="posts"></div>
+        <div id="postMsg"></div>
+
+        <div id="post-placeholder">
+            <div class="post-info-placeholder-1">
+                <div class="avatar-placeholder"></div>
+                <div class="post-info-placeholder-2">
+                    <div class="username-placeholder"></div>
+
+                    <div class="time-placeholder"></div>
+                </div>
+            </div>
+            <div class="post-info-placeholder-2">
+                <div class="title-placeholder"></div>
+                <div class="text-placeholder"></div>
+            </div>
+            <div class="post-info-placeholder-3">
+                <div class="buttons-placeholder">
+                    <div class="button-item-placeholder"></div>
+                    <div class="button-item-placeholder"></div>
+                    <div class="button-item-placeholder"></div>
+                </div>
+                <div class="links-placeholder">
+                    <div class="link-item-placeholder"></div>
+                    <div class="link-item-placeholder"></div>
+                    <div class="link-item-placeholder"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="popup-background">
+        <div id="popup">
+            <div class="wraper">
+                <div>
+                    <p id="seperator">Comments</p>
+                    <button><i class="close fa-solid fa-xmark"></i></button>
+                </div>
+                <hr>
+                <div id="comments-section"></div>
+                {{ if and .User (eq .User.UserType "authenticated") }}
+                <hr>
+                <div id="user-comment">
+                    <div id="user-comment-info"><img src="{{.User.ProfileImg}}" alt="User Avatar" loading="lazy">
+                        <h3>{{.User.UserName}}</h3>
+                    </div>
+                    <div id="comment-group"></div>
+                </div>
+                {{end}}
+            </div>
+        </div>
+    </div>
+    <script>const Username = "{{.User.UserName}}" || "guestUser"</script>
+    <script src="/assets/scripts/main.js" type="module"></script>
+</body>
+
+</html>

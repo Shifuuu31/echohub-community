@@ -1,30 +1,26 @@
 All
 My Posts
 Liked Posts
-Movies & Streaming
-Music & Playlists
-Gaming & Esports
-Books & Reads
-Tech Buzz
-Gadgets & Gear Reviews
-Digital Lifestyle
-Travel Hacks
-Foodie Finds
-Health & Wellness
-DIY Projects & Creatives
-Skill Up
-Career Hacks
-AMA (Ask Me Anything)
-Meet the Community
-Life & Relationships Talk
-Memes & LOLs
-Global News
-Local Happenings
-Hot Takes & Polls
-Community Challenges
-Dev & Code Talk
-AI & The Future
-Machine Learning Insights
-Web & App Dev Trends
-Data Science & Analytics
-Cybersecurity & Privacy Talk
+AI
+Anime
+Art
+Books
+Business
+Career
+Culture
+DIY 
+Education
+Fashion
+Games
+Memes
+Movies & TV
+Music
+News
+Podcasts
+Q&A's
+Science
+Software & Apps
+Sports
+Technology
+Travel
+
