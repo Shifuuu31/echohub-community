@@ -82,13 +82,13 @@ const AddPost = (post) => {
         <pre>${wrapLinks(post.PostContent)}</pre>
     </div>
     <div id="post-categories">
-        <div id="links">
-            ${(post.PostCategories || []).map(category => `<li>${category}</li>`).join(' ')}
-        </div>
         <div id="buttons">
             <button><img src="/assets/imgs/like.png" alt="Like"> ${post.LikeCount}</button>
             <button><img src="/assets/imgs/dislike.png" alt="Dislike"> ${post.DislikeCount}</button>
             <button id="commentBtn"><img src="/assets/imgs/comment.png" alt="Comment"> ${post.CommentsCount}</button>
+        </div>
+        <div id="links">
+            ${(post.PostCategories || []).map(category => `<li>${category}</li>`).join(' ')}
         </div>
     </div>
 </div>`
