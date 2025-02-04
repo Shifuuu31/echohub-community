@@ -1,4 +1,4 @@
-export { fetchResponse, displayMessages, DropDown, AddPost, AddComment }
+export { fetchResponse, displayMessages, DropDown, AddPost, AddComment,incNumInStr }
 
 const fetchResponse = async (url, obj = {}) => {
     try {
@@ -163,7 +163,16 @@ function timeAgo(input) {
     return 'just now'
 }
 
+function incNumInStr(str) {
+    const match = str.match(/\d+/)
 
+    if (match) {
+        const number = parseInt(match[0], 10)+ 1
+        return str.replace(match[0], number)
+    }
+
+    return str
+}
 
 
 

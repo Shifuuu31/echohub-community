@@ -1,4 +1,4 @@
-import { fetchResponse, AddComment } from "./tools.js"
+import { fetchResponse, AddComment, incNumInStr } from "./tools.js"
 export { Popup }
 
 const popup = document.getElementById("popup")
@@ -47,11 +47,17 @@ const openPopup = async (event) => {
             newCmntBtn.addEventListener('click', async () => {
                 const cmntField = document.getElementById('comment-field')
                 
-                await createComment({
+                const created =await createComment({
                     postid: postID,
                     content: cmntField.value,
                 })
+                if (created == true) { 
+                const postCmntBtn = targetedPost.querySelector('#commentBtn')
+                let popupCmntBtn = document.querySelector("#popup #post #commentBtn")
+                popupCmntBtn.innerHTML = postCmntBtn.innerHTML = `<img src="/assets/imgs/comment.png" alt="Comment">${parseInt(postCmntBtn.textContent, 10)+1}`
                 cmntField.value = ''
+                
+                }
             })
         }
 
@@ -67,22 +73,23 @@ const closePopup = (event) => {
 }
 
 const createComment = async (newCmnt) => {
-    console.log(newCmnt.postid);
     try {
         const response = await fetchResponse(`/createComment`, newCmnt)
         if (response.status === 200) {
-            // console.log(response.body)
             await displayComments(newCmnt.postid)
+            return true
         }else if (response.status === 400) {
             console.log(response.body)
-
+            
         } else {
             console.log("Unexpected response:", response.body)
         }
-
+        
+        return false
     } catch (error) {
         console.error('Error during login process:', error)
     }
+    return false
 }
 
 
