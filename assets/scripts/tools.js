@@ -14,6 +14,7 @@ const fetchResponse = async (url, obj = {}) => {
         console.error(error)
     }
 }
+
 const DropDown = () => {
     const profilePictureContainer = document.getElementById('profile-picture-container')
     const dropdown = document.getElementById('dropdown')
@@ -43,47 +44,77 @@ const R_L_Popup = (redirectUrl, popupMsg) => {
 }
 
 // add post div to html
+
+
 const AddPost = (post) => {
+    post.Content = wrapLinks(post.Content)
+    let splittedContent = post.Content
+    let moreContent = ''
+    const flag = (post.Content.length > 150)
+    if (flag) {
+        splittedContent = post.Content.slice(0, 150)
+        moreContent = post.Content.slice(150)
+    }
+
     const postData = document.createElement('div')
     postData.innerHTML =
         `<div id="post" post-id="${post.ID}">
-    <div id="user-post-info">
-        <section style="display: flex">
-            <img src="${post.ProfileImg}" alt="User Avatar" loading="lazy">
-            <h3>@${post.UserName} <br><span>${timeAgo(post.CreatedAt)}</span></h3>
-        </section>
-        ${Username === post.UserName ? '<button class="options-btn" ><img src="/assets/imgs/option.png"></button>' : ''}
-    </div>
-    ${Username === post.UserName ?
+            <div id="user-post-info">
+                <section style="display: flex">
+                    <img src="${post.ProfileImg}" alt="User Avatar" loading="lazy">
+                    <h3>@${post.UserName} <br><span>${timeAgo(post.CreatedAt)}</span></h3>
+                </section>
+                ${Username === post.UserName ? '<button class="options-btn"><img src="/assets/imgs/option.png"></button>' : ''}
+            </div>
+            ${Username === post.UserName ?
             `<div id="post-dropdown" class="post-dropdown${post.ID}">
-        <div id="dropdown-content">
-            <a href="/updatePost?ID=${post.ID}"><img src="/assets/imgs/update.png"> Update Post</a>
-            <hr>
-            <a href="/deletePost?ID=${post.ID}"><img src="/assets/imgs/delete.png"> Delete Post</a>
-        </div>
-    </div>` : ''}
-    <div id="post-body">
-        <h3 id="post-title">${post.Title}</h3>
-        <pre>${wrapLinks(post.Content)}</pre>
-    </div>
-    <div id="post-categories">
-        <div id="buttons">
-            <button><img src="/assets/imgs/like.png" alt="Like"> ${post.LikeCount}</button>
-            <button><img src="/assets/imgs/dislike.png" alt="Dislike"> ${post.DislikeCount}</button>
-            <button id="commentBtn"><img src="/assets/imgs/comment.png" alt="Comment"> ${post.CommentsCount}</button>
-        </div>
-        <div id="links">
-            ${(post.Categories || []).map(category => `<li>${category}</li>`).join(' ')}
-        </div>
-    </div>
-</div>`
+                <div id="dropdown-content">
+                    <a href="/updatePost?ID=${post.ID}"><img src="/assets/imgs/update.png"> Update Post</a>
+                    <hr>
+                    <a href="/deletePost?ID=${post.ID}"><img src="/assets/imgs/delete.png"> Delete Post</a>
+                </div>
+            </div>` : ''}
+            <div id="post-body">
+                <h3 id="post-title">${post.Title}</h3>
+                <pre>${splittedContent}<span id="moreContent">${moreContent}</span><span ${flag ? `id="dots">...</span>` : ''}</pre>
+                ${flag ? `<button id="moreBtn">more</button>` : ''}
+            </div>
+            <div id="post-categories">
+                <div id="buttons">
+                    <button><img src="/assets/imgs/like.png" alt="Like"> ${post.LikeCount}</button>
+                    <button><img src="/assets/imgs/dislike.png" alt="Dislike"> ${post.DislikeCount}</button>
+                    <button id="commentBtn"><img src="/assets/imgs/comment.png" alt="Comment"> ${post.CommentsCount}</button>
+                </div>
+                <div id="links">
+                    ${(post.Categories || []).map(category => `<li>${category}</li>`).join(' ')}
+                </div>
+            </div>
+        </div>`
+
+    const btn = postData.querySelector("#moreBtn")
+    const dots = postData.querySelector("#dots")
+    const moreText = postData.querySelector("#moreContent")
+    
+    if (btn && dots) {
+        btn.addEventListener("click", () => {
+            if (dots.style.display === "none") {
+                dots.style.display = "inline"
+                btn.innerHTML = "more"
+                moreText.style.display = "none"
+            } else {
+                dots.style.display = "none"
+                btn.innerHTML = "less"
+                moreText.style.display = "inline"
+            }
+        })
+    }
 
     if (Username === post.UserName) {
         const optionsButton = postData.querySelector('.options-btn')
         const dropdown = postData.querySelector(`.post-dropdown${post.ID}`)
 
         optionsButton.addEventListener('click', (event) => {
-            event.stopPropagation()
+            event.stopPropagation();
             dropdown.classList.toggle('active')
         })
 
@@ -96,6 +127,7 @@ const AddPost = (post) => {
 
     return postData
 }
+
 
 const AddComment = (comment) => {
     const commentDiv = document.createElement("div")

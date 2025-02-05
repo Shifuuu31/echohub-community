@@ -36,7 +36,7 @@ const openPopup = async (event) => {
 
         const cmntGrp = document.getElementById('comment-group')
         if (cmntGrp) {
-            cmntGrp.innerHTML = `<textarea placeholder="Type a comment..." type="text" id="comment-field"></textarea>
+            cmntGrp.innerHTML = `<textarea placeholder="Type a comment..." type="text" id="comment-field" maxlength="1000"></textarea>
                         <button class="new-comment" id="${postID}"><i class="fas fa-paper-plane"></i></button>`
 
             const newCmntBtn = document.getElementById(`${postID}`)
