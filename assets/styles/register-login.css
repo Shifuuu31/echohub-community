@@ -122,13 +122,16 @@ p a {
     font-weight: 600;
 }
 #form label img {
-    position: absolute;
-    right: 20px;
-    top: 15px;
-    height: 16px;
-    width: 16px;
-
+    position: absolute !important;
+    right: 20px !important;
+    top: 15px !important;
+    height: 16px ;
+    width: 16px ;
 }
+/* body #form label img {
+    position: absolute !important;
+} */
+
 
 #form label .input:placeholder-shown+span {
     top: 10px;

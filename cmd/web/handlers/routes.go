@@ -36,7 +36,7 @@ func (webForum *WebApp) Router() http.Handler {
 
 	// ProfileSettings routes
 	mux.Handle("GET /profileSettings", webForum.AuthMiddleware(http.HandlerFunc(webForum.ProfileSettings)))
-	// mux.HandleFunc("POST /UpdateProfile", webForum.UpdateProfile)
+	mux.Handle("POST /updateProfile", webForum.AuthMiddleware(http.HandlerFunc(webForum.UpdateProfile)))
 	
 	// MaxID route
 	mux.HandleFunc("POST /maxId", webForum.MaxID)

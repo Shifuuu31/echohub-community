@@ -1,4 +1,4 @@
-export { fetchResponse, R_L_Popup, DropDown, AddPost, AddComment, displayErr, AddOrUpdatePost, CategoriesSelection }
+export { fetchResponse, R_L_Popup, DropDown, AddPost, AddComment, displayMsg, AddOrUpdatePost, CategoriesSelection }
 
 const fetchResponse = async (url, obj = {}) => {
     try {
@@ -31,15 +31,15 @@ const DropDown = () => {
 }
 
 const R_L_Popup = (redirectUrl, popupMsg) => {
-        const overlay = document.getElementById('overlay')
-        const goBtn = document.getElementById('gobtn')
-        const h2Element = document.querySelector("#popup h2")
-        h2Element.textContent = popupMsg
-        overlay.classList.add('show')
-        goBtn.addEventListener('click', () => {
-            overlay.classList.remove('show')
-            window.location.href = redirectUrl
-        })
+    const overlay = document.getElementById('overlay')
+    const goBtn = document.getElementById('gobtn')
+    const h2Element = document.querySelector("#popup h2")
+    h2Element.textContent = popupMsg
+    overlay.classList.add('show')
+    goBtn.addEventListener('click', () => {
+        overlay.classList.remove('show')
+        window.location.href = redirectUrl
+    })
 }
 
 // add post div to html
@@ -138,7 +138,7 @@ const AddOrUpdatePost = async (url) => {
         console.log("Unauthorized: try to login")
     } else if (response.status === 400) {
         console.log(response.body);
-        displayErr(response.body.messages)
+        displayMsg(response.body.messages)
     } else if (response.status === 200) {
         console.log("post added successfully")
         window.location.href = "/"
@@ -157,36 +157,39 @@ const CategoriesSelection = () => {
             const checkedCategories = document.querySelectorAll('input[id^=category]:checked')
             if (checkedCategories.length > 3) {
                 category.checked = false
-                displayErr(['You can only select up to 3 categories'])
+                displayMsg(['You can only select up to 3 categories'])
             }
         })
     })
 }
 
-const displayErr = (msgs) => {
-    const errPopups = document.querySelectorAll('.errPopup');
-    errPopups.forEach(popup => popup.remove());
+const displayMsg = (msgs, success = false) => {
+    const errPopups = document.querySelectorAll('.errPopup')
+    errPopups.forEach(popup => popup.remove())
 
     const baseTop = 100
     const gap = 50
 
     msgs.forEach((msg, index) => {
-        const errPopup = document.createElement("div");
-        errPopup.id = `errPopup-${index}`;
-        errPopup.classList.add("errPopup");
+        const errPopup = document.createElement("div")
+        errPopup.id = `errPopup-${index}`
+        errPopup.classList.add("errPopup")
+
+        if (success == true) errPopup.style.backgroundColor = '#02bf08' // lightgreen
+
         errPopup.innerHTML = `
         <span class="close-btn">&times;</span>
         ${msg}
-      `;
+      `
 
         errPopup.style.top = `${baseTop + index * gap}px`
 
         document.body.appendChild(errPopup);
 
-        const closeBtn = errPopup.querySelector('.close-btn');
+        const closeBtn = errPopup.querySelector('.close-btn')
         if (closeBtn) {
-            closeBtn.addEventListener('click', function () {
-                errPopup.remove();
+            closeBtn.addEventListener('click', () => {
+                errPopup.remove()
             });
         }
     });

@@ -1,4 +1,4 @@
-import { fetchResponse, R_L_Popup, displayErr } from "./tools.js"
+import { fetchResponse, R_L_Popup, displayMsg } from "./tools.js"
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginBtn = document.getElementById('loginBtn')
@@ -29,9 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.status === 401) {
                 console.log("Unauthorized: Invalid credentials.")
-                displayErr(response.body.messages)
+                displayMsg(response.body.messages)
             } else if (response.status === 200) {
                 console.log("Login successful")
+                displayMsg(response.body.messages, true)
                 R_L_Popup("/", `Hello, ${credentials.username.charAt(0).toUpperCase() + credentials.username.slice(1)}!`)
             } else {
                 console.log("Unexpected response:", response.body)

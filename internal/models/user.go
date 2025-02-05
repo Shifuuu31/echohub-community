@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -120,11 +121,12 @@ func (user *UserModel) InsertUser(newUser User) (err error) {
 }
 
 type NewUserInfo struct {
-	UserName     string `json:"username"`
-	Email        string `json:"email"`
-	Gender       string `json:"gender"`
-	Password     string `json:"password"`
-	RepeatedPass string `json:"rPassword"`
+	UserName     string   `json:"username"`
+	Email        string   `json:"email"`
+	Gender       string   `json:"gender"`
+	Password     string   `json:"password"`
+	RepeatedPass string   `json:"rPassword"`
+	Changes      []string `json:"changes"`
 }
 type Response struct {
 	Messages []string `json:"messages"`
@@ -153,8 +155,59 @@ func (user *UserModel) ValidateNewUser(new NewUserInfo) (newUser User, errors Re
 		errors.Messages = append(errors.Messages, err.Error())
 	}
 	newUser.HashedPassword = string(hash)
-	
+
 	return newUser, errors
+}
+
+func (user *UserModel) UpdateUser(toUpdate NewUserInfo, userID int) (errors Response, err error) {
+	for _, change := range toUpdate.Changes {
+		switch change {
+		case "username":
+			username, err := user.usernameCheck(toUpdate.UserName)
+			if err != nil {
+				errors.Messages = append(errors.Messages, err.Error())
+			} else {
+				if err = user.UpdateDB("UserTable", "username", username, userID); err != nil {
+					return Response{}, err
+				}
+			}
+
+		case "email":
+			email, err := user.emailCheck(toUpdate.Email)
+			if err != nil {
+				errors.Messages = append(errors.Messages, err.Error())
+			} else {
+				if err = user.UpdateDB("UserTable", "email", email, userID); err != nil {
+					return Response{}, err
+				}
+			}
+
+		case "password":
+			password, err := passwordCheck(toUpdate.Password, toUpdate.RepeatedPass)
+			if err != nil {
+				errors.Messages = append(errors.Messages, err.Error())
+			} else {
+				hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 12)
+				if err != nil {
+					return Response{}, err
+				}
+
+				if err = user.UpdateDB("UserTable", "hashed_password", string(hashedPassword), userID); err != nil {
+					return Response{}, err
+				}
+			}
+		}
+	}
+	return errors, nil
+}
+
+func (user *UserModel) UpdateDB(table, fieldName, value string, id int) error {
+	updateStmt := fmt.Sprintf(`UPDATE %s SET %s = ? WHERE id = ?`, table, fieldName)
+	_, err := user.DB.Exec(updateStmt, value, id)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // usernameCheck ensures the username is valid and unique.

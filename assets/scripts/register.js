@@ -43,10 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(response)
             if (response.status === 400) {
                 console.log("Bad request: Invalid info Or Missing field.")
-                displayErr(response.body.messages)
+                displayMsg(response.body.messages)
 
             } else if (response.status === 200) {
                 console.log("Registred successfully" )
+                displayMsg(response.body.messages, true)
                 R_L_Popup('/login', `${newUser.username.charAt(0).toUpperCase()+ newUser.username.slice(1)}, You're Registred Successfully!`)
             } else {
                 console.log("Unexpected response:", response.body)

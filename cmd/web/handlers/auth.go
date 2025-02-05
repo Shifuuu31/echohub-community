@@ -160,17 +160,54 @@ func (webForum *WebApp) ProfileSettings(w http.ResponseWriter, r *http.Request) 
 		userErr.RenderError(w)
 		return
 	}
-	println("hahhahha")
-	
+
 	if user.UserType != "authenticated" {
-		userErr = models.Error {
+		userErr = models.Error{
 			StatusCode: http.StatusUnauthorized,
-			Message: "Unauthorized",
+			Message:    "Unauthorized",
 			SubMessage: "Try to login",
-			}
+		}
 		userErr.RenderError(w)
 		return
 	}
-	fmt.Println(user)
 	models.RenderPage(w, "profileSettings.html", user)
+}
+
+func (webForum *WebApp) UpdateProfile(w http.ResponseWriter, r *http.Request) {
+	user, userErr := webForum.Users.RetrieveUser(r)
+	if userErr.Type == "server" {
+		http.Error(w, userErr.Message, userErr.StatusCode)
+		return
+	}
+
+	if user.UserType != "authenticated" {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	var toUpdate models.NewUserInfo
+
+	if decodeErr := decodeJsonData(r, &toUpdate); decodeErr != nil {
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+		return
+	}
+	fmt.Println(toUpdate)
+	response, err := webForum.Users.UpdateUser(toUpdate, user.ID)
+	if err != nil {
+		models.Error{StatusCode: http.StatusInternalServerError, Message: "Internal Server Error", SubMessage: "Cannot insert new user"}.RenderError(w)
+		return
+	}
+
+	if len(response.Messages) != 0 {
+		if err := encodeJsonData(w, http.StatusBadRequest, response); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
+		fmt.Println("KO")
+	} else {
+		fmt.Println("OK")
+		response.Messages = append(response.Messages, "Profile Updated successfully")
+		if err := encodeJsonData(w, http.StatusOK, response); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
+	}
 }
