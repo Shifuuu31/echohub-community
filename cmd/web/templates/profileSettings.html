@@ -56,8 +56,13 @@
         <div id="user-info-edit">
             <form action="" method="">
                 <div id="input-group">
-                    <label for="">Username</label>
-                    <input type="text" placeholder="{{.UserName}}">
+                    
+                    <details>
+                        <label for=""></label><summary>Username</summary></label>
+                        <input type="text" placeholder="{{.UserName}}">
+                        <button id="update"><img src="/assets/imgs/update.png">Update</button>
+                        <button id="update"><img src="/assets/imgs/update.png">Update</button>
+                      </details>
                     <label for="">Email</label>
                     <input type="text" placeholder="{{.Email}}">
                     <label for="">Gender</label>
@@ -72,7 +77,6 @@
                     <input type="password" placeholder="••••••••••••••••">
                 </div>
 
-                <a href="/newPost"><button id="update"><img src="/assets/imgs/update.png"></i>Update</button></a>
         </div>
     </div>
 </body>

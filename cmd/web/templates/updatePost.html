@@ -47,7 +47,7 @@
             </div>
         </div>
     </nav>
-    <div class="wraper wraper-extra" id="{{.Post_info.PostId}}">
+    <div class="wraper wraper-extra" id="{{.Post_info.ID}}">
         <ul id="categories">
             {{range .Categories}}
             <li id="category">
@@ -57,17 +57,16 @@
             {{end}}
         </ul>
         <div id="post-inputs">
-            <input type="text" id="title" placeholder="Post Title *" value="{{.Post_info.PostTitle}}"
+            <input type="text" id="title" placeholder="Post Title *" value="{{.Post_info.Title}}"
                 maxlength="70" required>
-            <p id="errMsgs" style="color: red;"></p>
             <textarea id="content" placeholder="Type Something here..." maxlength="5000"
-                required>{{.Post_info.PostContent}}</textarea>
+                required>{{.Post_info.Content}}</textarea>
             <button id="submitPost"><i class="fas fa-paper-plane"></i>&ensp;Update</button>
         </div>
     </div>
     <script>
         const selected = []
-        {{ range .Post_info.PostCategories }}
+        {{ range .Post_info.Categories }}
         selected.push("{{.}}")
         {{ end }}
     </script>

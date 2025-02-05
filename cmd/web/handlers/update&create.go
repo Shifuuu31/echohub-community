@@ -103,13 +103,20 @@ func (webForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
 
 	postId, err := strconv.Atoi(r.URL.Query().Get("ID"))
 	if err != nil {
-		http.Error(w, "Invalid PostID", http.StatusBadRequest)
+		models.Error{
+			StatusCode: http.StatusBadRequest,
+			Message: "Bad Request",
+			SubMessage: "Invalid PostID",
+		}.RenderError(w)
 		return
 	}
 
 	post, err := webForum.Posts.GetPost(user.ID, postId)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		models.Error{
+			StatusCode: http.StatusInternalServerError,
+			Message: "Internal Server Error",
+		}.RenderError(w)
 		return
 	}
 
