@@ -62,7 +62,7 @@ nav img {
 }
 
 #register,
-#login,
+#login, #cancel,
 #create,
 #update {
     padding: 11px 20px;
@@ -86,19 +86,20 @@ nav img {
     background-color: var(--hover-color);
 }
 
-#login {
+#login, #cancel {
     margin: 0 5px;
     color: var(--primary-color);
     background-color: var(--border-color);
 }
 
-#login:hover {
+#login:hover, #cancel:hover {
     background-color: var(--secondary-color);
     color: white;
 }
 
 #create img,
 #update img,
+#cancel img,
 #register img {
     width: 16px;
     height: 16px;
