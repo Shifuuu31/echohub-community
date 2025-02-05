@@ -140,6 +140,11 @@ func (user *UserModel) ValidateNewUser(new NewUserInfo) (newUser User, errors Re
 		errors.Messages = append(errors.Messages, err.Error())
 	}
 
+	if new.Gender != "male" && new.Gender != "female" {
+		errors.Messages = append(errors.Messages, "Invalid gender: must be 'male' or 'female'")
+	}
+	newUser.Gender = new.Gender
+
 	if new.Password, err = passwordCheck(new.Password, new.RepeatedPass); err != nil {
 		errors.Messages = append(errors.Messages, err.Error())
 	}
@@ -148,10 +153,7 @@ func (user *UserModel) ValidateNewUser(new NewUserInfo) (newUser User, errors Re
 		errors.Messages = append(errors.Messages, err.Error())
 	}
 	newUser.HashedPassword = string(hash)
-	if new.Gender != "male" && new.Gender != "female" {
-		errors.Messages = append(errors.Messages, "Invalid gender: must be 'male' or 'female'")
-	}
-	newUser.Gender = new.Gender
+	
 	return newUser, errors
 }
 

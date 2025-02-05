@@ -1,4 +1,4 @@
-export { fetchResponse, displayMessages, DropDown, AddPost, AddComment, displayErr, AddOrUpdatePost, CategoriesSelection }
+export { fetchResponse, R_L_Popup, DropDown, AddPost, AddComment, displayErr, AddOrUpdatePost, CategoriesSelection }
 
 const fetchResponse = async (url, obj = {}) => {
     try {
@@ -30,32 +30,16 @@ const DropDown = () => {
     }
 }
 
-const displayMessages = (messages, redirectUrl, popupMsg) => {
-    const errorMsgsDiv = document.getElementById('errorMsgs')
-    errorMsgsDiv.innerHTML = ''
-
-    messages.forEach((msg) => {
-        const paragraph = document.createElement('p')
-        paragraph.textContent = msg
-        paragraph.style.color = 'red'
-        paragraph.style.fontWeight = 600
-        paragraph.style.fontSize = '16px'
-
-        errorMsgsDiv.appendChild(paragraph)
-
-        if (msg == 'User Registred successfully!' || msg == 'Login successful!') {
-            paragraph.style.color = 'green'
-            const overlay = document.getElementById('overlay')
-            const goBtn = document.getElementById('gobtn')
-            const h2Element = document.querySelector("#popup h2")
-            h2Element.textContent = popupMsg
-            overlay.classList.add('show')
-            goBtn.addEventListener('click', () => {
-                overlay.classList.remove('show')
-                window.location.href = redirectUrl
-            })
-        }
-    })
+const R_L_Popup = (redirectUrl, popupMsg) => {
+        const overlay = document.getElementById('overlay')
+        const goBtn = document.getElementById('gobtn')
+        const h2Element = document.querySelector("#popup h2")
+        h2Element.textContent = popupMsg
+        overlay.classList.add('show')
+        goBtn.addEventListener('click', () => {
+            overlay.classList.remove('show')
+            window.location.href = redirectUrl
+        })
 }
 
 // add post div to html
@@ -146,7 +130,7 @@ const AddOrUpdatePost = async (url) => {
         newPost.selectedCategories.push(selectedCategory.value)
     })
 
-    console.log(newPost)
+    // console.log(newPost)
 
     const response = await fetchResponse(url, newPost)
     console.log(response.body);
@@ -180,32 +164,33 @@ const CategoriesSelection = () => {
 }
 
 const displayErr = (msgs) => {
-    const errPopups = document.querySelectorAll('.errPopup')
-    console.log(errPopups)
+    const errPopups = document.querySelectorAll('.errPopup');
     errPopups.forEach(popup => popup.remove());
+
+    const baseTop = 100
+    const gap = 50
+
     msgs.forEach((msg, index) => {
-        // console.log(document.querySelectorAll('div[id^=errPopup]'))
-        const errPopup = document.createElement("div")
-        errPopup.id = `errPopup-${index}`
-        errPopup.classList.add("errPopup")
+        const errPopup = document.createElement("div");
+        errPopup.id = `errPopup-${index}`;
+        errPopup.classList.add("errPopup");
         errPopup.innerHTML = `
-        <p>${msg}</p>
         <span class="close-btn">&times;</span>
-      `
-        index == 0 ? errPopup.style.top = '100px' : errPopup.style.top = `${(index + 1) * 80}px`
+        ${msg}
+      `;
+
+        errPopup.style.top = `${baseTop + index * gap}px`
 
         document.body.appendChild(errPopup);
-        //   console.log(errPopup);
 
-        const closeBtn = errPopup.querySelector('.close-btn')
+        const closeBtn = errPopup.querySelector('.close-btn');
         if (closeBtn) {
             closeBtn.addEventListener('click', function () {
-                console.log('text')
-                errPopup.remove()
-            })
+                errPopup.remove();
+            });
         }
-    })
-}
+    });
+};
 
 
 function wrapLinks(text) {
