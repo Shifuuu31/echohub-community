@@ -14,7 +14,6 @@ const openPopup = async (event) => {
 
         const targetedPost = event.target.closest("#post")
         const postID = targetedPost.getAttribute("post-id")
-
         const cmntGrp = document.getElementById('comment-group')
         if (cmntGrp) {
             cmntGrp.innerHTML = `<textarea placeholder="Type a comment..." type="text" id="comment-field" maxlength="1000"></textarea>
@@ -31,9 +30,8 @@ const openPopup = async (event) => {
                 })
                 if (created == true) {
                     const postCmntBtn = targetedPost.querySelector('#commentBtn')
-                    postCmntBtn.innerHTML = `<img src="/assets/imgs/comment.png" alt="Comment">${parseInt(postCmntBtn.textContent, 10) + 1}`
+                    postCmntBtn.childNodes[1].nodeValue = parseInt(postCmntBtn.childNodes[1].nodeValue.trim(), 10) + 1
                     cmntField.value = ''
-
                 }
             })
         }
@@ -88,7 +86,7 @@ const displayComments = async (postid) => {
     } catch (error) {
         console.error('Error during login process:', error)
     }
-    
+
     if (comments.length > 0) {
         comments.forEach(comment => {
             console.log(comment);

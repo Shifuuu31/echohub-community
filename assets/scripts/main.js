@@ -7,7 +7,7 @@ window.addEventListener("load", ()=> {
         document.querySelector(".loader-container").style.display = "none";
         document.getElementById("navBar").style.display = "flex";
         document.getElementById("main").style.display = "block";
-    }, 1500)
+    }, 0)
 })
 
 // event listner for filter by category
