@@ -1,38 +1,38 @@
-import { Popup } from "./popup.js"
+import { closePopup, popupBackground } from "./popup.js"
 import { displayPosts, DataToFetch } from "./display.js"
 import { DropDown } from "./tools.js"
 
 // let attachPopupListeners = null
 
 const initPosts = async () => {
-    const attachPopupListeners = Popup()
-    const postsAdded = await displayPosts()
-    if (postsAdded) {
-        attachPopupListeners()
-    }
+    // const attachPopupListeners = Popup()
+    await displayPosts()
+    // if (postsAdded) {
+    //     attachPopupListeners()
+    // }
 }
 
 const infiniteScroll = async () => {
-    const attachPopupListeners = Popup()
+    // const attachPopupListeners = Popup()
     const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight
 
     if (isAtBottom) {
-        const newPostsAdded = await displayPosts(DataToFetch.category, true)
+        await displayPosts(DataToFetch.category, true)
 
-        if (newPostsAdded) {
-            attachPopupListeners()
-        }
+        // if (newPostsAdded) {
+        //     attachPopupListeners()
+        // }
     }
 }
 
 
 const CategoriesFilter = async (event) => {
-    const attachPopupListeners = Popup()
-    const postsLoaded = await displayPosts(event.target.defaultValue)
+    // const attachPopupListeners = Popup()
+    await displayPosts(event.target.defaultValue)
 
-    if (postsLoaded) {
-        attachPopupListeners()
-    }
+    // if (postsLoaded) {
+    //     attachPopupListeners()
+    // }
 }
 
 // event listner for sort by category
@@ -56,6 +56,11 @@ const throttleScroll = () => {
         }
     });
 }
+
+
+if (popupBackground) {
+        popupBackground.addEventListener("click", closePopup)
+    }
 
 const init = async () => {
     try {

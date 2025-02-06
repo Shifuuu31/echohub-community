@@ -120,8 +120,8 @@
                 {{ if and .User (eq .User.UserType "authenticated") }}
                 <hr>
                 <div id="user-comment">
-                    <div id="user-comment-info"><img src="{{.User.ProfileImg}}" alt="User Avatar" loading="lazy">
-                        <h3>{{.User.UserName}}</h3>
+                    <div id="user-comment-info">
+                        <img src="{{.User.ProfileImg}}" alt="User Avatar" loading="lazy">
                     </div>
                     <div id="comment-group"></div>
                 </div>

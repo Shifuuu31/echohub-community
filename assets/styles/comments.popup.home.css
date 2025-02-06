@@ -170,41 +170,39 @@
 }
 
 #user-comment {
+    display: flex;
     padding: 0px 15px;
     margin-top: 30px;
 }
 
 #comment-group {
+    display: flex;
     position: relative;
     width: 100%;
+    align-items: center;
+    border: 2px solid var(--border-color);
+    border-radius: 30px;
 }
 
 #comment-field {
-    border-radius: 30px;
-    border: 2px solid var(--border-color);
     outline: none;
+    border: none;
     resize: none;
     width: 100%;
-    height: 75px;
-    margin-top: 10px;
-    padding: 15px 50px 15px 15px;
-    /* Add padding to the right to make space for the button */
-    box-sizing: border-box;
+    margin: 20px 50px 5px 20px;
     overflow: hidden;
 }
 
 .new-comment {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
     background-color: var(--primary-color);
     color: white;
     border: none;
     padding: 10px 15px;
+    margin-right: 20px;
     border-radius: 512px;
     cursor: pointer;
-    display: flex;
     align-items: center;
+    height: min-content;
 }
 
 .new-comment:hover {

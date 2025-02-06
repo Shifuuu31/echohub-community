@@ -1,3 +1,5 @@
+import {openPopup} from './popup.js'
+
 export { fetchResponse, R_L_Popup, DropDown, AddPost, AddComment, displayMsg, AddOrUpdatePost, CategoriesSelection }
 
 const fetchResponse = async (url, obj = {}) => {
@@ -44,8 +46,6 @@ const R_L_Popup = (redirectUrl, popupMsg) => {
 }
 
 // add post div to html
-
-
 const AddPost = (post) => {
     post.Content = wrapLinks(post.Content)
     let splittedContent = post.Content
@@ -91,26 +91,9 @@ const AddPost = (post) => {
             </div>
         </div>`
 
-    const btn = postData.querySelector("#moreBtn")
-    const dots = postData.querySelector("#dots")
-    const moreText = postData.querySelector("#moreContent")
-    
-    if (btn && dots) {
-        btn.addEventListener("click", () => {
-            if (dots.style.display === "none") {
-                dots.style.display = "inline"
-                btn.innerHTML = "more"
-                moreText.style.display = "none"
-            } else {
-                dots.style.display = "none"
-                btn.innerHTML = "less"
-                moreText.style.display = "inline"
-            }
-        })
-    }
-
-    if (Username === post.UserName) {
-        const optionsButton = postData.querySelector('.options-btn')
+        
+        if (Username === post.UserName) {
+            const optionsButton = postData.querySelector('.options-btn')
         const dropdown = postData.querySelector(`.post-dropdown${post.ID}`)
 
         optionsButton.addEventListener('click', (event) => {
@@ -125,6 +108,36 @@ const AddPost = (post) => {
         })
     }
 
+
+    
+    const cmntBtn = postData.querySelector("#commentBtn")
+    console.log('AH',cmntBtn);
+    if (cmntBtn) {
+        // cmntBtn.removeEventListener("click", openPopup)
+        cmntBtn.addEventListener("click", openPopup)
+
+    } 
+
+    const btn = postData.querySelector("#moreBtn")
+    const dots = postData.querySelector("#dots")
+    
+    const moreText = postData.querySelector("#moreContent")
+    if (btn && dots) {
+        btn.addEventListener("click", () => {
+            if (dots.style.display === "none") {
+                dots.style.display = "inline"
+                btn.innerHTML = "more"
+                moreText.style.display = "none"
+            } else {
+                dots.style.display = "none"
+                btn.innerHTML = "less"
+                moreText.style.display = "inline"
+            }
+        })
+    }
+
+
+    
     return postData
 }
 
@@ -133,8 +146,8 @@ const AddComment = (comment) => {
     const commentDiv = document.createElement("div")
     commentDiv.id = "comment"
     commentDiv.innerHTML = `
-        <div id="user-info-and-buttons">
-            <div id="user-comment-info">
+    <div id="user-info-and-buttons">
+    <div id="user-comment-info">
                 <img src="${comment.ProfileImg}" alt="User Avatar" loading="lazy">
                 <h3>@${comment.UserName} <br><span>${timeAgo(comment.CreationDate)}</span></h3>
             </div>
