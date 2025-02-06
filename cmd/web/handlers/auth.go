@@ -194,7 +194,7 @@ func (webForum *WebApp) UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(toUpdate)
 	response, err := webForum.Users.UpdateUser(toUpdate, user.ID)
 	if err != nil {
-		models.Error{StatusCode: http.StatusInternalServerError, Message: "Internal Server Error", SubMessage: "Cannot insert new user"}.RenderError(w)
+		models.Error{StatusCode: http.StatusInternalServerError, Message: "Internal Server Error", SubMessage: "Cannot update new user"}.RenderError(w)
 		return
 	}
 

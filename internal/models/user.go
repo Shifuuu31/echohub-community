@@ -130,6 +130,7 @@ type NewUserInfo struct {
 }
 type Response struct {
 	Messages []string `json:"messages"`
+	Extra    []string `json:"extra"`
 }
 
 // ValidateNewUser validates new user details and creates a User struct if valid.
@@ -159,33 +160,35 @@ func (user *UserModel) ValidateNewUser(new NewUserInfo) (newUser User, errors Re
 	return newUser, errors
 }
 
-func (user *UserModel) UpdateUser(toUpdate NewUserInfo, userID int) (errors Response, err error) {
+func (user *UserModel) UpdateUser(toUpdate NewUserInfo, userID int) (response Response, err error) {
 	for _, change := range toUpdate.Changes {
 		switch change {
 		case "username":
 			username, err := user.usernameCheck(toUpdate.UserName)
 			if err != nil {
-				errors.Messages = append(errors.Messages, err.Error())
+				response.Messages = append(response.Messages, err.Error())
 			} else {
 				if err = user.UpdateDB("UserTable", "username", username, userID); err != nil {
 					return Response{}, err
 				}
+				response.Extra = append(response.Extra, "username")
 			}
 
 		case "email":
 			email, err := user.emailCheck(toUpdate.Email)
 			if err != nil {
-				errors.Messages = append(errors.Messages, err.Error())
+				response.Messages = append(response.Messages, err.Error())
 			} else {
 				if err = user.UpdateDB("UserTable", "email", email, userID); err != nil {
 					return Response{}, err
 				}
+				response.Extra = append(response.Extra, "email")
 			}
 
 		case "password":
 			password, err := passwordCheck(toUpdate.Password, toUpdate.RepeatedPass)
 			if err != nil {
-				errors.Messages = append(errors.Messages, err.Error())
+				response.Messages = append(response.Messages, err.Error())
 			} else {
 				hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 12)
 				if err != nil {
@@ -195,10 +198,12 @@ func (user *UserModel) UpdateUser(toUpdate NewUserInfo, userID int) (errors Resp
 				if err = user.UpdateDB("UserTable", "hashed_password", string(hashedPassword), userID); err != nil {
 					return Response{}, err
 				}
+				response.Extra = append(response.Extra, "password")
+
 			}
 		}
 	}
-	return errors, nil
+	return response, nil
 }
 
 func (user *UserModel) UpdateDB(table, fieldName, value string, id int) error {
