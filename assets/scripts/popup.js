@@ -1,28 +1,11 @@
 import { fetchResponse, AddComment } from "./tools.js"
-export { Popup, openPopup, closePopup, popupBackground }
+export { openPopup, closePopup, popupBackground }
 
 const popup = document.getElementById("popup")
 const popupBackground = document.getElementById("popup-background")
 const closeButton = document.querySelector(".close")
 const commentsSection = document.getElementById("comments-section");
 
-const Popup = () => {
-
-    // const attachEventListeners = () => {
-    //     const postsBtns = document.querySelectorAll("#commentBtn")
-    //     postsBtns.forEach(postBtn => {
-    //         postBtn.removeEventListener("click", openPopup)
-    //         postBtn.addEventListener("click", (event) => {
-    //             console.log("hhha");
-    //             openPopup(event)
-    //         })
-    //     })
-    // }
-
-    
-
-    // return attachEventListeners
-}
 
 const openPopup = async (event) => {
 

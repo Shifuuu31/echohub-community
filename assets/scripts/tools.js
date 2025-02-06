@@ -111,11 +111,8 @@ const AddPost = (post) => {
 
     
     const cmntBtn = postData.querySelector("#commentBtn")
-    console.log('AH',cmntBtn);
     if (cmntBtn) {
-        // cmntBtn.removeEventListener("click", openPopup)
         cmntBtn.addEventListener("click", openPopup)
-
     } 
 
     const btn = postData.querySelector("#moreBtn")

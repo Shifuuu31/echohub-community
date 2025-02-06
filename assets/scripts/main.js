@@ -3,7 +3,7 @@ import { displayPosts, DataToFetch } from "./display.js"
 import { DropDown } from "./tools.js"
 
 
-// event listner for sort by category
+// event listner for filter by category
 const CategoriesFilter = () => {
     const categories = document.querySelectorAll("input[id^=category]")
     categories.forEach(category => {
@@ -13,6 +13,13 @@ const CategoriesFilter = () => {
         })
     })
 }
+
+const ulCategories = document.getElementById("categories");
+
+ulCategories.addEventListener("wheel", (event) => {
+        event.preventDefault()
+        ulCategories.scrollLeft += event.deltaY
+})
 
 if (popupBackground) {
     popupBackground.addEventListener("click", closePopup)
