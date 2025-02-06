@@ -2,6 +2,13 @@ import { closePopup, popupBackground } from "./popup.js"
 import { displayPosts, DataToFetch } from "./display.js"
 import { DropDown } from "./tools.js"
 
+window.addEventListener("load", ()=> {
+    setTimeout(() => {
+        document.querySelector(".loader-container").style.display = "none";
+        document.getElementById("navBar").style.display = "flex";
+        document.getElementById("main").style.display = "block";
+    }, 1500)
+})
 
 // event listner for filter by category
 const CategoriesFilter = () => {

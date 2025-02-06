@@ -47,6 +47,8 @@
             </div>
         </div>
     </nav>
+    
+
     <div id="edit">
         <div id="user-info">
             <img src="{{.ProfileImg}}" alt="Profile Picture" loading="lazy">
@@ -54,24 +56,24 @@
         </div>
         </form>
         <div id="user-info-edit">
-                <div id="input-group">
-                    <label for="">Username</label>
-                    <input type="text" id="username" placeholder="{{.UserName}}">
-                    <label for="">Email</label>
-                    <input type="text" id="email" placeholder="{{.Email}}">
-                    <label for="">Gender</label>
-                    <input type="text" id="gender" placeholder="{{.Gender}}" readonly>
-                    <label for="">Language <span>(we're working on adding new languages)</span></label>
-                    <select>
-                        <option value="english" selected>English</option>
-                    </select>
-                    <label for="">New Password</label>
-                    <input type="password" id="password" placeholder="enter new password">
-                    <label for="">Confirm New Password</label>
-                    <input type="password" id="rPassword" placeholder="repeat your new password">
-                </div>
+            <div id="input-group">
+                <label for="">Username</label>
+                <input type="text" id="username" placeholder="{{.UserName}}">
+                <label for="">Email</label>
+                <input type="text" id="email" placeholder="{{.Email}}">
+                <label for="">Gender</label>
+                <input type="text" id="gender" placeholder="{{.Gender}}" readonly>
+                <label for="">Language <span>(we're working on adding new languages)</span></label>
+                <select>
+                    <option value="english" selected>English</option>
+                </select>
+                <label for="">New Password</label>
+                <input type="password" id="password" placeholder="enter new password">
+                <label for="">Confirm New Password</label>
+                <input type="password" id="rPassword" placeholder="repeat your new password">
+            </div>
 
-                <button id="update"><img src="/assets/imgs/w-update.png">Update</button>
+            <button id="update"><img src="/assets/imgs/w-update.png">Update</button>
         </div>
     </div>
     <script>
@@ -79,5 +81,5 @@
     </script>
     <script src="/assets/scripts/profileSettings.js" type="module"></script>
 </body>
-</html>
 
+</html>
