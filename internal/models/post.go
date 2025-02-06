@@ -2,7 +2,6 @@ package models
 
 import (
 	"database/sql"
-	"errors"
 	"net/http"
 	"strconv"
 	"strings"
@@ -303,17 +302,32 @@ func (PostModel *PostModel) CreatePost(userId int, title, content string) (int, 
 }
 
 // get post by id to update
-func (PostModel *PostModel) GetPost(user_id, idPost int) (post Post, err error) {
-	err = PostModel.DB.QueryRow("SELECT p.id,p.title,p.content FROM PostTable p WHERE id = ? AND p.user_id = ?", idPost, user_id).Scan(&post.ID, &post.Title, &post.Content)
+func (PostModel *PostModel) GetPost(user_id, idPost int) (post Post, postErr Error) {
+	err := PostModel.DB.QueryRow("SELECT id, title, content FROM PostTable WHERE id = ? AND user_id = ?", idPost, user_id).Scan(&post.ID, &post.Title, &post.Content)
 	if err != nil {
-		return Post{}, errors.New("no post with this ID : ")
+		if err == sql.ErrNoRows {
+			return Post{}, Error{
+				StatusCode: http.StatusForbidden,
+				Message:    "Forbidden",
+				Type:       "client",
+			}
+		}
+		return Post{}, Error{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			Type:       "server",
+		}
 	}
 
 	if post.Categories, err = PostModel.GetPostCategories(post.ID); err != nil {
-		return Post{}, err
+		return Post{}, Error{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			Type:       "server",
+		}
 	}
 
-	return post, nil
+	return post, Error{}
 }
 
 // update post

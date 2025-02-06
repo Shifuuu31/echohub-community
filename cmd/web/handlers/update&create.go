@@ -91,13 +91,11 @@ func (webForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if user.UserType != "authenticated" {
-		userErr = models.Error{
+		models.Error{
 			StatusCode: http.StatusUnauthorized,
 			Message:    "Unauthorized",
 			SubMessage: "Please try to login",
-		}
-
-		userErr.RenderError(w)
+		}.RenderError(w)
 		return
 	}
 
@@ -105,18 +103,15 @@ func (webForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		models.Error{
 			StatusCode: http.StatusBadRequest,
-			Message: "Bad Request",
+			Message:    "Bad Request",
 			SubMessage: "Invalid PostID",
 		}.RenderError(w)
 		return
 	}
 
-	post, err := webForum.Posts.GetPost(user.ID, postId)
-	if err != nil {
-		models.Error{
-			StatusCode: http.StatusInternalServerError,
-			Message: "Internal Server Error",
-		}.RenderError(w)
+	post, postErr := webForum.Posts.GetPost(user.ID, postId)
+	if postErr.Type != "" {
+		postErr.RenderError(w)
 		return
 	}
 
