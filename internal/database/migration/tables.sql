@@ -52,3 +52,11 @@ CREATE TABLE IF NOT EXISTS CommentTable (
         FOREIGN KEY (post_id) REFERENCES PostTable (id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS Likes_Dislikes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    entity_id INTEGER NOT NULL,
+    entity_type TEXT NOT NULL CHECK(entity_type IN ('post', 'comment')),
+    liked BOOLEAN NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES UserTable(id) ON DELETE CASCADE
+);

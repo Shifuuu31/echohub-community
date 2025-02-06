@@ -1,8 +1,7 @@
 import { closePopup, popupBackground } from "./popup.js"
 import { displayPosts, DataToFetch } from "./display.js"
-import { handleLikeDislike } from "./likes&dislikes.js"
 import { DropDown } from "./tools.js"
-export { setupLikeDislikeListner }
+import { setupLikeDislikeListner } from "./likes&dislikes.js"
 
 window.addEventListener("load", () => {
     setTimeout(() => {
@@ -12,20 +11,7 @@ window.addEventListener("load", () => {
     }, 0)
 })
 
-const setupLikeDislikeListner = () => {
-    const likeButtons = document.querySelectorAll('.like-btn');
-    const dislikeButtons = document.querySelectorAll('.dislike-btn');
-    likeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            handleLikeDislike(button, true)
-        });
-    });
-    dislikeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            handleLikeDislike(button, false)
-        });
-    });
-}
+
 
 // event listner for filter by category
 const CategoriesFilter = () => {
@@ -40,10 +26,12 @@ const CategoriesFilter = () => {
 
 const ulCategories = document.getElementById("categories");
 
-ulCategories.addEventListener("wheel", (event) => {
-    event.preventDefault()
-    ulCategories.scrollLeft += event.deltaY
-})
+if (ulCategories) {
+    ulCategories.addEventListener("wheel", (event) => {
+        event.preventDefault()
+        ulCategories.scrollLeft += event.deltaY
+    })
+}
 
 if (popupBackground) {
     popupBackground.addEventListener("click", closePopup)

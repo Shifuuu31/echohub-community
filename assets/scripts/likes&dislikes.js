@@ -1,4 +1,4 @@
-export { handleLikeDislike }
+export { setupLikeDislikeListner }
 import { fetchResponse } from "./tools.js";
 
 // like/dislike when click on them
@@ -33,4 +33,18 @@ async function handleLikeDislike(button, isLike) {
     } catch (error) {
         console.error('Error:', error);
     }
+}
+const setupLikeDislikeListner = () => {
+    const likeButtons = document.querySelectorAll('.like-btn');
+    const dislikeButtons = document.querySelectorAll('.dislike-btn');
+    likeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            handleLikeDislike(button, true)
+        });
+    });
+    dislikeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            handleLikeDislike(button, false)
+        });
+    });
 }

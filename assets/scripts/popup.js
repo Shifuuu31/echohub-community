@@ -1,5 +1,5 @@
-import { fetchResponse, AddComment } from "./tools.js"
-import { setupLikeDislikeListner } from "./main.js" 
+import { fetchResponse, AddComment,  } from "./tools.js"
+import {setupLikeDislikeListner } from "./likes&dislikes.js"
 export { openPopup, closePopup, popupBackground }
 
 const popup = document.getElementById("popup")
