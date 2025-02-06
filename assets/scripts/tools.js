@@ -50,7 +50,7 @@ const AddPost = (post) => {
     post.Content = wrapLinks(post.Content)
     let splittedContent = post.Content
     let moreContent = ''
-    const flag = (post.Content.length > 150)
+    const flag = (post.Content.length > 180)
     if (flag) {
         splittedContent = post.Content.slice(0, 150)
         moreContent = post.Content.slice(150)

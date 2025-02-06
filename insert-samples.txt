@@ -1,0 +1,245 @@
+
+###############  AI  ###############
+
+INSERT INTO PostTable (user_id, title, content, creation_date) VALUES
+(3, 'How AI is Revolutionizing Healthcare', 'AI is transforming healthcare by making diagnoses more accurate, improving patient care, and speeding up drug discovery. Here’s a look at how AI is changing the medical field for the better.', CURRENT_TIMESTAMP),
+(1, 'Ethical Dilemmas in AI Development', 'With the rise of AI, we face difficult ethical questions. How can we ensure AI is used responsibly, and how do we avoid biases in machine learning systems?', CURRENT_TIMESTAMP),
+(5, 'The Future of AI: What Can We Expect?', 'AI technology is advancing at an unprecedented rate. What does the future hold for artificial intelligence? From self-driving cars to AI in creative industries, we explore the possibilities.', CURRENT_TIMESTAMP),
+(2, 'AI and the Job Market: Friend or Foe?', 'Will AI make our jobs obsolete, or will it create new opportunities? As automation takes over certain tasks, we discuss how AI is reshaping the workforce.', CURRENT_TIMESTAMP),
+(4, 'The Role of AI in Personalized Learning', 'AI is changing education by providing personalized learning experiences tailored to each student’s needs. We look at how AI is making learning more accessible and effective.', CURRENT_TIMESTAMP);
+
+---------------------------------------------------------------------
+###############  Anime  ###############
+
+INSERT INTO PostTable (user_id, title, content, creation_date) VALUES
+(3, 'Top 10 Must-Watch Anime of All Time', 'From classics like Naruto to modern hits like Attack on Titan, here are the top 10 anime every fan should watch.', CURRENT_TIMESTAMP),
+(1, 'Is Anime Becoming More Mainstream?', 'Anime is more popular than ever worldwide. What factors are driving its global success?', CURRENT_TIMESTAMP),
+(5, 'Best Upcoming Anime of 2025', 'Here’s a list of the most anticipated anime series and movies releasing next year.', CURRENT_TIMESTAMP),
+(2, 'Sub vs Dub: Which is Better?', 'The age-old debate: should you watch anime with subtitles or dubbed? Here are the pros and cons of both.', CURRENT_TIMESTAMP),
+(4, 'The Evolution of Animation in Anime', 'From hand-drawn classics to CGI, how has anime animation changed over the years?', CURRENT_TIMESTAMP),
+(3, 'Underrated Anime You Need to Watch', 'These hidden gems deserve more attention. Have you seen any of them?', CURRENT_TIMESTAMP),
+(1, 'The Best Anime Openings and Endings', 'From catchy songs to stunning visuals, here are some of the most iconic anime OPs and EDs.', CURRENT_TIMESTAMP),
+(5, 'How Manga Influences Anime Adaptations', 'Some anime stay true to the manga, while others change the story completely. Why does this happen?', CURRENT_TIMESTAMP),
+(2, 'The Dark Side of the Anime Industry', 'From overworked animators to production delays, what challenges does the anime industry face?', CURRENT_TIMESTAMP),
+(4, 'The Most Iconic Anime Villains', 'These villains left a lasting impact on anime history. Who is your favorite?', CURRENT_TIMESTAMP),
+(3, 'How Anime Conventions Bring Fans Together', 'Anime conventions are a paradise for fans. What makes them so special?', CURRENT_TIMESTAMP),
+(1, 'The Growth of Isekai Anime', 'Isekai has taken over the anime scene. Why is this genre so popular?', CURRENT_TIMESTAMP),
+(5, 'Top Anime Studios and Their Best Works', 'From Studio Ghibli to MAPPA, here’s a look at the best anime studios and their masterpieces.', CURRENT_TIMESTAMP),
+(2, 'The Influence of Japanese Culture on Anime', 'Anime often reflects Japanese traditions, folklore, and history. How does this shape storytelling?', CURRENT_TIMESTAMP),
+(4, 'Anime vs Western Cartoons: What’s the Difference?', 'Both have their own unique styles and storytelling approaches. How do they compare?', CURRENT_TIMESTAMP);
+
+---------------------------------------------------------------------
+###############  Art  ###############
+
+INSERT INTO PostTable (user_id, title, content, creation_date) VALUES
+(3, 'The Evolution of Modern Art', 'Art has gone through radical transformations over the past century. From impressionism to abstract expressionism, each movement has left a lasting impact on how we perceive creativity. This article explores the evolution of modern art and how artists continue to break boundaries.', CURRENT_TIMESTAMP),
+(1, 'Digital Art vs Traditional Art: Which is Better?', 'With the rise of digital tools, many artists have shifted from traditional mediums to digital platforms. But does digital art hold the same value as a physical painting? We dive into the pros and cons of both art forms and how they coexist in today’s creative landscape.', CURRENT_TIMESTAMP),
+(5, 'The Hidden Meanings in Famous Paintings', 'Many famous paintings hold secrets that are not obvious at first glance. From Da Vinci’s use of hidden symbols to Van Gogh’s emotional brushstrokes, we uncover the stories behind some of the world’s most famous artworks.', CURRENT_TIMESTAMP),
+(2, 'The Impact of AI on the Art World', 'Artificial intelligence is revolutionizing the way we create and appreciate art. While some see AI-generated art as a threat to human creativity, others believe it opens new doors for artistic expression. How is AI shaping the future of the art world?', CURRENT_TIMESTAMP),
+(4, 'The Business of Selling Art Online', 'Artists no longer need galleries to showcase their work. Platforms like Etsy, Instagram, and NFTs have changed the way artists sell their creations. But is selling art online really as easy as it seems? We explore the challenges and strategies behind making a living as an online artist.', CURRENT_TIMESTAMP),
+(3, 'Street Art: Rebellion or Masterpiece?', 'Street art has often been viewed as vandalism, but in recent years, it has gained recognition as a legitimate art form. Banksy, Shepard Fairey, and countless other artists have used the streets as their canvas. But where do we draw the line between street art and graffiti?', CURRENT_TIMESTAMP),
+(1, 'How to Find Your Own Art Style', 'Every artist goes through a phase of imitation before finding their unique voice. But what does it take to develop a personal art style? We explore techniques, inspirations, and the journey of self-discovery that leads to artistic identity.', CURRENT_TIMESTAMP),
+(5, 'The Role of Art in Social Movements', 'Art has always played a crucial role in activism. From Picasso’s “Guernica” to modern-day protest murals, visual storytelling has the power to inspire change. This article examines how artists use their craft to amplify social and political messages.', CURRENT_TIMESTAMP),
+(2, 'The Science Behind Colors in Art', 'Colors can evoke emotions, set moods, and even influence decisions. But how do artists choose the right colors for their work? We dive into the psychology of colors and how they have been used in art throughout history.', CURRENT_TIMESTAMP),
+(4, 'The Rise of Minimalist Art', 'Less is more. Minimalist art focuses on simplicity, space, and color to create profound emotional impact. But how did this movement emerge, and why does it continue to be relevant in modern design and fine arts?', CURRENT_TIMESTAMP),
+(3, 'The Intersection of Art and Technology', 'From 3D printing to virtual reality, technology is pushing the boundaries of what art can be. We explore how artists are incorporating technology into their work and what the future holds for digital creativity.', CURRENT_TIMESTAMP),
+(1, 'How Art Therapy Helps Mental Health', 'Art is more than just a form of expression—it can also be a powerful tool for healing. We explore the world of art therapy and how painting, drawing, and sculpting can help individuals cope with stress, trauma, and anxiety.', CURRENT_TIMESTAMP),
+(5, 'The Most Expensive Paintings Ever Sold', 'Art can be priceless, but some paintings come with a staggering price tag. From Da Vinci’s “Salvator Mundi” to Picasso’s masterpieces, we take a look at the most expensive artworks ever sold and what makes them so valuable.', CURRENT_TIMESTAMP),
+(2, 'The Influence of Japanese Art on Western Artists', 'Japanese art, especially ukiyo-e prints, has had a profound impact on Western artists like Van Gogh and Monet. But how did this cultural exchange shape the art movements of the 19th and 20th centuries?', CURRENT_TIMESTAMP),
+(4, 'What Makes an Artwork Valuable?', 'Is it the artist’s fame, the historical context, or the emotions it evokes? The art market can be unpredictable, but certain factors determine an artwork’s worth. We break down what makes some paintings worth millions while others go unnoticed.', CURRENT_TIMESTAMP);
+
+---------------------------------------------------------------------
+###############  Books  ###############
+
+INSERT INTO PostTable (user_id, title, content, creation_date) VALUES
+(3, 'Top 10 Books Every Reader Should Read', 'From timeless classics to modern bestsellers, these are the top 10 books every reader should experience at least once in their life. These stories will inspire, challenge, and captivate you.', CURRENT_TIMESTAMP),
+(1, 'How Reading Can Improve Your Mental Health', 'Studies have shown that reading can significantly improve mental health by reducing stress, enhancing empathy, and improving cognitive function. Here’s why you should read more often.', CURRENT_TIMESTAMP),
+(5, 'The Evolution of Fantasy Literature', 'Fantasy literature has transformed over the years. From J.R.R. Tolkien’s epic novels to modern fantasy like Game of Thrones, we explore the evolution of the genre and its impact on popular culture.', CURRENT_TIMESTAMP),
+(2, 'Why Non-Fiction Books Are More Popular Than Ever', 'Non-fiction books provide valuable insights into the world around us. From biographies to self-help, these books offer a way to learn, grow, and explore new ideas. Here’s why they’re becoming increasingly popular.', CURRENT_TIMESTAMP),
+(4, 'Best Books for Aspiring Entrepreneurs', 'Looking to start your own business? These books provide the essential knowledge and motivation for aspiring entrepreneurs. Get inspired and learn from those who’ve built successful companies.', CURRENT_TIMESTAMP);
+
+---------------------------------------------------------------------
+###############  Business  ###############
+
+INSERT INTO PostTable (user_id, title, content, creation_date) VALUES
+(3, 'How to Start a Profitable Online Business', 'Starting an online business has never been easier. Here’s a step-by-step guide to get started.', CURRENT_TIMESTAMP),
+(1, 'The Rise of Remote Work: Is It Here to Stay?', 'Companies are shifting towards remote work. How is this changing business operations?', CURRENT_TIMESTAMP),
+(5, 'Top Investment Strategies for Beginners', 'Want to grow your wealth? Here are some of the best investment strategies for beginners.', CURRENT_TIMESTAMP),
+(2, 'The Psychology of Successful Entrepreneurs', 'What sets successful entrepreneurs apart? Here’s a look into their mindset and habits.', CURRENT_TIMESTAMP),
+(4, 'How AI is Changing the Business World', 'From automation to analytics, AI is transforming industries. Should businesses embrace it or fear it?', CURRENT_TIMESTAMP),
+(3, 'Best Side Hustles to Make Extra Money', 'Looking to earn extra income? These side hustles can help you make money in your free time.', CURRENT_TIMESTAMP),
+(1, 'The Power of Networking in Business', 'Building the right connections can open doors to opportunities. Here’s how to network effectively.', CURRENT_TIMESTAMP),
+(5, 'The Biggest Mistakes New Entrepreneurs Make', 'Starting a business isn’t easy. Avoid these common mistakes that many entrepreneurs make.', CURRENT_TIMESTAMP),
+(2, 'How to Build a Strong Personal Brand', 'A strong personal brand can set you apart in your industry. Here’s how to create one.', CURRENT_TIMESTAMP),
+(4, 'The Future of E-Commerce: What to Expect', 'E-commerce is booming. What trends will shape the future of online shopping?', CURRENT_TIMESTAMP),
+(3, 'The Importance of Financial Literacy in Business', 'Understanding finances is key to running a successful business. Here’s what every entrepreneur should know.', CURRENT_TIMESTAMP),
+(1, 'How to Scale a Small Business Successfully', 'Scaling a business comes with challenges. Here’s how to do it effectively.', CURRENT_TIMESTAMP),
+(5, 'Top Productivity Tools for Business Owners', 'Time management is crucial for business success. These tools can help you stay productive.', CURRENT_TIMESTAMP),
+(2, 'The Impact of Social Media Marketing on Business Growth', 'Social media is a game changer for businesses. How can you use it effectively?', CURRENT_TIMESTAMP),
+(4, 'Why Customer Experience is the Key to Business Success', 'Great customer experience can set your business apart. Here’s why it matters.', CURRENT_TIMESTAMP);
+
+---------------------------------------------------------------------
+###############  Career  ###############
+---------------------------------------------------------------------
+###############  Culture  ###############
+
+INSERT INTO PostTable (user_id, title, content, creation_date) VALUES
+(3, 'The Role of Culture in Shaping Identity', 'Culture plays a significant role in shaping our identity, from the music we listen to the clothes we wear. How do different cultures impact the way we see ourselves and others?', CURRENT_TIMESTAMP),
+(1, 'The Influence of Social Media on Modern Culture', 'Social media platforms like Instagram and TikTok have had a huge impact on culture, from fashion to trends. How have these platforms changed the way we communicate and express ourselves?', CURRENT_TIMESTAMP),
+(5, 'Cultural Appropriation vs. Appreciation', 'When does cultural appropriation cross the line, and when is it simply cultural appreciation? We dive into this sensitive topic and explore the nuances between the two.', CURRENT_TIMESTAMP),
+(2, 'How Globalization is Changing Local Cultures', 'As the world becomes more interconnected, local cultures are blending with global influences. What impact does globalization have on traditional customs, languages, and lifestyles?', CURRENT_TIMESTAMP),
+(4, 'The Rise of Street Culture and Its Influence on Fashion', 'Street culture has evolved into one of the most influential aspects of modern fashion. From hip-hop to skateboarding, we explore how street culture continues to shape what we wear and how we express ourselves.', CURRENT_TIMESTAMP);
+
+---------------------------------------------------------------------
+###############  DIY   ###############
+---------------------------------------------------------------------
+###############  Education  ###############
+
+INSERT INTO PostTable (user_id, title, content, creation_date) VALUES
+(3, 'Is Online Learning the Future of Education?', 'With platforms like Coursera and Udemy growing fast, will traditional classrooms become obsolete?', CURRENT_TIMESTAMP),
+(1, 'Best Study Techniques for Better Retention', 'Active recall, spaced repetition, or the Pomodoro technique—what’s the best way to study effectively?', CURRENT_TIMESTAMP),
+(5, 'Should Schools Focus More on Life Skills?', 'Financial literacy, mental health, and communication skills are often overlooked in schools. Should they be mandatory subjects?', CURRENT_TIMESTAMP),
+(2, 'Pros and Cons of Standardized Testing', 'Are SATs and other standardized tests still relevant in modern education, or do they do more harm than good?', CURRENT_TIMESTAMP),
+(4, 'The Rise of AI in Education', 'AI-powered tools like ChatGPT are changing how students learn. Should teachers embrace or regulate them?', CURRENT_TIMESTAMP),
+(3, 'Best Free Resources for Learning New Skills', 'From coding to foreign languages, here are the best free platforms to expand your knowledge.', CURRENT_TIMESTAMP),
+(1, 'Traditional vs Montessori Education: Which is Better?', 'Montessori schools focus on student-led learning, while traditional schools follow structured curriculums. Which works best?', CURRENT_TIMESTAMP),
+(5, 'How Important is a College Degree in 2025?', 'With more companies valuing skills over degrees, is higher education still worth it?', CURRENT_TIMESTAMP),
+(2, 'The Effect of Social Media on Student Learning', 'Is social media distracting students or providing new ways to engage with educational content?', CURRENT_TIMESTAMP),
+(4, 'How to Stay Motivated While Studying', 'Studying can be exhausting. Here are some tips to stay productive and motivated.', CURRENT_TIMESTAMP),
+(3, 'The Debate on Homework: Necessary or Outdated?', 'Does homework help students learn, or is it just adding unnecessary stress?', CURRENT_TIMESTAMP),
+(1, 'Best Books for Self-Education', 'Want to learn something new on your own? These books are perfect for self-education.', CURRENT_TIMESTAMP),
+(5, 'How Schools Can Support Mental Health', 'Students face immense academic pressure. Should mental health education be a priority in schools?', CURRENT_TIMESTAMP),
+(2, 'The Future of VR and AR in Classrooms', 'Virtual and augmented reality could change the way we learn. Are schools ready for this transformation?', CURRENT_TIMESTAMP),
+(4, 'How to Choose the Right Career Path', 'With so many options, choosing a career can be tough. Here’s how to find the right path for you.', CURRENT_TIMESTAMP);
+
+---------------------------------------------------------------------
+###############  Fashion  ###############
+
+INSERT INTO PostTable (user_id, title, content, creation_date) VALUES
+(3, 'Top Fashion Trends for 2025', 'From oversized blazers to bold colors, here are the biggest fashion trends expected in 2025.', CURRENT_TIMESTAMP),
+(1, 'Sustainable Fashion: Is It the Future?', 'With climate change concerns rising, more brands are embracing eco-friendly fashion. Will it become the new standard?', CURRENT_TIMESTAMP),
+(5, 'The Rise of Vintage Clothing', 'Thrift stores and vintage fashion are making a huge comeback. What’s driving this trend?', CURRENT_TIMESTAMP),
+(2, 'Best Streetwear Brands Right Now', 'From Supreme to Off-White, these streetwear brands are dominating the scene in 2025.', CURRENT_TIMESTAMP),
+(4, 'How Fast Fashion Impacts the Environment', 'Fast fashion brands are under fire for their environmental impact. Should we rethink how we shop?', CURRENT_TIMESTAMP),
+(3, 'Celebrity Red Carpet Looks: Hit or Miss?', 'Let’s break down the most iconic red carpet outfits from the latest awards season.', CURRENT_TIMESTAMP),
+(1, 'Sneaker Culture: Hottest Releases This Year', 'From Nike to Adidas, here are the most hyped sneaker drops of the year.', CURRENT_TIMESTAMP),
+(5, 'Minimalist Fashion: Less is More', 'The minimalist fashion trend is gaining popularity. Is a capsule wardrobe the way to go?', CURRENT_TIMESTAMP),
+(2, 'High Fashion vs Street Style', 'Luxury brands are embracing streetwear. How is this blending of styles shaping the industry?', CURRENT_TIMESTAMP),
+(4, 'The Evolution of Denim', 'From baggy jeans to skinny fits, denim has changed a lot over the years. What’s next for this timeless fabric?', CURRENT_TIMESTAMP),
+(3, 'Fashion Week Highlights: What’s Trending?', 'New York, Paris, and Milan Fashion Weeks just wrapped up. Here are the key takeaways.', CURRENT_TIMESTAMP),
+(1, 'Luxury Handbags: Are They Worth the Price?', 'Some people see designer bags as investments. Are they really worth the hype?', CURRENT_TIMESTAMP),
+(5, 'How to Build a Timeless Wardrobe', 'A timeless wardrobe never goes out of style. Here’s how to curate one that lasts.', CURRENT_TIMESTAMP),
+(2, 'The Impact of Social Media on Fashion', 'TikTok and Instagram are shaping trends faster than ever. How is social media changing the industry?', CURRENT_TIMESTAMP),
+(4, 'Iconic Fashion Designers Who Changed the Industry', 'From Coco Chanel to Virgil Abloh, these designers revolutionized the world of fashion.', CURRENT_TIMESTAMP);
+
+---------------------------------------------------------------------
+###############  Games  ###############
+
+INSERT INTO PostTable (user_id, title, content, creation_date) VALUES
+(3, 'The Best Video Games of 2025 So Far', 'From action-packed adventures to strategy games, 2025 has already delivered some incredible titles. Here’s our roundup of the best video games so far this year.', CURRENT_TIMESTAMP),
+(1, 'The Impact of Video Games on Mental Health', 'While some people view video games as a waste of time, studies show that they can actually have positive effects on mental health, such as improving cognitive function and reducing stress. Here’s why gaming can be good for you.', CURRENT_TIMESTAMP),
+(5, 'The Evolution of Mobile Gaming', 'Mobile gaming has come a long way, with more advanced graphics and gameplay experiences available on your phone. We look at the evolution of mobile games and what the future holds for mobile gaming platforms.', CURRENT_TIMESTAMP),
+(2, 'How to Get Started in Competitive Gaming', 'Competitive gaming is a multi-billion-dollar industry. Whether you’re interested in esports or casual gaming tournaments, we explain how to get started and improve your skills.', CURRENT_TIMESTAMP),
+(4, 'The Art of Storytelling in Video Games', 'Storytelling is an essential part of video games. From interactive narratives to rich character development, we explore how games like The Last of Us and Red Dead Redemption have set new standards in storytelling.', CURRENT_TIMESTAMP);
+
+---------------------------------------------------------------------
+###############  Memes  ###############
+---------------------------------------------------------------------
+###############  Movies & TV  ###############
+
+INSERT INTO PostTable (user_id, title, content, creation_date) VALUES
+(1, 'Top 10 Sci-Fi Movies of All Time', 'Here is my list of the top 10 sci-fi movies, including classics like Blade Runner and The Matrix.', CURRENT_TIMESTAMP),
+(1, 'Best Christopher Nolan Films Ranked', 'From Inception to Interstellar, here’s my ranking of Nolan’s films based on story, visuals, and impact.', CURRENT_TIMESTAMP),
+(2, 'Hidden Gems on Netflix', 'Tired of the same mainstream shows? Here are 5 underrated Netflix series that deserve more attention.', CURRENT_TIMESTAMP),
+(5, 'Favorite Movie Soundtracks', 'A good soundtrack can make or break a movie. What are some of your favorite scores and OSTs?', CURRENT_TIMESTAMP),
+(4, 'The Impact of Marvel Movies', 'How has the MCU changed the film industry? From superhero fatigue to billion-dollar successes.', CURRENT_TIMESTAMP),
+(3, 'The Evolution of Horror Movies', 'From classic slashers to psychological thrillers, horror films have evolved. Let’s explore this journey.', CURRENT_TIMESTAMP),
+(2, 'Review: Dune Part Two', 'I just watched Dune Part Two, and here are my thoughts on the cinematography, storytelling, and performances.', CURRENT_TIMESTAMP),
+(4, 'Top Movie Plot Twists', 'Which movies had plot twists that completely shocked you? Here are some of the best mind-blowing endings.', CURRENT_TIMESTAMP),
+(5, 'Best Performances of 2024', 'Who gave the best performances this year? Let’s discuss standout actors and actresses.', CURRENT_TIMESTAMP),
+(2, 'Breaking Bad vs Better Call Saul', 'Which show do you think has the better writing? Let’s debate the strengths and weaknesses of each.', CURRENT_TIMESTAMP),
+(1, 'Why The Godfather is a Masterpiece', 'The Godfather redefined cinema with its storytelling, acting, and cinematography. Let’s discuss why it remains iconic.', CURRENT_TIMESTAMP),
+(3, 'Best TV Shows for a Weekend Binge', 'Looking for a show to binge this weekend? Here are some must-watch picks across different genres.', CURRENT_TIMESTAMP),
+(3, 'Underrated Animated Movies', 'Here’s a list of animated films that didn’t get the attention they deserved but are worth watching.', CURRENT_TIMESTAMP),
+(4, 'Game of Thrones: Best & Worst Seasons', 'GoT had its highs and lows. Let’s rank the seasons and discuss what made some better than others.', CURRENT_TIMESTAMP),
+(5, 'The Future of Streaming Services', 'With so many streaming platforms now, where do you think the industry is headed?', CURRENT_TIMESTAMP);
+
+---------------------------------------------------------------------
+###############  Music  ###############
+
+INSERT INTO PostTable (user_id, title, content, creation_date) VALUES
+(1, 'Top 10 Rock Albums of All Time', 'From Pink Floyd to Led Zeppelin, here’s my ranking of the greatest rock albums ever.', CURRENT_TIMESTAMP),
+(3, 'Live vs Studio Albums: Which is Better?', 'Some bands sound better live than in the studio. Do you prefer live recordings or polished studio versions?', CURRENT_TIMESTAMP),
+(4, 'Classic Albums That Still Hold Up', 'Some albums never get old. Here are classic records that sound just as good today as they did decades ago.', CURRENT_TIMESTAMP),
+(1, 'Is Vinyl Making a Comeback?', 'More people are buying vinyl records again. What’s driving this resurgence in physical music?', CURRENT_TIMESTAMP),
+(5, 'The Rise of K-Pop', 'K-Pop has become a global phenomenon. What do you think makes it so popular?', CURRENT_TIMESTAMP),
+(2, 'The Evolution of Hip-Hop', 'From the old-school days of Run-D.M.C. to modern trap, let’s discuss how hip-hop has changed.', CURRENT_TIMESTAMP),
+(2, 'Best Movie Soundtracks Ever', 'A great soundtrack can make a movie unforgettable. What are some of your favorites?', CURRENT_TIMESTAMP),
+(3, 'Best Music Festivals Around the World', 'Coachella, Glastonbury, Tomorrowland… Which music festival is on your bucket list?', CURRENT_TIMESTAMP),
+(5, 'Best Concept Albums Ever', 'Albums that tell a full story from start to finish. What are some of your favorites?', CURRENT_TIMESTAMP),
+(2, 'Underrated Rap Albums You Should Hear', 'Some amazing hip-hop albums don’t get enough recognition. Here are my top underrated picks.', CURRENT_TIMESTAMP),
+(4, 'The Impact of Auto-Tune on Music', 'Is auto-tune killing real singing, or is it just another tool for artists to use creatively?', CURRENT_TIMESTAMP),
+(1, 'Review: Taylor Swift’s Latest Album', 'I just listened to Taylor Swift’s new album, and here’s my track-by-track breakdown.', CURRENT_TIMESTAMP),
+(4, 'The Future of Music Streaming', 'With platforms like Spotify and Apple Music dominating, what’s next for the music industry?', CURRENT_TIMESTAMP),
+(3, 'Guitar Legends: Who’s the Greatest?', 'From Jimi Hendrix to Eric Clapton, who do you think is the greatest guitarist of all time?', CURRENT_TIMESTAMP),
+(5, 'Music That Helps You Focus', 'Do you listen to music while working or studying? What are your go-to genres or playlists?', CURRENT_TIMESTAMP);
+
+---------------------------------------------------------------------
+###############  News  ###############
+
+INSERT INTO PostTable (user_id, title, content, creation_date) VALUES
+(3, 'Global Economy: What’s Next?', 'With inflation and interest rate changes, the global economy faces uncertainty. Here’s what experts predict.', CURRENT_TIMESTAMP),
+(1, 'Tech Giants Lay Off Thousands', 'Major tech companies have announced mass layoffs. What does this mean for the industry?', CURRENT_TIMESTAMP),
+(5, 'New Breakthrough in Cancer Research', 'Scientists have made significant progress in cancer treatment. Here’s what the latest study reveals.', CURRENT_TIMESTAMP),
+(2, 'World Leaders Meet for Climate Summit', 'A new climate summit aims to address rising global temperatures. Will this lead to real change?', CURRENT_TIMESTAMP),
+(4, 'Stock Market Hits Record Highs', 'The stock market reached an all-time high today. What’s driving this unexpected growth?', CURRENT_TIMESTAMP),
+(3, 'Artificial Intelligence and the Future of Work', 'AI is transforming industries. Will it create more jobs or replace human workers?', CURRENT_TIMESTAMP),
+(1, 'Major Cyberattack Shuts Down Banks', 'A coordinated cyberattack has impacted major financial institutions. Who is responsible?', CURRENT_TIMESTAMP),
+(5, 'NASA Discovers Potentially Habitable Exoplanet', 'Astronomers have identified a planet that could support life. Here’s what we know so far.', CURRENT_TIMESTAMP),
+(2, 'Political Tensions Rise in Europe', 'Diplomatic tensions are escalating between European nations. What are the potential consequences?', CURRENT_TIMESTAMP),
+(4, 'Electric Vehicles Outsell Gas Cars for the First Time', 'EV sales have surpassed gasoline cars in key markets. Is this the turning point for the auto industry?', CURRENT_TIMESTAMP),
+(3, 'Major Breakthrough in Quantum Computing', 'Researchers have achieved a milestone in quantum computing, bringing us closer to revolutionary technology.', CURRENT_TIMESTAMP),
+(1, 'Social Media Faces New Regulations', 'Governments worldwide are imposing stricter rules on social media platforms. What will this mean for users?', CURRENT_TIMESTAMP),
+(5, 'Severe Weather Wreaks Havoc Across the U.S.', 'Tornadoes and storms have caused massive damage. Here’s the latest on recovery efforts.', CURRENT_TIMESTAMP),
+(2, 'New Study Links Sleep to Mental Health', 'A groundbreaking study finds strong connections between sleep patterns and mental well-being.', CURRENT_TIMESTAMP),
+(4, 'China and the U.S. Announce Trade Agreement', 'After months of negotiations, a new trade deal has been signed. What does it mean for global markets?', CURRENT_TIMESTAMP);
+
+---------------------------------------------------------------------
+###############  Podcasts  ###############
+---------------------------------------------------------------------
+###############  Q&A's  ###############
+---------------------------------------------------------------------
+###############  Science  ###############
+---------------------------------------------------------------------
+###############  Software & Apps  ###############
+
+INSERT INTO PostTable (user_id, title, content, creation_date) VALUES
+(3, 'The Top Productivity Apps for 2025', 'Whether you’re managing tasks or tracking time, these productivity apps are the best tools for staying organized and on top of your work.', CURRENT_TIMESTAMP),
+(1, 'How to Choose the Best Software for Your Business', 'With so many software solutions available, it’s crucial to choose the one that fits your business needs. We break down the best options for project management, accounting, and collaboration.', CURRENT_TIMESTAMP),
+(5, 'The Rise of AI-Powered Apps', 'AI is transforming mobile apps by making them smarter and more efficient. From personalized recommendations to advanced voice assistants, we look at how AI is shaping the app market.', CURRENT_TIMESTAMP),
+(2, 'The Most Popular Open-Source Software in 2025', 'Open-source software is more accessible than ever, and it’s becoming a popular choice for both individuals and businesses. We explore the most popular open-source tools in 2025 and why they’re worth using.', CURRENT_TIMESTAMP),
+(4, 'Best Apps for Learning New Skills in 2025', 'Whether you want to learn a new language, coding, or digital marketing, there’s an app for that. We share the best apps to help you learn new skills and improve your career prospects.', CURRENT_TIMESTAMP);
+
+---------------------------------------------------------------------
+###############  Sports  ###############
+
+INSERT INTO PostTable (user_id, title, content, creation_date) VALUES
+(3, 'The Most Underrated Athletes in Sports', 'Every sport has its stars, but there are many athletes who deserve more recognition. Here are the most underrated athletes across different sports.', CURRENT_TIMESTAMP),
+(1, 'The Impact of Sports Psychology on Performance', 'Mental toughness is just as important as physical strength. We explore how sports psychology is helping athletes perform better and stay focused under pressure.', CURRENT_TIMESTAMP),
+(5, 'How Technology is Changing the Sports Industry', 'From VAR in soccer to wearable tech in basketball, technology is changing the way we watch and play sports. Here’s how tech is shaping the future of sports.', CURRENT_TIMESTAMP),
+(2, 'The Evolution of Women’s Sports', 'Women’s sports are gaining more visibility and recognition than ever before. We discuss the progress made and what still needs to be done to level the playing field.', CURRENT_TIMESTAMP),
+(4, 'The Rise of Esports as a Competitive Sport', 'Esports is rapidly growing as a competitive sport, attracting millions of viewers and offering big prizes. We look at the future of esports and its potential as a mainstream sport.', CURRENT_TIMESTAMP);
+
+---------------------------------------------------------------------
+###############  Technology  ###############
+
+INSERT INTO PostTable (user_id, title, content, creation_date) VALUES
+(3, 'The Rise of 5G: What It Means for You', '5G technology promises faster speeds and improved connectivity. But how will it affect everything from smart cities to autonomous vehicles? We break down what 5G means for the future of technology.', CURRENT_TIMESTAMP),
+(1, 'The Impact of Blockchain Beyond Cryptocurrency', 'Blockchain is revolutionizing industries beyond cryptocurrency. From supply chain management to secure voting systems, we explore how blockchain is changing various sectors.', CURRENT_TIMESTAMP),
+(5, 'How Quantum Computing Could Change the World', 'Quantum computing has the potential to solve problems that are impossible for today’s computers. How could quantum computing revolutionize fields like medicine, AI, and cybersecurity?', CURRENT_TIMESTAMP),
+(2, 'The Future of Wearable Tech: What’s Next?', 'Smartwatches and fitness trackers are just the beginning. We look at the future of wearable technology, from augmented reality glasses to health-monitoring devices that can detect diseases before symptoms show.', CURRENT_TIMESTAMP),
+(4, 'How 3D Printing is Changing Manufacturing', '3D printing is not just for creating prototypes anymore. It’s revolutionizing manufacturing by enabling faster production and more customization. Here’s how 3D printing is changing the way products are made.', CURRENT_TIMESTAMP);
+
+---------------------------------------------------------------------
+###############  Travel  ###############
+
