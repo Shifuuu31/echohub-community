@@ -80,9 +80,9 @@ const AddPost = (post) => {
                 ${flag ? `<button id="moreBtn">more</button>` : ''}
             </div>
             <div id="post-categories">
-                <div id="buttons">
-                    <button><img src="/assets/imgs/like.png" alt="Like"> ${post.LikeCount}</button>
-                    <button><img src="/assets/imgs/dislike.png" alt="Dislike"> ${post.DislikeCount}</button>
+                <div id="buttons" data-entity-id="${post.ID}" data-entity-type="post" data-reaction=${post.Reaction} >
+                <button class="like-btn"><img ${post.Reaction == "liked" ? `src="/assets/imgs/live-like.png"` : `src="/assets/imgs/like.png"`} alt="Like"> ${post.LikeCount}</button>
+                    <button class="dislike-btn"><img ${post.Reaction == "disliked" ? `src="/assets/imgs/live-dislike.png"` : `src="/assets/imgs/dislike.png"`} alt="Dislike"> ${post.DislikeCount}</button>
                     <button id="commentBtn"><img src="/assets/imgs/comment.png" alt="Comment"> ${post.CommentsCount}</button>
                 </div>
                 <div id="links">
@@ -148,14 +148,14 @@ const AddComment = (comment) => {
                 <img src="${comment.ProfileImg}" alt="User Avatar" loading="lazy">
                 <h3>@${comment.UserName} <br><span>${timeAgo(comment.CreationDate)}</span></h3>
             </div>
-            <div id="buttons">
-                <button><img src="/assets/imgs/like.png" alt="Like"> 12</button>
-                <button><img src="/assets/imgs/dislike.png" alt="Dislike"> 4123</button>
-            </div>
+            <div id="buttons" data-entity-id="${comment.ID}" data-entity-type="comment" data-reaction=${comment.Reaction}>
+        <button class="like-btn"><img ${comment.Reaction == "liked" ? `src="/assets/imgs/live-like.png"` : `src="/assets/imgs/like.png"`} alt="Like"> ${comment.LikeCount}</button>
+        <button class="dislike-btn"><img ${comment.Reaction == "disliked" ? `src="/assets/imgs/live-dislike.png"` : `src="/assets/imgs/dislike.png"`} alt="Dislike"> ${comment.DislikeCount}</button>
         </div>
         <div id="user-comment-info">
             <p>${comment.Content}</p>
         </div>`
+
     return commentDiv
 }
 

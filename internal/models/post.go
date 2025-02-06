@@ -19,6 +19,7 @@ type Post struct {
 	LikeCount     int
 	DislikeCount  int
 	CommentsCount int
+	Reaction      string
 }
 
 type Category struct {
@@ -26,12 +27,6 @@ type Category struct {
 	CategoryName     string
 	CategoryIconPath string
 }
-
-// type categoryPost struct {
-// 	ID          int
-// 	category_id int
-// 	Post_id     int
-// }
 
 type PostModel struct {
 	DB *sql.DB
@@ -207,6 +202,19 @@ func (postModel *PostModel) GetPosts(userID int, startId int, category string) (
 				Type:       "server",
 			}
 		}
+		
+		var LDErr Error
+		if post.LikeCount, post.DislikeCount, LDErr = GetLikesDislikesCount(postModel.DB, post.ID, "post"); LDErr.Message != "" {
+			return []Post{}, LDErr
+		}
+		if userID > 0 {
+			Reaction, ReactionErr := GetReaction(postModel.DB, post.ID, "post", userID)
+			if ReactionErr.Message != "" {
+				return []Post{}, LDErr
+			}
+			post.Reaction = Reaction
+		}
+
 		posts = append(posts, post)
 	}
 
@@ -253,7 +261,7 @@ func (post *PostModel) GetPostCategories(postId int) (postCategories []string, e
 }
 
 type PostData struct {
-	Id         string   `json:"id`
+	Id         string   `json:"id"`
 	Title      string   `json:"title"`
 	Content    string   `json:"content"`
 	Categories []string `json:"selectedCategories"`

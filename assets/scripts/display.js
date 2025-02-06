@@ -32,6 +32,7 @@ const displayPosts = async (category = "All", scroll = false) => {
     let FetchedPosts = []
     // get posts
     const response = await fetchResponse(`/posts`, DataToFetch)
+    console.log(response)
     if (response.status === 200) {
         console.log("Posts Fetched succefully")
         FetchedPosts = response.body

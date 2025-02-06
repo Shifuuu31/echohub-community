@@ -11,6 +11,7 @@ type WebApp struct {
 	Sessions *models.SessionModel
 	Posts     *models.PostModel
 	Comments *models.CommentModel
+	LikesDislikes *models.LikesDislikesModel
 }
 
 func (webForum *WebApp) Router() http.Handler {
@@ -56,8 +57,11 @@ func (webForum *WebApp) Router() http.Handler {
 	mux.Handle("GET /deletePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.DeletePost)))
 	
 	// Comments route
-	mux.HandleFunc("POST /comments", webForum.GetComments)
+	mux.Handle("POST /comments", webForum.AuthMiddleware(http.HandlerFunc(webForum.GetComments)))
 	mux.Handle("POST /createComment", webForum.AuthMiddleware(http.HandlerFunc(webForum.CreateComment)))
+
+	//Likes & Dislikes Routes
+	mux.Handle("POST /like-dislike", webForum.AuthMiddleware(http.HandlerFunc(webForum.LikeDislikeHandler)))
 
 	return mux
 }

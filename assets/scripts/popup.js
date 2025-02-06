@@ -1,4 +1,5 @@
 import { fetchResponse, AddComment } from "./tools.js"
+import { setupLikeDislikeListner } from "./main.js" 
 export { openPopup, closePopup, popupBackground }
 
 const popup = document.getElementById("popup")
@@ -37,7 +38,7 @@ const openPopup = async (event) => {
         }
 
         await displayComments(postID);
-
+        setupLikeDislikeListner()
     }
 }
 

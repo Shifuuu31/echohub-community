@@ -86,7 +86,7 @@
 #user-info-and-buttons button img {
     width: 20px;
     height: 20px;
-    filter: invert(50%);
+    /* filter: invert(50%); */
     vertical-align: middle;
 }
 
@@ -157,7 +157,7 @@
 #buttons button img {
     width: 20px;
     height: 20px;
-    filter: invert(50%);
+    /* filter: invert(50%); */
     transition: transform 0.2s, filter 0.2s;
 }
 

@@ -1,8 +1,10 @@
 import { closePopup, popupBackground } from "./popup.js"
 import { displayPosts, DataToFetch } from "./display.js"
+import { handleLikeDislike } from "./likes&dislikes.js"
 import { DropDown } from "./tools.js"
+export { setupLikeDislikeListner }
 
-window.addEventListener("load", ()=> {
+window.addEventListener("load", () => {
     setTimeout(() => {
         document.querySelector(".loader-container").style.display = "none";
         document.getElementById("navBar").style.display = "flex";
@@ -10,11 +12,26 @@ window.addEventListener("load", ()=> {
     }, 0)
 })
 
+const setupLikeDislikeListner = () => {
+    const likeButtons = document.querySelectorAll('.like-btn');
+    const dislikeButtons = document.querySelectorAll('.dislike-btn');
+    likeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            handleLikeDislike(button, true)
+        });
+    });
+    dislikeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            handleLikeDislike(button, false)
+        });
+    });
+}
+
 // event listner for filter by category
 const CategoriesFilter = () => {
     const categories = document.querySelectorAll("input[id^=category]")
     categories.forEach(category => {
-        category.addEventListener('change', async(event) => {
+        category.addEventListener('change', async (event) => {
             await displayPosts(event.target.defaultValue)
 
         })
@@ -24,8 +41,8 @@ const CategoriesFilter = () => {
 const ulCategories = document.getElementById("categories");
 
 ulCategories.addEventListener("wheel", (event) => {
-        event.preventDefault()
-        ulCategories.scrollLeft += event.deltaY
+    event.preventDefault()
+    ulCategories.scrollLeft += event.deltaY
 })
 
 if (popupBackground) {
@@ -37,20 +54,17 @@ let isThrottled = true;
 const throttleScroll = () => {
     window.addEventListener('scroll', () => {
         if (isThrottled) {
-            isThrottled = false;
+            isThrottled = false
 
-            setTimeout(async() => {
+            setTimeout(async () => {
                 if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
                     await displayPosts(DataToFetch.category, true)
                 }
-                isThrottled = true;
-            }, 300);
+                isThrottled = true
+            }, 300)
         }
-    });
+    })
 }
-
-
-
 
 const init = async () => {
     try {
@@ -58,6 +72,7 @@ const init = async () => {
         await displayPosts()
         CategoriesFilter()
         throttleScroll()
+        setupLikeDislikeListner()
     } catch (error) {
         console.error('Failed to init application:', error)
     }
