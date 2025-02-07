@@ -49,7 +49,7 @@
         </div>
         {{else}}
         <a href="/register"><button id="register"><img src="/assets/imgs/register.png">Register</button></a>
-        <a href="/login"><button id="login">Login</button></a>
+        <a href="/login"><button id="login"><img src="/assets/imgs/user.png">Login</button></a>
         {{end}}
     </nav>
     <section class="loader-container">
@@ -59,7 +59,7 @@
         <div class="dot"></div>
         <div class="dot"></div>
     </section>
-    <div id="main" class="wraper" style="display: none;">
+    <div id="main" class="wraper" style="display: none; margin-top: 0;">
         <ul id="categories">
             <li id="category">
                 <input type="radio" id="categoryAll" name="categoryElement" value="All" checked>
@@ -136,9 +136,8 @@
             </div>
         </div>
     </div>
-    <script>const Username = "{{.User.UserName}}" || "guestUser"</script>
+    <script>const Username = "{{.User.UserName}}" || "guestUser";</script>
     <script src="/assets/scripts/main.js" type="module"></script>
-    
 </body>
 
 </html>

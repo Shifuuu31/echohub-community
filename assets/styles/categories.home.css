@@ -1,9 +1,14 @@
 ul#categories {
+    background-color: var(--bg-color); 
     display: flex;
     justify-content: start;
+    position: sticky;
+    top: 86px;
+    z-index: 999;
     overflow-x: auto;
     scrollbar-width: none;
-    margin-bottom: 30px;
+    margin-top: 30px;
+    padding: 10px 0;
 }
 
 ul#categories::-webkit-scrollbar {

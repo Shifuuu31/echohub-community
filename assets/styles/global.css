@@ -38,6 +38,9 @@ nav {
     display: flex;
     align-items: center;
     background-color: white;
+    position: sticky;
+    top: 0;
+    z-index: 999;
     padding: 0 30px;
     border-bottom: 1px solid var(--border-color);
     height: 85px;
@@ -102,7 +105,8 @@ nav img {
 #create img,
 #update img,
 #cancel img,
-#register img {
+#register img,
+#login img {
     width: 16px;
     height: 16px;
     margin-right: 5px;
@@ -118,14 +122,17 @@ nav img {
     border-radius: 30px;
     box-shadow: 0px 0px 5px 0px var(--border-color);
     padding: 25px;
-    margin-bottom: 30px;
-
-
+    margin: 30px 0;
 }
 
 #post pre {
-    margin-top: 5px;
+    padding-top: 15px;
+    font-size: 16px; 
     white-space: pre-wrap;
+}
+
+#post-title {
+    font-size: 20px; 
 }
 
 #availabilityMsg {
