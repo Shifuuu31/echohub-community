@@ -31,10 +31,10 @@
         </a>
         <div id="profile-dropdown">
             <div id="profile-picture-container">
-                <img id="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
+                <img id="profile-picture" src="{{.User.ProfileImg}}" alt="Profile Picture" loading="lazy">
             </div>
             <div id="dropdown">
-                <img id="inner-profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture">
+                <img id="inner-profile-picture" src="{{.User.ProfileImg}}" alt="Profile Picture">
                 <h2>@{{.User.UserName}}<br><span>{{.User.Email}}</span></h2>
                 <hr>
                 <div id="dropdown-content">
@@ -47,7 +47,7 @@
             </div>
         </div>
     </nav>
-    <div class="wraper wraper-extra" id="{{.Post_info.PostId}}">
+    <div class="wraper wraper-extra" id="{{.Post_info.ID}}">
         <ul id="categories">
             {{range .Categories}}
             <li id="category">
@@ -57,19 +57,19 @@
             {{end}}
         </ul>
         <div id="post-inputs">
-            <input type="text" id="post-title" placeholder="Post Title *" value="{{.Post_info.PostTitle}}"
+            <input type="text" id="title" placeholder="Post Title *" value="{{.Post_info.Title}}"
                 maxlength="70" required>
-            <p id="errMsgs" style="color: red;"></p>
             <textarea id="content" placeholder="Type Something here..." maxlength="5000"
-                required>{{.Post_info.PostContent}}</textarea>
-            <button id="updatePost" ><i class="fas fa-paper-plane"></i>&ensp;Update</button>
+                required>{{.Post_info.Content}}</textarea>
+
+            <button id="submitPost"><img src="/assets/imgs/w-update.png">Update</button>
         </div>
     </div>
     <script>
         const selected = []
-        { { range.Post_info.PostCategories } }
+        {{ range .Post_info.Categories }}
         selected.push("{{.}}")
-        { { end } }
+        {{ end }}
     </script>
     <script src="/assets/scripts/updatePost.js" type="module"></script>
 </body>

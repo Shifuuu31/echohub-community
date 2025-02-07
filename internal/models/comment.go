@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"net/http"
 	"time"
 )
 
@@ -10,8 +11,11 @@ type Comment struct {
 	PostID       int
 	UserID       int
 	UserName     string
-	ProfileImg     string
+	ProfileImg   string
 	Content      string
+	LikeCount    int
+	DislikeCount int
+	Reaction     string
 	CreationDate time.Time
 }
 
@@ -19,42 +23,70 @@ type CommentModel struct {
 	DB *sql.DB
 }
 
-func (comment *CommentModel) Comments(postID int) ([]Comment, error) {
+func (comment *CommentModel) GetPostComments(postID int, userID int) ([]Comment, Error) {
 	comments := []Comment{}
 	cmd := `
-        SELECT c.id, c.post_id, c.user_id, u.username, u.profile_img, c.comment_content, c.creation_date 
-        FROM CommentTable c 
-        JOIN UserTable u ON c.user_id = u.id 
-        WHERE c.post_id = ? 
-        ORDER BY c.creation_date DESC`
+			SELECT CommentTable.id, CommentTable.post_id, CommentTable.user_id, UserTable.username, UserTable.profile_img, CommentTable.comment_content, CommentTable.creation_date 
+			FROM CommentTable 
+			JOIN UserTable ON CommentTable.user_id = UserTable.id 
+			WHERE CommentTable.post_id = ? 
+			ORDER BY CommentTable.creation_date DESC`
 
 	rows, err := comment.DB.Query(cmd, postID)
 	if err != nil {
-		return nil, err
+		return nil, Error{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			Type:       "server",
+		}
 	}
+
 	defer rows.Close()
 
 	for rows.Next() {
-		var comment Comment
+		var Comment Comment
 		err := rows.Scan(
-			&comment.ID,
-			&comment.PostID,
-			&comment.UserID,
-			&comment.UserName,
-			&comment.ProfileImg,
-			&comment.Content,
-			&comment.CreationDate,
+			&Comment.ID,
+			&Comment.PostID,
+			&Comment.UserID,
+			&Comment.UserName,
+			&Comment.ProfileImg,
+			&Comment.Content,
+			&Comment.CreationDate,
 		)
 		if err != nil {
-			return nil, err
+			return nil, Error{
+				StatusCode: http.StatusInternalServerError,
+				Message:    "Internal Server Error",
+				Type:       "server",
+			}
 		}
-		comments = append(comments, comment)
+
+		var LDErr Error
+		Comment.LikeCount, Comment.DislikeCount, LDErr = GetLikesDislikesCount(comment.DB, Comment.ID, "comment")
+		if LDErr.Message != "" {
+			return nil, LDErr
+		}
+
+		if userID > 0 {
+			Reaction, ReactionErr := GetReaction(comment.DB, Comment.ID, "comment", userID)
+			if ReactionErr.Message != "" {
+				return nil, LDErr
+			}
+			Comment.Reaction = Reaction
+		}
+
+		comments = append(comments, Comment)
 	}
 
 	if err = rows.Err(); err != nil {
-		return nil, err
+		return nil, Error{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "Internal Server Error",
+			Type:       "server",
+		}
 	}
-	return comments, nil
+	return comments, Error{}
 }
 
 func (comment *CommentModel) CreateComment(postID, userID int, content string) error {
@@ -69,4 +101,3 @@ func (comment *CommentModel) CreateComment(postID, userID int, content string) e
 
 	return nil
 }
-

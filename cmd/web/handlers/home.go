@@ -111,6 +111,12 @@ type FetchComments struct {
 }
 
 func (webForum *WebApp) GetComments(w http.ResponseWriter, r *http.Request) {
+	user, userErr := webForum.Users.RetrieveUser(r)
+	if userErr.Type == "server" {
+		userErr.RenderError(w)
+		return
+	}
+
 	var commentData FetchComments
 
 	if decodeErr := decodeJsonData(r, &commentData); decodeErr != nil {
@@ -123,8 +129,8 @@ func (webForum *WebApp) GetComments(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid PostID", http.StatusBadRequest)
 		return
 	}
-	comments, err := webForum.Comments.Comments(PostID)
-	if err != nil {
+	comments, cmtErr := webForum.Comments.GetPostComments(PostID, user.ID)
+	if cmtErr.Type == "server" {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -172,6 +178,45 @@ func (webForum *WebApp) CreateComment(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := encodeJsonData(w, http.StatusOK, "comments created succesfully"); err != nil {
+		http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+	}
+}
+
+// LikeDislikeHandler (when we click on like/dislike button)
+func (webForum *WebApp) LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
+	user, userErr := webForum.Users.RetrieveUser(r)
+	if userErr.Type == "server" {
+		userErr.RenderError(w)
+		return
+	}
+	if user.UserType != "authenticated" {
+		userErr = models.Error{
+			StatusCode: http.StatusUnauthorized,
+			Message:    "Unauthorized",
+			SubMessage: "Please try to login",
+		}
+		userErr.RenderError(w)
+		return
+	}
+	var request models.Interaction
+	if decodeErr := decodeJsonData(r, &request); decodeErr != nil {
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+		return
+	}
+	if request.EntityType != "post" && request.EntityType != "comment" {
+		if err := encodeJsonData(w, http.StatusBadRequest, "Invalid entity type"); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
+		return
+	}
+	if err := webForum.LikesDislikes.LikeDislike(request.EntityID, request.EntityType, user.ID, request.Liked); err != nil {
+		if err := encodeJsonData(w, http.StatusBadRequest, "Invalid entity type"); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
+		http.Error(w, "Database error", http.StatusInternalServerError)
+		return
+	}
+	if err := encodeJsonData(w, http.StatusOK, ""); err != nil {
 		http.Error(w, "failed to encode object.", http.StatusInternalServerError)
 	}
 }

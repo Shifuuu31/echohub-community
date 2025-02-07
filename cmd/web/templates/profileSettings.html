@@ -47,34 +47,39 @@
             </div>
         </div>
     </nav>
+    
+
     <div id="edit">
         <div id="user-info">
             <img src="{{.ProfileImg}}" alt="Profile Picture" loading="lazy">
-            <h3>{{.UserName}} <br> <span>{{.Email}}</span></h3>
+            <h3 id="h-username">{{.UserName}}<br><span id="h-email">{{.Email}}</span></h3>
         </div>
         </form>
         <div id="user-info-edit">
-            <form action="" method="">
-                <div id="input-group">
-                    <label for="">Username</label>
-                    <input type="text" placeholder="{{.UserName}}">
-                    <label for="">Email</label>
-                    <input type="text" placeholder="{{.Email}}">
-                    <label for="">Gender</label>
-                    <input type="text" placeholder="{{.Gender}}" readonly>
-                    <label for="">Language <span>(we're working on adding new languages)</span></label>
-                    <select>
-                        <option value="english" selected>English</option>
-                    </select>
-                    <label for="">New Password</label>
-                    <input type="password" placeholder="••••••••••••••••">
-                    <label for="">Confirm New Password</label>
-                    <input type="password" placeholder="••••••••••••••••">
-                </div>
+            <div id="input-group">
+                <label for="">Username</label>
+                <input type="text" id="username" placeholder="{{.UserName}}">
+                <label for="">Email</label>
+                <input type="text" id="email" placeholder="{{.Email}}">
+                <label for="">Gender</label>
+                <input type="text" id="gender" placeholder="{{.Gender}}" readonly>
+                <label for="">Language <span>(we're working on adding new languages)</span></label>
+                <select>
+                    <option value="english" selected>English</option>
+                </select>
+                <label for="">New Password</label>
+                <input type="password" id="password" placeholder="enter new password">
+                <label for="">Confirm New Password</label>
+                <input type="password" id="rPassword" placeholder="repeat your new password">
+            </div>
 
-                <a href="/newPost"><button id="update"><img src="/assets/imgs/update.png"></i>Update</button></a>
+            <button id="update"><img src="/assets/imgs/w-update.png">Update</button>
         </div>
     </div>
+    <script>
+        const UserID = "{{.ID}}"
+    </script>
+    <script src="/assets/scripts/profileSettings.js" type="module"></script>
 </body>
-</html>
 
+</html>

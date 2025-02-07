@@ -1,4 +1,4 @@
-import { fetchResponse, displayMessages } from "./tools.js"
+import { fetchResponse, R_L_Popup } from "./tools.js"
 
 document.addEventListener('DOMContentLoaded', () => {
     const registerBtn = document.getElementById('registerBtn')
@@ -43,17 +43,20 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(response)
             if (response.status === 400) {
                 console.log("Bad request: Invalid info Or Missing field.")
+                displayMsg(response.body.messages)
 
             } else if (response.status === 200) {
-                console.log("Login successful" )
+                console.log("Registred successfully" )
+                displayMsg(response.body.messages, true)
+                R_L_Popup('/login', `${newUser.username.charAt(0).toUpperCase()+ newUser.username.slice(1)}, You're Registred Successfully!`)
             } else {
                 console.log("Unexpected response:", response.body)
             }
-            displayMessages(response.body.messages,'/login', `${newUser.username.charAt(0).toUpperCase()+ newUser.username.slice(1)}, You're Registred Successfully!`)
     
         } catch (error) {
             console.error('Error during login process:', error)
         }
+
     })
 })
 

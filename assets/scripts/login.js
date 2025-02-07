@@ -1,4 +1,4 @@
-import { fetchResponse, displayMessages } from "./tools.js"
+import { fetchResponse, R_L_Popup, displayMsg } from "./tools.js"
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginBtn = document.getElementById('loginBtn')
@@ -9,12 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (passwordInput.type === "password") {
             passwordInput.type = "text"
             passShow.src = '/assets/imgs/visible.png'
-        }else {
+        } else {
             passwordInput.type = "password"
             passShow.src = '/assets/imgs/unvisible.png'
         }
     })
-    
+
     loginBtn.addEventListener('click', async (event) => {
         event.preventDefault()
 
@@ -29,14 +29,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.status === 401) {
                 console.log("Unauthorized: Invalid credentials.")
-
+                displayMsg(response.body.messages)
             } else if (response.status === 200) {
-                console.log("Login successful" )
+                console.log("Login successful")
+                displayMsg(response.body.messages, true)
+                R_L_Popup("/", `Hello, ${credentials.username.charAt(0).toUpperCase() + credentials.username.slice(1)}!`)
             } else {
                 console.log("Unexpected response:", response.body)
             }
-            displayMessages(response.body.messages, "/",  `Hello, ${credentials.username.charAt(0).toUpperCase()+ credentials.username.slice(1) }!`)
-    
+
         } catch (error) {
             console.error('Error during login process:', error)
         }

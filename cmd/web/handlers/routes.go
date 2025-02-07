@@ -11,6 +11,7 @@ type WebApp struct {
 	Sessions *models.SessionModel
 	Posts     *models.PostModel
 	Comments *models.CommentModel
+	LikesDislikes *models.LikesDislikesModel
 }
 
 func (webForum *WebApp) Router() http.Handler {
@@ -36,24 +37,31 @@ func (webForum *WebApp) Router() http.Handler {
 
 	// ProfileSettings routes
 	mux.Handle("GET /profileSettings", webForum.AuthMiddleware(http.HandlerFunc(webForum.ProfileSettings)))
-	// mux.HandleFunc("POST /UpdateProfile", webForum.UpdateProfile)
+	mux.Handle("POST /updateProfile", webForum.AuthMiddleware(http.HandlerFunc(webForum.UpdateProfile)))
 	
+	// MaxID route
 	mux.HandleFunc("POST /maxId", webForum.MaxID)
+	
+	// GetPosts route
 	mux.Handle("POST /posts", webForum.AuthMiddleware(http.HandlerFunc(webForum.GetPosts)))
-	// mux.HandleFunc("POST /posts", webForum.GetPosts)
-
+	
+	// NewPost routes
 	mux.Handle("GET /newPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.NewPost)))
 	mux.Handle("POST /addNewPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.AddNewPost)))
-
-	// mux.Handle("GET /updatePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.UpdatePost)))
-	// mux.HandleFunc("POST /updatingPost", webForum.UpdatingPost)
-
-	// mux.Handle("GET /deletePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.DeletePost)))
-	// // mux.HandleFunc("GET /deletePost", webForum.DeletePost)
-
-	// //madara dzb
-	mux.HandleFunc("POST /comments", webForum.GetComments)
+	
+	// UpdatePost routes
+	mux.Handle("GET /updatePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.UpdatePost)))
+	mux.Handle("POST /updatingPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.UpdatingPost)))
+	
+	// DeletePost route
+	mux.Handle("GET /deletePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.DeletePost)))
+	
+	// Comments route
+	mux.Handle("POST /comments", webForum.AuthMiddleware(http.HandlerFunc(webForum.GetComments)))
 	mux.Handle("POST /createComment", webForum.AuthMiddleware(http.HandlerFunc(webForum.CreateComment)))
+
+	//Likes & Dislikes Routes
+	mux.Handle("POST /like-dislike", webForum.AuthMiddleware(http.HandlerFunc(webForum.LikeDislikeHandler)))
 
 	return mux
 }

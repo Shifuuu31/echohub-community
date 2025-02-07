@@ -31,6 +31,9 @@ func main() {
 		Comments: &models.CommentModel{
 			DB: db,
 		},
+		LikesDislikes: &models.LikesDislikesModel{
+			DB: db,
+		},
 	}
 
 	port := ":" + os.Getenv("PORT")

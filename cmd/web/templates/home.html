@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="/assets/styles/categories.home.css">
     <link rel="stylesheet" href="/assets/styles/comments.popup.home.css">
     <!-- <link rel="stylesheet" href="/assets/styles/posts.home.css"> -->
-    <!-- <link rel="stylesheet" href="/assets/styles/responsive.home.css"> -->
     <link rel="stylesheet" href="/assets/styles/global.css">
     <link rel="stylesheet" href="/assets/styles/dropdown.global.css">
     <link rel="stylesheet" href="/assets/styles/responsive.global.css">
     <link rel="stylesheet" href="/assets/styles/post-skeleton.home.css">
+    <link rel="stylesheet" href="/assets/styles/loader.home.css">
     <link rel="shortcut icon" href="/assets/imgs/logo-small.png" type="image/x-icon">
 
 
@@ -20,7 +20,7 @@
 </head>
 
 <body style="overflow-y: scroll;">
-    <nav>
+    <nav id="navBar" style="display: none;">
         <a href="/">
             <img id="logo" src="/assets/imgs/logo.png" alt="echoHub-Comunnity Logo">
         </a>
@@ -52,7 +52,14 @@
         <a href="/login"><button id="login">Login</button></a>
         {{end}}
     </nav>
-    <div class="wraper">
+    <section class="loader-container">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </section>
+    <div id="main" class="wraper" style="display: none;">
         <ul id="categories">
             <li id="category">
                 <input type="radio" id="categoryAll" name="categoryElement" value="All" checked>
@@ -65,7 +72,8 @@
             </li>
             <li id="category">
                 <input type="radio" id="categoryLikedPosts" name="categoryElement" value="LikedPosts">
-                <label for="categoryLikedPosts"><img src="/assets/imgs/categories-Icons/liked-posts.png">Liked Posts</label>
+                <label for="categoryLikedPosts"><img src="/assets/imgs/categories-Icons/liked-posts.png">Liked
+                    Posts</label>
             </li>
             {{end}}
             <!-- add MyPosts/likedPosts -->
@@ -78,7 +86,7 @@
         </ul>
 
         <div id="posts"></div>
-        <div id="postMsg"></div>
+        <div id="availabilityMsg"></div>
 
         <div id="post-placeholder">
             <div class="post-info-placeholder-1">
@@ -119,8 +127,8 @@
                 {{ if and .User (eq .User.UserType "authenticated") }}
                 <hr>
                 <div id="user-comment">
-                    <div id="user-comment-info"><img src="{{.User.ProfileImg}}" alt="User Avatar" loading="lazy">
-                        <h3>{{.User.UserName}}</h3>
+                    <div id="user-comment-info">
+                        <img src="{{.User.ProfileImg}}" alt="User Avatar" loading="lazy">
                     </div>
                     <div id="comment-group"></div>
                 </div>
@@ -130,6 +138,7 @@
     </div>
     <script>const Username = "{{.User.UserName}}" || "guestUser"</script>
     <script src="/assets/scripts/main.js" type="module"></script>
+    
 </body>
 
 </html>

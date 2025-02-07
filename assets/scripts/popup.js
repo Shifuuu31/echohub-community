@@ -1,30 +1,12 @@
-import { fetchResponse, AddComment } from "./tools.js"
-export { Popup }
+import { fetchResponse, AddComment,  } from "./tools.js"
+import {setupLikeDislikeListner } from "./likes&dislikes.js"
+export { openPopup, closePopup, popupBackground }
 
 const popup = document.getElementById("popup")
 const popupBackground = document.getElementById("popup-background")
 const closeButton = document.querySelector(".close")
 const commentsSection = document.getElementById("comments-section");
 
-const Popup = () => {
-
-    const attachEventListeners = () => {
-        const postsBtns = document.querySelectorAll("#commentBtn, #post-title")
-        postsBtns.forEach(postBtn => {
-            postBtn.removeEventListener("click", openPopup)
-            postBtn.addEventListener("click", (event) => {
-
-                openPopup(event)
-            })
-        })
-    }
-
-    if (popupBackground) {
-        popupBackground.addEventListener("click", closePopup)
-    }
-
-    return attachEventListeners
-}
 
 const openPopup = async (event) => {
 
@@ -33,10 +15,9 @@ const openPopup = async (event) => {
 
         const targetedPost = event.target.closest("#post")
         const postID = targetedPost.getAttribute("post-id")
-
         const cmntGrp = document.getElementById('comment-group')
         if (cmntGrp) {
-            cmntGrp.innerHTML = `<textarea placeholder="Type a comment..." type="text" id="comment-field"></textarea>
+            cmntGrp.innerHTML = `<textarea placeholder="Type a comment..." type="text" id="comment-field" maxlength="1000"></textarea>
                         <button class="new-comment" id="${postID}"><i class="fas fa-paper-plane"></i></button>`
 
             const newCmntBtn = document.getElementById(`${postID}`)
@@ -50,15 +31,14 @@ const openPopup = async (event) => {
                 })
                 if (created == true) {
                     const postCmntBtn = targetedPost.querySelector('#commentBtn')
-                    postCmntBtn.innerHTML = `<img src="/assets/imgs/comment.png" alt="Comment">${parseInt(postCmntBtn.textContent, 10) + 1}`
+                    postCmntBtn.childNodes[1].nodeValue = parseInt(postCmntBtn.childNodes[1].nodeValue.trim(), 10) + 1
                     cmntField.value = ''
-
                 }
             })
         }
 
         await displayComments(postID);
-
+        setupLikeDislikeListner()
     }
 }
 
@@ -91,6 +71,8 @@ const createComment = async (newCmnt) => {
 
 const displayComments = async (postid) => {
     commentsSection.innerHTML = ''
+
+
     let comments
     try {
         const response = await fetchResponse(`/comments`, { ID: postid })
@@ -105,9 +87,13 @@ const displayComments = async (postid) => {
     } catch (error) {
         console.error('Error during login process:', error)
     }
-    comments.forEach(comment => {
-        console.log(comment)
-        commentsSection.appendChild(AddComment(comment));
-    });
 
+    if (comments.length > 0) {
+        comments.forEach(comment => {
+            console.log(comment);
+            commentsSection.appendChild(AddComment(comment))
+        })
+    } else {
+        commentsSection.innerHTML = `<div id="availabilityMsg" style="margin:20%"><h3>No comments yet</h3></div>`
+    }
 }
