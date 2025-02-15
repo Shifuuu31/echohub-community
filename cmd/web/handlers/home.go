@@ -62,7 +62,6 @@ func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	
 	postsData := struct {
 		StartId  int    `json:"start"`
 		Category string `json:"category"`
@@ -73,7 +72,7 @@ func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	posts, postErr := webForum.Posts.GetPosts(user.ID,postsData.StartId, postsData.Category)
+	posts, postErr := webForum.Posts.GetPosts(user.ID, postsData.StartId, postsData.Category)
 	if postErr.Type != "" {
 		if postErr.Type == "server" {
 			postErr.RenderError(w)
@@ -186,16 +185,13 @@ func (webForum *WebApp) CreateComment(w http.ResponseWriter, r *http.Request) {
 func (webForum *WebApp) LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {
-		userErr.RenderError(w)
+		http.Error(w, userErr.Message, userErr.StatusCode)
 		return
 	}
 	if user.UserType != "authenticated" {
-		userErr = models.Error{
-			StatusCode: http.StatusUnauthorized,
-			Message:    "Unauthorized",
-			SubMessage: "Please try to login",
+		if err := encodeJsonData(w, http.StatusForbidden, "Forbidden: please try to login"); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
 		}
-		userErr.RenderError(w)
 		return
 	}
 	var request models.Interaction
@@ -213,10 +209,24 @@ func (webForum *WebApp) LikeDislikeHandler(w http.ResponseWriter, r *http.Reques
 		if err := encodeJsonData(w, http.StatusBadRequest, "Invalid entity type"); err != nil {
 			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
 		}
-		http.Error(w, "Database error", http.StatusInternalServerError)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
-	if err := encodeJsonData(w, http.StatusOK, ""); err != nil {
+	reaction, reactErr := models.GetReaction(webForum.LikesDislikes.DB, request.EntityID, request.EntityType, user.ID)
+	if reactErr.Type == "server" {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	var response models.Response
+	response.Messages = append(response.Messages, reaction)
+	likeCount, dislikeCount, ldErr := models.GetLikesDislikesCount(webForum.LikesDislikes.DB, request.EntityID, request.EntityType)
+	if ldErr.Type == "server" {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	response.Extra = append(response.Extra, strconv.Itoa(likeCount))
+	response.Extra = append(response.Extra, strconv.Itoa(dislikeCount))
+	if err := encodeJsonData(w, http.StatusOK, response); err != nil {
 		http.Error(w, "failed to encode object.", http.StatusInternalServerError)
 	}
 }

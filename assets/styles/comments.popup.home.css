@@ -6,8 +6,7 @@
 #user-post-info,
 #user-comment-info {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    margin-bottom: 15px
 }
 
 #user-post-info img,
@@ -138,10 +137,7 @@
 }
 
 #user-info-and-buttons {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /* gap: 400px */
+    display: inline;
 }
 
 #user-info-and-buttons #comment-info {
@@ -152,6 +148,7 @@
 #user-info-and-buttons #buttons {
     display: flex;
     gap: 15px;
+    margin-top: 15px;
 }
 
 #buttons button img {
@@ -242,7 +239,7 @@
     visibility: hidden;
 }
 
-#post-dropdown.active {
+#post-dropdown.active { 
     opacity: 1;
     visibility: visible;
     transform: translateY(0);

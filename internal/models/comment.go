@@ -25,12 +25,21 @@ type CommentModel struct {
 
 func (comment *CommentModel) GetPostComments(postID int, userID int) ([]Comment, Error) {
 	comments := []Comment{}
-	cmd := `
-			SELECT CommentTable.id, CommentTable.post_id, CommentTable.user_id, UserTable.username, UserTable.profile_img, CommentTable.comment_content, CommentTable.creation_date 
-			FROM CommentTable 
-			JOIN UserTable ON CommentTable.user_id = UserTable.id 
-			WHERE CommentTable.post_id = ? 
-			ORDER BY CommentTable.creation_date DESC`
+	cmd := `SELECT
+				CommentTable.id,
+				CommentTable.post_id,
+				CommentTable.user_id,
+				UserTable.username,
+				UserTable.profile_img,
+				CommentTable.comment_content,
+				CommentTable.creation_date
+			FROM
+				CommentTable
+				JOIN UserTable ON CommentTable.user_id = UserTable.id
+			WHERE
+				CommentTable.post_id = ?
+			ORDER BY
+				CommentTable.creation_date DESC;`
 
 	rows, err := comment.DB.Query(cmd, postID)
 	if err != nil {

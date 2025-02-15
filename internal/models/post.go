@@ -133,7 +133,26 @@ func (postModel *PostModel) GetPosts(userID int, startId int, category string) (
 
 	case "LikedPosts":
 		// Placeholder for "LikedPosts" case
-
+		query = `SELECT
+					PostTable.id,
+					UserTable.username,
+					UserTable.profile_img,
+					PostTable.title,
+					PostTable.content,
+					PostTable.creation_date
+				FROM
+					PostTable
+					JOIN UserTable ON UserTable.id = PostTable.user_id
+					JOIN Likes_Dislikes ON Likes_Dislikes.entity_id = PostTable.id
+					AND Likes_Dislikes.entity_type = "post"
+				WHERE
+					PostTable.id <= ?
+					AND Likes_Dislikes.user_id = ?
+				ORDER BY
+					PostTable.id DESC
+				LIMIT
+					10;`
+		args = append(args, startId, userID)
 	default:
 		var err error
 		if categoryID, err = strconv.Atoi(category); err != nil {
@@ -202,7 +221,7 @@ func (postModel *PostModel) GetPosts(userID int, startId int, category string) (
 				Type:       "server",
 			}
 		}
-		
+
 		var LDErr Error
 		if post.LikeCount, post.DislikeCount, LDErr = GetLikesDislikesCount(postModel.DB, post.ID, "post"); LDErr.Message != "" {
 			return []Post{}, LDErr

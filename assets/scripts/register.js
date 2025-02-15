@@ -1,4 +1,4 @@
-import { fetchResponse, R_L_Popup } from "./tools.js"
+import { fetchResponse, R_L_Popup, displayMsg } from "./tools.js"
 
 document.addEventListener('DOMContentLoaded', () => {
     const registerBtn = document.getElementById('registerBtn')

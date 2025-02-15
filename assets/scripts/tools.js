@@ -1,4 +1,5 @@
-import {openPopup} from './popup.js'
+import { openPopup } from './popup.js'
+import {handleLikeDislike} from './likes&dislikes.js'
 
 export { fetchResponse, R_L_Popup, DropDown, AddPost, AddComment, displayMsg, AddOrUpdatePost, CategoriesSelection }
 
@@ -10,7 +11,6 @@ const fetchResponse = async (url, obj = {}) => {
             body: JSON.stringify(obj),
         })
         const responseBody = await response.json()
-
         return { status: response.status, body: responseBody }
     } catch (error) {
         console.error(error)
@@ -23,7 +23,6 @@ const DropDown = () => {
     if (profilePictureContainer && dropdown) {
 
         const toggleDropdown = (event) => {
-            console.log("pD")
             event.stopPropagation()
             dropdown.classList.toggle('active')
         }
@@ -76,11 +75,11 @@ const AddPost = (post) => {
             </div>` : ''}
             <div id="post-body">
                 <h3 id="post-title">${post.Title}</h3>
-                <pre>${splittedContent}<span id="moreContent">${moreContent}</span><span ${flag ? `id="dots">...</span>` : ''}</pre>
+                <pre id="textContent" >${splittedContent}<span id="moreContent">${moreContent}</span><span ${flag ? `id="dots">...</span>` : ''}</pre>
                 ${flag ? `<button id="moreBtn">more</button>` : ''}
             </div>
             <div id="post-categories">
-                <div id="buttons" data-entity-id="${post.ID}" data-entity-type="post" data-reaction=${post.Reaction} >
+                <div id="buttons" entity-id="${post.ID}" entity-type="post" reaction=${post.Reaction} >
                 <button class="like-btn"><img ${post.Reaction == "liked" ? `src="/assets/imgs/live-like.png"` : `src="/assets/imgs/like.png"`} alt="Like"> ${post.LikeCount}</button>
                     <button class="dislike-btn"><img ${post.Reaction == "disliked" ? `src="/assets/imgs/live-dislike.png"` : `src="/assets/imgs/dislike.png"`} alt="Dislike"> ${post.DislikeCount}</button>
                     <button id="commentBtn"><img src="/assets/imgs/comment.png" alt="Comment"> ${post.CommentsCount}</button>
@@ -91,9 +90,19 @@ const AddPost = (post) => {
             </div>
         </div>`
 
-        
-        if (Username === post.UserName) {
-            const optionsButton = postData.querySelector('.options-btn')
+    const likeBtn = postData.querySelector('.like-btn');
+    const dislikeBtn = postData.querySelector('.dislike-btn');
+    
+    likeBtn.addEventListener('click', () => {
+            handleLikeDislike( postData, true)
+        });
+
+        dislikeBtn.addEventListener('click', () => {
+            handleLikeDislike(postData, false)
+    })
+
+    if (Username === post.UserName) {
+        const optionsButton = postData.querySelector('.options-btn')
         const dropdown = postData.querySelector(`.post-dropdown${post.ID}`)
 
         optionsButton.addEventListener('click', (event) => {
@@ -109,15 +118,15 @@ const AddPost = (post) => {
     }
 
 
-    
+
     const cmntBtn = postData.querySelector("#commentBtn")
     if (cmntBtn) {
         cmntBtn.addEventListener("click", openPopup)
-    } 
+    }
 
     const btn = postData.querySelector("#moreBtn")
     const dots = postData.querySelector("#dots")
-    
+
     const moreText = postData.querySelector("#moreContent")
     if (btn && dots) {
         btn.addEventListener("click", () => {
@@ -134,7 +143,7 @@ const AddPost = (post) => {
     }
 
 
-    
+
     return postData
 }
 
@@ -142,19 +151,33 @@ const AddPost = (post) => {
 const AddComment = (comment) => {
     const commentDiv = document.createElement("div")
     commentDiv.id = "comment"
-    commentDiv.innerHTML = `
-    <div id="user-info-and-buttons">
+    commentDiv.innerHTML = `<div id="user-info-and-buttons">
     <div id="user-comment-info">
-                <img src="${comment.ProfileImg}" alt="User Avatar" loading="lazy">
-                <h3>@${comment.UserName} <br><span>${timeAgo(comment.CreationDate)}</span></h3>
-            </div>
-            <div id="buttons" data-entity-id="${comment.ID}" data-entity-type="comment" data-reaction=${comment.Reaction}>
-        <button class="like-btn"><img ${comment.Reaction == "liked" ? `src="/assets/imgs/live-like.png"` : `src="/assets/imgs/like.png"`} alt="Like"> ${comment.LikeCount}</button>
-        <button class="dislike-btn"><img ${comment.Reaction == "disliked" ? `src="/assets/imgs/live-dislike.png"` : `src="/assets/imgs/dislike.png"`} alt="Dislike"> ${comment.DislikeCount}</button>
-        </div>
-        <div id="user-comment-info">
-            <p>${comment.Content}</p>
-        </div>`
+        <img src="${comment.ProfileImg}" alt="User Avatar" loading="lazy">
+        <h3>@${comment.UserName} <br><span>${timeAgo(comment.CreationDate)}</span></h3>
+    </div>
+    <div id="user-comment-info">
+        <pre id="textContent" >${comment.Content}</pre>
+    </div>
+    <div id="buttons" entity-id="${comment.ID}" entity-type="comment" reaction=${comment.Reaction}>
+        <button class="like-btn"><img ${comment.Reaction=="liked" ? `src="/assets/imgs/live-like.png" ` :
+                `src="/assets/imgs/like.png" `} alt="Like"> ${comment.LikeCount}</button>
+        <button class="dislike-btn"><img ${comment.Reaction=="disliked" ? `src="/assets/imgs/live-dislike.png" ` :
+                `src="/assets/imgs/dislike.png" `} alt="Dislike"> ${comment.DislikeCount}</button>
+    </div>
+</div>`
+
+        const likeBtn = commentDiv.querySelector('.like-btn');
+        const dislikeBtn = commentDiv.querySelector('.dislike-btn');
+        
+        likeBtn.addEventListener('click', () => {
+                handleLikeDislike( commentDiv, true)
+            });
+    
+            dislikeBtn.addEventListener('click', () => {
+                handleLikeDislike(commentDiv, false)
+        })
+    
 
     return commentDiv
 }

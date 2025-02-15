@@ -1,14 +1,13 @@
 import { closePopup, popupBackground } from "./popup.js"
 import { displayPosts, DataToFetch } from "./display.js"
 import { DropDown } from "./tools.js"
-import { setupLikeDislikeListner } from "./likes&dislikes.js"
 
 window.addEventListener("load", () => {
     setTimeout(() => {
         document.querySelector(".loader-container").style.display = "none";
         document.getElementById("navBar").style.display = "flex";
         document.getElementById("main").style.display = "block";
-    }, 0)
+    }, 1500)
 })
 
 
@@ -60,7 +59,7 @@ const init = async () => {
         await displayPosts()
         CategoriesFilter()
         throttleScroll()
-        setupLikeDislikeListner()
+        // setupLikeDislikeListner()
     } catch (error) {
         console.error('Failed to init application:', error)
     }
