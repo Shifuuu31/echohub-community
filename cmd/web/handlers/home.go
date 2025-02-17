@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"html"
 	"net/http"
 	"strconv"
 	"strings"
@@ -25,7 +26,6 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 		}.RenderError(w)
 		return
 	}
-
 	categories, catsErr := webForum.Posts.GetCategories()
 	if catsErr.Type == "server" {
 		catsErr.RenderError(w)
@@ -39,6 +39,7 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 		User:       user,
 		Categories: categories,
 	}
+	homeData.User.UserName = html.EscapeString(homeData.User.UserName)
 
 	models.RenderPage(w, "home.html", homeData)
 }

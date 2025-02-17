@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"fmt"
+	"html"
 	"net/http"
 
 	"forum/internal/models"
@@ -170,6 +171,8 @@ func (webForum *WebApp) ProfileSettings(w http.ResponseWriter, r *http.Request) 
 		userErr.RenderError(w)
 		return
 	}
+	user.UserName = html.EscapeString(user.UserName)
+
 	models.RenderPage(w, "profileSettings.html", user)
 }
 
@@ -202,9 +205,7 @@ func (webForum *WebApp) UpdateProfile(w http.ResponseWriter, r *http.Request) {
 		if err := encodeJsonData(w, http.StatusBadRequest, response); err != nil {
 			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
 		}
-		fmt.Println("KO")
 	} else {
-		fmt.Println("OK")
 		response.Messages = append(response.Messages, "Profile Updated successfully")
 		if err := encodeJsonData(w, http.StatusOK, response); err != nil {
 			http.Error(w, "failed to encode object.", http.StatusInternalServerError)

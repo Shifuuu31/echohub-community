@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"html"
 	"net/http"
 	"strconv"
 	"strings"
@@ -212,7 +213,11 @@ func (postModel *PostModel) GetPosts(userID int, startId int, category string) (
 				Type:       "server",
 			}
 		}
+		post.UserName=html.EscapeString(post.UserName)
+		post.Title=html.EscapeString(post.Title)
+		post.Content=html.EscapeString(post.Content)
 		post.CreatedAt = post.CreatedAt.UTC()
+
 		post.CommentsCount, err = postModel.GetCommentCount(post.ID)
 		if err != nil {
 			return []Post{}, Error{
@@ -303,9 +308,12 @@ func CheckNewPost(newPost PostData) (response Response) {
 	if strings.TrimSpace(newPost.Title) == "" {
 		response.Messages = append(response.Messages, "Title cannot be empty")
 	}
-
+	
 	if len(newPost.Title) > 70 {
 		response.Messages = append(response.Messages, "Title length up to 70 character")
+	}
+	if newPost.Content != "" && strings.TrimSpace(newPost.Content) == "" {
+		response.Messages = append(response.Messages, "Content cannot be empty")
 	}
 
 	if len(newPost.Content) > 5000 {

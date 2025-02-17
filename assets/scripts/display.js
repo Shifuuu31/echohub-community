@@ -48,6 +48,7 @@ const displayPosts = async (category = "All", scroll = false) => {
         console.log("Unexpected response:", response.body)
         return false
     }
+    // console.log(DataToFetch);
     // check if there is posts
     if (FetchedPosts.length > 0) {
         for (let i = 0; i < FetchedPosts.length; i++) {

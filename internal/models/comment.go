@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"html"
 	"net/http"
 	"time"
 )
@@ -70,6 +71,9 @@ func (comment *CommentModel) GetPostComments(postID int, userID int) ([]Comment,
 				Type:       "server",
 			}
 		}
+
+		Comment.UserName = html.EscapeString(Comment.UserName)
+		Comment.Content = html.EscapeString(Comment.Content)
 
 		var LDErr Error
 		Comment.LikeCount, Comment.DislikeCount, LDErr = GetLikesDislikesCount(comment.DB, Comment.ID, "comment")

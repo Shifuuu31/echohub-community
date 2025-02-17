@@ -26,15 +26,12 @@ async function handleLikeDislike(postData, isLike) {
                     break;
 
                 case "disliked":
-
                     likeBtn.childNodes[0].src = '/assets/imgs/like.png'
                     dislikeBtn.childNodes[0].src = '/assets/imgs/live-dislike.png'
                     break;
 
                 default:
-
-                    likeBtn.childNodes[0
-                    ].src = '/assets/imgs/like.png'
+                    likeBtn.childNodes[0].src = '/assets/imgs/like.png'
                     dislikeBtn.childNodes[0].src = '/assets/imgs/dislike.png'
             }
 

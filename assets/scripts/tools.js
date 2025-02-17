@@ -157,7 +157,7 @@ const AddComment = (comment) => {
         <h3>@${comment.UserName} <br><span>${timeAgo(comment.CreationDate)}</span></h3>
     </div>
     <div id="user-comment-info">
-        <pre id="textContent" >${comment.Content}</pre>
+            <pre id="textContent" >${comment.Content}</pre>
     </div>
     <div id="buttons" entity-id="${comment.ID}" entity-type="comment" reaction=${comment.Reaction}>
         <button class="like-btn"><img ${comment.Reaction=="liked" ? `src="/assets/imgs/live-like.png" ` :
