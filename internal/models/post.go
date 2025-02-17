@@ -133,7 +133,6 @@ func (postModel *PostModel) GetPosts(userID int, startId int, category string) (
 		args = append(args, userID, startId)
 
 	case "LikedPosts":
-		// Placeholder for "LikedPosts" case
 		query = `SELECT
 					PostTable.id,
 					UserTable.username,
@@ -146,6 +145,7 @@ func (postModel *PostModel) GetPosts(userID int, startId int, category string) (
 					JOIN UserTable ON UserTable.id = PostTable.user_id
 					JOIN Likes_Dislikes ON Likes_Dislikes.entity_id = PostTable.id
 					AND Likes_Dislikes.entity_type = "post"
+					AND 
 				WHERE
 					PostTable.id <= ?
 					AND Likes_Dislikes.user_id = ?
@@ -305,6 +305,7 @@ func CheckNewPost(newPost PostData) (response Response) {
 	if len(newPost.Categories) > 3 {
 		response.Messages = append(response.Messages, "You can only select up to 3 categories")
 	}
+	
 	if strings.TrimSpace(newPost.Title) == "" {
 		response.Messages = append(response.Messages, "Title cannot be empty")
 	}

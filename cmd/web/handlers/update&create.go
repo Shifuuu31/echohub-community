@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 	"strconv"
+	"strings"
 
 	"forum/internal/models"
 )
@@ -65,6 +66,8 @@ func (webForum *WebApp) AddNewPost(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
+	newPost.Title = strings.TrimSpace(newPost.Title)
+	newPost.Content = strings.TrimSpace(newPost.Content)
 
 	postID, err := webForum.Posts.CreatePost(user.ID, newPost.Title, newPost.Content)
 	if err != nil {
@@ -166,6 +169,9 @@ func (webForum *WebApp) UpdatingPost(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid PostID", http.StatusBadRequest)
 		return
 	}
+
+	toUpdate.Title = strings.TrimSpace(toUpdate.Title)
+	toUpdate.Content = strings.TrimSpace(toUpdate.Content)
 
 	err = webForum.Posts.EditPost(postID, toUpdate.Title, toUpdate.Content, toUpdate.Categories)
 	if err != nil {
