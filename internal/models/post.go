@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"html"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -155,8 +154,11 @@ func (postModel *PostModel) GetPosts(userID int, startId int, category string) (
 					10;`
 		args = append(args, startId, userID)
 	default:
-		var err error
-		if categoryID, err = strconv.Atoi(category); err != nil {
+		err := postModel.DB.QueryRow(
+			"SELECT id FROM categories WHERE category_name = ?",
+			category,
+		).Scan(&categoryID)
+		if err != nil {
 			return []Post{}, Error{
 				StatusCode: http.StatusBadRequest,
 				Message:    "Invalid category",
@@ -319,6 +321,22 @@ func CheckNewPost(newPost PostData) (response Response) {
 
 	if len(newPost.Content) > 5000 {
 		response.Messages = append(response.Messages, "Content length up to 5000 character")
+	}
+	return response
+}
+
+func (post *PostModel) CheckCategoryIfExist(categories []string) (response Response) {
+	for _, categoryName := range categories {
+		var id int
+		err := post.DB.QueryRow(
+			"SELECT id FROM categories WHERE category_name = ?",
+			categoryName,
+		).Scan(&id)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				response.Messages = append(response.Messages, "Invalid Category")
+			}
+		}
 	}
 	return response
 }

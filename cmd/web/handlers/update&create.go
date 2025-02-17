@@ -66,6 +66,14 @@ func (webForum *WebApp) AddNewPost(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
+	response = webForum.Posts.CheckCategoryIfExist(newPost.Categories)
+	if len(response.Messages) != 0 {
+		if err := encodeJsonData(w, http.StatusBadRequest, response); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
+		return
+	}
+
 	newPost.Title = strings.TrimSpace(newPost.Title)
 	newPost.Content = strings.TrimSpace(newPost.Content)
 
@@ -157,6 +165,13 @@ func (webForum *WebApp) UpdatingPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := models.CheckNewPost(toUpdate)
+	if len(response.Messages) != 0 {
+		if err := encodeJsonData(w, http.StatusBadRequest, response); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
+		return
+	}
+	response = webForum.Posts.CheckCategoryIfExist(toUpdate.Categories)
 	if len(response.Messages) != 0 {
 		if err := encodeJsonData(w, http.StatusBadRequest, response); err != nil {
 			http.Error(w, "failed to encode object.", http.StatusInternalServerError)

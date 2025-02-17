@@ -1,5 +1,5 @@
 export { displayPosts, DataToFetch }
-import { fetchResponse, AddPost } from "./tools.js"
+import { fetchResponse, AddPost,displayMsg } from "./tools.js"
 let DataToFetch = {}
 
 const displayPosts = async (category = "All", scroll = false) => {
@@ -17,7 +17,7 @@ const displayPosts = async (category = "All", scroll = false) => {
                 Skeleton.style.display = 'none'
                 return false
             }
-            DataToFetch= {
+            DataToFetch = {
                 start: response.body,
                 category: category,
             }
@@ -42,7 +42,10 @@ const displayPosts = async (category = "All", scroll = false) => {
         Skeleton.style.display = 'none'
         return false
     } else if (response.status === 400) {
-        console.log("Bad Request", response.status, response.body.message)
+        console.log(response.body.message)
+        displayMsg([response.body.message])
+        postMsg.innerHTML = `<h2>${response.body.message}</h2>`
+        Skeleton.style.display = 'none'
         return false
     } else {
         console.log("Unexpected response:", response.body)

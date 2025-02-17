@@ -80,7 +80,7 @@
             <!-- add MyPosts/likedPosts -->
             {{range .Categories}}
             <li id="category">
-                <input type="radio" id="category{{.ID}}" name="categoryElement" value="{{.ID}}">
+                <input type="radio" id="category{{.ID}}" name="categoryElement" value="{{.CategoryName}}">
                 <label for="category{{.ID}}"><img src="{{.CategoryIconPath}}">{{.CategoryName}}</label>
             </li>
             {{end}}
