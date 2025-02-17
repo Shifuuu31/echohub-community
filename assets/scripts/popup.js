@@ -1,4 +1,4 @@
-import { fetchResponse, AddComment,  } from "./tools.js"
+import { fetchResponse, AddComment, displayMsg } from "./tools.js"
 // import {setupLikeDislikeListner } from "./likes&dislikes.js"
 export { openPopup, closePopup, popupBackground }
 
@@ -56,6 +56,7 @@ const createComment = async (newCmnt) => {
             return true
         } else if (response.status === 400) {
             console.log(response.body)
+            displayMsg([response.body])
 
         } else {
             console.log("Unexpected response:", response.body)

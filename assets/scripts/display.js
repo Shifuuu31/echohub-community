@@ -44,7 +44,7 @@ const displayPosts = async (category = "All", scroll = false) => {
     } else if (response.status === 400) {
         console.log(response.body.message)
         displayMsg([response.body.message])
-        postMsg.innerHTML = `<h2>${response.body.message}</h2>`
+        // postMsg.innerHTML = `<h2>${response.body.message}</h2>`
         Skeleton.style.display = 'none'
         return false
     } else {

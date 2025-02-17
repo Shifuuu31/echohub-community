@@ -152,7 +152,9 @@ func (webForum *WebApp) CreateComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if user.UserType != "authenticated" {
-		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		if err := encodeJsonData(w, http.StatusForbidden, "Forbidden"); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
 		return
 	}
 
@@ -163,17 +165,23 @@ func (webForum *WebApp) CreateComment(w http.ResponseWriter, r *http.Request) {
 	}
 	postID, err := strconv.Atoi(newCmntData.PostID)
 	if err != nil {
-		http.Error(w, "Invalid Post ID ", http.StatusBadRequest)
+		if err := encodeJsonData(w, http.StatusBadRequest, "Invalid Post ID"); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
 		return
 	}
 
 	if strings.TrimSpace(newCmntData.Content) == "" {
-		http.Error(w, "Comment cannot be empty", http.StatusBadRequest)
+		if err := encodeJsonData(w, http.StatusBadRequest, "Comment cannot be empty"); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
 		return
 	}
 	err = webForum.Comments.CreateComment(postID, user.ID, newCmntData.Content)
 	if err != nil {
-		http.Error(w, "Failed to create comment", http.StatusInternalServerError)
+		if err := encodeJsonData(w, http.StatusInternalServerError, "Failed to create comment"); err != nil {
+			http.Error(w, "failed to encode object.", http.StatusInternalServerError)
+		}
 		return
 	}
 
