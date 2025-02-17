@@ -145,7 +145,7 @@ func (postModel *PostModel) GetPosts(userID int, startId int, category string) (
 					JOIN UserTable ON UserTable.id = PostTable.user_id
 					JOIN Likes_Dislikes ON Likes_Dislikes.entity_id = PostTable.id
 					AND Likes_Dislikes.entity_type = "post"
-					AND 
+					AND Likes_Dislikes.liked = true
 				WHERE
 					PostTable.id <= ?
 					AND Likes_Dislikes.user_id = ?
@@ -213,9 +213,9 @@ func (postModel *PostModel) GetPosts(userID int, startId int, category string) (
 				Type:       "server",
 			}
 		}
-		post.UserName=html.EscapeString(post.UserName)
-		post.Title=html.EscapeString(post.Title)
-		post.Content=html.EscapeString(post.Content)
+		post.UserName = html.EscapeString(post.UserName)
+		post.Title = html.EscapeString(post.Title)
+		post.Content = html.EscapeString(post.Content)
 		post.CreatedAt = post.CreatedAt.UTC()
 
 		post.CommentsCount, err = postModel.GetCommentCount(post.ID)
@@ -305,11 +305,11 @@ func CheckNewPost(newPost PostData) (response Response) {
 	if len(newPost.Categories) > 3 {
 		response.Messages = append(response.Messages, "You can only select up to 3 categories")
 	}
-	
+
 	if strings.TrimSpace(newPost.Title) == "" {
 		response.Messages = append(response.Messages, "Title cannot be empty")
 	}
-	
+
 	if len(newPost.Title) > 70 {
 		response.Messages = append(response.Messages, "Title length up to 70 character")
 	}
