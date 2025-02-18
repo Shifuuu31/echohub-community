@@ -25,11 +25,6 @@
     #logo {
         flex-grow: 0;
     }
-
-    #login,
-    #register {
-        display: none;
-    }
 }
 
 @media (max-width: 720px) {
@@ -136,10 +131,13 @@
         padding: 17px;
     }
 
-    #create img {
+    #create img,
+    #register img,
+    #login img {
         margin: 0;
         width: 20px;
         height: 20px;
+        font-size: 14px;
     }
 
     #post-inputs input[type="text"],
@@ -152,8 +150,8 @@
         font-size: 14px;
     }
 
-    nav>*:not(#logo-small) {
-        flex-grow: 0;
+    nav>*:not(#logo) {
+        flex-grow: 1;
     }
 
     #logo {
@@ -298,7 +296,9 @@
         height: 55px;
     }
 
-    #create {
+    #create,
+    #login,
+    #register {
         margin-right: 0;
         padding: 10px;
     }
