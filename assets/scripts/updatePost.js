@@ -9,12 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   })
 
-  DropDown() // there problem on that dropdown not working only on this page
+  DropDown() 
   CategoriesSelection()
   const submitPost = document.getElementById('submitPost')
 
   submitPost.addEventListener('click', () => {
-    // console.log(document.querySelector('.wraper').id)
     AddOrUpdatePost(`/updatingPost?ID=${document.querySelector('.wraper').id}`)
   })
 })

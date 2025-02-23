@@ -20,5 +20,6 @@ EXPOSE 8080
 
 CMD ["./forumApp"]
 
-
-
+# docker build -t forum-app-dockerized .
+# docker images
+# docker run -p 8080:8080 <img-name>

@@ -91,7 +91,6 @@ const displayComments = async (postid) => {
 
     if (comments.length > 0) {
         comments.forEach(comment => {
-            console.log(comment);
             commentsSection.appendChild(AddComment(comment))
         })
     } else {

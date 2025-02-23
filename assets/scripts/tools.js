@@ -184,7 +184,6 @@ const AddComment = (comment) => {
 
 
 const AddOrUpdatePost = async (url) => {
-    console.log(url)
     const newPost = {
         title: document.getElementById('title').value,
         content: document.getElementById('content').value,
@@ -194,14 +193,10 @@ const AddOrUpdatePost = async (url) => {
         newPost.selectedCategories.push(selectedCategory.value)
     })
 
-    // console.log(newPost)
-
     const response = await fetchResponse(url, newPost)
-    console.log(response.body);
     if (response.status === 401) {
         console.log("Unauthorized: try to login")
     } else if (response.status === 400) {
-        console.log(response.body);
         displayMsg(response.body.messages)
     } else if (response.status === 200) {
         console.log("post added successfully")

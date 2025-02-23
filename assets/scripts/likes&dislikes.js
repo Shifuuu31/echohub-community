@@ -37,8 +37,6 @@ async function handleLikeDislike(postData, isLike) {
 
         }
         else if (response.status == 403) {
-            console.log('hshhs')
-            console.log(response)
             displayMsg([response.body])
         }
         else if (response.status == 400) {

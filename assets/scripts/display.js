@@ -32,7 +32,6 @@ const displayPosts = async (category = "All", scroll = false) => {
     let FetchedPosts = []
     // get posts
     const response = await fetchResponse(`/posts`, DataToFetch)
-    console.log(response)
     if (response.status === 200) {
         console.log("Posts Fetched succefully")
         FetchedPosts = response.body
@@ -51,7 +50,6 @@ const displayPosts = async (category = "All", scroll = false) => {
         console.log("Unexpected response:", response.body)
         return false
     }
-    // console.log(DataToFetch);
     // check if there is posts
     if (FetchedPosts.length > 0) {
         for (let i = 0; i < FetchedPosts.length; i++) {

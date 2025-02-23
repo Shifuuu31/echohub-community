@@ -16,23 +16,23 @@
 
 <body>
     <noscript>Your browser does not support JavaScript!</noscript>
-    <nav>
+    <nav id="navBar">
         <a href="/">
             <img id="logo" src="/assets/imgs/logo.png" alt="echoHub-Comunnity Logo">
         </a>
         <a href="/">
             <img id="logo-small" src="/assets/imgs/logo-small.png" alt="echoHub-Comunnity Logo">
         </a>
-		{{ if and .User (eq .User.UserType "authenticated") }}
+        {{ if and .User (eq .User.UserType "authenticated") }}
         <a href="/newPost"><button id="create"><img src="/assets/imgs/create.png"></i>&nbsp;New
                 Post</button></a>
         <div id="profile-dropdown">
             <div id="profile-picture-container">
-                <img id="profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture" loading="lazy">
+                <img id="profile-picture" src="{{.User.ProfileImg}}" alt="Profile Picture" loading="lazy">
             </div>
             <div id="dropdown">
-                <img id="inner-profile-picture" src="/assets/imgs/avatar.png" alt="Profile Picture">
-				<h2>@{{.User.UserName}}<br><span>{{.User.Email}}</span></h2>
+                <img id="inner-profile-picture" src="{{.User.ProfileImg}}" alt="Profile Picture">
+                <h2>@{{.User.UserName}}<br><span>{{.User.Email}}</span></h2>
                 <hr>
                 <div id="dropdown-content">
                     <a href="/profileSettings"><img src="/assets/imgs/settings.png"> Profile Settings</a>
@@ -43,10 +43,10 @@
                 </div>
             </div>
         </div>
-		{{else}}
-		<a href="/register"><button id="register"><img src="/assets/imgs/register.png">Register</button></a>
-		<a href="/login"><button id="login">Login</button></a>
-		{{end}}
+        {{else}}
+        <a href="/register"><button id="register"><img src="/assets/imgs/register.png">Register</button></a>
+        <a href="/login"><button id="login"><img src="/assets/imgs/user.png">Login</button></a>
+        {{end}}
     </nav>
     <div class="wraper" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
         <p id="error-code">{{.StatusCode}}</p>
