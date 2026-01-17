@@ -251,7 +251,8 @@
 #post-dropdown hr {
     width: 60%;
 }
-#dropdown-content a {
+#post-dropdown a,
+#post-dropdown .delete-btn {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -259,13 +260,27 @@
     text-decoration: none;
     color: inherit;
     font-size: 15px;
+    cursor: pointer;
 }
-#dropdown-content a img {
+
+#post-dropdown a img,
+#post-dropdown .delete-btn img {
     width: 20px;
     height: 20px;
     margin-right: 10px;
 }
-#dropdown-content a:last-child:hover {
+
+#post-dropdown a:hover,
+#post-dropdown .delete-btn:hover {
+    background-color: var(--border-color);
+    color: #000;
+}
+
+#post-dropdown .delete-btn:hover {
     background-color: red;
     color: #fff;
+}
+
+#post-dropdown .delete-btn:hover img {
+    filter: brightness(0) invert(1);
 }

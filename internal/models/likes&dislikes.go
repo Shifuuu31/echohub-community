@@ -1,8 +1,10 @@
 package models
+
 import (
 	"database/sql"
 	"net/http"
 )
+
 type Interaction struct {
 	EntityID   int    `json:"entityId"`
 	EntityType string `json:"entityType"`
@@ -11,6 +13,7 @@ type Interaction struct {
 type LikesDislikesModel struct {
 	DB *sql.DB
 }
+
 func GetLikesDislikesCount(DB *sql.DB, entityID int, entityType string) (likeCount, dislikeCount int, LDErr Error) {
 	query := `
 	SELECT COUNT(*) FROM Likes_Dislikes
@@ -21,7 +24,7 @@ func GetLikesDislikesCount(DB *sql.DB, entityID int, entityType string) (likeCou
 	if err != nil {
 		return likeCount, dislikeCount, Error{
 			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
+			Message:    "Internal Server Error: " + err.Error(),
 			Type:       "server",
 		}
 	}
@@ -30,7 +33,7 @@ func GetLikesDislikesCount(DB *sql.DB, entityID int, entityType string) (likeCou
 	if err != nil {
 		return likeCount, dislikeCount, Error{
 			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
+			Message:    "Internal Server Error: " + err.Error(),
 			Type:       "server",
 		}
 	}
@@ -50,7 +53,7 @@ func GetReaction(DB *sql.DB, entityID int, entityType string, userID int) (state
 		}
 		return state, Error{
 			StatusCode: http.StatusInternalServerError,
-			Message:    "Internal Server Error",
+			Message:    "Internal Server Error: " + err.Error(),
 			Type:       "server",
 		}
 	}
@@ -59,6 +62,7 @@ func GetReaction(DB *sql.DB, entityID int, entityType string, userID int) (state
 	}
 	return "disliked", ReactionErr
 }
+
 // like/dislike a post or comment
 func (ldm *LikesDislikesModel) LikeDislike(entityID int, entityType string, userID int, liked bool) error {
 	// check if already liked / disliked

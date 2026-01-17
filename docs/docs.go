@@ -311,7 +311,7 @@ const docTemplate = `{
             }
         },
         "/deletePost": {
-            "get": {
+            "delete": {
                 "security": [
                     {
                         "CookieAuth": []
@@ -332,10 +332,10 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "302": {
-                        "description": "Redirect to /",
+                    "200": {
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/echohub-community_internal_models.Response"
                         }
                     },
                     "400": {

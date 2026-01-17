@@ -341,7 +341,7 @@ paths:
       tags:
       - Comments
   /deletePost:
-    get:
+    delete:
       description: Remove an existing post by its ID
       parameters:
       - description: Post ID
@@ -350,10 +350,10 @@ paths:
         required: true
         type: integer
       responses:
-        "302":
-          description: Redirect to /
+        "200":
+          description: OK
           schema:
-            type: string
+            $ref: '#/definitions/echohub-community_internal_models.Response'
         "400":
           description: Bad Request
           schema:

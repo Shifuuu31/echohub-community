@@ -38,15 +38,16 @@ func (webForum *WebApp) Router() http.Handler {
 	})
 
 	// Swagger UI
-	mux.HandleFunc("GET /docs/", func(w http.ResponseWriter, r *http.Request) {
-		httpSwagger.Handler(
-			httpSwagger.URL("http://localhost:8080/swagger.json"),
-		).ServeHTTP(w, r)
-	})
+	mux.Handle("GET /swagger/", httpSwagger.Handler(
+		httpSwagger.URL("/swagger.json"),
+	))
 
-	// Redirect /docs to /docs/
+	// Redirect /docs to /swagger/
 	mux.HandleFunc("GET /docs", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/docs/", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/swagger/", http.StatusMovedPermanently)
+	})
+	mux.HandleFunc("GET /docs/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/swagger/", http.StatusMovedPermanently)
 	})
 
 	// authentication middleware
@@ -82,7 +83,7 @@ func (webForum *WebApp) Router() http.Handler {
 	mux.Handle("POST /updatingPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.UpdatingPost)))
 
 	// DeletePost route
-	mux.Handle("GET /deletePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.DeletePost)))
+	mux.Handle("DELETE /deletePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.DeletePost)))
 
 	// Comments route
 	mux.Handle("POST /comments", webForum.AuthMiddleware(http.HandlerFunc(webForum.GetComments)))

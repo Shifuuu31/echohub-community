@@ -33,6 +33,7 @@ import (
 // @description Session-based authentication using cookies
 
 func main() {
+	models.LoadTemplates()
 	db, err := sql.Open("sqlite3", "./internal/database/echohub-community.db")
 	if err != nil {
 		log.Fatalln(err)

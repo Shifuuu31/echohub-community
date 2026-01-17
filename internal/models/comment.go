@@ -67,7 +67,7 @@ func (comment *CommentModel) GetPostComments(postID int, userID int) ([]Comment,
 		if err != nil {
 			return nil, Error{
 				StatusCode: http.StatusInternalServerError,
-				Message:    "Internal Server Error",
+				Message:    "Internal Server Error: " + err.Error(),
 				Type:       "server",
 			}
 		}

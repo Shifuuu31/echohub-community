@@ -252,11 +252,11 @@ func (webForum *WebApp) UpdatingPost(w http.ResponseWriter, r *http.Request) {
 // @Tags         Posts
 // @Security     CookieAuth
 // @Param        ID  query   int  true  "Post ID"
-// @Success      302  {string}  string  "Redirect to /"
+// @Success      200  {object}  models.Response
 // @Failure      400  {object}  models.Error
 // @Failure      401  {object}  models.Error
 // @Failure      500  {object}  models.Error
-// @Router       /deletePost [get]
+// @Router       /deletePost [delete]
 func (webForum *WebApp) DeletePost(w http.ResponseWriter, r *http.Request) {
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {
@@ -265,31 +265,30 @@ func (webForum *WebApp) DeletePost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if user.UserType != "authenticated" {
-		models.Error{
-			StatusCode: http.StatusUnauthorized,
-			Message:    "Unauthorized",
-			SubMessage: "Please try to login",
-		}.RenderError(w)
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
 
 	postID, err := strconv.Atoi(r.URL.Query().Get("ID"))
 	if err != nil {
-		models.Error{
+		encodeJsonData(w, http.StatusBadRequest, models.Error{
 			StatusCode: http.StatusBadRequest,
 			Message:    "Bad Request",
 			SubMessage: "Invalid PostID",
-		}.RenderError(w)
+		})
 		return
 	}
 
 	err = webForum.Posts.DeletePost(user.ID, postID)
 	if err != nil {
-		models.Error{
+		encodeJsonData(w, http.StatusInternalServerError, models.Error{
 			StatusCode: http.StatusInternalServerError,
 			Message:    "Internal Server Error",
-		}.RenderError(w)
+		})
 		return
 	}
-	http.Redirect(w, r, "/", http.StatusFound)
+
+	encodeJsonData(w, http.StatusOK, models.Response{
+		Messages: []string{"Post deleted successfully!"},
+	})
 }

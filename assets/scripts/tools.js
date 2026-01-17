@@ -1,5 +1,5 @@
 import { openPopup } from './popup.js'
-import {handleLikeDislike} from './likes&dislikes.js'
+import { handleLikeDislike } from './likes&dislikes.js'
 
 export { fetchResponse, R_L_Popup, DropDown, AddPost, AddComment, displayMsg, AddOrUpdatePost, CategoriesSelection }
 
@@ -67,10 +67,9 @@ const AddPost = (post) => {
             </div>
             ${Username === post.UserName ?
             `<div id="post-dropdown" class="post-dropdown${post.ID}">
-                <div id="dropdown-content">
                     <a href="/updatePost?ID=${post.ID}"><img src="/assets/imgs/update.png"> Update Post</a>
                     <hr>
-                    <a href="/deletePost?ID=${post.ID}"><img src="/assets/imgs/delete.png"> Delete Post</a>
+                    <div class="delete-btn" post-id="${post.ID}"><img src="/assets/imgs/delete.png"> Delete Post</div>
                 </div>
             </div>` : ''}
             <div id="post-body">
@@ -92,13 +91,13 @@ const AddPost = (post) => {
 
     const likeBtn = postData.querySelector('.like-btn');
     const dislikeBtn = postData.querySelector('.dislike-btn');
-    
-    likeBtn.addEventListener('click', () => {
-            handleLikeDislike( postData, true)
-        });
 
-        dislikeBtn.addEventListener('click', () => {
-            handleLikeDislike(postData, false)
+    likeBtn.addEventListener('click', () => {
+        handleLikeDislike(postData, true)
+    });
+
+    dislikeBtn.addEventListener('click', () => {
+        handleLikeDislike(postData, false)
     })
 
     if (Username === post.UserName) {
@@ -113,6 +112,27 @@ const AddPost = (post) => {
         document.addEventListener('click', (event) => {
             if (!dropdown.contains(event.target) && !optionsButton.contains(event.target)) {
                 dropdown.classList.remove('active')
+            }
+        })
+
+        const deleteBtn = dropdown.querySelector(".delete-btn")
+        deleteBtn.addEventListener('click', async () => {
+            if (confirm("Are you sure you want to delete this post?")) {
+                try {
+                    const response = await fetch(`/deletePost?ID=${post.ID}`, {
+                        method: 'DELETE',
+                    })
+                    if (response.ok) {
+                        postData.remove()
+                        displayMsg(["Post deleted successfully!"], true)
+                    } else {
+                        const data = await response.json()
+                        displayMsg([data.message || "Failed to delete post"])
+                    }
+                } catch (error) {
+                    console.error("Error deleting post:", error)
+                    displayMsg(["An error occurred while deleting the post"])
+                }
             }
         })
     }
@@ -160,24 +180,24 @@ const AddComment = (comment) => {
             <pre id="textContent" >${comment.Content}</pre>
     </div>
     <div id="buttons" entity-id="${comment.ID}" entity-type="comment" reaction=${comment.Reaction}>
-        <button class="like-btn"><img ${comment.Reaction=="liked" ? `src="/assets/imgs/live-like.png" ` :
-                `src="/assets/imgs/like.png" `} alt="Like"> ${comment.LikeCount}</button>
-        <button class="dislike-btn"><img ${comment.Reaction=="disliked" ? `src="/assets/imgs/live-dislike.png" ` :
-                `src="/assets/imgs/dislike.png" `} alt="Dislike"> ${comment.DislikeCount}</button>
+        <button class="like-btn"><img ${comment.Reaction == "liked" ? `src="/assets/imgs/live-like.png" ` :
+            `src="/assets/imgs/like.png" `} alt="Like"> ${comment.LikeCount}</button>
+        <button class="dislike-btn"><img ${comment.Reaction == "disliked" ? `src="/assets/imgs/live-dislike.png" ` :
+            `src="/assets/imgs/dislike.png" `} alt="Dislike"> ${comment.DislikeCount}</button>
     </div>
 </div>`
 
-        const likeBtn = commentDiv.querySelector('.like-btn');
-        const dislikeBtn = commentDiv.querySelector('.dislike-btn');
-        
-        likeBtn.addEventListener('click', () => {
-                handleLikeDislike( commentDiv, true)
-            });
-    
-            dislikeBtn.addEventListener('click', () => {
-                handleLikeDislike(commentDiv, false)
-        })
-    
+    const likeBtn = commentDiv.querySelector('.like-btn');
+    const dislikeBtn = commentDiv.querySelector('.dislike-btn');
+
+    likeBtn.addEventListener('click', () => {
+        handleLikeDislike(commentDiv, true)
+    });
+
+    dislikeBtn.addEventListener('click', () => {
+        handleLikeDislike(commentDiv, false)
+    })
+
 
     return commentDiv
 }

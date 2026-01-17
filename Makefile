@@ -178,7 +178,7 @@ docs:
 	@export PATH="$$HOME/go/bin:$$GOPATH/bin:$$PATH"; \
 	swag init -g cmd/api/main.go -o docs --parseDependency --parseInternal
 	@echo "✅ Swagger docs generated at docs/swagger.json"
-	@echo "🌐 Access at: http://localhost:8080/swagger/"
+	@echo "🌐 Access at: http://localhost:8080/swagger/ (Redirect: /docs)"
 
 # Install swag tool
 .PHONY: docs-install
