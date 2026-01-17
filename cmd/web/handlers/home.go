@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"forum/internal/models"
+	"echohub-community/internal/models"
 )
 
 func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {

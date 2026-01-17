@@ -14,12 +14,12 @@ RUN go get github.com/mattn/go-sqlite3
 RUN go get github.com/gofrs/uuid/v5
 RUN go get golang.org/x/crypto@v0.28.0
 
-RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o forumApp /app/cmd/api/main.go
+RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o echohubApp /app/cmd/api/main.go
 
 EXPOSE 8080
 
-CMD ["./forumApp"]
+CMD ["./echohubApp"]
 
-# docker build -t forum-app-dockerized .
+# docker build -t echohub-community-app .
 # docker images
 # docker run -p 8080:8080 <img-name>

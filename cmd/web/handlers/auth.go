@@ -6,7 +6,7 @@ import (
 	"html"
 	"net/http"
 
-	"forum/internal/models"
+	"echohub-community/internal/models"
 )
 
 func (webForum *WebApp) AuthMiddleware(next http.Handler) http.Handler {

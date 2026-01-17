@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"forum/internal/models"
+	"echohub-community/internal/models"
 )
 
 type WebApp struct {

@@ -6,14 +6,14 @@ import (
 	"net/http"
 	"os"
 
-	"forum/cmd/web/handlers"
-	"forum/internal/models"
+	"echohub-community/cmd/web/handlers"
+	"echohub-community/internal/models"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
-	db, err := sql.Open("sqlite3", "./internal/database/forum.db")
+	db, err := sql.Open("sqlite3", "./internal/database/echohub-community.db")
 	if err != nil {
 		log.Fatalln(err)
 	}
