@@ -35,6 +35,13 @@ func (webForum *WebApp) AuthMiddleware(next http.Handler) http.Handler {
 	})
 }
 
+// LoginPage renders the login page
+// @Summary      Show login page
+// @Description  Render the login page for the user
+// @Tags         Auth
+// @Produce      html
+// @Success      200  {string}  string  "Login page HTML"
+// @Router       /login [get]
 func (webForum *WebApp) LoginPage(w http.ResponseWriter, r *http.Request) {
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {
@@ -49,6 +56,18 @@ func (webForum *WebApp) LoginPage(w http.ResponseWriter, r *http.Request) {
 	models.RenderPage(w, "login.html", nil)
 }
 
+// ConfirmLogin handles user authentication
+// @Summary      User login
+// @Description  Authenticate user with username and password
+// @Tags         Auth
+// @Accept       json
+// @Produce      json
+// @Param        credentials  body   object  true  "Login credentials"  example({"username":"user1","password":"password123","rememberMe":true})
+// @Success      200  {object}  models.Response
+// @Failure      400  {string}  string  "Invalid JSON format"
+// @Failure      401  {object}  models.Response  "Unauthorized"
+// @Failure      500  {string}  string  "Internal server error"
+// @Router       /confirmLogin [post]
 func (webForum *WebApp) ConfirmLogin(w http.ResponseWriter, r *http.Request) {
 	credentials := struct {
 		UserName   string `json:"username"`
@@ -93,6 +112,12 @@ func (webForum *WebApp) ConfirmLogin(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// UserLogout logs out the current user
+// @Summary      User logout
+// @Description  Expire the user session and logout
+// @Tags         Auth
+// @Success      302  {string}  string  "Redirect to /login"
+// @Router       /logout [get]
 func (webForum *WebApp) UserLogout(w http.ResponseWriter, r *http.Request) {
 	sessionCookie, err := r.Cookie("userSession")
 	if err != nil {
@@ -116,6 +141,13 @@ func (webForum *WebApp) UserLogout(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/login", http.StatusFound)
 }
 
+// RegisterPage renders the registration page
+// @Summary      Show registration page
+// @Description  Render the registration page for the user
+// @Tags         Auth
+// @Produce      html
+// @Success      200  {string}  string  "Registration page HTML"
+// @Router       /register [get]
 func (webForum *WebApp) RegisterPage(w http.ResponseWriter, r *http.Request) {
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {
@@ -130,6 +162,17 @@ func (webForum *WebApp) RegisterPage(w http.ResponseWriter, r *http.Request) {
 	models.RenderPage(w, "register.html", nil)
 }
 
+// UserRegister handles new user registration
+// @Summary      User registration
+// @Description  Register a new user with email, username, and password
+// @Tags         Auth
+// @Accept       json
+// @Produce      json
+// @Param        newUser  body   models.NewUserInfo  true  "User registration data"
+// @Success      200  {object}  models.Response
+// @Failure      400  {object}  models.Response  "Validation errors"
+// @Failure      500  {object}  models.Error  "Internal server error"
+// @Router       /confirmRegister [post]
 func (webForum *WebApp) UserRegister(w http.ResponseWriter, r *http.Request) {
 	var newUserinfo models.NewUserInfo
 
@@ -155,6 +198,15 @@ func (webForum *WebApp) UserRegister(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// ProfileSettings renders the profile settings page
+// @Summary      Show profile settings
+// @Description  Render the profile settings page for authenticated users
+// @Tags         User
+// @Produce      html
+// @Security     CookieAuth
+// @Success      200  {string}  string  "Profile settings page HTML"
+// @Failure      401  {object}  models.Error  "Unauthorized"
+// @Router       /profileSettings [get]
 func (webForum *WebApp) ProfileSettings(w http.ResponseWriter, r *http.Request) {
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {
@@ -176,6 +228,19 @@ func (webForum *WebApp) ProfileSettings(w http.ResponseWriter, r *http.Request) 
 	models.RenderPage(w, "profileSettings.html", user)
 }
 
+// UpdateProfile updates the user's profile information
+// @Summary      Update profile
+// @Description  Update user's nickname, email, or other details
+// @Tags         User
+// @Accept       json
+// @Produce      json
+// @Security     CookieAuth
+// @Param        toUpdate  body   models.NewUserInfo  true  "Updated profile data"
+// @Success      200  {object}  models.Response
+// @Failure      400  {object}  models.Response  "Validation errors"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      500  {object}  models.Error  "Internal server error"
+// @Router       /updateProfile [post]
 func (webForum *WebApp) UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {

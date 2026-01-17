@@ -13,14 +13,14 @@ import (
 
 // User struct represents a user in the system.
 type User struct {
-	ID             int
-	UserName       string
-	Email          string
-	HashedPassword string
-	Gender         string
-	ProfileImg     string
-	CreationDate   time.Time
-	UserType       string
+	ID             int       `json:"ID"`
+	UserName       string    `json:"UserName"`
+	Email          string    `json:"Email"`
+	HashedPassword string    `json:"-"`
+	Gender         string    `json:"Gender"`
+	ProfileImg     string    `json:"ProfileImg"`
+	CreationDate   time.Time `json:"CreationDate"`
+	UserType       string    `json:"UserType"`
 }
 
 // UserModel handles user-related database operations.
@@ -110,7 +110,7 @@ func (user *UserModel) InsertUser(newUser User) (err error) {
 	avatarApiBaseUrl := "https://api.dicebear.com/7.x/adventurer/svg"
 	// Include gender in the API call to ensure gender-appropriate avatars
 	newUser.ProfileImg = avatarApiBaseUrl + "?seed=" + newUser.UserName + "&gender=" + newUser.Gender
-	
+
 	insertStmt := `INSERT INTO UserTable (username, email, hashed_password, gender, profile_img) VALUES (?, ?, ?, ?, ?)`
 	_, err = user.DB.Exec(insertStmt, newUser.UserName, newUser.Email, newUser.HashedPassword, newUser.Gender, newUser.ProfileImg)
 	if err != nil {

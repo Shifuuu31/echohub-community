@@ -8,11 +8,11 @@ import (
 var Template = template.Must(template.ParseGlob("./cmd/web/templates/*.html"))
 
 type Error struct {
-	User       *User `json:"user"`
-	StatusCode int  `json:"statusCode"`
-	Message    string `json:"message"`
-	SubMessage string `json:"subMessage"`
-	Type string `json:"type"`
+	User       *User  `json:"User"`
+	StatusCode int    `json:"StatusCode"`
+	Message    string `json:"Message"`
+	SubMessage string `json:"SubMessage"`
+	Type       string `json:"Type"`
 }
 
 func (err Error) RenderError(w http.ResponseWriter) {

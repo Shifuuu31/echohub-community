@@ -1,0 +1,648 @@
+basePath: /
+definitions:
+  cmd_web_handlers.CreateComment:
+    properties:
+      content:
+        description: UserID  string `json:"userid"`
+        type: string
+      postid:
+        type: string
+    type: object
+  cmd_web_handlers.FetchComments:
+    properties:
+      ID:
+        type: string
+    type: object
+  echohub-community_internal_models.Comment:
+    properties:
+      Content:
+        type: string
+      CreationDate:
+        type: string
+      DislikeCount:
+        type: integer
+      ID:
+        type: integer
+      LikeCount:
+        type: integer
+      PostID:
+        type: integer
+      ProfileImg:
+        type: string
+      Reaction:
+        type: string
+      UserID:
+        type: integer
+      UserName:
+        type: string
+    type: object
+  echohub-community_internal_models.Error:
+    properties:
+      Message:
+        type: string
+      StatusCode:
+        type: integer
+      SubMessage:
+        type: string
+      Type:
+        type: string
+      User:
+        $ref: '#/definitions/echohub-community_internal_models.User'
+    type: object
+  echohub-community_internal_models.Interaction:
+    properties:
+      entityId:
+        type: integer
+      entityType:
+        type: string
+      liked:
+        type: boolean
+    type: object
+  echohub-community_internal_models.NewUserInfo:
+    properties:
+      changes:
+        items:
+          type: string
+        type: array
+      email:
+        type: string
+      gender:
+        type: string
+      password:
+        type: string
+      rPassword:
+        type: string
+      username:
+        type: string
+    type: object
+  echohub-community_internal_models.Post:
+    properties:
+      Categories:
+        items:
+          type: string
+        type: array
+      CommentsCount:
+        type: integer
+      Content:
+        type: string
+      CreatedAt:
+        type: string
+      DislikeCount:
+        type: integer
+      ID:
+        type: integer
+      LikeCount:
+        type: integer
+      ProfileImg:
+        type: string
+      Reaction:
+        type: string
+      Title:
+        type: string
+      UserName:
+        type: string
+    type: object
+  echohub-community_internal_models.PostData:
+    properties:
+      content:
+        type: string
+      id:
+        type: string
+      selectedCategories:
+        items:
+          type: string
+        type: array
+      title:
+        type: string
+    type: object
+  echohub-community_internal_models.Response:
+    properties:
+      extra:
+        items:
+          type: string
+        type: array
+      messages:
+        items:
+          type: string
+        type: array
+    type: object
+  echohub-community_internal_models.User:
+    properties:
+      CreationDate:
+        type: string
+      Email:
+        type: string
+      Gender:
+        type: string
+      ID:
+        type: integer
+      ProfileImg:
+        type: string
+      UserName:
+        type: string
+      UserType:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@example.com
+    name: API Support
+    url: http://www.example.com/support
+  description: API documentation for EchoHub Community Forum
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: EchoHub Community Forum API
+  version: "1.0"
+paths:
+  /:
+    get:
+      description: Render the home page with user info and categories
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: Home page HTML
+          schema:
+            type: string
+      summary: Show home page
+      tags:
+      - Home
+  /addNewPost:
+    post:
+      consumes:
+      - application/json
+      description: Add a new post with title, content, and categories
+      parameters:
+      - description: Post data
+        in: body
+        name: newPost
+        required: true
+        schema:
+          $ref: '#/definitions/echohub-community_internal_models.PostData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Post created successfully
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - CookieAuth: []
+      summary: Create post
+      tags:
+      - Posts
+  /comments:
+    post:
+      consumes:
+      - application/json
+      description: Retrieve all comments for a post by its ID
+      parameters:
+      - description: Comment fetch data
+        in: body
+        name: commentData
+        required: true
+        schema:
+          $ref: '#/definitions/cmd_web_handlers.FetchComments'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/echohub-community_internal_models.Comment'
+            type: array
+        "400":
+          description: Invalid JSON format or PostID
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - CookieAuth: []
+      summary: Get comments
+      tags:
+      - Comments
+  /confirmLogin:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user with username and password
+      parameters:
+      - description: Login credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Response'
+        "400":
+          description: Invalid JSON format
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Response'
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: User login
+      tags:
+      - Auth
+  /confirmRegister:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with email, username, and password
+      parameters:
+      - description: User registration data
+        in: body
+        name: newUser
+        required: true
+        schema:
+          $ref: '#/definitions/echohub-community_internal_models.NewUserInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Response'
+        "400":
+          description: Validation errors
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Error'
+      summary: User registration
+      tags:
+      - Auth
+  /createComment:
+    post:
+      consumes:
+      - application/json
+      description: Post a new comment to an existing post
+      parameters:
+      - description: New comment data
+        in: body
+        name: newCmntData
+        required: true
+        schema:
+          $ref: '#/definitions/cmd_web_handlers.CreateComment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: comments created succesfully
+          schema:
+            type: string
+        "400":
+          description: Invalid JSON or content
+          schema:
+            type: string
+        "403":
+          description: Forbidden
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - CookieAuth: []
+      summary: Create comment
+      tags:
+      - Comments
+  /deletePost:
+    get:
+      description: Remove an existing post by its ID
+      parameters:
+      - description: Post ID
+        in: query
+        name: ID
+        required: true
+        type: integer
+      responses:
+        "302":
+          description: Redirect to /
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Error'
+      security:
+      - CookieAuth: []
+      summary: Delete post
+      tags:
+      - Posts
+  /like-dislike:
+    post:
+      consumes:
+      - application/json
+      description: Add or remove a like/dislike from a post or comment
+      parameters:
+      - description: Interaction data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/echohub-community_internal_models.Interaction'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Response'
+        "400":
+          description: Invalid entity type or JSON
+          schema:
+            type: string
+        "403":
+          description: Forbidden
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - CookieAuth: []
+      summary: Like/Dislike
+      tags:
+      - Interactions
+  /login:
+    get:
+      description: Render the login page for the user
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: Login page HTML
+          schema:
+            type: string
+      summary: Show login page
+      tags:
+      - Auth
+  /logout:
+    get:
+      description: Expire the user session and logout
+      responses:
+        "302":
+          description: Redirect to /login
+          schema:
+            type: string
+      summary: User logout
+      tags:
+      - Auth
+  /maxId:
+    post:
+      description: Get the highest post ID for pagination/client-side tracking
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Error'
+      summary: Get max post ID
+      tags:
+      - Posts
+  /newPost:
+    get:
+      description: Render the page for creating a new forum post
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: New post page HTML
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Error'
+      security:
+      - CookieAuth: []
+      summary: Show new post page
+      tags:
+      - Posts
+  /posts:
+    post:
+      consumes:
+      - application/json
+      description: Retrieve a list of posts based on start ID and category
+      parameters:
+      - description: Post filter
+        in: body
+        name: postsData
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/echohub-community_internal_models.Post'
+            type: array
+        "400":
+          description: Invalid JSON format
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Error'
+      security:
+      - CookieAuth: []
+      summary: Get posts
+      tags:
+      - Posts
+  /profileSettings:
+    get:
+      description: Render the profile settings page for authenticated users
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: Profile settings page HTML
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Error'
+      security:
+      - CookieAuth: []
+      summary: Show profile settings
+      tags:
+      - User
+  /register:
+    get:
+      description: Render the registration page for the user
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: Registration page HTML
+          schema:
+            type: string
+      summary: Show registration page
+      tags:
+      - Auth
+  /updatePost:
+    get:
+      description: Render the page for editing an existing forum post
+      parameters:
+      - description: Post ID
+        in: query
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: Update post page HTML
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Error'
+      security:
+      - CookieAuth: []
+      summary: Show update post page
+      tags:
+      - Posts
+  /updateProfile:
+    post:
+      consumes:
+      - application/json
+      description: Update user's nickname, email, or other details
+      parameters:
+      - description: Updated profile data
+        in: body
+        name: toUpdate
+        required: true
+        schema:
+          $ref: '#/definitions/echohub-community_internal_models.NewUserInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Response'
+        "400":
+          description: Validation errors
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Error'
+      security:
+      - CookieAuth: []
+      summary: Update profile
+      tags:
+      - User
+  /updatingPost:
+    post:
+      consumes:
+      - application/json
+      description: Apply changes to title, content, or categories of a post
+      parameters:
+      - description: Post ID
+        in: query
+        name: ID
+        required: true
+        type: integer
+      - description: Updated post data
+        in: body
+        name: toUpdate
+        required: true
+        schema:
+          $ref: '#/definitions/echohub-community_internal_models.PostData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Post updated successfully
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/echohub-community_internal_models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - CookieAuth: []
+      summary: Update post
+      tags:
+      - Posts
+securityDefinitions:
+  CookieAuth:
+    description: Session-based authentication using cookies
+    in: cookie
+    name: userSession
+    type: apiKey
+swagger: "2.0"

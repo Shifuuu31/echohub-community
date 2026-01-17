@@ -8,6 +8,15 @@ import (
 	"echohub-community/internal/models"
 )
 
+// NewPost renders the page to create a new post
+// @Summary      Show new post page
+// @Description  Render the page for creating a new forum post
+// @Tags         Posts
+// @Produce      html
+// @Security     CookieAuth
+// @Success      200  {string}  string  "New post page HTML"
+// @Failure      401  {object}  models.Error
+// @Router       /newPost [get]
 func (webForum *WebApp) NewPost(w http.ResponseWriter, r *http.Request) {
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {
@@ -42,6 +51,19 @@ func (webForum *WebApp) NewPost(w http.ResponseWriter, r *http.Request) {
 	models.RenderPage(w, "newPost.html", CreatePostData)
 }
 
+// AddNewPost creates a new forum post
+// @Summary      Create post
+// @Description  Add a new post with title, content, and categories
+// @Tags         Posts
+// @Accept       json
+// @Produce      json
+// @Security     CookieAuth
+// @Param        newPost  body   models.PostData  true  "Post data"
+// @Success      200  {string}  string  "Post created successfully"
+// @Failure      400  {object}  models.Response
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Router       /addNewPost [post]
 func (webForum *WebApp) AddNewPost(w http.ResponseWriter, r *http.Request) {
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {
@@ -94,6 +116,17 @@ func (webForum *WebApp) AddNewPost(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// UpdatePost renders the page to edit an existing post
+// @Summary      Show update post page
+// @Description  Render the page for editing an existing forum post
+// @Tags         Posts
+// @Produce      html
+// @Security     CookieAuth
+// @Param        ID  query   int  true  "Post ID"
+// @Success      200  {string}  string  "Update post page HTML"
+// @Failure      400  {object}  models.Error
+// @Failure      401  {object}  models.Error
+// @Router       /updatePost [get]
 func (webForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {
@@ -145,6 +178,20 @@ func (webForum *WebApp) UpdatePost(w http.ResponseWriter, r *http.Request) {
 	models.RenderPage(w, "updatePost.html", data)
 }
 
+// UpdatingPost updates an existing forum post
+// @Summary      Update post
+// @Description  Apply changes to title, content, or categories of a post
+// @Tags         Posts
+// @Accept       json
+// @Produce      json
+// @Security     CookieAuth
+// @Param        ID  query   int               true  "Post ID"
+// @Param        toUpdate  body   models.PostData  true  "Updated post data"
+// @Success      200  {string}  string  "Post updated successfully"
+// @Failure      400  {object}  models.Response
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Router       /updatingPost [post]
 func (webForum *WebApp) UpdatingPost(w http.ResponseWriter, r *http.Request) {
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {
@@ -199,6 +246,17 @@ func (webForum *WebApp) UpdatingPost(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// DeletePost removes a post from the forum
+// @Summary      Delete post
+// @Description  Remove an existing post by its ID
+// @Tags         Posts
+// @Security     CookieAuth
+// @Param        ID  query   int  true  "Post ID"
+// @Success      302  {string}  string  "Redirect to /"
+// @Failure      400  {object}  models.Error
+// @Failure      401  {object}  models.Error
+// @Failure      500  {object}  models.Error
+// @Router       /deletePost [get]
 func (webForum *WebApp) DeletePost(w http.ResponseWriter, r *http.Request) {
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {

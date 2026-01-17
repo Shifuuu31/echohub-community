@@ -10,6 +10,13 @@ import (
 	"echohub-community/internal/models"
 )
 
+// HomePage renders the home page
+// @Summary      Show home page
+// @Description  Render the home page with user info and categories
+// @Tags         Home
+// @Produce      html
+// @Success      200  {string}  string  "Home page HTML"
+// @Router       / [get]
 func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {
@@ -44,6 +51,14 @@ func (webForum *WebApp) HomePage(w http.ResponseWriter, r *http.Request) {
 	models.RenderPage(w, "home.html", homeData)
 }
 
+// MaxID returns the maximum post ID
+// @Summary      Get max post ID
+// @Description  Get the highest post ID for pagination/client-side tracking
+// @Tags         Posts
+// @Produce      json
+// @Success      200  {integer}  int
+// @Failure      500  {object}   models.Error
+// @Router       /maxId [post]
 func (webForum *WebApp) MaxID(w http.ResponseWriter, r *http.Request) {
 	maxID, maxIdErr := webForum.Posts.GetMaxId()
 	if maxIdErr.Type == "server" {
@@ -56,6 +71,18 @@ func (webForum *WebApp) MaxID(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// GetPosts retrieves posts with pagination and category filter
+// @Summary      Get posts
+// @Description  Retrieve a list of posts based on start ID and category
+// @Tags         Posts
+// @Accept       json
+// @Produce      json
+// @Security     CookieAuth
+// @Param        postsData  body   object  true  "Post filter"  example({"start":0,"category":"all"})
+// @Success      200  {array}   models.Post
+// @Failure      400  {string}  string  "Invalid JSON format"
+// @Failure      500  {object}  models.Error
+// @Router       /posts [post]
 func (webForum *WebApp) GetPosts(w http.ResponseWriter, r *http.Request) {
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {
@@ -110,6 +137,18 @@ type FetchComments struct {
 	PostId string `json:"ID"`
 }
 
+// GetComments retrieves comments for a specific post
+// @Summary      Get comments
+// @Description  Retrieve all comments for a post by its ID
+// @Tags         Comments
+// @Accept       json
+// @Produce      json
+// @Security     CookieAuth
+// @Param        commentData  body   FetchComments  true  "Comment fetch data"
+// @Success      200  {array}   models.Comment
+// @Failure      400  {string}  string  "Invalid JSON format or PostID"
+// @Failure      500  {string}  string  "Internal server error"
+// @Router       /comments [post]
 func (webForum *WebApp) GetComments(w http.ResponseWriter, r *http.Request) {
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {
@@ -145,6 +184,19 @@ type CreateComment struct {
 	Content string `json:"content"`
 }
 
+// CreateComment adds a new comment to a post
+// @Summary      Create comment
+// @Description  Post a new comment to an existing post
+// @Tags         Comments
+// @Accept       json
+// @Produce      json
+// @Security     CookieAuth
+// @Param        newCmntData  body   CreateComment  true  "New comment data"
+// @Success      200  {string}  string  "comments created succesfully"
+// @Failure      400  {string}  string  "Invalid JSON or content"
+// @Failure      403  {string}  string  "Forbidden"
+// @Failure      500  {string}  string  "Internal server error"
+// @Router       /createComment [post]
 func (webForum *WebApp) CreateComment(w http.ResponseWriter, r *http.Request) {
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {
@@ -191,6 +243,19 @@ func (webForum *WebApp) CreateComment(w http.ResponseWriter, r *http.Request) {
 }
 
 // LikeDislikeHandler (when we click on like/dislike button)
+// LikeDislikeHandler toggles a like or dislike on a post or comment
+// @Summary      Like/Dislike
+// @Description  Add or remove a like/dislike from a post or comment
+// @Tags         Interactions
+// @Accept       json
+// @Produce      json
+// @Security     CookieAuth
+// @Param        request  body   models.Interaction  true  "Interaction data"
+// @Success      200  {object}  models.Response
+// @Failure      400  {string}  string  "Invalid entity type or JSON"
+// @Failure      403  {string}  string  "Forbidden"
+// @Failure      500  {string}  string  "Internal server error"
+// @Router       /like-dislike [post]
 func (webForum *WebApp) LikeDislikeHandler(w http.ResponseWriter, r *http.Request) {
 	user, userErr := webForum.Users.RetrieveUser(r)
 	if userErr.Type == "server" {

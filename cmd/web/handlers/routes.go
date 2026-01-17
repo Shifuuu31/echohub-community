@@ -2,15 +2,18 @@ package handlers
 
 import (
 	"net/http"
+	"os"
 
 	"echohub-community/internal/models"
+
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 type WebApp struct {
-	Users    *models.UserModel
-	Sessions *models.SessionModel
-	Posts     *models.PostModel
-	Comments *models.CommentModel
+	Users         *models.UserModel
+	Sessions      *models.SessionModel
+	Posts         *models.PostModel
+	Comments      *models.CommentModel
 	LikesDislikes *models.LikesDislikesModel
 }
 
@@ -20,6 +23,31 @@ func (webForum *WebApp) Router() http.Handler {
 	// Serve "assets" directory
 	fileServer := http.FileServer(http.Dir("./assets"))
 	mux.Handle("GET /assets/", http.StripPrefix("/assets/", fileServer))
+
+	// Serve Swagger documentation
+	// Swagger JSON endpoint
+	mux.HandleFunc("GET /swagger.json", func(w http.ResponseWriter, r *http.Request) {
+		swaggerPath := "./docs/swagger.json"
+		if _, err := os.Stat(swaggerPath); os.IsNotExist(err) {
+			w.Header().Set("Content-Type", "application/json")
+			http.Error(w, `{"error":"Swagger documentation not found. Please run 'make docs' to generate it."}`, http.StatusNotFound)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		http.ServeFile(w, r, swaggerPath)
+	})
+
+	// Swagger UI
+	mux.HandleFunc("GET /docs/", func(w http.ResponseWriter, r *http.Request) {
+		httpSwagger.Handler(
+			httpSwagger.URL("http://localhost:8080/swagger.json"),
+		).ServeHTTP(w, r)
+	})
+
+	// Redirect /docs to /docs/
+	mux.HandleFunc("GET /docs", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/docs/", http.StatusMovedPermanently)
+	})
 
 	// authentication middleware
 	mux.Handle("GET /", webForum.AuthMiddleware(http.HandlerFunc(webForum.HomePage)))
@@ -38,24 +66,24 @@ func (webForum *WebApp) Router() http.Handler {
 	// ProfileSettings routes
 	mux.Handle("GET /profileSettings", webForum.AuthMiddleware(http.HandlerFunc(webForum.ProfileSettings)))
 	mux.Handle("POST /updateProfile", webForum.AuthMiddleware(http.HandlerFunc(webForum.UpdateProfile)))
-	
+
 	// MaxID route
 	mux.HandleFunc("POST /maxId", webForum.MaxID)
-	
+
 	// GetPosts route
 	mux.Handle("POST /posts", webForum.AuthMiddleware(http.HandlerFunc(webForum.GetPosts)))
-	
+
 	// NewPost routes
 	mux.Handle("GET /newPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.NewPost)))
 	mux.Handle("POST /addNewPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.AddNewPost)))
-	
+
 	// UpdatePost routes
 	mux.Handle("GET /updatePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.UpdatePost)))
 	mux.Handle("POST /updatingPost", webForum.AuthMiddleware(http.HandlerFunc(webForum.UpdatingPost)))
-	
+
 	// DeletePost route
 	mux.Handle("GET /deletePost", webForum.AuthMiddleware(http.HandlerFunc(webForum.DeletePost)))
-	
+
 	// Comments route
 	mux.Handle("POST /comments", webForum.AuthMiddleware(http.HandlerFunc(webForum.GetComments)))
 	mux.Handle("POST /createComment", webForum.AuthMiddleware(http.HandlerFunc(webForum.CreateComment)))

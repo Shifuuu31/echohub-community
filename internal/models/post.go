@@ -9,23 +9,23 @@ import (
 )
 
 type Post struct {
-	ID            int
-	UserName      string
-	ProfileImg    string
-	CreatedAt     time.Time
-	Title         string
-	Content       string
-	Categories    []string
-	LikeCount     int
-	DislikeCount  int
-	CommentsCount int
-	Reaction      string
+	ID            int       `json:"ID"`
+	UserName      string    `json:"UserName"`
+	ProfileImg    string    `json:"ProfileImg"`
+	CreatedAt     time.Time `json:"CreatedAt"`
+	Title         string    `json:"Title"`
+	Content       string    `json:"Content"`
+	Categories    []string  `json:"Categories"`
+	LikeCount     int       `json:"LikeCount"`
+	DislikeCount  int       `json:"DislikeCount"`
+	CommentsCount int       `json:"CommentsCount"`
+	Reaction      string    `json:"Reaction"`
 }
 
 type Category struct {
-	ID               int
-	CategoryName     string
-	CategoryIconPath string
+	ID               int    `json:"ID"`
+	CategoryName     string `json:"CategoryName"`
+	CategoryIconPath string `json:"CategoryIconPath"`
 }
 
 type PostModel struct {

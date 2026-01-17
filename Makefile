@@ -33,6 +33,10 @@ help:
 	@echo "  make clean                - Clean build artifacts"
 	@echo "  make clean-docker         - Clean Docker images and containers"
 	@echo ""
+	@echo "Documentation:"
+	@echo "  make docs                 - Generate Swagger/OpenAPI documentation"
+	@echo "  make docs-install         - Install swag tool"
+	@echo ""
 
 # Setup environment variables for rootless Docker
 export PATH := $(HOME)/bin:$(PATH)
@@ -165,3 +169,20 @@ clean-docker: stop-docker-container
 # Full clean (everything)
 clean-all: clean clean-docker
 	@echo "✅ Full cleanup complete!"
+ 
+# Generate Swagger documentation
+.PHONY: docs
+docs:
+	@echo "📝 Generating Swagger documentation..."
+	@go install github.com/swaggo/swag/cmd/swag@latest
+	@export PATH="$$HOME/go/bin:$$GOPATH/bin:$$PATH"; \
+	swag init -g cmd/api/main.go -o docs --parseDependency --parseInternal
+	@echo "✅ Swagger docs generated at docs/swagger.json"
+	@echo "🌐 Access at: http://localhost:8080/swagger/"
+
+# Install swag tool
+.PHONY: docs-install
+docs-install:
+	@echo "📦 Installing swag tool..."
+	go install github.com/swaggo/swag/cmd/swag@latest
+	@echo "✅ swag installed!"

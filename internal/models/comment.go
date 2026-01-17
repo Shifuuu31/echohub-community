@@ -8,16 +8,16 @@ import (
 )
 
 type Comment struct {
-	ID           int
-	PostID       int
-	UserID       int
-	UserName     string
-	ProfileImg   string
-	Content      string
-	LikeCount    int
-	DislikeCount int
-	Reaction     string
-	CreationDate time.Time
+	ID           int       `json:"ID"`
+	PostID       int       `json:"PostID"`
+	UserID       int       `json:"UserID"`
+	UserName     string    `json:"UserName"`
+	ProfileImg   string    `json:"ProfileImg"`
+	Content      string    `json:"Content"`
+	LikeCount    int       `json:"LikeCount"`
+	DislikeCount int       `json:"DislikeCount"`
+	Reaction     string    `json:"Reaction"`
+	CreationDate time.Time `json:"CreationDate"`
 }
 
 type CommentModel struct {
