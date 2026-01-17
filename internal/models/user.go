@@ -104,13 +104,13 @@ func (user *UserModel) ValidateUserCredentials(username, password string) (UserI
 
 // InsertUser adds a new user to the database.
 func (user *UserModel) InsertUser(newUser User) (err error) {
-	avatarApiBaseUrl := "https://avatar.iran.liara.run/public/"
-	switch newUser.Gender {
-	case "male":
-		newUser.ProfileImg = avatarApiBaseUrl + "boy?username=" + newUser.UserName
-	case "female":
-		newUser.ProfileImg = avatarApiBaseUrl + "girl?username=" + newUser.UserName
-	}
+	// Use DiceBear API for avatar generation
+	// Using "adventurer" style with gender parameter
+	// The username is used as seed for deterministic avatars
+	avatarApiBaseUrl := "https://api.dicebear.com/7.x/adventurer/svg"
+	// Include gender in the API call to ensure gender-appropriate avatars
+	newUser.ProfileImg = avatarApiBaseUrl + "?seed=" + newUser.UserName + "&gender=" + newUser.Gender
+	
 	insertStmt := `INSERT INTO UserTable (username, email, hashed_password, gender, profile_img) VALUES (?, ?, ?, ?, ?)`
 	_, err = user.DB.Exec(insertStmt, newUser.UserName, newUser.Email, newUser.HashedPassword, newUser.Gender, newUser.ProfileImg)
 	if err != nil {
@@ -169,6 +169,20 @@ func (user *UserModel) UpdateUser(toUpdate NewUserInfo, userID int) (response Re
 				response.Messages = append(response.Messages, err.Error())
 			} else {
 				if err = user.UpdateDB("UserTable", "username", username, userID); err != nil {
+					return Response{}, err
+				}
+				// Get user's gender to include in avatar generation
+				var userGender string
+				genderStmt := `SELECT gender FROM UserTable WHERE id = ?`
+				if err := user.DB.QueryRow(genderStmt, userID).Scan(&userGender); err != nil {
+					// If we can't get gender, use a default (but this shouldn't happen)
+					userGender = "male"
+				}
+				// Update avatar when username changes (since username is used as seed)
+				// Include gender to ensure gender-appropriate avatar
+				avatarApiBaseUrl := "https://api.dicebear.com/7.x/adventurer/svg"
+				newAvatarUrl := avatarApiBaseUrl + "?seed=" + username + "&gender=" + userGender
+				if err = user.UpdateDB("UserTable", "profile_img", newAvatarUrl, userID); err != nil {
 					return Response{}, err
 				}
 				response.Extra = append(response.Extra, "username")
