@@ -12,40 +12,52 @@
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s, opacity 0.3s;
+  padding: clamp(10px, 3vw, 20px);
+  box-sizing: border-box;
 }
 
 #popup {
   background: white;
-  padding: 25px;
-  border-radius: 8px;
+  padding: clamp(15px, 4vw, 25px);
+  border-radius: clamp(6px, 1.5vw, 8px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 375px;
+  width: clamp(280px, 85vw, 375px);
+  max-width: 90vw;
 }
 
 #popup h2 {
-  margin: 0 0 10px;
+  margin: 0 0 clamp(8px, 2vw, 10px);
   color: var(--primary-color);
+  font-size: clamp(20px, 5vw, 24px);
+  line-height: 1.2;
 }
 
 #popup p {
-  margin: 0 0 20px;
+  margin: 0 0 clamp(15px, 4vw, 20px);
   color: var(--secondary-color);
+  font-size: clamp(14px, 3.5vw, 16px);
+  line-height: 1.5;
 }
 
 #popup a {
-  padding: 12.5px 25px;
+  padding: clamp(10px, 2.5vw, 12.5px) clamp(20px, 5vw, 25px);
   border: none;
-  border-radius: 512px;
+  border-radius: clamp(20px, 8vw, 512px);
   background-color: var(--primary-color);
   color: white;
-  font-size: 16px;
+  font-size: clamp(14px, 3.5vw, 16px);
   font-weight: 600;
   cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 #popup a:hover {
   background-color: var(--primary-color);
+  transform: scale(1.02);
+  opacity: 0.95;
 }
 
 #overlay.show {
